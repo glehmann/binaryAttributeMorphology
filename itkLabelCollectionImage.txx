@@ -185,9 +185,8 @@ LabelCollectionImage<TLabelObject>
   assert( labelObject != NULL );
 //   assert( ! this->HasLabel( labelObject->GetLabel() ) );
 
-  LabelType label = labelObject->GetLabel();
-std::cout << "label: " << label << std::endl;
-  m_LabelObjectContainer[ label ] = NULL;
+//  labelObject->SetLabelCollectionImage( this );
+  m_LabelObjectContainer[ labelObject->GetLabel() ] = labelObject;
 }
 
 

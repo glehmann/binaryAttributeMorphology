@@ -35,7 +35,20 @@ int main(int argc, char * argv[])
   LabelCollectionImageType::IndexType idx;
   idx.Fill( 0 );
 //   std::cout << labelCollection->HasLabel( 1 ) << std::endl;
-  labelCollection->SetPixel( idx, 1 );
+//  labelCollection->SetPixel( idx, 1 );
+  LabelObjectType::Pointer lo = LabelObjectType::New();
+  lo->SetLabel( 1 );
+  
+  std::cout << "lo: " << lo << std::endl;
+  labelCollection->AddLabelObject( lo );
+  
+  labelCollection->SetPixel( idx, 2 );
+  
+  LabelObjectType::Pointer lo1 = labelCollection->GetLabelObject( 1 );
+  std::cout << "lo1: " << lo1 << std::endl;
+
+  LabelObjectType::Pointer lo2 = labelCollection->GetLabelObject( 2 );
+  std::cout << "lo2: " << lo2 << std::endl;
 
 /*  typedef itk::BinaryImageToLabelCollectionImageFilter< IType, LabelCollectionImageType > FilterType;
   FilterType::Pointer filter = FilterType::New();

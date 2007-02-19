@@ -203,7 +203,8 @@ public:
       {
       m_LabelCollectionImage->RemoveLabelObject( this );
       }
-
+// std::cout << "labelCollectionImage: " << labelCollectionImage << std::endl;
+    m_LabelCollectionImage = labelCollectionImage;
     m_LabelCollectionImage->AddLabelObject( this );
     }
 
@@ -248,8 +249,15 @@ public:
     // TODO: add an assert to be sure that some indexes in the line are not already stored here
     m_LineContainer.push_back( line );
     }
+    
+  void PrintSelf(std::ostream& os, Indent indent) const
+    {
+    Superclass::PrintSelf( os, indent );
+    os << indent << "LabelCollectionImage: " << m_LabelCollectionImage << std::endl;
+    os << indent << "LineContainer: " << & m_LineContainer << std::endl;
+    os << indent << "Label: " << static_cast<typename NumericTraits<LabelType>::PrintType>(m_Label) << std::endl; 
+    }
 
-  LabelType m_Label;
 protected:
   LabelObject() {}
   
@@ -260,6 +268,7 @@ private:
 
   LabelCollectionImageType * m_LabelCollectionImage;
   LineContainerType m_LineContainer;
+  LabelType m_Label;
 };
 
 } // end namespace itk
