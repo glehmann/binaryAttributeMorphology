@@ -122,11 +122,11 @@ public:
 
   typedef LabelCollectionImage< Self > LabelCollectionImageType;
 
-  typedef typename LabelCollectionImageType::IndexType IndexType;
+  itkStaticConstMacro(ImageDimension, unsigned int, VImageDimension);
+
+  typedef itk::Index< ImageDimension > IndexType;
 
   typedef TLabel LabelType;
-
-  itkStaticConstMacro(ImageDimension, unsigned int, VImageDimension);
 
   typedef LabelObjectLine< IndexType > LineType;
 

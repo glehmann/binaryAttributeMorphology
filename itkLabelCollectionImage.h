@@ -48,7 +48,7 @@ public:
 
   typedef TLabelObject LabelObjectType;
 
-  typedef typename LabelObjectType::Popinter LabelObjectPointerType;
+  typedef typename LabelObjectType::Pointer LabelObjectPointerType;
 
   /** Dimension of the image.  This constant is used by functions that are
    * templated over image type (as opposed to being templated over pixel type
