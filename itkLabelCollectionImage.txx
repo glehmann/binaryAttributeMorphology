@@ -108,6 +108,112 @@ LabelCollectionImage<TLabelObject>
     }
 }
 
+
+template<class TLabelObject >
+bool 
+LabelCollectionImage<TLabelObject>
+::HasLabel( const LabelType label ) const
+{
+  if( m_UseBackground && label == m_BackgroundLabel )
+    {
+    return true;
+    }
+  return m_LabelObjectContainer.find( label ) != m_LabelObjectContainer.end();
+}
+
+
+template<class TLabelObject >
+const typename LabelCollectionImage<TLabelObject>::LabelType &
+LabelCollectionImage<TLabelObject>
+::GetPixel( const IndexType & idx ) const
+{
+  
+}
+
+
+template<class TLabelObject >
+void 
+LabelCollectionImage<TLabelObject>
+::SetPixel( const IndexType & idx, const LabelType & label )
+{
+  if( m_UseBackground && label == m_BackgroundLabel )
+    {
+    // just do nothing
+    return;
+    }
+  typename LabelObjectContainerType::iterator it = m_LabelObjectContainer.find( label );
+  if( it != m_LabelObjectContainer.end() )
+    {
+    // the label already exist - add the pixel to it
+    (*it).second->AddIndex( idx );
+    }
+  else
+    {
+    // the label does not exist yet - create a new one
+    LabelObjectPointerType labelObject = LabelObjectType::New();
+    labelObject->SetLabel( label );
+    labelObject->SetLabelCollectionImage( this ); // also add the label to the container
+    labelObject->AddIndex( idx );
+    }
+  
+}
+
+
+template<class TLabelObject >
+typename LabelCollectionImage<TLabelObject>::LabelObjectType *
+LabelCollectionImage<TLabelObject>
+::GetLabelObject( const IndexType & idx ) const
+{
+  for( typename LabelObjectContainerType::iterator it = m_LabelObjectContainer.begin();
+    it != m_LabelObjectContainer.end();
+    it++ )
+    {
+    if( (*it)->HasIndex( idx ) )
+      {
+      return (*it)->GetPointer();
+      }
+    }
+  return NULL;
+}
+
+
+template<class TLabelObject >
+void
+LabelCollectionImage<TLabelObject>
+::AddLabelObject( LabelObjectType * labelObject )
+{
+  assert( labelObject != NULL );
+//   assert( ! this->HasLabel( labelObject->GetLabel() ) );
+
+  LabelType label = labelObject->GetLabel();
+std::cout << "label: " << label << std::endl;
+  m_LabelObjectContainer[ label ] = NULL;
+}
+
+
+template<class TLabelObject >
+void
+LabelCollectionImage<TLabelObject>
+::RemoveLabelObject( LabelObjectType * labelObject )
+{
+  assert( labelObject != NULL );
+  this->RemoveLabel( labelObject->GetLabel() );
+}
+
+
+template<class TLabelObject >
+void
+LabelCollectionImage<TLabelObject>
+::RemoveLabel( const LabelType & label )
+{
+  if( m_UseBackground && label == m_BackgroundLabel )
+    {
+    // just do nothing
+    }
+  m_LabelObjectContainer.erase( label );
+}
+
+
 } // end namespace itk
 
 #endif

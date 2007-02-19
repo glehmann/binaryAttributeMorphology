@@ -92,14 +92,14 @@ public:
   /** Convenience methods to set the LargestPossibleRegion,
    *  BufferedRegion and RequestedRegion. Allocate must still be called.
    */
-  void SetRegions(RegionType region)
+  void SetRegions( const RegionType & region )
     {
     this->SetLargestPossibleRegion(region);
     this->SetBufferedRegion(region);
     this->SetRequestedRegion(region);
     };
 
-  void SetRegions(SizeType size)
+  void SetRegions( const SizeType & size )
     {
     RegionType region; region.SetSize(size);
     this->SetLargestPossibleRegion(region);
@@ -129,6 +129,14 @@ public:
   
   void SetPixel( const IndexType & idx, const LabelType & label );
 
+  LabelObjectType * GetLabelObject( const IndexType & idx ) const;
+  
+  void AddLabelObject( LabelObjectType * labelObject );
+  
+  void RemoveLabelObject( LabelObjectType * labelObject );
+  
+  void RemoveLabel( const LabelType & label );
+  
   itkGetMacro(BackgroundLabel, LabelType);
   itkSetMacro(BackgroundLabel, LabelType);  
   

@@ -24,11 +24,13 @@
 namespace itk
 {
 
-template <class TIndex>
+template < unsigned int VImageDimension >
 class LabelObjectLine
 {
 public:
-  typedef TIndex IndexType;
+  itkStaticConstMacro(ImageDimension, unsigned int, VImageDimension);
+
+  typedef Index< ImageDimension > IndexType;
   typedef unsigned long LengthType;
 
   LabelObjectLine() {};
@@ -72,7 +74,7 @@ public:
   bool HasIndex( const IndexType idx ) const
     {
     // are we talking about the right line ?
-    for( int i=1; i<=IndexType::VIndexDimension; i++ )
+    for( int i=1; i<=ImageDimension; i++ )
       {
       if( m_Index[i] != idx[i] )
         {
@@ -80,6 +82,19 @@ public:
         }
       }
     return ( idx[0] >= m_Index[0] && idx[0] < m_Index[0] + m_Length );
+    }
+
+  bool IsNextIndex( const IndexType idx ) const
+    {
+    // are we talking about the right line ?
+    for( int i=1; i<=ImageDimension; i++ )
+      {
+      if( m_Index[i] != idx[i] )
+        {
+        return false;
+        }
+      }
+    return idx[0] == m_Index[0] + m_Length;
     }
 
 private:
@@ -128,7 +143,7 @@ public:
 
   typedef TLabel LabelType;
 
-  typedef LabelObjectLine< IndexType > LineType;
+  typedef LabelObjectLine< VImageDimension > LineType;
 
   typedef typename LineType::LengthType LengthType;
 
@@ -206,6 +221,22 @@ public:
     return false;
     }
 
+  void AddIndex( const IndexType & idx ) 
+    {
+    if( !m_LineContainer.empty() )
+      {
+      // can we use the last line to add that index ?
+      LineType & lastLine = * m_LineContainer.rbegin();
+      if( lastLine.IsNextIndex( idx ) )
+        {
+        lastLine.SetLength( lastLine.GetLength() + 1 );
+        return;
+        }
+      }
+    // create a new line
+    this->AddLine( idx, 1 );
+    }
+
   void AddLine( const IndexType & idx, const LengthType & length )
     {
     LineType line( idx, length );
@@ -218,7 +249,9 @@ public:
     m_LineContainer.push_back( line );
     }
 
+  LabelType m_Label;
 protected:
+  LabelObject() {}
   
 
 private:
@@ -226,7 +259,6 @@ private:
   void operator=(const Self&); //purposely not implemented
 
   LabelCollectionImageType * m_LabelCollectionImage;
-  LabelType m_Label;
   LineContainerType m_LineContainer;
 };
 

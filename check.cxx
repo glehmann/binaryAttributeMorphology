@@ -3,13 +3,15 @@
 #include "itkCommand.h"
 #include "itkSimpleFilterWatcher.h"
 
-#include "itkImageFilter.h"
+#include "itkLabelObject.h"
+#include "itkLabelCollectionImage.h"
+//#include "itkBinaryImageToLabelCollectionImageFilter.h"
 
 
 int main(int argc, char * argv[])
 {
 
-  if( argc !=  )
+  if( argc != 2 )
     {
     std::cerr << "usage: " << argv[0] << " " << std::endl;
     // std::cerr << "  : " << std::endl;
@@ -18,14 +20,24 @@ int main(int argc, char * argv[])
 
   const int dim = 2;
   
-  typedef unsigned char PType;
-  typedef itk::Image< PType, dim > IType;
+  typedef itk::LabelObject< unsigned long, dim > LabelObjectType;
+  typedef itk::LabelCollectionImage< LabelObjectType > LabelCollectionImageType;
+  
+  typedef itk::Image< unsigned char, 3 > IType;
 
   typedef itk::ImageFileReader< IType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
+  reader->Update();
+  
+  LabelCollectionImageType::Pointer labelCollection = LabelCollectionImageType::New();
+//   labelCollection->SetRegions( reader->GetOutput()->GetLargestPossibleRegion() );
+  LabelCollectionImageType::IndexType idx;
+  idx.Fill( 0 );
+//   std::cout << labelCollection->HasLabel( 1 ) << std::endl;
+  labelCollection->SetPixel( idx, 1 );
 
-  typedef itk::ImageFilter< IType, IType > FilterType;
+/*  typedef itk::BinaryImageToLabelCollectionImageFilter< IType, LabelCollectionImageType > FilterType;
   FilterType::Pointer filter = FilterType::New();
   filter->SetInput( reader->GetOutput() );
 
@@ -36,7 +48,7 @@ int main(int argc, char * argv[])
   writer->SetInput( filter->GetOutput() );
   writer->SetFileName( argv[2] );
   writer->Update();
-
+*/
   return 0;
 }
 
