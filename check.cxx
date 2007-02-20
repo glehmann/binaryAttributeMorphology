@@ -8,6 +8,7 @@
 #include "itkLabelImageToLabelCollectionImageFilter.h"
 #include "itkLabelCollectionImageToLabelImageFilter.h"
 #include "itkShapeLabelCollectionImageFilter.h"
+#include "itkSizeOpeningLabelCollectionImageFilter.h"
 
 
 int main(int argc, char * argv[])
@@ -34,6 +35,7 @@ int main(int argc, char * argv[])
   typedef itk::LabelImageToLabelCollectionImageFilter< IType, LabelCollectionImageType> I2LType;
   I2LType::Pointer i2l = I2LType::New();
   i2l->SetInput( reader->GetOutput() );
+  i2l->SetUseBackground( true );
   itk::SimpleFilterWatcher watcher(i2l, "filter");
 
   typedef itk::ShapeLabelCollectionImageFilter< LabelCollectionImageType > InPlaceType;
@@ -42,9 +44,16 @@ int main(int argc, char * argv[])
   inplace->SetInPlace( true );
   itk::SimpleFilterWatcher watcher3(inplace, "filter");
 
+  typedef itk::SizeOpeningLabelCollectionImageFilter< LabelCollectionImageType > OpenType;
+  OpenType::Pointer open = OpenType::New();
+  open->SetInput( inplace->GetOutput() );
+  open->SetInPlace( true );
+  open->SetLambda( 3 );
+  itk::SimpleFilterWatcher watcher4(inplace, "filter");
+
   typedef itk::LabelCollectionImageToLabelImageFilter< LabelCollectionImageType, IType > L2IType;
   L2IType::Pointer l2i = L2IType::New();
-  l2i->SetInput( inplace->GetOutput() );
+  l2i->SetInput( open->GetOutput() );
   itk::SimpleFilterWatcher watcher2(l2i, "filter");
 
   l2i->Update();
