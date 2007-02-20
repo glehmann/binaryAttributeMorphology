@@ -217,6 +217,7 @@ LabelCollectionImage<TLabelObject>
   if( m_UseBackground && label == m_BackgroundLabel )
     {
     // just do nothing
+    return;
     }
   m_LabelObjectContainer.erase( label );
 }
