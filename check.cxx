@@ -7,6 +7,7 @@
 #include "itkLabelCollectionImage.h"
 #include "itkLabelImageToLabelCollectionImageFilter.h"
 #include "itkLabelCollectionImageToLabelImageFilter.h"
+#include "itkInPlaceLabelCollectionImageFilter.h"
 
 
 int main(int argc, char * argv[])
@@ -35,9 +36,14 @@ int main(int argc, char * argv[])
   i2l->SetInput( reader->GetOutput() );
   itk::SimpleFilterWatcher watcher(i2l, "filter");
 
+  typedef itk::InPlaceLabelCollectionImageFilter< LabelCollectionImageType > InPlaceType;
+  InPlaceType::Pointer inplace = InPlaceType::New();
+  inplace->SetInput( i2l->GetOutput() );
+  inplace->SetInPlace( true );
+
   typedef itk::LabelCollectionImageToLabelImageFilter< LabelCollectionImageType, IType > L2IType;
   L2IType::Pointer l2i = L2IType::New();
-  l2i->SetInput( i2l->GetOutput() );
+  l2i->SetInput( inplace->GetOutput() );
   itk::SimpleFilterWatcher watcher2(l2i, "filter");
 
   l2i->Update();

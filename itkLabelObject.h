@@ -211,6 +211,12 @@ public:
     return m_LineContainer;
     }
 
+  virtual void CopyDataFrom( const Self * src )
+    {
+    m_LineContainer = src->m_LineContainer;
+    m_Label = src->m_Label;
+    }
+
 protected:
   LabelObject()
     {

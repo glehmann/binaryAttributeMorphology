@@ -94,9 +94,9 @@ LabelCollectionImage<TLabelObject>
     if ( imgData )
       {
       // Now copy anything remaining that is needed
-/*      this->SetRoot( const_cast< NodeType * >
-                                  (imgData->GetRoot() ) );
-      this->m_LinkedListArray = imgData->m_LinkedListArray; */
+      m_LabelObjectContainer = imgData->m_LabelObjectContainer;
+      m_UseBackground = imgData->m_UseBackground;
+      m_BackgroundLabel = imgData->m_BackgroundLabel;
       }
     else
       {

@@ -75,6 +75,16 @@ public:
   itkGetConstMacro( Centroid, CentroidType );
   itkSetMacro( Centroid, CentroidType );
 
+  virtual void CopyDataFrom( const Self * src )
+    {
+    Superclass::CopyDataFrom( src );
+
+    m_Region = src->m_Region;
+    m_Size = src->m_Size;
+    m_PhysicalSize = src->m_PhysicalSize;
+    m_Centroid = src->m_Centroid;
+    }
+
 protected:
   ShapeLabelObject()
     {
