@@ -111,6 +111,9 @@ public:
    * memory. */
   virtual void Initialize();
 
+  /**  */
+  void Allocate() {}
+
   virtual void Graft(const DataObject *data);
 
   LabelObjectType * GetLabelObject( const LabelType & label )

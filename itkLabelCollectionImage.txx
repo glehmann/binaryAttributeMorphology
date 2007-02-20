@@ -154,6 +154,7 @@ LabelCollectionImage<TLabelObject>
     labelObject->SetLabel( label );
     labelObject->SetLabelCollectionImage( this ); // also add the label to the container
     labelObject->AddIndex( idx );
+//     std::cout<< m_LabelObjectContainer.size() << std::endl;
     }
   
 }

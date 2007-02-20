@@ -259,7 +259,12 @@ public:
     }
 
 protected:
-  LabelObject() {}
+  LabelObject()
+    {
+    m_LabelCollectionImage = NULL;
+    m_Label = NumericTraits< LabelType >::Zero;
+    m_LineContainer.clear();
+    }
   
 
 private:
