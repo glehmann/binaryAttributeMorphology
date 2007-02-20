@@ -139,12 +139,17 @@ public:
   void RemoveLabelObject( LabelObjectType * labelObject );
   
   void RemoveLabel( const LabelType & label );
+
+  const LabelObjectContainerType & GetLabelObjectContainer() const
+    {
+    return m_LabelObjectContainer;
+    }
   
-  itkGetMacro(BackgroundLabel, LabelType);
-  itkSetMacro(BackgroundLabel, LabelType);  
+  itkGetConstMacro(BackgroundLabel, LabelType);
+  itkSetMacro(BackgroundLabel, LabelType);
   
-  itkGetMacro(UseBackground, bool);
-  itkSetMacro(UseBackground, bool);  
+  itkGetConstMacro(UseBackground, bool);
+  itkSetMacro(UseBackground, bool);
   itkBooleanMacro(UseBackground);
 
 protected:

@@ -258,6 +258,11 @@ public:
     os << indent << "Label: " << static_cast<typename NumericTraits<LabelType>::PrintType>(m_Label) << std::endl; 
     }
 
+  const LineContainerType & GetLineContainer() const
+    {
+    return m_LineContainer;
+    }
+
 protected:
   LabelObject()
     {
