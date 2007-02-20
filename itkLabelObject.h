@@ -74,7 +74,7 @@ public:
   bool HasIndex( const IndexType idx ) const
     {
     // are we talking about the right line ?
-    for( int i=1; i<=ImageDimension; i++ )
+    for( int i=1; i<ImageDimension; i++ )
       {
       if( m_Index[i] != idx[i] )
         {
@@ -84,10 +84,10 @@ public:
     return ( idx[0] >= m_Index[0] && idx[0] < m_Index[0] + m_Length );
     }
 
-  bool IsNextIndex( const IndexType idx ) const
+  bool IsNextIndex( const IndexType & idx ) const
     {
     // are we talking about the right line ?
-    for( int i=1; i<=ImageDimension; i++ )
+    for( int i=1; i<ImageDimension; i++ )
       {
       if( m_Index[i] != idx[i] )
         {

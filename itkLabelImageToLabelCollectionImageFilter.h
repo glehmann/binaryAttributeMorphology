@@ -75,8 +75,8 @@ public:
    * Set/Get the value used as "background" in the output image.
    * Defaults to NumericTraits<PixelType>::NonpositiveMin().
    */
-  itkSetMacro(BackgroundValue, OutputImagePixelType);
-  itkGetConstMacro(BackgroundValue, OutputImagePixelType);
+  itkSetMacro(BackgroundLabel, OutputImagePixelType);
+  itkGetConstMacro(BackgroundLabel, OutputImagePixelType);
 
   /**
    * Set/Get wether a flat image must be considered as a maxima or not.
@@ -109,7 +109,7 @@ private:
   void operator=(const Self&); //purposely not implemented
 
   bool m_UseBackground;
-  OutputImagePixelType m_BackgroundValue;
+  OutputImagePixelType m_BackgroundLabel;
 
 } ; // end of class
 

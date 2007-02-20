@@ -150,7 +150,9 @@ LabelCollectionImage<TLabelObject>
     // just do nothing
     return;
     }
+
   typename LabelObjectContainerType::iterator it = m_LabelObjectContainer.find( label );
+
   if( it != m_LabelObjectContainer.end() )
     {
     // the label already exist - add the pixel to it

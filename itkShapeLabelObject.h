@@ -93,6 +93,16 @@ protected:
     }
   
 
+  void PrintSelf(std::ostream& os, Indent indent) const
+    {
+    Superclass::PrintSelf( os, indent );
+    os << indent << "Centroid: " << m_Centroid << std::endl;
+    os << indent << "Region: ";
+    m_Region.Print( os, indent );
+    os << indent << "PhysicalSize: " << m_PhysicalSize << std::endl;
+    os << indent << "Size: " << m_Size << std::endl;
+    }
+
 private:
   ShapeLabelObject(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
