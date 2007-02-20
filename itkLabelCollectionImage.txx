@@ -127,7 +127,16 @@ const typename LabelCollectionImage<TLabelObject>::LabelType &
 LabelCollectionImage<TLabelObject>
 ::GetPixel( const IndexType & idx ) const
 {
-  
+  for( typename LabelObjectContainerType::const_iterator it = m_LabelObjectContainer.begin();
+    it != m_LabelObjectContainer.end();
+    it++ )
+    {
+    if( it->HasIndex( idx ) )
+      {
+      return it->GetLabel();
+      }
+    }
+  return m_BackgroundLabel;
 }
 
 
@@ -152,8 +161,8 @@ LabelCollectionImage<TLabelObject>
     // the label does not exist yet - create a new one
     LabelObjectPointerType labelObject = LabelObjectType::New();
     labelObject->SetLabel( label );
-    labelObject->SetLabelCollectionImage( this ); // also add the label to the container
     labelObject->AddIndex( idx );
+    this->AddLabelObject( labelObject );
 //     std::cout<< m_LabelObjectContainer.size() << std::endl;
     }
   
@@ -184,9 +193,8 @@ LabelCollectionImage<TLabelObject>
 ::AddLabelObject( LabelObjectType * labelObject )
 {
   assert( labelObject != NULL );
-//   assert( ! this->HasLabel( labelObject->GetLabel() ) );
+  assert( !this->HasLabel( labelObject->GetLabel() ) );
 
-//  labelObject->SetLabelCollectionImage( this );
   m_LabelObjectContainer[ labelObject->GetLabel() ] = labelObject;
 }
 

@@ -3,7 +3,7 @@
 #include "itkCommand.h"
 #include "itkSimpleFilterWatcher.h"
 
-#include "itkLabelObject.h"
+#include "itkShapeLabelObject.h"
 #include "itkLabelCollectionImage.h"
 #include "itkLabelImageToLabelCollectionImageFilter.h"
 #include "itkLabelCollectionImageToLabelImageFilter.h"
@@ -21,7 +21,7 @@ int main(int argc, char * argv[])
 
   const int dim = 3;
   
-  typedef itk::LabelObject< unsigned long, dim > LabelObjectType;
+  typedef itk::ShapeLabelObject< unsigned long, dim > LabelObjectType;
   typedef itk::LabelCollectionImage< LabelObjectType > LabelCollectionImageType;
   
   typedef itk::Image< unsigned char, dim > IType;

@@ -135,8 +135,6 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(LabelObject, Object);
 
-  typedef LabelCollectionImage< Self > LabelCollectionImageType;
-
   itkStaticConstMacro(ImageDimension, unsigned int, VImageDimension);
 
   typedef itk::Index< ImageDimension > IndexType;
@@ -156,56 +154,7 @@ public:
 
   void SetLabel( const LabelType & label )
     {
-    if( label == m_Label )
-      {
-      return;
-      }
-
-    if( m_LabelCollectionImage )
-      {
-      if( m_LabelCollectionImage->HasLabel( label ) )
-        {
-        itkExceptionMacro(<< "The label is already used" );
-        }
-      m_LabelCollectionImage->RemoveLabelObject( this );
-      m_Label = label;
-      m_LabelCollectionImage->AddLabelObject( this );
-      }
-    else
-      {
-      m_Label = label;
-      }
-    }
-
-  const LabelCollectionImageType * GetLabelCollectionImage() const
-    {
-    return m_LabelCollectionImage;
-    }
-
-  LabelCollectionImageType * GetLabelCollectionImage()
-    {
-    return m_LabelCollectionImage;
-    }
-
-  void SetLabelCollectionImage( LabelCollectionImageType * labelCollectionImage )
-    {
-    if( labelCollectionImage == m_LabelCollectionImage )
-      {
-      return;
-      }
-
-    if( labelCollectionImage && labelCollectionImage->HasLabel( m_Label ) )
-      {
-      itkExceptionMacro(<< "The label is already used" );
-      }
-
-    if( m_LabelCollectionImage )
-      {
-      m_LabelCollectionImage->RemoveLabelObject( this );
-      }
-// std::cout << "labelCollectionImage: " << labelCollectionImage << std::endl;
-    m_LabelCollectionImage = labelCollectionImage;
-    m_LabelCollectionImage->AddLabelObject( this );
+    m_Label = label;
     }
 
   bool HasIndex( const IndexType & idx ) const
@@ -253,7 +202,6 @@ public:
   void PrintSelf(std::ostream& os, Indent indent) const
     {
     Superclass::PrintSelf( os, indent );
-    os << indent << "LabelCollectionImage: " << m_LabelCollectionImage << std::endl;
     os << indent << "LineContainer: " << & m_LineContainer << std::endl;
     os << indent << "Label: " << static_cast<typename NumericTraits<LabelType>::PrintType>(m_Label) << std::endl; 
     }
@@ -266,7 +214,6 @@ public:
 protected:
   LabelObject()
     {
-    m_LabelCollectionImage = NULL;
     m_Label = NumericTraits< LabelType >::Zero;
     m_LineContainer.clear();
     }
@@ -276,7 +223,6 @@ private:
   LabelObject(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-  LabelCollectionImageType * m_LabelCollectionImage;
   LineContainerType m_LineContainer;
   LabelType m_Label;
 };
