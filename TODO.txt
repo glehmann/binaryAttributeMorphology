@@ -1,0 +1,28 @@
+- implement BinaryAttributeOpeningImageFilter as a minipipeline
+  - BinaryImageToLabelCollectionImageFilter
+  - ShapeLabelCollectionImageFilter (or something else)
+  - AttributeOpeningLabelCollectionImageFilter
+  - LabelCollectionImageToLabelImageFilter
+- implement the common specializations of BinaryAttributeOpeningImageFilter, like BinarySizeOpeningImageFilter
+- implement LabelAttributeOpeningImageFilter as a minipipeline
+  - LabelImageToLabelCollectionImageFilter
+  - ShapeLabelCollectionImageFilter (or something else)
+  - AttributeOpeningLabelCollectionImageFilter
+  - LabelCollectionImageToLabelImageFilter
+- implement the common specializations of LabelAttributeOpeningImageFilter, like LabelSizeOpeningImageFilter
+- implement LabelCollectionImage relabeler - base on any attribute, not only the size as in RelabelComponentImageFilter
+- implement KeepNObjectsLabelCollectionImageFilter to keep the n objects with the highest (or lowest) attribute value
+- implement BinaryAttributeKeepNObjectsImageFilter as a minipipeline
+  - BinaryImageToLabelCollectionImageFilter
+  - ShapeLabelCollectionImageFilter (or something else)
+  - KeepNObjectsLabelCollectionImageFilter
+  - LabelCollectionImageToLabelImageFilter
+- implement the common specializations of BinaryAttributeKeepNObjectsImageFilter, like BinarySizeKeepNObjectsImageFilter
+- implement LabelAttributeKeepNObjectsImageFilter as a minipipeline
+  - LabelImageToLabelCollectionImageFilter
+  - ShapeLabelCollectionImageFilter (or something else)
+  - KeepNObjectsLabelCollectionImageFilter
+  - LabelCollectionImageToLabelImageFilter
+- implement the common specializations of LabelAttributeKeepNObjectsImageFilter, like LabelSizeKeepNObjectsImageFilter
+- implement more shape descriptors
+- implement some statistic descriptors
