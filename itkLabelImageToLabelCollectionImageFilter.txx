@@ -28,7 +28,7 @@ template <class TInputImage, class TOutputImage>
 LabelImageToLabelCollectionImageFilter<TInputImage, TOutputImage>
 ::LabelImageToLabelCollectionImageFilter()
 {
-  m_UseBackground = false;
+  m_UseBackground = true;
   m_BackgroundLabel = NumericTraits<OutputImagePixelType>::NonpositiveMin();
 }
 

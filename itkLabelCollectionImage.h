@@ -132,6 +132,8 @@ public:
   
   void SetPixel( const IndexType & idx, const LabelType & label );
 
+  void SetLine( const IndexType & idx, const unsigned long & length, const LabelType & label );
+
   LabelObjectType * GetLabelObject( const IndexType & idx ) const;
   
   void AddLabelObject( LabelObjectType * labelObject );

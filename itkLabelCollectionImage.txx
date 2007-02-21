@@ -172,6 +172,36 @@ LabelCollectionImage<TLabelObject>
 
 
 template<class TLabelObject >
+void 
+LabelCollectionImage<TLabelObject>
+::SetLine( const IndexType & idx, const unsigned long & length, const LabelType & label )
+{
+  if( m_UseBackground && label == m_BackgroundLabel )
+    {
+    // just do nothing
+    return;
+    }
+
+  typename LabelObjectContainerType::iterator it = m_LabelObjectContainer.find( label );
+
+  if( it != m_LabelObjectContainer.end() )
+    {
+    // the label already exist - add the pixel to it
+    (*it).second->AddLine( idx, length );
+    }
+  else
+    {
+    // the label does not exist yet - create a new one
+    LabelObjectPointerType labelObject = LabelObjectType::New();
+    labelObject->SetLabel( label );
+    labelObject->AddLine( idx, length );
+    this->AddLabelObject( labelObject );
+//     std::cout<< m_LabelObjectContainer.size() << std::endl;
+    }
+}
+
+
+template<class TLabelObject >
 typename LabelCollectionImage<TLabelObject>::LabelObjectType *
 LabelCollectionImage<TLabelObject>
 ::GetLabelObject( const IndexType & idx ) const

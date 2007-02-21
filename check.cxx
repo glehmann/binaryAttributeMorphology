@@ -5,7 +5,7 @@
 
 #include "itkShapeLabelObject.h"
 #include "itkLabelCollectionImage.h"
-#include "itkLabelImageToLabelCollectionImageFilter.h"
+#include "itkBinaryImageToLabelCollectionImageFilter.h"
 #include "itkLabelCollectionImageToLabelImageFilter.h"
 #include "itkShapeLabelCollectionImageFilter.h"
 #include "itkSizeOpeningLabelCollectionImageFilter.h"
@@ -32,7 +32,7 @@ int main(int argc, char * argv[])
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   
-  typedef itk::LabelImageToLabelCollectionImageFilter< IType, LabelCollectionImageType> I2LType;
+  typedef itk::BinaryImageToLabelCollectionImageFilter< IType, LabelCollectionImageType> I2LType;
   I2LType::Pointer i2l = I2LType::New();
   i2l->SetInput( reader->GetOutput() );
   i2l->SetUseBackground( true );
