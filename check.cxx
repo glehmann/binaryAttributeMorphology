@@ -6,7 +6,7 @@
 #include "itkShapeLabelObject.h"
 #include "itkLabelCollectionImage.h"
 #include "itkBinaryImageToLabelCollectionImageFilter.h"
-#include "itkLabelCollectionImageToLabelImageFilter.h"
+#include "itkLabelCollectionImageToBinaryImageFilter.h"
 #include "itkShapeLabelCollectionImageFilter.h"
 #include "itkSizeOpeningLabelCollectionImageFilter.h"
 
@@ -51,7 +51,7 @@ int main(int argc, char * argv[])
   open->SetLambda( 3 );
   itk::SimpleFilterWatcher watcher4(inplace, "filter");
 
-  typedef itk::LabelCollectionImageToLabelImageFilter< LabelCollectionImageType, IType > L2IType;
+  typedef itk::LabelCollectionImageToBinaryImageFilter< LabelCollectionImageType, IType > L2IType;
   L2IType::Pointer l2i = L2IType::New();
   l2i->SetInput( open->GetOutput() );
   itk::SimpleFilterWatcher watcher2(l2i, "filter");
