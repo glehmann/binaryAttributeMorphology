@@ -89,7 +89,7 @@ InPlaceLabelCollectionImageFilter<TInputImage>
     TOutputImage * output = this->GetOutput();
     
     output->SetUseBackground( input->GetUseBackground() );
-    output->SetBackgroundLabel( input->GetBackgroundLabel() );
+    output->SetBackgroundValue( input->GetBackgroundValue() );
 
     typedef typename InputImageType::LabelObjectType LabelObjectType;
 

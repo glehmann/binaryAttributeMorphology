@@ -147,8 +147,8 @@ public:
     return m_LabelObjectContainer;
     }
   
-  itkGetConstMacro(BackgroundLabel, LabelType);
-  itkSetMacro(BackgroundLabel, LabelType);
+  itkGetConstMacro(BackgroundValue, LabelType);
+  itkSetMacro(BackgroundValue, LabelType);
   
   itkGetConstMacro(UseBackground, bool);
   itkSetMacro(UseBackground, bool);
@@ -164,7 +164,7 @@ private:
   void operator=(const Self&); //purposely not implemented
 
   LabelObjectContainerType m_LabelObjectContainer;
-  LabelType m_BackgroundLabel;
+  LabelType m_BackgroundValue;
   bool m_UseBackground;
 };
 

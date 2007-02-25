@@ -69,7 +69,7 @@ LabelCollectionImageToLabelImageFilter<TInputImage, TOutputImage>
 
   if( input->GetUseBackground() )
     {
-    output->FillBuffer( input->GetBackgroundLabel() );
+    output->FillBuffer( input->GetBackgroundValue() );
     }
 
   typename InputImageType::LabelObjectContainerType::const_iterator it;

@@ -130,8 +130,8 @@ public:
    * Set/Get the value used as "background" in the output image.
    * Defaults to NumericTraits<PixelType>::NonpositiveMin().
    */
-  itkSetMacro(BackgroundLabel, OutputPixelType);
-  itkGetConstMacro(BackgroundLabel, OutputPixelType);
+  itkSetMacro(BackgroundValue, OutputPixelType);
+  itkGetConstMacro(BackgroundValue, OutputPixelType);
 
   /**
    * Set/Get the value used as "foreground" in the output image.
@@ -154,7 +154,7 @@ protected:
     m_FullyConnected = false;
     m_ObjectCount = 0;
     m_UseBackground = true;
-    m_BackgroundLabel = NumericTraits<OutputPixelType>::NonpositiveMin();
+    m_BackgroundValue = NumericTraits<OutputPixelType>::NonpositiveMin();
     m_ForegroundValue = NumericTraits<InputPixelType>::max();
     }
   virtual ~BinaryImageToLabelCollectionImageFilter() {}
@@ -181,7 +181,7 @@ protected:
   
 private:
   bool m_UseBackground;
-  OutputPixelType m_BackgroundLabel;
+  OutputPixelType m_BackgroundValue;
   InputPixelType m_ForegroundValue;
 
   unsigned long m_ObjectCount;

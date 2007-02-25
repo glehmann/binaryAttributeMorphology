@@ -29,7 +29,7 @@ LabelImageToLabelCollectionImageFilter<TInputImage, TOutputImage>
 ::LabelImageToLabelCollectionImageFilter()
 {
   m_UseBackground = true;
-  m_BackgroundLabel = NumericTraits<OutputImagePixelType>::NonpositiveMin();
+  m_BackgroundValue = NumericTraits<OutputImagePixelType>::NonpositiveMin();
 }
 
 template <class TInputImage, class TOutputImage>
@@ -68,7 +68,7 @@ LabelImageToLabelCollectionImageFilter<TInputImage, TOutputImage>
   OutputImageType * output = this->GetOutput();
 
   output->SetUseBackground( m_UseBackground );
-  output->SetBackgroundLabel( m_BackgroundLabel );
+  output->SetBackgroundValue( m_BackgroundValue );
 
   ProgressReporter progress( this, 0, output->GetRequestedRegion().GetNumberOfPixels() );
 
@@ -91,7 +91,7 @@ LabelImageToLabelCollectionImageFilter<TInputImage, TOutputImage>
   Superclass::PrintSelf(os, indent);
 
   os << indent << "UseBackground: "  << m_UseBackground << std::endl;
-  os << indent << "BackgroundLabel: "  << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_BackgroundLabel) << std::endl;
+  os << indent << "BackgroundValue: "  << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
 }
   
 }// end namespace itk

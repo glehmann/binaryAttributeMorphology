@@ -74,7 +74,7 @@ BinaryAttributeOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuato
   typename LabelizerType::Pointer labelizer = LabelizerType::New();
   labelizer->SetInput( this->GetInput() );
   labelizer->SetForegroundValue( m_ForegroundValue );
-  labelizer->SetBackgroundLabel( m_BackgroundValue );
+  labelizer->SetBackgroundValue( m_BackgroundValue );
   labelizer->SetFullyConnected( m_FullyConnected );
   progress->RegisterInternalFilter(labelizer, .3f);
   

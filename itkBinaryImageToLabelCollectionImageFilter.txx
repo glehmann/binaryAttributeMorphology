@@ -75,7 +75,7 @@ BinaryImageToLabelCollectionImageFilter< TInputImage, TOutputImage>
   // Allocate the output
   this->AllocateOutputs();
   output->SetUseBackground( m_UseBackground );
-  output->SetBackgroundLabel( m_BackgroundLabel );
+  output->SetBackgroundValue( m_BackgroundValue );
 
   long int lab = NumericTraits<long int>::Zero;
   OffsetVec LineOffsets;
@@ -477,7 +477,7 @@ BinaryImageToLabelCollectionImageFilter< TInputImage, TOutputImage>
   os << indent << "FullyConnected: "  << m_FullyConnected << std::endl;
   os << indent << "ObjectCount: "  << m_ObjectCount << std::endl;
   os << indent << "UseBackground: "  << m_UseBackground << std::endl;
-  os << indent << "BackgroundLabel: "  << static_cast<typename NumericTraits<OutputPixelType>::PrintType>(m_BackgroundLabel) << std::endl;
+  os << indent << "BackgroundValue: "  << static_cast<typename NumericTraits<OutputPixelType>::PrintType>(m_BackgroundValue) << std::endl;
 }
 
 } // end namespace itk

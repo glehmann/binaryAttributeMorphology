@@ -33,7 +33,7 @@ template<class TLabelObject >
 LabelCollectionImage<TLabelObject>
 ::LabelCollectionImage()
 {
-  m_BackgroundLabel = NumericTraits< LabelType >::Zero;
+  m_BackgroundValue = NumericTraits< LabelType >::Zero;
   m_UseBackground = true;
   this->Initialize();
 }
@@ -96,7 +96,7 @@ LabelCollectionImage<TLabelObject>
       // Now copy anything remaining that is needed
       m_LabelObjectContainer = imgData->m_LabelObjectContainer;
       m_UseBackground = imgData->m_UseBackground;
-      m_BackgroundLabel = imgData->m_BackgroundLabel;
+      m_BackgroundValue = imgData->m_BackgroundValue;
       }
     else
       {
@@ -114,7 +114,7 @@ bool
 LabelCollectionImage<TLabelObject>
 ::HasLabel( const LabelType label ) const
 {
-  if( m_UseBackground && label == m_BackgroundLabel )
+  if( m_UseBackground && label == m_BackgroundValue )
     {
     return true;
     }
@@ -136,7 +136,7 @@ LabelCollectionImage<TLabelObject>
       return it->GetLabel();
       }
     }
-  return m_BackgroundLabel;
+  return m_BackgroundValue;
 }
 
 
@@ -145,7 +145,7 @@ void
 LabelCollectionImage<TLabelObject>
 ::SetPixel( const IndexType & idx, const LabelType & label )
 {
-  if( m_UseBackground && label == m_BackgroundLabel )
+  if( m_UseBackground && label == m_BackgroundValue )
     {
     // just do nothing
     return;
@@ -176,7 +176,7 @@ void
 LabelCollectionImage<TLabelObject>
 ::SetLine( const IndexType & idx, const unsigned long & length, const LabelType & label )
 {
-  if( m_UseBackground && label == m_BackgroundLabel )
+  if( m_UseBackground && label == m_BackgroundValue )
     {
     // just do nothing
     return;
@@ -246,7 +246,7 @@ void
 LabelCollectionImage<TLabelObject>
 ::RemoveLabel( const LabelType & label )
 {
-  if( m_UseBackground && label == m_BackgroundLabel )
+  if( m_UseBackground && label == m_BackgroundValue )
     {
     // just do nothing
     return;
