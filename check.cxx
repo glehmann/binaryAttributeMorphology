@@ -9,6 +9,7 @@
 #include "itkLabelCollectionImageToBinaryImageFilter.h"
 #include "itkShapeLabelCollectionImageFilter.h"
 #include "itkSizeOpeningLabelCollectionImageFilter.h"
+#include "itkBinarySizeOpeningImageFilter.h"
 
 
 int main(int argc, char * argv[])
@@ -31,7 +32,7 @@ int main(int argc, char * argv[])
   typedef itk::ImageFileReader< IType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
-  
+  /*
   typedef itk::BinaryImageToLabelCollectionImageFilter< IType, LabelCollectionImageType> I2LType;
   I2LType::Pointer i2l = I2LType::New();
   i2l->SetInput( reader->GetOutput() );
@@ -55,10 +56,7 @@ int main(int argc, char * argv[])
   L2IType::Pointer l2i = L2IType::New();
   l2i->SetInput( open->GetOutput() );
   itk::SimpleFilterWatcher watcher2(l2i, "filter");
-
-  l2i->Update();
-
-
+*/
 /*  typedef itk::BinaryImageToLabelCollectionImageFilter< IType, LabelCollectionImageType > FilterType;
   FilterType::Pointer filter = FilterType::New();
   filter->SetInput( reader->GetOutput() );
@@ -66,9 +64,15 @@ int main(int argc, char * argv[])
   itk::SimpleFilterWatcher watcher(filter, "filter");
 */
 
+  typedef itk::BinarySizeOpeningImageFilter< IType > BinaryOpeningType;
+  BinaryOpeningType::Pointer opening = BinaryOpeningType::New();
+  opening->SetInput( reader->GetOutput() );
+
+
   typedef itk::ImageFileWriter< IType > WriterType;
   WriterType::Pointer writer = WriterType::New();
-  writer->SetInput( l2i->GetOutput() );
+//  writer->SetInput( l2i->GetOutput() );
+  writer->SetInput( opening->GetOutput() );
   writer->SetFileName( argv[2] );
   writer->Update();
   return 0;
