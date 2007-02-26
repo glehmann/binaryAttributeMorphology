@@ -1,9 +1,5 @@
-- implement BinaryAttributeOpeningImageFilter as a minipipeline
-  - BinaryImageToLabelCollectionImageFilter
-  - ShapeLabelCollectionImageFilter (or something else)
-  - AttributeOpeningLabelCollectionImageFilter
-  - LabelCollectionImageToLabelImageFilter
-- implement the common specializations of BinaryAttributeOpeningImageFilter, like BinarySizeOpeningImageFilter
+- make BinaryAttributeOpeningImageFilter don't destruct the background values
+- implement more specializations of BinaryAttributeOpeningImageFilter
 - implement LabelAttributeOpeningImageFilter as a minipipeline
   - LabelImageToLabelCollectionImageFilter
   - ShapeLabelCollectionImageFilter (or something else)
