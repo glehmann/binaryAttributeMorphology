@@ -9,7 +9,7 @@
 #include "itkLabelCollectionImageToBinaryImageFilter.h"
 #include "itkShapeLabelCollectionImageFilter.h"
 #include "itkSizeOpeningLabelCollectionImageFilter.h"
-#include "itkBinarySizeOpeningImageFilter.h"
+#include "itkLabelSizeOpeningImageFilter.h"
 
 
 int main(int argc, char * argv[])
@@ -64,7 +64,7 @@ int main(int argc, char * argv[])
   itk::SimpleFilterWatcher watcher(filter, "filter");
 */
 
-  typedef itk::BinarySizeOpeningImageFilter< IType > BinaryOpeningType;
+  typedef itk::LabelSizeOpeningImageFilter< IType > BinaryOpeningType;
   BinaryOpeningType::Pointer opening = BinaryOpeningType::New();
   opening->SetInput( reader->GetOutput() );
 
