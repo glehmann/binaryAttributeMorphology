@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkSizeOpeningLabelCollectionImageFilter.h,v $
+  Module:    $RCSfile: itkAttributeRelabelLabelCollectionImageFilter.h,v $
   Language:  C++
   Date:      $Date: 2006/03/28 19:59:05 $
   Version:   $Revision: 1.6 $
@@ -14,27 +14,26 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkSizeOpeningLabelCollectionImageFilter_h
-#define __itkSizeOpeningLabelCollectionImageFilter_h
+#ifndef __itkAttributeRelabelLabelCollectionImageFilter_h
+#define __itkAttributeRelabelLabelCollectionImageFilter_h
 
-#include "itkAttributeOpeningLabelCollectionImageFilter.h"
-#include "itkShapeLabelObject.h"
+#include "itkInPlaceLabelCollectionImageFilter.h"
 
 namespace itk {
-
-/** \class SizeOpeningLabelCollectionImageFilter
+/** \class AttributeRelabelLabelCollectionImageFilter
  * \brief 
  *
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
-template<class TImage>
-class ITK_EXPORT SizeOpeningLabelCollectionImageFilter : 
-    public AttributeOpeningLabelCollectionImageFilter<TImage, Functor::SizeLabelObjectAccessor< typename TImage::LabelObjectType > >
+template<class TImage, class TAttributeAccessor >
+class ITK_EXPORT AttributeRelabelLabelCollectionImageFilter : 
+    public InPlaceLabelCollectionImageFilter<TImage>
 {
 public:
   /** Standard class typedefs. */
-  typedef SizeOpeningLabelCollectionImageFilter Self;
-  typedef AttributeOpeningLabelCollectionImageFilter<TImage, Functor::SizeLabelObjectAccessor< typename TImage::LabelObjectType > > Superclass;
+  typedef AttributeRelabelLabelCollectionImageFilter Self;
+  typedef InPlaceLabelCollectionImageFilter<TImage>
+  Superclass;
   typedef SmartPointer<Self>        Pointer;
   typedef SmartPointer<const Self>  ConstPointer;
 
@@ -44,8 +43,9 @@ public:
   typedef typename ImageType::ConstPointer    ImageConstPointer;
   typedef typename ImageType::PixelType       PixelType;
   typedef typename ImageType::IndexType       IndexType;
+  typedef typename ImageType::LabelObjectType LabelObjectType;
   
-  typedef typename Superclass::AttributeAccessorType AttributeAccessorType;
+  typedef TAttributeAccessor AttributeAccessorType;
   typedef typename AttributeAccessorType::AttributeType AttributeType;
   
   /** ImageDimension constants */
@@ -56,7 +56,7 @@ public:
   itkNewMacro(Self);
 
   /** Runtime information support. */
-  itkTypeMacro(SizeOpeningLabelCollectionImageFilter, 
+  itkTypeMacro(AttributeRelabelLabelCollectionImageFilter, 
                InPlaceLabelCollectionImageFilter);
 
 #ifdef ITK_USE_CONCEPT_CHECKING
@@ -71,17 +71,33 @@ public:
 #endif
 
 protected:
-  SizeOpeningLabelCollectionImageFilter() {};
-  ~SizeOpeningLabelCollectionImageFilter() {};
+  AttributeRelabelLabelCollectionImageFilter();
+  ~AttributeRelabelLabelCollectionImageFilter() {};
+
+  void GenerateData();
+
+  class Comparator
+    {
+    public:
+    bool operator()( const typename LabelObjectType::Pointer & a, const typename LabelObjectType::Pointer & b )
+      {
+      return accessor( a ) < accessor( b );
+      }
+     AttributeAccessorType accessor;
+    };
 
 private:
-  SizeOpeningLabelCollectionImageFilter(const Self&); //purposely not implemented
+  AttributeRelabelLabelCollectionImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
 } ; // end of class
 
 } // end namespace itk
   
+#ifndef ITK_MANUAL_INSTANTIATION
+#include "itkAttributeRelabelLabelCollectionImageFilter.txx"
+#endif
+
 #endif
 
 

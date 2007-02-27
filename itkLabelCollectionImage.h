@@ -142,6 +142,11 @@ public:
   
   void RemoveLabel( const LabelType & label );
 
+  void ClearLabels()
+    {
+    m_LabelObjectContainer.clear();
+    }
+
   const LabelObjectContainerType & GetLabelObjectContainer() const
     {
     return m_LabelObjectContainer;

@@ -7,8 +7,10 @@
 #include "itkLabelCollectionImage.h"
 #include "itkBinaryImageToLabelCollectionImageFilter.h"
 #include "itkLabelCollectionImageToBinaryImageFilter.h"
+#include "itkLabelCollectionImageToLabelImageFilter.h"
 #include "itkShapeLabelCollectionImageFilter.h"
 #include "itkSizeOpeningLabelCollectionImageFilter.h"
+#include "itkSizeRelabelLabelCollectionImageFilter.h"
 #include "itkLabelSizeOpeningImageFilter.h"
 
 
@@ -32,7 +34,7 @@ int main(int argc, char * argv[])
   typedef itk::ImageFileReader< IType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
-  /*
+  
   typedef itk::BinaryImageToLabelCollectionImageFilter< IType, LabelCollectionImageType> I2LType;
   I2LType::Pointer i2l = I2LType::New();
   i2l->SetInput( reader->GetOutput() );
@@ -45,34 +47,37 @@ int main(int argc, char * argv[])
   inplace->SetInPlace( true );
   itk::SimpleFilterWatcher watcher3(inplace, "filter");
 
-  typedef itk::SizeOpeningLabelCollectionImageFilter< LabelCollectionImageType > OpenType;
-  OpenType::Pointer open = OpenType::New();
-  open->SetInput( inplace->GetOutput() );
-  open->SetInPlace( true );
-  open->SetLambda( 3 );
-  itk::SimpleFilterWatcher watcher4(inplace, "filter");
+  typedef itk::SizeRelabelLabelCollectionImageFilter< LabelCollectionImageType > RelabelType;
+  RelabelType::Pointer relabel = RelabelType::New();
+  relabel->SetInput( inplace->GetOutput() );
+  itk::SimpleFilterWatcher watcher5(relabel, "filter");
 
-  typedef itk::LabelCollectionImageToBinaryImageFilter< LabelCollectionImageType, IType > L2IType;
+//   typedef itk::SizeOpeningLabelCollectionImageFilter< LabelCollectionImageType > OpenType;
+//   OpenType::Pointer open = OpenType::New();
+//   open->SetInput( inplace->GetOutput() );
+//   open->SetInPlace( true );
+//   open->SetLambda( 3 );
+//   itk::SimpleFilterWatcher watcher4(inplace, "filter");
+
+//   typedef itk::LabelCollectionImageToBinaryImageFilter< LabelCollectionImageType, IType > L2IType;
+//   L2IType::Pointer l2i = L2IType::New();
+//   l2i->SetInput( open->GetOutput() );
+//   itk::SimpleFilterWatcher watcher2(l2i, "filter");
+
+  typedef itk::LabelCollectionImageToLabelImageFilter< LabelCollectionImageType, IType > L2IType;
   L2IType::Pointer l2i = L2IType::New();
-  l2i->SetInput( open->GetOutput() );
+  l2i->SetInput( relabel->GetOutput() );
   itk::SimpleFilterWatcher watcher2(l2i, "filter");
-*/
-/*  typedef itk::BinaryImageToLabelCollectionImageFilter< IType, LabelCollectionImageType > FilterType;
-  FilterType::Pointer filter = FilterType::New();
-  filter->SetInput( reader->GetOutput() );
 
-  itk::SimpleFilterWatcher watcher(filter, "filter");
-*/
-
-  typedef itk::LabelSizeOpeningImageFilter< IType > BinaryOpeningType;
-  BinaryOpeningType::Pointer opening = BinaryOpeningType::New();
-  opening->SetInput( reader->GetOutput() );
+//   typedef itk::LabelSizeOpeningImageFilter< IType > BinaryOpeningType;
+//   BinaryOpeningType::Pointer opening = BinaryOpeningType::New();
+//   opening->SetInput( reader->GetOutput() );
 
 
   typedef itk::ImageFileWriter< IType > WriterType;
   WriterType::Pointer writer = WriterType::New();
-//  writer->SetInput( l2i->GetOutput() );
-  writer->SetInput( opening->GetOutput() );
+  writer->SetInput( l2i->GetOutput() );
+//   writer->SetInput( opening->GetOutput() );
   writer->SetFileName( argv[2] );
   writer->Update();
   return 0;

@@ -23,6 +23,37 @@ namespace itk
 {
 
 
+namespace Functor {
+
+template< class TLabelObject >
+class ITK_EXPORT SizeLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef unsigned long AttributeType;
+
+  inline const AttributeType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetSize();
+    }
+};
+
+template< class TLabelObject >
+class ITK_EXPORT PhysicalSizeLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef unsigned long AttributeType;
+
+  inline const AttributeType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetPhysicalSize();
+    }
+};
+
+}
+
+
 /** \class ShapeLabelObject
  *  \brief ShapeLabelObject class
  *
