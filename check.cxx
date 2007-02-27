@@ -12,6 +12,7 @@
 #include "itkSizeOpeningLabelCollectionImageFilter.h"
 #include "itkSizeRelabelLabelCollectionImageFilter.h"
 #include "itkLabelSizeOpeningImageFilter.h"
+#include "itkBinarySizeOpeningImageFilter.h"
 #include "itkSizeRelabelImageFilter.h"
 #include "itkSizeKeepNObjectsLabelCollectionImageFilter.h"
 #include "itkBinarySizeKeepNObjectsImageFilter.h"
@@ -87,23 +88,31 @@ int main(int argc, char * argv[])
 //   keep->SetInput( reader->GetOutput() );
 //   keep->SetNumberOfObjects( 3 );
 
-  typedef itk::LabelSizeKeepNObjectsImageFilter< IType > LabelKeepType;
-  LabelKeepType::Pointer keep = LabelKeepType::New();
-  keep->SetInput( reader->GetOutput() );
-  keep->SetNumberOfObjects( 3 );
+//   typedef itk::LabelSizeKeepNObjectsImageFilter< IType > LabelKeepType;
+//   LabelKeepType::Pointer keep = LabelKeepType::New();
+//   keep->SetInput( reader->GetOutput() );
+//   keep->SetNumberOfObjects( 3 );
 
 //   typedef itk::LabelSizeOpeningImageFilter< IType > BinaryOpeningType;
 //   BinaryOpeningType::Pointer opening = BinaryOpeningType::New();
 //   opening->SetInput( reader->GetOutput() );
+//   opening->SetLambda( 300 );
+//   opening->SetReverseOrdering( true );
+
+  typedef itk::BinarySizeOpeningImageFilter< IType > BinaryOpeningType;
+  BinaryOpeningType::Pointer opening = BinaryOpeningType::New();
+  opening->SetInput( reader->GetOutput() );
+  opening->SetLambda( 300 );
+  opening->SetReverseOrdering( true );
 
 //   typedef itk::SizeRelabelImageFilter< IType > RelabelType;
 //   RelabelType::Pointer relabel = RelabelType::New();
 //   relabel->SetInput( reader->GetOutput() );
 
-
   typedef itk::ImageFileWriter< IType > WriterType;
   WriterType::Pointer writer = WriterType::New();
-  writer->SetInput( keep->GetOutput() );
+  writer->SetInput( opening->GetOutput() );
+//   writer->SetInput( keep->GetOutput() );
 //   writer->SetInput( relabel->GetOutput() );
 //   writer->SetInput( l2i->GetOutput() );
 //   writer->SetInput( opening->GetOutput() );

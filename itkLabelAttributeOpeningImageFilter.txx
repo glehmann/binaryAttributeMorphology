@@ -29,6 +29,7 @@ LabelAttributeOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator
 {
   m_BackgroundValue = NumericTraits<OutputImagePixelType>::NonpositiveMin();
   m_Lambda = NumericTraits< AttributeType >::Zero;
+  m_ReverseOrdering = false;
 }
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
@@ -82,6 +83,7 @@ LabelAttributeOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator
   typename OpeningType::Pointer opening = OpeningType::New();
   opening->SetInput( valuator->GetOutput() );
   opening->SetLambda( m_Lambda );
+  opening->SetReverseOrdering( m_ReverseOrdering );
   progress->RegisterInternalFilter(opening, .2f);
   
   typename BinarizerType::Pointer binarizer = BinarizerType::New();
@@ -103,6 +105,7 @@ LabelAttributeOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator
 
   os << indent << "BackgroundValue: "  << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
   os << indent << "Lambda: "  << static_cast<typename NumericTraits<AttributeType>::PrintType>(m_Lambda) << std::endl;
+  os << indent << "ReverseOrdering: "  << m_ReverseOrdering << std::endl;
 }
   
 }// end namespace itk

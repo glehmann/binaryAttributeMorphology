@@ -100,6 +100,10 @@ public:
   itkGetConstMacro(Lambda, AttributeType);
   itkSetMacro(Lambda, AttributeType);
 
+  itkGetConstMacro( ReverseOrdering, bool );
+  itkSetMacro( ReverseOrdering, bool );
+  itkBooleanMacro( ReverseOrdering );
+
 protected:
   LabelAttributeOpeningImageFilter();
   ~LabelAttributeOpeningImageFilter() {};
@@ -124,6 +128,7 @@ private:
 
   OutputImagePixelType m_BackgroundValue;
   AttributeType m_Lambda;
+  bool m_ReverseOrdering;
 } ; // end of class
 
 } // end namespace itk

@@ -28,6 +28,7 @@ AttributeOpeningLabelCollectionImageFilter<TImage, TAttributeAccessor>
 ::AttributeOpeningLabelCollectionImageFilter()
 {
   m_Lambda = NumericTraits< AttributeType >::Zero;
+  m_ReverseOrdering = false;
 }
 
 
@@ -54,7 +55,8 @@ AttributeOpeningLabelCollectionImageFilter<TImage, TAttributeAccessor>
     typename LabelObjectType::LabelType label = it->first;
     LabelObjectType * labelObject = it->second;
 
-    if( accessor( labelObject ) <= m_Lambda )
+    if( ( !m_ReverseOrdering && accessor( labelObject ) < m_Lambda )
+      || ( m_ReverseOrdering && accessor( labelObject ) > m_Lambda ) )
       {
       // must increment the iterator before removing the object to avoid invalidating the iterator
       it++;
@@ -69,6 +71,17 @@ AttributeOpeningLabelCollectionImageFilter<TImage, TAttributeAccessor>
     }
 }
 
+
+template <class TImage, class TAttributeAccessor>
+void
+AttributeOpeningLabelCollectionImageFilter<TImage, TAttributeAccessor>
+::PrintSelf(std::ostream &os, Indent indent) const
+{
+  Superclass::PrintSelf(os, indent);
+
+  os << indent << "ReverseOrdering: "  << m_ReverseOrdering << std::endl;
+  os << indent << "Lambda: "  << static_cast<typename NumericTraits<AttributeType>::PrintType>(m_Lambda) << std::endl;
+}
 
 }// end namespace itk
 #endif

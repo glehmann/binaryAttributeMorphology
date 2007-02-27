@@ -72,17 +72,24 @@ public:
   itkGetConstMacro(Lambda, AttributeType);
   itkSetMacro(Lambda, AttributeType);
 
+  itkGetConstMacro( ReverseOrdering, bool );
+  itkSetMacro( ReverseOrdering, bool );
+  itkBooleanMacro( ReverseOrdering );
+
 protected:
   AttributeOpeningLabelCollectionImageFilter();
   ~AttributeOpeningLabelCollectionImageFilter() {};
 
   void GenerateData();
   
+  void PrintSelf(std::ostream& os, Indent indent) const;
+
 private:
   AttributeOpeningLabelCollectionImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
   AttributeType m_Lambda;
+  bool m_ReverseOrdering;
 
 } ; // end of class
 
