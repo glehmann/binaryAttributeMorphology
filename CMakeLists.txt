@@ -84,6 +84,10 @@ SET(CurrentExe "label_keep_n_objects")
 ADD_EXECUTABLE(${CurrentExe} ${CurrentExe}.cxx)
 TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
 
+SET(CurrentExe "size_relabel")
+ADD_EXECUTABLE(${CurrentExe} ${CurrentExe}.cxx)
+TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
+
 ENDIF(BUILD_TESTING)
 
 #the following line is an example of how to add a test to your project.
@@ -139,6 +143,19 @@ FOREACH(bg 0 150)
           --compare label_keep_n_objects-${bg}-${nb}-${order}.png ${CMAKE_SOURCE_DIR}/images/label_keep_n_objects-${bg}-${nb}-${order}.png
         )
       ENDFOREACH(nb)
+  ENDFOREACH(order)
+ENDFOREACH(bg)
+
+FOREACH(bg 0 150)
+  FOREACH(order 0 1)
+      FOREACH(useBg 0 1)
+        ADD_TEST(SizeRelabel-${bg}-${useBg}-${order} ${TEST_COMMAND}
+          size_relabel
+            ${LABEL_IMAGE} size_relabel-${bg}-${useBg}-${order}.png
+             ${bg} ${useBg} ${order}
+          --compare size_relabel-${bg}-${useBg}-${order}.png ${CMAKE_SOURCE_DIR}/images/size_relabel-${bg}-${useBg}-${order}.png
+        )
+      ENDFOREACH(useBg)
   ENDFOREACH(order)
 ENDFOREACH(bg)
 
