@@ -73,6 +73,7 @@ AttributeRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAt
   typename LabelizerType::Pointer labelizer = LabelizerType::New();
   labelizer->SetInput( this->GetInput() );
   labelizer->SetBackgroundValue( m_BackgroundValue );
+  labelizer->SetUseBackground( m_UseBackground );
   progress->RegisterInternalFilter(labelizer, .3f);
   
   typename LabelObjectValuatorType::Pointer valuator = LabelObjectValuatorType::New();
@@ -103,6 +104,7 @@ AttributeRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAt
 
   os << indent << "ReverseOrdering: "  << m_ReverseOrdering << std::endl;
   os << indent << "BackgroundValue: "  << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
+  os << indent << "UseBackground: "  << m_UseBackground << std::endl;
 }
   
 }// end namespace itk
