@@ -1,7 +1,7 @@
 - make BinaryAttributeOpeningImageFilter don't destruct the background values
 - implement more specializations of BinaryAttributeOpeningImageFilter
 - implement more specializations of LabelAttributeOpeningImageFilter
-- implement LabelCollectionImage relabeler - base on any attribute, not only the size as in RelabelComponentImageFilter
+- implement more specializations of AttributeRelabelImageFilter
 - implement KeepNObjectsLabelCollectionImageFilter to keep the n objects with the highest (or lowest) attribute value
 - implement BinaryAttributeKeepNObjectsImageFilter as a minipipeline
   - BinaryImageToLabelCollectionImageFilter
