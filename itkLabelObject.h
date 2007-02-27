@@ -119,7 +119,7 @@ private:
  * \ingroup DataRepresentation 
  */
 template < class TLabel, unsigned int VImageDimension >
-class ITK_EXPORT LabelObject : public Object
+class ITK_EXPORT LabelObject : public LightObject
 {
 public:
   /** Standard class typedefs */
@@ -201,7 +201,7 @@ public:
     
   void PrintSelf(std::ostream& os, Indent indent) const
     {
-    Superclass::PrintSelf( os, indent );
+//     Superclass::PrintSelf( os, indent );
     os << indent << "LineContainer: " << & m_LineContainer << std::endl;
     os << indent << "Label: " << static_cast<typename NumericTraits<LabelType>::PrintType>(m_Label) << std::endl; 
     }

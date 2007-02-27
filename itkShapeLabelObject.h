@@ -94,17 +94,54 @@ public:
 
   typedef typename itk::FixedArray<double, ImageDimension> CentroidType;
 
-  itkGetConstMacro( Region, RegionType );
-  itkSetMacro( Region, RegionType );
+/*  itkGetConstMacro( Region, RegionType );
+  itkSetMacro( Region, RegionType );*/
+  const RegionType & GetRegion() const
+    {
+    return m_Region;
+    }
 
-  itkGetConstMacro( PhysicalSize, double );
-  itkSetMacro( PhysicalSize, double );
+  void SetRegion( const RegionType & region )
+    {
+    m_Region = region;
+    }
 
-  itkGetConstMacro( Size, unsigned long );
-  itkSetMacro( Size, unsigned long );
+//   itkGetConstMacro( PhysicalSize, double );
+//   itkSetMacro( PhysicalSize, double );
+  const double & GetPhysicalSize() const
+    {
+    return m_PhysicalSize;
+    }
 
-  itkGetConstMacro( Centroid, CentroidType );
-  itkSetMacro( Centroid, CentroidType );
+  void SetPhysicalSize( const double & size )
+    {
+    m_PhysicalSize = size;
+    }
+
+//   itkGetConstMacro( Size, unsigned long );
+//   itkSetMacro( Size, unsigned long );
+  const unsigned long & GetSize() const
+    {
+    return m_Size;
+    }
+
+  void SetSize( const unsigned long & size )
+    {
+    m_Size = size;
+    }
+
+//   itkGetConstMacro( Centroid, CentroidType );
+//   itkSetMacro( Centroid, CentroidType );
+  const CentroidType & GetCentroid() const
+    {
+    return m_Centroid;
+    }
+
+  void SetCentroid( const CentroidType & centroid )
+    {
+    m_Centroid = centroid;
+    }
+
 
   virtual void CopyDataFrom( const Self * src )
     {
