@@ -27,6 +27,7 @@ template <class TImage, class TAttributeAccessor>
 AttributeRelabelLabelCollectionImageFilter<TImage, TAttributeAccessor>
 ::AttributeRelabelLabelCollectionImageFilter()
 {
+  m_ReverseOrdering = false;
 }
 
 
@@ -60,8 +61,16 @@ AttributeRelabelLabelCollectionImageFilter<TImage, TAttributeAccessor>
     }
 
   // instantiate the comparator and sort the vector
-  Comparator comparator;
-  std::sort( labelObjects.begin(), labelObjects.end(), comparator );
+  if( m_ReverseOrdering )
+    {
+    ReverseComparator comparator;
+    std::sort( labelObjects.begin(), labelObjects.end(), comparator );
+    }
+  else
+    {
+    Comparator comparator;
+    std::sort( labelObjects.begin(), labelObjects.end(), comparator );
+    }
 //   progress.CompletedPixel();
   
   // and put back the objects in the map
@@ -86,6 +95,16 @@ AttributeRelabelLabelCollectionImageFilter<TImage, TAttributeAccessor>
   progress.CompletedPixel();
 }
 
+
+template <class TImage, class TAttributeAccessor>
+void
+AttributeRelabelLabelCollectionImageFilter<TImage, TAttributeAccessor>
+::PrintSelf(std::ostream& os, Indent indent) const
+{
+  Superclass::PrintSelf(os,indent);
+
+  os << indent << "ReverseOrdering: "  << m_ReverseOrdering << std::endl;
+}
 
 }// end namespace itk
 #endif

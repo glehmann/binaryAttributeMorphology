@@ -70,13 +70,19 @@ public:
   /** End concept checking */
 #endif
 
+  itkSetMacro( ReverseOrdering, bool );
+  itkGetConstReferenceMacro( ReverseOrdering, bool );
+  itkBooleanMacro( ReverseOrdering );
+
 protected:
   AttributeRelabelLabelCollectionImageFilter();
   ~AttributeRelabelLabelCollectionImageFilter() {};
 
   void GenerateData();
 
-  class Comparator
+  void PrintSelf(std::ostream& os, Indent indent) const;
+
+  class ReverseComparator
     {
     public:
     bool operator()( const typename LabelObjectType::Pointer & a, const typename LabelObjectType::Pointer & b )
@@ -86,9 +92,21 @@ protected:
      AttributeAccessorType accessor;
     };
 
+  class Comparator
+    {
+    public:
+    bool operator()( const typename LabelObjectType::Pointer & a, const typename LabelObjectType::Pointer & b )
+      {
+      return accessor( a ) > accessor( b );
+      }
+     AttributeAccessorType accessor;
+    };
+
 private:
   AttributeRelabelLabelCollectionImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
+
+  bool m_ReverseOrdering;
 
 } ; // end of class
 

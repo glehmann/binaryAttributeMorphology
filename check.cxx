@@ -50,6 +50,7 @@ int main(int argc, char * argv[])
   typedef itk::SizeRelabelLabelCollectionImageFilter< LabelCollectionImageType > RelabelType;
   RelabelType::Pointer relabel = RelabelType::New();
   relabel->SetInput( inplace->GetOutput() );
+  relabel->SetReverseOrdering( true );
   itk::SimpleFilterWatcher watcher5(relabel, "filter");
 
 //   typedef itk::SizeOpeningLabelCollectionImageFilter< LabelCollectionImageType > OpenType;
