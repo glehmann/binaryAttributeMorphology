@@ -76,6 +76,14 @@ SET(CurrentExe "binary_keep_n_objects")
 ADD_EXECUTABLE(${CurrentExe} ${CurrentExe}.cxx)
 TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
 
+SET(CurrentExe "label_size_opening")
+ADD_EXECUTABLE(${CurrentExe} ${CurrentExe}.cxx)
+TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
+
+SET(CurrentExe "label_keep_n_objects")
+ADD_EXECUTABLE(${CurrentExe} ${CurrentExe}.cxx)
+TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
+
 ENDIF(BUILD_TESTING)
 
 #the following line is an example of how to add a test to your project.
@@ -111,4 +119,26 @@ FOREACH(fg 100 200)
     ENDFOREACH(order)
   ENDFOREACH(bg)
 ENDFOREACH(fg)
+
+FOREACH(bg 0 150)
+  FOREACH(order 0 1)
+      FOREACH(size 10 100 1000 10000)
+        ADD_TEST(LabelSizeOpening-${bg}-${size}-${order} ${TEST_COMMAND}
+          label_size_opening
+            ${LABEL_IMAGE} label_size_opening-${bg}-${size}-${order}.png
+             ${bg} ${size} ${order}
+          --compare label_size_opening-${bg}-${size}-${order}.png ${CMAKE_SOURCE_DIR}/images/label_size_opening-${bg}-${size}-${order}.png
+        )
+      ENDFOREACH(size)
+
+      FOREACH(nb 1 3 5 10)
+        ADD_TEST(LabelSizeKeepNObjects-${bg}-${nb}-${order} ${TEST_COMMAND}
+          label_keep_n_objects
+            ${LABEL_IMAGE} label_keep_n_objects-${bg}-${nb}-${order}.png
+             ${bg} ${nb} ${order}
+          --compare label_keep_n_objects-${bg}-${nb}-${order}.png ${CMAKE_SOURCE_DIR}/images/label_keep_n_objects-${bg}-${nb}-${order}.png
+        )
+      ENDFOREACH(nb)
+  ENDFOREACH(order)
+ENDFOREACH(bg)
 

@@ -18,7 +18,7 @@
 #define __itkLabelSizeOpeningImageFilter_h
 
 #include "itkLabelAttributeOpeningImageFilter.h"
-#include "itkSizeOpeningLabelCollectionImageFilter.h"
+#include "itkShapeLabelCollectionImageFilter.h"
 #include "itkShapeLabelObject.h"
 
 namespace itk {

@@ -18,7 +18,7 @@
 #define __itkLabelSizeKeepNObjectsImageFilter_h
 
 #include "itkLabelAttributeKeepNObjectsImageFilter.h"
-#include "itkSizeKeepNObjectsLabelCollectionImageFilter.h"
+#include "itkShapeLabelCollectionImageFilter.h"
 #include "itkShapeLabelObject.h"
 
 namespace itk {
