@@ -2,7 +2,8 @@
 PROJECT(binaryAttributeMorphology)
 
 # set the name of the input image used to run the test
-SET(INPUT_IMAGE ${CMAKE_SOURCE_DIR}/images/cthead1.png)
+SET(BINARY_IMAGE ${CMAKE_SOURCE_DIR}/images/2th_cthead1.png)
+SET(LABEL_IMAGE ${CMAKE_SOURCE_DIR}/images/cthead1.png)
 
 #include some macros from another file...
 INCLUDE(IJMacros.txt)
@@ -81,7 +82,20 @@ ENDIF(BUILD_TESTING)
 #any tests you can comment out or delete the following line.
 # ADD_TEST(Testname ExecutableToRun arg1 arg2 arg3)
 
-ADD_TEST(Test ${TEST_COMMAND}
-   check ${INPUT_IMAGE} out.png
-   --compare out.png ${CMAKE_SOURCE_DIR}/images/test.png
-)
+FOREACH(fg 100 200)
+  FOREACH(bg 0 150)
+    FOREACH(size 10 100 1000 10000)
+      FOREACH(order 0 1)
+        FOREACH(connectivity 0 1)
+          ADD_TEST(BinarySizeOpening-${fg}-${bg}-${size}-${order}-${connectivity} ${TEST_COMMAND}
+            binary_size_opening
+              ${BINARY_IMAGE} binary_size_opening-${fg}-${bg}-${size}-${order}-${connectivity}.png
+              ${fg} ${bg} ${size} ${order} ${connectivity}
+            --compare binary_size_opening-${fg}-${bg}-${size}-${order}-${connectivity}.png ${CMAKE_SOURCE_DIR}/images/binary_size_opening-${fg}-${bg}-${size}-${order}-${connectivity}.png
+          )
+        ENDFOREACH(connectivity)
+      ENDFOREACH(order)
+    ENDFOREACH(size)
+  ENDFOREACH(bg)
+ENDFOREACH(fg)
+
