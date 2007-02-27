@@ -18,6 +18,7 @@
 #define __itkBinarySizeKeepNObjectsImageFilter_h
 
 #include "itkBinaryAttributeKeepNObjectsImageFilter.h"
+#include "itkShapeLabelCollectionImageFilter.h"
 #include "itkShapeLabelObject.h"
 
 namespace itk {

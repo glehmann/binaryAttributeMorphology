@@ -93,6 +93,7 @@ BinaryAttributeKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectVa
   binarizer->SetInput( opening->GetOutput() );
   binarizer->SetForegroundValue( m_ForegroundValue );
   binarizer->SetBackgroundValue( m_BackgroundValue );
+  binarizer->SetBackgroundImage( this->GetInput() );
   progress->RegisterInternalFilter(binarizer, .2f);  
 
   binarizer->GraftOutput( this->GetOutput() );

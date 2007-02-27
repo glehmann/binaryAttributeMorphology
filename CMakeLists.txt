@@ -72,6 +72,10 @@ SET(CurrentExe "binary_size_opening")
 ADD_EXECUTABLE(${CurrentExe} ${CurrentExe}.cxx)
 TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
 
+SET(CurrentExe "binary_keep_n_objects")
+ADD_EXECUTABLE(${CurrentExe} ${CurrentExe}.cxx)
+TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
+
 ENDIF(BUILD_TESTING)
 
 #the following line is an example of how to add a test to your project.
@@ -84,18 +88,27 @@ ENDIF(BUILD_TESTING)
 
 FOREACH(fg 100 200)
   FOREACH(bg 0 150)
-    FOREACH(size 10 100 1000 10000)
-      FOREACH(order 0 1)
-        FOREACH(connectivity 0 1)
+    FOREACH(order 0 1)
+      FOREACH(connectivity 0 1)
+        FOREACH(size 10 100 1000 10000)
           ADD_TEST(BinarySizeOpening-${fg}-${bg}-${size}-${order}-${connectivity} ${TEST_COMMAND}
             binary_size_opening
               ${BINARY_IMAGE} binary_size_opening-${fg}-${bg}-${size}-${order}-${connectivity}.png
               ${fg} ${bg} ${size} ${order} ${connectivity}
             --compare binary_size_opening-${fg}-${bg}-${size}-${order}-${connectivity}.png ${CMAKE_SOURCE_DIR}/images/binary_size_opening-${fg}-${bg}-${size}-${order}-${connectivity}.png
           )
-        ENDFOREACH(connectivity)
-      ENDFOREACH(order)
-    ENDFOREACH(size)
+        ENDFOREACH(size)
+
+        FOREACH(nb 1 3 5 10)
+          ADD_TEST(BinarySizeKeepNObjects-${fg}-${bg}-${nb}-${order}-${connectivity} ${TEST_COMMAND}
+            binary_keep_n_objects
+              ${BINARY_IMAGE} binary_keep_n_objects-${fg}-${bg}-${nb}-${order}-${connectivity}.png
+              ${fg} ${bg} ${nb} ${order} ${connectivity}
+            --compare binary_keep_n_objects-${fg}-${bg}-${nb}-${order}-${connectivity}.png ${CMAKE_SOURCE_DIR}/images/binary_keep_n_objects-${fg}-${bg}-${nb}-${order}-${connectivity}.png
+          )
+        ENDFOREACH(nb)
+      ENDFOREACH(connectivity)
+    ENDFOREACH(order)
   ENDFOREACH(bg)
 ENDFOREACH(fg)
 
