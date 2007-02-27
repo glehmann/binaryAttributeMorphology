@@ -18,7 +18,7 @@
 #define __itkSizeRelabelImageFilter_h
 
 #include "itkAttributeRelabelImageFilter.h"
-#include "itkSizeRelabelLabelCollectionImageFilter.h"
+#include "itkShapeLabelCollectionImageFilter.h"
 #include "itkShapeLabelObject.h"
 
 namespace itk {
