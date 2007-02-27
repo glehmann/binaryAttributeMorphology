@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkBinarySizeOpeningImageFilter.h,v $
+  Module:    $RCSfile: itkBinarySizeKeepNObjectsImageFilter.h,v $
   Language:  C++
   Date:      $Date: 2006/03/28 19:59:05 $
   Version:   $Revision: 1.6 $
@@ -14,30 +14,30 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkBinarySizeOpeningImageFilter_h
-#define __itkBinarySizeOpeningImageFilter_h
+#ifndef __itkBinarySizeKeepNObjectsImageFilter_h
+#define __itkBinarySizeKeepNObjectsImageFilter_h
 
-#include "itkBinaryAttributeOpeningImageFilter.h"
+#include "itkBinaryAttributeKeepNObjectsImageFilter.h"
 #include "itkShapeLabelObject.h"
 
 namespace itk {
 
-/** \class BinarySizeOpeningImageFilter
+/** \class BinarySizeKeepNObjectsImageFilter
  * \brief Identify local maxima whose height above the baseline is greater than h.
  *
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template<class TInputImage>
-class ITK_EXPORT BinarySizeOpeningImageFilter : 
-    public BinaryAttributeOpeningImageFilter<TInputImage,
+class ITK_EXPORT BinarySizeKeepNObjectsImageFilter : 
+    public BinaryAttributeKeepNObjectsImageFilter<TInputImage,
       ShapeLabelObject< unsigned long, TInputImage::ImageDimension >,
       ShapeLabelCollectionImageFilter< LabelCollectionImage< ShapeLabelObject< unsigned long, TInputImage::ImageDimension > > >,
       typename Functor::SizeLabelObjectAccessor< ShapeLabelObject< unsigned long, TInputImage::ImageDimension > > >
 {
 public:
   /** Standard class typedefs. */
-  typedef BinarySizeOpeningImageFilter Self;
-  typedef BinaryAttributeOpeningImageFilter<TInputImage,
+  typedef BinarySizeKeepNObjectsImageFilter Self;
+  typedef BinaryAttributeKeepNObjectsImageFilter<TInputImage,
       ShapeLabelObject< unsigned long, TInputImage::ImageDimension >,
       ShapeLabelCollectionImageFilter< LabelCollectionImage< ShapeLabelObject< unsigned long, TInputImage::ImageDimension > > >,
       typename Functor::SizeLabelObjectAccessor< ShapeLabelObject< unsigned long, TInputImage::ImageDimension > > >
@@ -63,7 +63,7 @@ public:
   typedef typename Superclass::LabelObjectValuatorType LabelObjectValuatorType;
   typedef typename Superclass::LabelObjectValuatorType AttributeAccessorType;
   typedef typename Superclass::AttributeType AttributeType;
-  typedef typename Superclass::OpeningType OpeningType;
+  typedef typename Superclass::KeepNObjectsType KeepNObjectsType;
   typedef typename Superclass::BinarizerType BinarizerType;
 
   /** ImageDimension constants */
@@ -76,8 +76,8 @@ public:
   itkNewMacro(Self);  
 
   /** Runtime information support. */
-  itkTypeMacro(BinarySizeOpeningImageFilter, 
-               BinaryAttributeOpeningImageFilter);
+  itkTypeMacro(BinarySizeKeepNObjectsImageFilter, 
+               BinaryAttributeKeepNObjectsImageFilter);
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
@@ -92,11 +92,11 @@ public:
 
 
 protected:
-  BinarySizeOpeningImageFilter() {};
-  ~BinarySizeOpeningImageFilter() {};
+  BinarySizeKeepNObjectsImageFilter() {};
+  ~BinarySizeKeepNObjectsImageFilter() {};
 
 private:
-  BinarySizeOpeningImageFilter(const Self&); //purposely not implemented
+  BinarySizeKeepNObjectsImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
 } ; // end of class
