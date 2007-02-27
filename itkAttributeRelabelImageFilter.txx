@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkLabelAttributeOpeningImageFilter.txx,v $
+  Module:    $RCSfile: itkAttributeRelabelImageFilter.txx,v $
   Language:  C++
   Date:      $Date: 2006/08/01 19:16:18 $
   Version:   $Revision: 1.7 $
@@ -14,26 +14,26 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkLabelAttributeOpeningImageFilter_txx
-#define __itkLabelAttributeOpeningImageFilter_txx
+#ifndef __itkAttributeRelabelImageFilter_txx
+#define __itkAttributeRelabelImageFilter_txx
 
-#include "itkLabelAttributeOpeningImageFilter.h"
+#include "itkAttributeRelabelImageFilter.h"
 #include "itkProgressAccumulator.h"
 
 
 namespace itk {
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
-LabelAttributeOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
-::LabelAttributeOpeningImageFilter()
+AttributeRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+::AttributeRelabelImageFilter()
 {
   m_BackgroundValue = NumericTraits<OutputImagePixelType>::NonpositiveMin();
-  m_Lambda = NumericTraits< AttributeType >::Zero;
+  m_ReverseOrdering = false;
 }
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
 void 
-LabelAttributeOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+AttributeRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
 ::GenerateInputRequestedRegion()
 {
   // call the superclass' implementation of this method
@@ -50,7 +50,7 @@ LabelAttributeOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
 void 
-LabelAttributeOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+AttributeRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
 ::EnlargeOutputRequestedRegion(DataObject *)
 {
   this->GetOutput()
@@ -60,7 +60,7 @@ LabelAttributeOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
 void
-LabelAttributeOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+AttributeRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
 ::GenerateData()
 {
   // Create a process accumulator for tracking the progress of this minipipeline
@@ -79,9 +79,9 @@ LabelAttributeOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator
   valuator->SetInput( labelizer->GetOutput() );
   progress->RegisterInternalFilter(valuator, .3f);
   
-  typename OpeningType::Pointer opening = OpeningType::New();
+  typename RelabelType::Pointer opening = RelabelType::New();
   opening->SetInput( valuator->GetOutput() );
-  opening->SetLambda( m_Lambda );
+  opening->SetReverseOrdering( m_ReverseOrdering );
   progress->RegisterInternalFilter(opening, .2f);
   
   typename BinarizerType::Pointer binarizer = BinarizerType::New();
@@ -96,13 +96,13 @@ LabelAttributeOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
 void
-LabelAttributeOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+AttributeRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
 ::PrintSelf(std::ostream &os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 
+  os << indent << "ReverseOrdering: "  << m_ReverseOrdering << std::endl;
   os << indent << "BackgroundValue: "  << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
-  os << indent << "Lambda: "  << static_cast<typename NumericTraits<AttributeType>::PrintType>(m_Lambda) << std::endl;
 }
   
 }// end namespace itk
