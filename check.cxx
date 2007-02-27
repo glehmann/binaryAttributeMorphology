@@ -15,6 +15,7 @@
 #include "itkSizeRelabelImageFilter.h"
 #include "itkSizeKeepNObjectsLabelCollectionImageFilter.h"
 #include "itkBinarySizeKeepNObjectsImageFilter.h"
+#include "itkLabelSizeKeepNObjectsImageFilter.h"
 
 
 int main(int argc, char * argv[])
@@ -81,8 +82,13 @@ int main(int argc, char * argv[])
 // //   l2i->SetInput( relabel->GetOutput() );
 //   itk::SimpleFilterWatcher watcher2(l2i, "filter");
 
-  typedef itk::BinarySizeKeepNObjectsImageFilter< IType > BinaryKeepType;
-  BinaryKeepType::Pointer keep = BinaryKeepType::New();
+//   typedef itk::BinarySizeKeepNObjectsImageFilter< IType > BinaryKeepType;
+//   BinaryKeepType::Pointer keep = BinaryKeepType::New();
+//   keep->SetInput( reader->GetOutput() );
+//   keep->SetNumberOfObjects( 3 );
+
+  typedef itk::LabelSizeKeepNObjectsImageFilter< IType > LabelKeepType;
+  LabelKeepType::Pointer keep = LabelKeepType::New();
   keep->SetInput( reader->GetOutput() );
   keep->SetNumberOfObjects( 3 );
 
