@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkAttributeRelabelLabelCollectionImageFilter.txx,v $
+  Module:    $RCSfile: itkAttributeKeepNObjectsLabelCollectionImageFilter.txx,v $
   Language:  C++
   Date:      $Date: 2005/08/23 15:09:03 $
   Version:   $Revision: 1.6 $
@@ -14,26 +14,27 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkAttributeRelabelLabelCollectionImageFilter_txx
-#define __itkAttributeRelabelLabelCollectionImageFilter_txx
+#ifndef __itkAttributeKeepNObjectsLabelCollectionImageFilter_txx
+#define __itkAttributeKeepNObjectsLabelCollectionImageFilter_txx
 
-#include "itkAttributeRelabelLabelCollectionImageFilter.h"
+#include "itkAttributeKeepNObjectsLabelCollectionImageFilter.h"
 #include "itkProgressReporter.h"
 
 
 namespace itk {
 
 template <class TImage, class TAttributeAccessor>
-AttributeRelabelLabelCollectionImageFilter<TImage, TAttributeAccessor>
-::AttributeRelabelLabelCollectionImageFilter()
+AttributeKeepNObjectsLabelCollectionImageFilter<TImage, TAttributeAccessor>
+::AttributeKeepNObjectsLabelCollectionImageFilter()
 {
   m_ReverseOrdering = false;
+  m_NumberOfObjects = 1;
 }
 
 
 template <class TImage, class TAttributeAccessor>
 void
-AttributeRelabelLabelCollectionImageFilter<TImage, TAttributeAccessor>
+AttributeKeepNObjectsLabelCollectionImageFilter<TImage, TAttributeAccessor>
 ::GenerateData()
 {
   // Allocate the output
@@ -61,49 +62,42 @@ AttributeRelabelLabelCollectionImageFilter<TImage, TAttributeAccessor>
     }
 
   // instantiate the comparator and sort the vector
-  if( m_ReverseOrdering )
+  if( m_NumberOfObjects < labelObjectContainer.size() )
     {
-    ReverseComparator comparator;
-    std::sort( labelObjects.begin(), labelObjects.end(), comparator );
-    }
-  else
-    {
-    Comparator comparator;
-    std::sort( labelObjects.begin(), labelObjects.end(), comparator );
-    }
+    typename VectorType::iterator end = labelObjects.begin() + m_NumberOfObjects;
+    if( m_ReverseOrdering )
+      {
+      ReverseComparator comparator;
+      std::nth_element( labelObjects.begin(), end, labelObjects.end(), comparator );
+      }
+    else
+      {
+      Comparator comparator;
+      std::nth_element( labelObjects.begin(), end, labelObjects.end(), comparator );
+      }
 //   progress.CompletedPixel();
   
-  // and put back the objects in the map
-  typedef typename ImageType::LabelObjectType LabelObjectType;
-  output->ClearLabels();
-  unsigned int label = 0;
-  for( typename VectorType::const_iterator it = labelObjects.begin();
-    it != labelObjects.end();
-    it++ )
-    {
-    // avoid the background label if it is used
-    if( output->GetUseBackground() && label == output->GetBackgroundValue() )
+    // and remove the last objects of the map
+    for( typename VectorType::const_iterator it = end;
+      it != labelObjects.end();
+      it++ )
       {
-      label++;
+      output->RemoveLabelObject( *it );
+      progress.CompletedPixel();
       }
-    (*it)->SetLabel( label );
-    output->AddLabelObject( *it );
-    
-    // go to the nex label
-    label++;
-    progress.CompletedPixel();
     }
 }
 
 
 template <class TImage, class TAttributeAccessor>
 void
-AttributeRelabelLabelCollectionImageFilter<TImage, TAttributeAccessor>
+AttributeKeepNObjectsLabelCollectionImageFilter<TImage, TAttributeAccessor>
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os,indent);
 
   os << indent << "ReverseOrdering: "  << m_ReverseOrdering << std::endl;
+  os << indent << "NumberOfObjects: "  << m_NumberOfObjects << std::endl;
 }
 
 }// end namespace itk
