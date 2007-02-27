@@ -86,6 +86,31 @@ public:
   itkSetMacro(ForegroundValue, OutputImagePixelType);
   itkGetConstMacro(ForegroundValue, OutputImagePixelType);
 
+   /** Set the marker image */
+  void SetBackgroundImage( const OutputImageType *input)
+     {
+     // Process object is not const-correct so the const casting is required.
+     this->SetNthInput( 1, const_cast<OutputImageType *>(input) );
+     }
+
+  /** Get the marker image */
+  OutputImageType * GetBackgroundImage()
+    {
+    return static_cast<OutputImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(1)));
+    }
+
+   /** Set the input image */
+  void SetInput1( const InputImageType * input )
+     {
+     this->SetInput( input );
+     }
+
+   /** Set the marker image */
+  void SetInput2( const OutputImageType * input )
+     {
+     this->SetBackgroundImage( input );
+     }
+
 protected:
   LabelCollectionImageToBinaryImageFilter();
   ~LabelCollectionImageToBinaryImageFilter() {};

@@ -18,6 +18,7 @@
 #define __itkBinarySizeOpeningImageFilter_h
 
 #include "itkBinaryAttributeOpeningImageFilter.h"
+#include "itkShapeLabelCollectionImageFilter.h"
 #include "itkShapeLabelObject.h"
 
 namespace itk {

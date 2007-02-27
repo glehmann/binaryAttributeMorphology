@@ -20,7 +20,8 @@
 #include "itkLabelCollectionImageToBinaryImageFilter.h"
 #include "itkNumericTraits.h"
 #include "itkProgressReporter.h"
-#include "itkImageRegionConstIteratorWithIndex.h"
+#include "itkImageRegionConstIterator.h"
+#include "itkImageRegionIterator.h"
 
 namespace itk {
 
@@ -73,7 +74,35 @@ LabelCollectionImageToBinaryImageFilter<TInputImage, TOutputImage>
     {
     // fill the output with background value - they will be overiden with the foreground value
     // later, if there is some objects
-    output->FillBuffer( m_BackgroundValue );
+    if( this->GetNumberOfInputs() == 2 )
+      {
+      if ( this->GetBackgroundImage()->GetRequestedRegion().GetSize() != this->GetInput()->GetRequestedRegion().GetSize() )
+        {
+        itkExceptionMacro( << "Background and input images must have the same size." );
+        }
+      // fill the background with the background values from the background image
+      ImageRegionConstIterator< OutputImageType > bgIt( this->GetBackgroundImage(), output->GetRequestedRegion() );
+      ImageRegionIterator< OutputImageType > oIt( output, output->GetRequestedRegion() );
+      for( oIt.GoToBegin(), bgIt.GoToBegin();
+        !oIt.IsAtEnd();
+        ++oIt, ++bgIt )
+        {
+        const OutputImagePixelType & bg = bgIt.Get();
+        if( bg != m_ForegroundValue )
+          {
+          oIt.Set( bg );
+          }
+        else
+          {
+          oIt.Set( m_BackgroundValue );
+          }
+        }
+      }
+    else
+      {
+      // use the background value
+      output->FillBuffer( m_BackgroundValue );
+      }
     }
   else
     {
