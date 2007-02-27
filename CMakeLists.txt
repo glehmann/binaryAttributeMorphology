@@ -64,10 +64,6 @@ ENDIF(BUILD_WRAPPERS)
 
 IF(BUILD_TESTING)
 
-SET(CurrentExe "check")
-ADD_EXECUTABLE(${CurrentExe} ${CurrentExe}.cxx)
-TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
-
 SET(CurrentExe "binary_size_opening")
 ADD_EXECUTABLE(${CurrentExe} ${CurrentExe}.cxx)
 TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
