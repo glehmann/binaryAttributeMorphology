@@ -121,10 +121,10 @@ public:
     return m_LabelObjectContainer[label].GetPointer();
     }
 
-  const LabelObjectType * GetLabelObject( const LabelType & label ) const
-    {
-    return m_LabelObjectContainer[label].GetPointer();
-    }
+//   const LabelObjectType * GetLabelObject( const LabelType & label ) const
+//     {
+//     return m_LabelObjectContainer[label].GetPointer();
+//     }
     
   bool HasLabel( const LabelType label ) const;
   

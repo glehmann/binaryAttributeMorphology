@@ -131,9 +131,9 @@ LabelCollectionImage<TLabelObject>
     it != m_LabelObjectContainer.end();
     it++ )
     {
-    if( it->HasIndex( idx ) )
+    if( it->second->HasIndex( idx ) )
       {
-      return it->GetLabel();
+      return it->second->GetLabel();
       }
     }
   return m_BackgroundValue;
@@ -206,13 +206,13 @@ typename LabelCollectionImage<TLabelObject>::LabelObjectType *
 LabelCollectionImage<TLabelObject>
 ::GetLabelObject( const IndexType & idx ) const
 {
-  for( typename LabelObjectContainerType::iterator it = m_LabelObjectContainer.begin();
+  for( typename LabelObjectContainerType::const_iterator it = m_LabelObjectContainer.begin();
     it != m_LabelObjectContainer.end();
     it++ )
     {
-    if( (*it)->HasIndex( idx ) )
+    if( it->second->HasIndex( idx ) )
       {
-      return (*it)->GetPointer();
+      return it->second.GetPointer();
       }
     }
   return NULL;
