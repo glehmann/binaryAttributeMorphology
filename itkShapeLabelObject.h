@@ -43,7 +43,7 @@ class ITK_EXPORT PhysicalSizeLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef unsigned long AttributeType;
+  typedef double AttributeType;
 
   inline const AttributeType operator()( const LabelObjectType * labelObject )
     {
