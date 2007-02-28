@@ -51,6 +51,19 @@ public:
     }
 };
 
+template< class TLabelObject >
+class ITK_EXPORT RegionElongationLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef double AttributeType;
+
+  inline const AttributeType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetRegionElongation();
+    }
+};
+
 }
 
 
@@ -142,6 +155,18 @@ public:
     m_Centroid = centroid;
     }
 
+//   itkGetConstMacro( RegionElongation, double );
+//   itkSetMacro( RegionElongation, double );
+  const double & GetRegionElongation() const
+    {
+    return m_RegionElongation;
+    }
+
+  void SetRegionElongation( const double & size )
+    {
+    m_RegionElongation = size;
+    }
+
 
   virtual void CopyDataFrom( const Self * src )
     {
@@ -151,6 +176,7 @@ public:
     m_Size = src->m_Size;
     m_PhysicalSize = src->m_PhysicalSize;
     m_Centroid = src->m_Centroid;
+    m_RegionElongation = src->m_RegionElongation;
     }
 
 protected:
@@ -158,6 +184,7 @@ protected:
     {
     m_Size = 0;
     m_PhysicalSize = 0;
+    m_RegionElongation = 0;
     }
   
 
@@ -179,6 +206,7 @@ private:
   unsigned long m_Size;
   double m_PhysicalSize;
   CentroidType m_Centroid;
+  double m_RegionElongation;
   
 
 };

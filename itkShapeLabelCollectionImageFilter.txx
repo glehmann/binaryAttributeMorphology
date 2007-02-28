@@ -113,10 +113,15 @@ ShapeLabelCollectionImageFilter<TImage>
 
     // final computation
     typename LabelObjectType::RegionType::SizeType regionSize;
+    double minSize = NumericTraits< double >::max();
+    double maxSize = NumericTraits< double >::NonpositiveMin();
     for( int i=0; i<ImageDimension; i++ )
       {
       centroid[i] /= size;
       regionSize[i] = maxs[i] - mins[i] + 1;
+      double s = regionSize[i] * output->GetSpacing()[i];
+      minSize = std::min( s, minSize );
+      maxSize = std::min( s, maxSize );
       }
     typename LabelObjectType::RegionType region( mins, regionSize );
 
@@ -125,6 +130,7 @@ ShapeLabelCollectionImageFilter<TImage>
     labelObject->SetPhysicalSize( size * sizePerPixel );
     labelObject->SetRegion( region );
     labelObject->SetCentroid( centroid );
+    labelObject->SetRegionElongation( maxSize / minSize );
 
 //     std::cout << std::endl;
 //     labelObject->Print( std::cout );
