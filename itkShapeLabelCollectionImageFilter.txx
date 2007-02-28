@@ -131,6 +131,7 @@ ShapeLabelCollectionImageFilter<TImage>
     labelObject->SetRegion( region );
     labelObject->SetCentroid( centroid );
     labelObject->SetRegionElongation( maxSize / minSize );
+    labelObject->SetSizeRegionRatio( size / (double)region.GetNumberOfPixels() );
 
 //     std::cout << std::endl;
 //     labelObject->Print( std::cout );

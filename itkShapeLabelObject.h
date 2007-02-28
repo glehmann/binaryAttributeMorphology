@@ -64,6 +64,19 @@ public:
     }
 };
 
+template< class TLabelObject >
+class ITK_EXPORT SizeRegionRatioLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef double AttributeType;
+
+  inline const AttributeType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetSizeRegionRatio();
+    }
+};
+
 }
 
 
@@ -167,6 +180,18 @@ public:
     m_RegionElongation = size;
     }
 
+//   itkGetConstMacro( SizeRegionRatio, double );
+//   itkSetMacro( SizeRegionRatio, double );
+  const double & GetSizeRegionRatio() const
+    {
+    return m_SizeRegionRatio;
+    }
+
+  void SetSizeRegionRatio( const double & size )
+    {
+    m_SizeRegionRatio = size;
+    }
+
 
   virtual void CopyDataFrom( const Self * src )
     {
@@ -177,6 +202,7 @@ public:
     m_PhysicalSize = src->m_PhysicalSize;
     m_Centroid = src->m_Centroid;
     m_RegionElongation = src->m_RegionElongation;
+    m_SizeRegionRatio = src->m_SizeRegionRatio;
     }
 
 protected:
@@ -185,6 +211,7 @@ protected:
     m_Size = 0;
     m_PhysicalSize = 0;
     m_RegionElongation = 0;
+    m_SizeRegionRatio = 0;
     }
   
 
@@ -196,6 +223,8 @@ protected:
     m_Region.Print( os, indent );
     os << indent << "PhysicalSize: " << m_PhysicalSize << std::endl;
     os << indent << "Size: " << m_Size << std::endl;
+    os << indent << "RegionElongation: " << m_RegionElongation << std::endl;
+    os << indent << "SizeRegionRatio: " << m_SizeRegionRatio << std::endl;
     }
 
 private:
@@ -207,6 +236,7 @@ private:
   double m_PhysicalSize;
   CentroidType m_Centroid;
   double m_RegionElongation;
+  double m_SizeRegionRatio;
   
 
 };
