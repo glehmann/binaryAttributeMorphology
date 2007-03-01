@@ -215,7 +215,8 @@ LabelCollectionImage<TLabelObject>
       return it->second.GetPointer();
       }
     }
-  return NULL;
+    itkExceptionMacro( << "No label object at this position." );
+//   return NULL;
 }
 
 

@@ -118,6 +118,10 @@ public:
 
   LabelObjectType * GetLabelObject( const LabelType & label )
     {
+    if( ! this->HasLabel( label ) )
+      {
+      itkExceptionMacro( << "No such label." );
+      }
     return m_LabelObjectContainer[label].GetPointer();
     }
 
