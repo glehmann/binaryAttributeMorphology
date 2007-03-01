@@ -218,6 +218,7 @@ protected:
   void PrintSelf(std::ostream& os, Indent indent) const
     {
     Superclass::PrintSelf( os, indent );
+
     os << indent << "Centroid: " << m_Centroid << std::endl;
     os << indent << "Region: ";
     m_Region.Print( os, indent );
