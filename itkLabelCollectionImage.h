@@ -156,6 +156,11 @@ public:
     return m_LabelObjectContainer;
     }
   
+  unsigned long GetNumberOfObjects() const
+    {
+    return m_LabelObjectContainer.size();
+    }
+  
   itkGetConstMacro(BackgroundValue, LabelType);
   itkSetMacro(BackgroundValue, LabelType);
   
