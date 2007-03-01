@@ -2,12 +2,19 @@ FIND_PACKAGE(WrapITK REQUIRED)
 
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR})
 
+# include new declaration of types
+INCLUDE(WrapITKTypes.cmake)
+
 BEGIN_WRAPPER_LIBRARY("${PROJECT_NAME}")
 SET(WRAPPER_LIBRARY_DEPENDS Base)
 
 SET(WRAPPER_LIBRARY_GROUPS
+  itkLabelObject
   itkShapeLabelObject
-  itkLabeCollectionImage
+  itkStatisticsLabelObject
+  itkLabelCollectionImage
+  ITKLabelCollectionImageBase
+  itkInPlaceLabelCollectionImageFilter
 )
 
 WRAPPER_LIBRARY_CREATE_WRAP_FILES()
