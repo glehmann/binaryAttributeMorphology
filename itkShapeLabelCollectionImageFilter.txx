@@ -121,7 +121,7 @@ ShapeLabelCollectionImageFilter<TImage>
       regionSize[i] = maxs[i] - mins[i] + 1;
       double s = regionSize[i] * output->GetSpacing()[i];
       minSize = std::min( s, minSize );
-      maxSize = std::min( s, maxSize );
+      maxSize = std::max( s, maxSize );
       }
     typename LabelObjectType::RegionType region( mins, regionSize );
 
