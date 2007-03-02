@@ -127,9 +127,9 @@ public:
     return m_Region;
     }
 
-  void SetRegion( const RegionType & region )
+  void SetRegion( const RegionType & v )
     {
-    m_Region = region;
+    m_Region = v;
     }
 
 //   itkGetConstMacro( PhysicalSize, double );
@@ -139,9 +139,9 @@ public:
     return m_PhysicalSize;
     }
 
-  void SetPhysicalSize( const double & size )
+  void SetPhysicalSize( const double & v )
     {
-    m_PhysicalSize = size;
+    m_PhysicalSize = v;
     }
 
 //   itkGetConstMacro( Size, unsigned long );
@@ -151,9 +151,9 @@ public:
     return m_Size;
     }
 
-  void SetSize( const unsigned long & size )
+  void SetSize( const unsigned long & v )
     {
-    m_Size = size;
+    m_Size = v;
     }
 
 //   itkGetConstMacro( Centroid, CentroidType );
@@ -175,9 +175,9 @@ public:
     return m_RegionElongation;
     }
 
-  void SetRegionElongation( const double & size )
+  void SetRegionElongation( const double & v )
     {
-    m_RegionElongation = size;
+    m_RegionElongation = v;
     }
 
 //   itkGetConstMacro( SizeRegionRatio, double );
@@ -187,9 +187,9 @@ public:
     return m_SizeRegionRatio;
     }
 
-  void SetSizeRegionRatio( const double & size )
+  void SetSizeRegionRatio( const double & v )
     {
-    m_SizeRegionRatio = size;
+    m_SizeRegionRatio = v;
     }
 
 
