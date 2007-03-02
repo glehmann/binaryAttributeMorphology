@@ -87,7 +87,9 @@ AttributeRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAt
   
   typename BinarizerType::Pointer binarizer = BinarizerType::New();
   binarizer->SetInput( opening->GetOutput() );
-  progress->RegisterInternalFilter(binarizer, .2f);  
+  progress->RegisterInternalFilter(binarizer, .2f);
+
+  this->CustomizeInternalFilters( labelizer, valuator, opening, binarizer );
 
   binarizer->GraftOutput( this->GetOutput() );
   binarizer->Update();

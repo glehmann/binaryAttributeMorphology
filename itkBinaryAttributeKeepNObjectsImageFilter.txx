@@ -96,6 +96,8 @@ BinaryAttributeKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectVa
   binarizer->SetBackgroundImage( this->GetInput() );
   progress->RegisterInternalFilter(binarizer, .2f);  
 
+  this->CustomizeInternalFilters( labelizer, valuator, opening, binarizer );
+
   binarizer->GraftOutput( this->GetOutput() );
   binarizer->Update();
   this->GraftOutput( binarizer->GetOutput() );

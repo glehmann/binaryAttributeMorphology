@@ -122,6 +122,7 @@ protected:
    * to GrayscaleGeodesicErodeImageFilter. */
   void GenerateData();
   
+  virtual void CustomizeInternalFilters( LabelizerType *, LabelObjectValuatorType *, RelabelType *, BinarizerType* ) {};
 
 private:
   AttributeRelabelImageFilter(const Self&); //purposely not implemented
