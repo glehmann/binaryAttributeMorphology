@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkGenericRelabelImageFilter.h,v $
+  Module:    $RCSfile: itkLabelAttributeOpeningImageFilter.h,v $
   Language:  C++
   Date:      $Date: 2006/03/28 19:59:05 $
   Version:   $Revision: 1.6 $
@@ -14,30 +14,30 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkGenericRelabelImageFilter_h
-#define __itkGenericRelabelImageFilter_h
+#ifndef __itkLabelAttributeOpeningImageFilter_h
+#define __itkLabelAttributeOpeningImageFilter_h
 
 #include "itkInPlaceImageFilter.h"
 #include "itkLabelCollectionImage.h"
 #include "itkLabelImageToLabelCollectionImageFilter.h"
-#include "itkGenericRelabelLabelCollectionImageFilter.h"
+#include "itkAttributeOpeningLabelCollectionImageFilter.h"
 #include "itkLabelCollectionImageToLabelImageFilter.h"
 
 
 namespace itk {
 
-/** \class GenericRelabelImageFilter
+/** \class LabelAttributeOpeningImageFilter
  * \brief Identify local maxima whose height above the baseline is greater than h.
  *
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
-class ITK_EXPORT GenericRelabelImageFilter : 
+class ITK_EXPORT LabelAttributeOpeningImageFilter : 
     public InPlaceImageFilter<TInputImage, TInputImage>
 {
 public:
   /** Standard class typedefs. */
-  typedef GenericRelabelImageFilter Self;
+  typedef LabelAttributeOpeningImageFilter Self;
   typedef InPlaceImageFilter<TInputImage, TInputImage>
   Superclass;
   typedef SmartPointer<Self>        Pointer;
@@ -69,14 +69,14 @@ public:
   typedef TLabelObjectValuator LabelObjectValuatorType;
   typedef TAttributeAccessor AttributeAccessorType;
   typedef typename AttributeAccessorType::AttributeType AttributeType;
-  typedef typename itk::GenericRelabelLabelCollectionImageFilter< LabelCollectionImageType, AttributeAccessorType > RelabelType;
+  typedef typename itk::AttributeOpeningLabelCollectionImageFilter< LabelCollectionImageType, AttributeAccessorType > OpeningType;
   typedef typename itk::LabelCollectionImageToLabelImageFilter< LabelCollectionImageType, OutputImageType > BinarizerType;
 
   /** Standard New method. */
   itkNewMacro(Self);  
 
   /** Runtime information support. */
-  itkTypeMacro(GenericRelabelImageFilter, 
+  itkTypeMacro(LabelAttributeOpeningImageFilter, 
                InPlaceImageFilter);
 
 #ifdef ITK_USE_CONCEPT_CHECKING
@@ -97,46 +97,46 @@ public:
   itkSetMacro(BackgroundValue, OutputImagePixelType);
   itkGetConstMacro(BackgroundValue, OutputImagePixelType);
 
+  itkGetConstMacro(Lambda, AttributeType);
+  itkSetMacro(Lambda, AttributeType);
+
   itkGetConstMacro( ReverseOrdering, bool );
   itkSetMacro( ReverseOrdering, bool );
   itkBooleanMacro( ReverseOrdering );
 
-  itkGetConstMacro( UseBackground, bool );
-  itkSetMacro( UseBackground, bool );
-  itkBooleanMacro( UseBackground );
-
 protected:
-  GenericRelabelImageFilter();
-  ~GenericRelabelImageFilter() {};
+  LabelAttributeOpeningImageFilter();
+  ~LabelAttributeOpeningImageFilter() {};
   void PrintSelf(std::ostream& os, Indent indent) const;
 
-  /** GenericRelabelImageFilter needs the entire input be
+  /** LabelAttributeOpeningImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
   void GenerateInputRequestedRegion() ;
 
-  /** GenericRelabelImageFilter will produce the entire output. */
+  /** LabelAttributeOpeningImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
   
   /** Single-threaded version of GenerateData.  This filter delegates
    * to GrayscaleGeodesicErodeImageFilter. */
   void GenerateData();
   
-  virtual void CustomizeInternalFilters( LabelizerType *, LabelObjectValuatorType *, RelabelType *, BinarizerType* ) {};
+  virtual void CustomizeInternalFilters( LabelizerType *, LabelObjectValuatorType *, OpeningType *, BinarizerType* ) {};
+
 
 private:
-  GenericRelabelImageFilter(const Self&); //purposely not implemented
+  LabelAttributeOpeningImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
   OutputImagePixelType m_BackgroundValue;
-  bool m_UseBackground;
+  AttributeType m_Lambda;
   bool m_ReverseOrdering;
 } ; // end of class
 
 } // end namespace itk
   
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkGenericRelabelImageFilter.txx"
+#include "itkLabelAttributeOpeningImageFilter.txx"
 #endif
 
 #endif

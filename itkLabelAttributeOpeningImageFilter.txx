@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkLabelGenericOpeningImageFilter.txx,v $
+  Module:    $RCSfile: itkLabelAttributeOpeningImageFilter.txx,v $
   Language:  C++
   Date:      $Date: 2006/08/01 19:16:18 $
   Version:   $Revision: 1.7 $
@@ -14,18 +14,18 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkLabelGenericOpeningImageFilter_txx
-#define __itkLabelGenericOpeningImageFilter_txx
+#ifndef __itkLabelAttributeOpeningImageFilter_txx
+#define __itkLabelAttributeOpeningImageFilter_txx
 
-#include "itkLabelGenericOpeningImageFilter.h"
+#include "itkLabelAttributeOpeningImageFilter.h"
 #include "itkProgressAccumulator.h"
 
 
 namespace itk {
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
-LabelGenericOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
-::LabelGenericOpeningImageFilter()
+LabelAttributeOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+::LabelAttributeOpeningImageFilter()
 {
   m_BackgroundValue = NumericTraits<OutputImagePixelType>::NonpositiveMin();
   m_Lambda = NumericTraits< AttributeType >::Zero;
@@ -34,7 +34,7 @@ LabelGenericOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, 
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
 void 
-LabelGenericOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+LabelAttributeOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
 ::GenerateInputRequestedRegion()
 {
   // call the superclass' implementation of this method
@@ -51,7 +51,7 @@ LabelGenericOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, 
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
 void 
-LabelGenericOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+LabelAttributeOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
 ::EnlargeOutputRequestedRegion(DataObject *)
 {
   this->GetOutput()
@@ -61,7 +61,7 @@ LabelGenericOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, 
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
 void
-LabelGenericOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+LabelAttributeOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
 ::GenerateData()
 {
   // Create a process accumulator for tracking the progress of this minipipeline
@@ -100,7 +100,7 @@ LabelGenericOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, 
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
 void
-LabelGenericOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+LabelAttributeOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
 ::PrintSelf(std::ostream &os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);

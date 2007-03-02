@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkBinaryGenericKeepNObjectsImageFilter.txx,v $
+  Module:    $RCSfile: itkBinaryAttributeKeepNObjectsImageFilter.txx,v $
   Language:  C++
   Date:      $Date: 2006/08/01 19:16:18 $
   Version:   $Revision: 1.7 $
@@ -14,18 +14,18 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkBinaryGenericKeepNObjectsImageFilter_txx
-#define __itkBinaryGenericKeepNObjectsImageFilter_txx
+#ifndef __itkBinaryAttributeKeepNObjectsImageFilter_txx
+#define __itkBinaryAttributeKeepNObjectsImageFilter_txx
 
-#include "itkBinaryGenericKeepNObjectsImageFilter.h"
+#include "itkBinaryAttributeKeepNObjectsImageFilter.h"
 #include "itkProgressAccumulator.h"
 
 
 namespace itk {
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
-BinaryGenericKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
-::BinaryGenericKeepNObjectsImageFilter()
+BinaryAttributeKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+::BinaryAttributeKeepNObjectsImageFilter()
 {
   m_BackgroundValue = NumericTraits<OutputImagePixelType>::NonpositiveMin();
   m_ForegroundValue = NumericTraits<OutputImagePixelType>::max();
@@ -35,7 +35,7 @@ BinaryGenericKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectValu
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
 void 
-BinaryGenericKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+BinaryAttributeKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
 ::GenerateInputRequestedRegion()
 {
   // call the superclass' implementation of this method
@@ -52,7 +52,7 @@ BinaryGenericKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectValu
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
 void 
-BinaryGenericKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+BinaryAttributeKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
 ::EnlargeOutputRequestedRegion(DataObject *)
 {
   this->GetOutput()
@@ -62,7 +62,7 @@ BinaryGenericKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectValu
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
 void
-BinaryGenericKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+BinaryAttributeKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
 ::GenerateData()
 {
   // Create a process accumulator for tracking the progress of this minipipeline
@@ -106,7 +106,7 @@ BinaryGenericKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectValu
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
 void
-BinaryGenericKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+BinaryAttributeKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
 ::PrintSelf(std::ostream &os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
