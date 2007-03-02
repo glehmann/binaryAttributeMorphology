@@ -34,6 +34,7 @@ SET(Libraries
   ITKCommon
   ITKBasicFilters
   ITKIO
+  ITKStatistics
 )
 
 
