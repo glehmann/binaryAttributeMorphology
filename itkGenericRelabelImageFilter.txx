@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkAttributeRelabelImageFilter.txx,v $
+  Module:    $RCSfile: itkGenericRelabelImageFilter.txx,v $
   Language:  C++
   Date:      $Date: 2006/08/01 19:16:18 $
   Version:   $Revision: 1.7 $
@@ -14,18 +14,18 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkAttributeRelabelImageFilter_txx
-#define __itkAttributeRelabelImageFilter_txx
+#ifndef __itkGenericRelabelImageFilter_txx
+#define __itkGenericRelabelImageFilter_txx
 
-#include "itkAttributeRelabelImageFilter.h"
+#include "itkGenericRelabelImageFilter.h"
 #include "itkProgressAccumulator.h"
 
 
 namespace itk {
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
-AttributeRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
-::AttributeRelabelImageFilter()
+GenericRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+::GenericRelabelImageFilter()
 {
   m_BackgroundValue = NumericTraits<OutputImagePixelType>::NonpositiveMin();
   m_ReverseOrdering = false;
@@ -33,7 +33,7 @@ AttributeRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAt
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
 void 
-AttributeRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+GenericRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
 ::GenerateInputRequestedRegion()
 {
   // call the superclass' implementation of this method
@@ -50,7 +50,7 @@ AttributeRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAt
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
 void 
-AttributeRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+GenericRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
 ::EnlargeOutputRequestedRegion(DataObject *)
 {
   this->GetOutput()
@@ -60,7 +60,7 @@ AttributeRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAt
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
 void
-AttributeRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+GenericRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
 ::GenerateData()
 {
   // Create a process accumulator for tracking the progress of this minipipeline
@@ -99,7 +99,7 @@ AttributeRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAt
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
 void
-AttributeRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+GenericRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
 ::PrintSelf(std::ostream &os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);

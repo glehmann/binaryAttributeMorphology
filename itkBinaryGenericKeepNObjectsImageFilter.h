@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkLabelAttributeKeepNObjectsImageFilter.h,v $
+  Module:    $RCSfile: itkBinaryGenericKeepNObjectsImageFilter.h,v $
   Language:  C++
   Date:      $Date: 2006/03/28 19:59:05 $
   Version:   $Revision: 1.6 $
@@ -14,30 +14,30 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkLabelAttributeKeepNObjectsImageFilter_h
-#define __itkLabelAttributeKeepNObjectsImageFilter_h
+#ifndef __itkBinaryGenericKeepNObjectsImageFilter_h
+#define __itkBinaryGenericKeepNObjectsImageFilter_h
 
 #include "itkInPlaceImageFilter.h"
 #include "itkLabelCollectionImage.h"
-#include "itkLabelImageToLabelCollectionImageFilter.h"
-#include "itkAttributeKeepNObjectsLabelCollectionImageFilter.h"
-#include "itkLabelCollectionImageToLabelImageFilter.h"
+#include "itkBinaryImageToLabelCollectionImageFilter.h"
+#include "itkGenericKeepNObjectsLabelCollectionImageFilter.h"
+#include "itkLabelCollectionImageToBinaryImageFilter.h"
 
 
 namespace itk {
 
-/** \class LabelAttributeKeepNObjectsImageFilter
+/** \class BinaryGenericKeepNObjectsImageFilter
  * \brief Identify local maxima whose height above the baseline is greater than h.
  *
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
-class ITK_EXPORT LabelAttributeKeepNObjectsImageFilter : 
+class ITK_EXPORT BinaryGenericKeepNObjectsImageFilter : 
     public InPlaceImageFilter<TInputImage, TInputImage>
 {
 public:
   /** Standard class typedefs. */
-  typedef LabelAttributeKeepNObjectsImageFilter Self;
+  typedef BinaryGenericKeepNObjectsImageFilter Self;
   typedef InPlaceImageFilter<TInputImage, TInputImage>
   Superclass;
   typedef SmartPointer<Self>        Pointer;
@@ -65,19 +65,29 @@ public:
 
   typedef TLabelObject LabelObjectType;
   typedef typename itk::LabelCollectionImage< LabelObjectType > LabelCollectionImageType;
-  typedef typename itk::LabelImageToLabelCollectionImageFilter< InputImageType, LabelCollectionImageType > LabelizerType;
+  typedef typename itk::BinaryImageToLabelCollectionImageFilter< InputImageType, LabelCollectionImageType > LabelizerType;
   typedef TLabelObjectValuator LabelObjectValuatorType;
   typedef TAttributeAccessor AttributeAccessorType;
   typedef typename AttributeAccessorType::AttributeType AttributeType;
-  typedef typename itk::AttributeKeepNObjectsLabelCollectionImageFilter< LabelCollectionImageType, AttributeAccessorType > KeepNObjectsType;
-  typedef typename itk::LabelCollectionImageToLabelImageFilter< LabelCollectionImageType, OutputImageType > BinarizerType;
+  typedef typename itk::GenericKeepNObjectsLabelCollectionImageFilter< LabelCollectionImageType, AttributeAccessorType > KeepNObjectsType;
+  typedef typename itk::LabelCollectionImageToBinaryImageFilter< LabelCollectionImageType, OutputImageType > BinarizerType;
 
   /** Standard New method. */
   itkNewMacro(Self);  
 
   /** Runtime information support. */
-  itkTypeMacro(LabelAttributeKeepNObjectsImageFilter, 
+  itkTypeMacro(BinaryGenericKeepNObjectsImageFilter, 
                InPlaceImageFilter);
+
+  /**
+   * Set/Get whether the connected components are defined strictly by
+   * face connectivity or by face+edge+vertex connectivity.  Default is
+   * FullyConnectedOff.  For objects that are 1 pixel wide, use
+   * FullyConnectedOn.
+   */
+  itkSetMacro(FullyConnected, bool);
+  itkGetConstReferenceMacro(FullyConnected, bool);
+  itkBooleanMacro(FullyConnected);
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
@@ -97,6 +107,13 @@ public:
   itkSetMacro(BackgroundValue, OutputImagePixelType);
   itkGetConstMacro(BackgroundValue, OutputImagePixelType);
 
+  /**
+   * Set/Get the value used as "foreground" in the output image.
+   * Defaults to NumericTraits<PixelType>::max().
+   */
+  itkSetMacro(ForegroundValue, OutputImagePixelType);
+  itkGetConstMacro(ForegroundValue, OutputImagePixelType);
+
   itkGetConstMacro(NumberOfObjects, unsigned long);
   itkSetMacro(NumberOfObjects, unsigned long);
 
@@ -105,16 +122,16 @@ public:
   itkBooleanMacro( ReverseOrdering );
 
 protected:
-  LabelAttributeKeepNObjectsImageFilter();
-  ~LabelAttributeKeepNObjectsImageFilter() {};
+  BinaryGenericKeepNObjectsImageFilter();
+  ~BinaryGenericKeepNObjectsImageFilter() {};
   void PrintSelf(std::ostream& os, Indent indent) const;
 
-  /** LabelAttributeKeepNObjectsImageFilter needs the entire input be
+  /** BinaryGenericKeepNObjectsImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
   void GenerateInputRequestedRegion() ;
 
-  /** LabelAttributeKeepNObjectsImageFilter will produce the entire output. */
+  /** BinaryGenericKeepNObjectsImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
   
   /** Single-threaded version of GenerateData.  This filter delegates
@@ -124,10 +141,12 @@ protected:
   virtual void CustomizeInternalFilters( LabelizerType *, LabelObjectValuatorType *, KeepNObjectsType *, BinarizerType* ) {};
 
 private:
-  LabelAttributeKeepNObjectsImageFilter(const Self&); //purposely not implemented
+  BinaryGenericKeepNObjectsImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
+  bool                m_FullyConnected;
   OutputImagePixelType m_BackgroundValue;
+  OutputImagePixelType m_ForegroundValue;
   unsigned long m_NumberOfObjects;
   bool m_ReverseOrdering;
 } ; // end of class
@@ -135,7 +154,7 @@ private:
 } // end namespace itk
   
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkLabelAttributeKeepNObjectsImageFilter.txx"
+#include "itkBinaryGenericKeepNObjectsImageFilter.txx"
 #endif
 
 #endif

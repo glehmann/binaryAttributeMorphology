@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkLabelAttributeKeepNObjectsImageFilter.txx,v $
+  Module:    $RCSfile: itkBinaryGenericOpeningImageFilter.txx,v $
   Language:  C++
   Date:      $Date: 2006/08/01 19:16:18 $
   Version:   $Revision: 1.7 $
@@ -14,27 +14,28 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkLabelAttributeKeepNObjectsImageFilter_txx
-#define __itkLabelAttributeKeepNObjectsImageFilter_txx
+#ifndef __itkBinaryGenericOpeningImageFilter_txx
+#define __itkBinaryGenericOpeningImageFilter_txx
 
-#include "itkLabelAttributeKeepNObjectsImageFilter.h"
+#include "itkBinaryGenericOpeningImageFilter.h"
 #include "itkProgressAccumulator.h"
 
 
 namespace itk {
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
-LabelAttributeKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
-::LabelAttributeKeepNObjectsImageFilter()
+BinaryGenericOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+::BinaryGenericOpeningImageFilter()
 {
   m_BackgroundValue = NumericTraits<OutputImagePixelType>::NonpositiveMin();
-  m_NumberOfObjects = 1;
+  m_ForegroundValue = NumericTraits<OutputImagePixelType>::max();
+  m_FullyConnected = false;
   m_ReverseOrdering = false;
 }
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
 void 
-LabelAttributeKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+BinaryGenericOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
 ::GenerateInputRequestedRegion()
 {
   // call the superclass' implementation of this method
@@ -51,7 +52,7 @@ LabelAttributeKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectVal
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
 void 
-LabelAttributeKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+BinaryGenericOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
 ::EnlargeOutputRequestedRegion(DataObject *)
 {
   this->GetOutput()
@@ -61,7 +62,7 @@ LabelAttributeKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectVal
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
 void
-LabelAttributeKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+BinaryGenericOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
 ::GenerateData()
 {
   // Create a process accumulator for tracking the progress of this minipipeline
@@ -73,21 +74,26 @@ LabelAttributeKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectVal
   
   typename LabelizerType::Pointer labelizer = LabelizerType::New();
   labelizer->SetInput( this->GetInput() );
+  labelizer->SetForegroundValue( m_ForegroundValue );
   labelizer->SetBackgroundValue( m_BackgroundValue );
+  labelizer->SetFullyConnected( m_FullyConnected );
   progress->RegisterInternalFilter(labelizer, .3f);
   
   typename LabelObjectValuatorType::Pointer valuator = LabelObjectValuatorType::New();
   valuator->SetInput( labelizer->GetOutput() );
   progress->RegisterInternalFilter(valuator, .3f);
   
-  typename KeepNObjectsType::Pointer opening = KeepNObjectsType::New();
+  typename OpeningType::Pointer opening = OpeningType::New();
   opening->SetInput( valuator->GetOutput() );
-  opening->SetNumberOfObjects( m_NumberOfObjects );
+  opening->SetLambda( m_Lambda );
   opening->SetReverseOrdering( m_ReverseOrdering );
   progress->RegisterInternalFilter(opening, .2f);
   
   typename BinarizerType::Pointer binarizer = BinarizerType::New();
   binarizer->SetInput( opening->GetOutput() );
+  binarizer->SetForegroundValue( m_ForegroundValue );
+  binarizer->SetBackgroundValue( m_BackgroundValue );
+  binarizer->SetBackgroundImage( this->GetInput() );
   progress->RegisterInternalFilter(binarizer, .2f);  
 
   this->CustomizeInternalFilters( labelizer, valuator, opening, binarizer );
@@ -100,13 +106,15 @@ LabelAttributeKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectVal
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
 void
-LabelAttributeKeepNObjectsImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
+BinaryGenericOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAttributeAccessor>
 ::PrintSelf(std::ostream &os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 
+  os << indent << "FullyConnected: "  << m_FullyConnected << std::endl;
   os << indent << "BackgroundValue: "  << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
-  os << indent << "NumberOfObjects: "  << m_NumberOfObjects << std::endl;
+  os << indent << "ForegroundValue: "  << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_ForegroundValue) << std::endl;
+  os << indent << "Lambda: "  << static_cast<typename NumericTraits<AttributeType>::PrintType>(m_Lambda) << std::endl;
   os << indent << "ReverseOrdering: "  << m_ReverseOrdering << std::endl;
 }
   

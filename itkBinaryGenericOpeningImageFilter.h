@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkBinaryAttributeOpeningImageFilter.h,v $
+  Module:    $RCSfile: itkBinaryGenericOpeningImageFilter.h,v $
   Language:  C++
   Date:      $Date: 2006/03/28 19:59:05 $
   Version:   $Revision: 1.6 $
@@ -14,30 +14,30 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkBinaryAttributeOpeningImageFilter_h
-#define __itkBinaryAttributeOpeningImageFilter_h
+#ifndef __itkBinaryGenericOpeningImageFilter_h
+#define __itkBinaryGenericOpeningImageFilter_h
 
 #include "itkInPlaceImageFilter.h"
 #include "itkLabelCollectionImage.h"
 #include "itkBinaryImageToLabelCollectionImageFilter.h"
-#include "itkAttributeOpeningLabelCollectionImageFilter.h"
+#include "itkGenericOpeningLabelCollectionImageFilter.h"
 #include "itkLabelCollectionImageToBinaryImageFilter.h"
 
 
 namespace itk {
 
-/** \class BinaryAttributeOpeningImageFilter
+/** \class BinaryGenericOpeningImageFilter
  * \brief Identify local maxima whose height above the baseline is greater than h.
  *
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
-class ITK_EXPORT BinaryAttributeOpeningImageFilter : 
+class ITK_EXPORT BinaryGenericOpeningImageFilter : 
     public InPlaceImageFilter<TInputImage, TInputImage>
 {
 public:
   /** Standard class typedefs. */
-  typedef BinaryAttributeOpeningImageFilter Self;
+  typedef BinaryGenericOpeningImageFilter Self;
   typedef InPlaceImageFilter<TInputImage, TInputImage>
   Superclass;
   typedef SmartPointer<Self>        Pointer;
@@ -69,14 +69,14 @@ public:
   typedef TLabelObjectValuator LabelObjectValuatorType;
   typedef TAttributeAccessor AttributeAccessorType;
   typedef typename AttributeAccessorType::AttributeType AttributeType;
-  typedef typename itk::AttributeOpeningLabelCollectionImageFilter< LabelCollectionImageType, AttributeAccessorType > OpeningType;
+  typedef typename itk::GenericOpeningLabelCollectionImageFilter< LabelCollectionImageType, AttributeAccessorType > OpeningType;
   typedef typename itk::LabelCollectionImageToBinaryImageFilter< LabelCollectionImageType, OutputImageType > BinarizerType;
 
   /** Standard New method. */
   itkNewMacro(Self);  
 
   /** Runtime information support. */
-  itkTypeMacro(BinaryAttributeOpeningImageFilter, 
+  itkTypeMacro(BinaryGenericOpeningImageFilter, 
                InPlaceImageFilter);
 
   /**
@@ -122,16 +122,16 @@ public:
   itkBooleanMacro( ReverseOrdering );
 
 protected:
-  BinaryAttributeOpeningImageFilter();
-  ~BinaryAttributeOpeningImageFilter() {};
+  BinaryGenericOpeningImageFilter();
+  ~BinaryGenericOpeningImageFilter() {};
   void PrintSelf(std::ostream& os, Indent indent) const;
 
-  /** BinaryAttributeOpeningImageFilter needs the entire input be
+  /** BinaryGenericOpeningImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
   void GenerateInputRequestedRegion() ;
 
-  /** BinaryAttributeOpeningImageFilter will produce the entire output. */
+  /** BinaryGenericOpeningImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
   
   /** Single-threaded version of GenerateData.  This filter delegates
@@ -142,7 +142,7 @@ protected:
 
 
 private:
-  BinaryAttributeOpeningImageFilter(const Self&); //purposely not implemented
+  BinaryGenericOpeningImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
   bool                m_FullyConnected;
@@ -155,7 +155,7 @@ private:
 } // end namespace itk
   
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkBinaryAttributeOpeningImageFilter.txx"
+#include "itkBinaryGenericOpeningImageFilter.txx"
 #endif
 
 #endif
