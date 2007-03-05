@@ -8,9 +8,9 @@
 int main(int argc, char * argv[])
 {
 
-  if( argc != 7 )
+  if( argc != 8 )
     {
-    std::cerr << "usage: " << argv[0] << " input input output background lambda reverseOrdering" << std::endl;
+    std::cerr << "usage: " << argv[0] << " input input output background lambda reverseOrdering attribute" << std::endl;
     // std::cerr << "  : " << std::endl;
     exit(1);
     }
@@ -31,8 +31,9 @@ int main(int argc, char * argv[])
   opening->SetInput( reader->GetOutput() );
   opening->SetFeatureImage( reader2->GetOutput() );
   opening->SetBackgroundValue( atoi(argv[4]) );
-  opening->SetLambda( atoi(argv[5]) );
+  opening->SetLambda( atof(argv[5]) );
   opening->SetReverseOrdering( atoi(argv[6]) );
+  opening->SetAttribute( argv[7] );
   itk::SimpleFilterWatcher watcher(opening, "filter");
 
   typedef itk::ImageFileWriter< IType > WriterType;

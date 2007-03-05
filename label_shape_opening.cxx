@@ -8,9 +8,9 @@
 int main(int argc, char * argv[])
 {
 
-  if( argc != 6 )
+  if( argc != 7 )
     {
-    std::cerr << "usage: " << argv[0] << " input output background lambda reverseOrdering" << std::endl;
+    std::cerr << "usage: " << argv[0] << " input output background lambda reverseOrdering attribute" << std::endl;
     // std::cerr << "  : " << std::endl;
     exit(1);
     }
@@ -27,8 +27,9 @@ int main(int argc, char * argv[])
   LabelOpeningType::Pointer opening = LabelOpeningType::New();
   opening->SetInput( reader->GetOutput() );
   opening->SetBackgroundValue( atoi(argv[3]) );
-  opening->SetLambda( atoi(argv[4]) );
+  opening->SetLambda( atof(argv[4]) );
   opening->SetReverseOrdering( atoi(argv[5]) );
+  opening->SetAttribute( argv[6] );
   itk::SimpleFilterWatcher watcher(opening, "filter");
 
   typedef itk::ImageFileWriter< IType > WriterType;

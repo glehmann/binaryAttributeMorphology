@@ -125,20 +125,20 @@ FOREACH(fg 100 200)
   FOREACH(bg 0 150)
     FOREACH(order 0 1)
       FOREACH(connectivity 0 1)
-        FOREACH(size 10 100 1000 10000)
+        FOREACH(size 100 10000)
           ADD_TEST(BinarySizeOpening-${fg}-${bg}-${size}-${order}-${connectivity} ${TEST_COMMAND}
             binary_shape_opening
               ${BINARY_IMAGE} binary_size_opening-${fg}-${bg}-${size}-${order}-${connectivity}.png
-              ${fg} ${bg} ${size} ${order} ${connectivity}
+              ${fg} ${bg} ${size} ${order} ${connectivity} Size
             --compare binary_size_opening-${fg}-${bg}-${size}-${order}-${connectivity}.png ${CMAKE_SOURCE_DIR}/images/binary_size_opening-${fg}-${bg}-${size}-${order}-${connectivity}.png
           )
         ENDFOREACH(size)
 
-        FOREACH(nb 1 3 5 10)
+        FOREACH(nb 3 10)
           ADD_TEST(BinarySizeKeepNObjects-${fg}-${bg}-${nb}-${order}-${connectivity} ${TEST_COMMAND}
             binary_shape_keep_n_objects
               ${BINARY_IMAGE} binary_keep_n_objects-${fg}-${bg}-${nb}-${order}-${connectivity}.png
-              ${fg} ${bg} ${nb} ${order} ${connectivity}
+              ${fg} ${bg} ${nb} ${order} ${connectivity} Size
             --compare binary_keep_n_objects-${fg}-${bg}-${nb}-${order}-${connectivity}.png ${CMAKE_SOURCE_DIR}/images/binary_keep_n_objects-${fg}-${bg}-${nb}-${order}-${connectivity}.png
           )
         ENDFOREACH(nb)
@@ -149,20 +149,20 @@ ENDFOREACH(fg)
 
 FOREACH(bg 0 150)
   FOREACH(order 0 1)
-      FOREACH(size 10 100 1000 10000)
+      FOREACH(size 100 10000)
         ADD_TEST(LabelSizeOpening-${bg}-${size}-${order} ${TEST_COMMAND}
           label_shape_opening
             ${LABEL_IMAGE} label_size_opening-${bg}-${size}-${order}.png
-             ${bg} ${size} ${order}
+            ${bg} ${size} ${order} Size
           --compare label_size_opening-${bg}-${size}-${order}.png ${CMAKE_SOURCE_DIR}/images/label_size_opening-${bg}-${size}-${order}.png
         )
       ENDFOREACH(size)
 
-      FOREACH(nb 1 3 5 10)
+      FOREACH(nb 3 10)
         ADD_TEST(LabelSizeKeepNObjects-${bg}-${nb}-${order} ${TEST_COMMAND}
           label_shape_keep_n_objects
             ${LABEL_IMAGE} label_keep_n_objects-${bg}-${nb}-${order}.png
-             ${bg} ${nb} ${order}
+            ${bg} ${nb} ${order} Size
           --compare label_keep_n_objects-${bg}-${nb}-${order}.png ${CMAKE_SOURCE_DIR}/images/label_keep_n_objects-${bg}-${nb}-${order}.png
         )
       ENDFOREACH(nb)
@@ -175,7 +175,7 @@ FOREACH(bg 0 150)
         ADD_TEST(SizeRelabel-${bg}-${useBg}-${order} ${TEST_COMMAND}
           shape_relabel
             ${LABEL_IMAGE} size_relabel-${bg}-${useBg}-${order}.png
-             ${bg} ${useBg} ${order}
+            ${bg} ${useBg} ${order} Size
           --compare size_relabel-${bg}-${useBg}-${order}.png ${CMAKE_SOURCE_DIR}/images/size_relabel-${bg}-${useBg}-${order}.png
         )
       ENDFOREACH(useBg)

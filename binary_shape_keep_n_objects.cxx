@@ -8,9 +8,9 @@
 int main(int argc, char * argv[])
 {
 
-  if( argc != 8 )
+  if( argc != 9 )
     {
-    std::cerr << "usage: " << argv[0] << " input output foreground background nb reverseOrdering connectivity" << std::endl;
+    std::cerr << "usage: " << argv[0] << " input output foreground background nb reverseOrdering connectivity attribute" << std::endl;
     // std::cerr << "  : " << std::endl;
     exit(1);
     }
@@ -31,7 +31,7 @@ int main(int argc, char * argv[])
   opening->SetNumberOfObjects( atoi(argv[5]) );
   opening->SetReverseOrdering( atoi(argv[6]) );
   opening->SetFullyConnected( atoi(argv[7]) );
-  opening->SetAttribute( "PhysicalSize" );
+  opening->SetAttribute( argv[8] );
   itk::SimpleFilterWatcher watcher(opening, "filter");
 
   typedef itk::ImageFileWriter< IType > WriterType;

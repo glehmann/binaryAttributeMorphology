@@ -8,9 +8,9 @@
 int main(int argc, char * argv[])
 {
 
-  if( argc != 7 )
+  if( argc != 8 )
     {
-    std::cerr << "usage: " << argv[0] << " input input output background useBg reverseOrdering" << std::endl;
+    std::cerr << "usage: " << argv[0] << " input input output background useBg reverseOrdering attribute" << std::endl;
     // std::cerr << "  : " << std::endl;
     exit(1);
     }
@@ -33,6 +33,7 @@ int main(int argc, char * argv[])
   relabel->SetBackgroundValue( atoi(argv[4]) );
   relabel->SetUseBackground( atoi(argv[5]) );
   relabel->SetReverseOrdering( atoi(argv[6]) );
+  relabel->SetAttribute( argv[7] );
   itk::SimpleFilterWatcher watcher(relabel, "filter");
 
   typedef itk::ImageFileWriter< IType > WriterType;
