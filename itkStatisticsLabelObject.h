@@ -156,6 +156,16 @@ public:
 
   typedef typename Superclass::LineContainerType LineContainerType;
 
+  typedef enum {
+    MINIMUM=0,
+    MAXIMUM,
+    MEAN,
+    SUM,
+    SIGMA,
+    VARIANCE,
+    MEDIAN
+  } AttributeType;
+
   typedef ImageRegion< ImageDimension > RegionType;
 
   typedef typename itk::FixedArray<double, ImageDimension> CentroidType;

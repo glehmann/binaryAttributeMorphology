@@ -29,6 +29,7 @@ template <class TImage, class TFeatureImage>
 StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
 ::StatisticsLabelCollectionImageFilter()
 {
+  this->SetNumberOfRequiredInputs(2);
 }
 
 
