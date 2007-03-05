@@ -129,6 +129,11 @@ public:
 
   itkGetConstMacro( Attribute, AttributeType );
   itkSetMacro( Attribute, AttributeType );
+  void SetAttribute( const std::string & s )
+    {
+    this->SetAttribute( LabelObjectType::GetAttributeFromName( s ) );
+    }
+
 
    /** Set the marker image */
   void SetFeatureImage(TFeatureImage *input)

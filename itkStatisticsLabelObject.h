@@ -165,6 +165,70 @@ public:
   static const AttributeType VARIANCE=105;
   static const AttributeType MEDIAN=106;
 
+  static AttributeType GetAttributeFromName( const std::string & s )
+    {
+    if( s == "Minimum" )
+      {
+      return MINIMUM;
+      }
+    else if( s == "Maximum" )
+      {
+      return MAXIMUM;
+      }
+    else if( s == "Mean" )
+      {
+      return MEAN;
+      }
+    else if( s == "Sum" )
+      {
+      return SUM;
+       }
+    else if( s == "Sigma" )
+      {
+      return SIGMA;
+      }
+    else if( s == "Variance" )
+      {
+      return VARIANCE;
+      }
+    else if( s == "Median" )
+      {
+      return MEDIAN;
+      }
+    // can't recognize the namespace
+    return Superclass::GetAttributeFromName( s );
+    }
+
+  static std::string GetNameFromAttribute( const AttributeType & a )
+    {
+    switch( a )
+      {
+      case MINIMUM:
+        return "Minimum";
+        break;
+      case MAXIMUM:
+        return "Maximum";
+        break;
+      case MEAN:
+        return "Mean";
+        break;
+      case SUM:
+        return "Sum";
+        break;
+      case SIGMA:
+        return "Sigma";
+        break;
+      case VARIANCE:
+        return "Variance";
+        break;
+      case MEDIAN:
+        return "Median";
+        break;
+      }
+      // can't recognize the namespace
+      return Superclass::GetNameFromAttribute( a );
+    }
+
   typedef ImageRegion< ImageDimension > RegionType;
 
   typedef typename itk::FixedArray<double, ImageDimension> CentroidType;

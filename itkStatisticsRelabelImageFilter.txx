@@ -109,7 +109,7 @@ StatisticsRelabelImageFilter<TInputImage, TFeatureImage>
   os << indent << "ReverseOrdering: "  << m_ReverseOrdering << std::endl;
   os << indent << "BackgroundValue: "  << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
   os << indent << "UseBackground: "  << m_UseBackground << std::endl;
-  os << indent << "Attribute: "  << static_cast<typename NumericTraits<AttributeType>::PrintType>(m_Attribute) << std::endl;
+  os << indent << "Attribute: "  << LabelObjectType::GetNameFromAttribute(m_Attribute) << " (" << m_Attribute << ")" << std::endl;
 }
   
 }// end namespace itk

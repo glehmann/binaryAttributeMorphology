@@ -121,6 +121,64 @@ public:
   static const AttributeType PHYSICAL_SIZE=1;
   static const AttributeType REGION_ELONGATION=2;
   static const AttributeType SIZE_REGION_RATIO=3;
+  static const AttributeType CENTROID=4;
+  static const AttributeType REGION=5;
+
+  static AttributeType GetAttributeFromName( const std::string & s )
+    {
+    if( s == "Size" )
+      {
+      return SIZE;
+      }
+    else if( s == "PhysicalSize" )
+      {
+      return PHYSICAL_SIZE;
+      }
+    else if( s == "RegionElongation" )
+      {
+      return REGION_ELONGATION;
+      }
+    else if( s == "SizeRegionRatio" )
+      {
+      return SIZE_REGION_RATIO;
+      }
+    else if( s == "Centroid" )
+      {
+      return CENTROID;
+      }
+    else if( s == "Region" )
+      {
+      return REGION;
+      }
+    // can't recognize the namespace
+    throw std::runtime_error("Unknown attribute.");
+    }
+
+  static std::string GetNameFromAttribute( const AttributeType & a )
+    {
+    switch( a )
+      {
+      case SIZE:
+        return "Size";
+        break;
+      case PHYSICAL_SIZE:
+        return "PhysicalSize";
+        break;
+      case REGION_ELONGATION:
+        return "RegionElongation";
+        break;
+      case SIZE_REGION_RATIO:
+        return "SizeRegionRatio";
+        break;
+      case CENTROID:
+        return "Centroid";
+      case REGION:
+        return "Region";
+        break;
+      }
+      // can't recognize the namespace
+      throw std::runtime_error("Unknown attribute.");
+    }
 
   typedef ImageRegion< ImageDimension > RegionType;
 

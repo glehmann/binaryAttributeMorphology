@@ -31,6 +31,7 @@ int main(int argc, char * argv[])
   opening->SetNumberOfObjects( atoi(argv[5]) );
   opening->SetReverseOrdering( atoi(argv[6]) );
   opening->SetFullyConnected( atoi(argv[7]) );
+  opening->SetAttribute( "PhysicalSize" );
   itk::SimpleFilterWatcher watcher(opening, "filter");
 
   typedef itk::ImageFileWriter< IType > WriterType;

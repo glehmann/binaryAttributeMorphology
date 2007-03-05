@@ -124,7 +124,7 @@ ShapeKeepNObjectsLabelCollectionImageFilter<TImage>
 
   os << indent << "ReverseOrdering: "  << m_ReverseOrdering << std::endl;
   os << indent << "NumberOfObjects: "  << m_NumberOfObjects << std::endl;
-  os << indent << "Attribute: "  << static_cast<typename NumericTraits<AttributeType>::PrintType>(m_Attribute) << std::endl;
+  os << indent << "Attribute: "  << LabelObjectType::GetNameFromAttribute(m_Attribute) << " (" << m_Attribute << ")" << std::endl;
 }
 
 }// end namespace itk
