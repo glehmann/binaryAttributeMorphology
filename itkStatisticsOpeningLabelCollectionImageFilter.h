@@ -17,7 +17,7 @@
 #ifndef __itkStatisticsOpeningLabelCollectionImageFilter_h
 #define __itkStatisticsOpeningLabelCollectionImageFilter_h
 
-#include "itkInPlaceLabelCollectionImageFilter.h"
+#include "itkShapeOpeningLabelCollectionImageFilter.h"
 #include "itkStatisticsLabelObject.h"
 
 namespace itk {
@@ -28,12 +28,12 @@ namespace itk {
  */
 template<class TImage>
 class ITK_EXPORT StatisticsOpeningLabelCollectionImageFilter : 
-    public InPlaceLabelCollectionImageFilter<TImage>
+    public ShapeOpeningLabelCollectionImageFilter<TImage>
 {
 public:
   /** Standard class typedefs. */
   typedef StatisticsOpeningLabelCollectionImageFilter Self;
-  typedef InPlaceLabelCollectionImageFilter<TImage>
+  typedef ShapeOpeningLabelCollectionImageFilter<TImage>
   Superclass;
   typedef SmartPointer<Self>        Pointer;
   typedef SmartPointer<const Self>  ConstPointer;
@@ -57,7 +57,7 @@ public:
 
   /** Runtime information support. */
   itkTypeMacro(StatisticsOpeningLabelCollectionImageFilter, 
-               InPlaceLabelCollectionImageFilter);
+               ShapeOpeningLabelCollectionImageFilter);
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */

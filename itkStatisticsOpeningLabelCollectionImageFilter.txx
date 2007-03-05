@@ -63,7 +63,7 @@ StatisticsOpeningLabelCollectionImageFilter<TImage>
       TemplatedGenerateData< typename Functor::MedianLabelObjectAccessor< LabelObjectType > >();
       break;
     default:
-      itkExceptionMacro(<< "Unknown attribute type");
+      Superclass::GenerateData();
       break;
     }
 }
