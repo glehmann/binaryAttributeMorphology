@@ -46,7 +46,7 @@ public:
   typedef typename ImageType::LabelObjectType LabelObjectType;
   
   typedef TAttributeAccessor AttributeAccessorType;
-  typedef typename AttributeAccessorType::AttributeType AttributeType;
+  typedef typename AttributeAccessorType::AttributeValueType AttributeValueType;
   
   /** ImageDimension constants */
   itkStaticConstMacro(ImageDimension, unsigned int,

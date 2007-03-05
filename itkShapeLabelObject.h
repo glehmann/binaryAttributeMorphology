@@ -30,9 +30,9 @@ class ITK_EXPORT SizeLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef unsigned long AttributeType;
+  typedef unsigned long AttributeValueType;
 
-  inline const AttributeType operator()( const LabelObjectType * labelObject )
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
     return labelObject->GetSize();
     }
@@ -43,9 +43,9 @@ class ITK_EXPORT PhysicalSizeLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeType;
+  typedef double AttributeValueType;
 
-  inline const AttributeType operator()( const LabelObjectType * labelObject )
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
     return labelObject->GetPhysicalSize();
     }
@@ -56,9 +56,9 @@ class ITK_EXPORT RegionElongationLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeType;
+  typedef double AttributeValueType;
 
-  inline const AttributeType operator()( const LabelObjectType * labelObject )
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
     return labelObject->GetRegionElongation();
     }
@@ -69,9 +69,9 @@ class ITK_EXPORT SizeRegionRatioLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeType;
+  typedef double AttributeValueType;
 
-  inline const AttributeType operator()( const LabelObjectType * labelObject )
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
     return labelObject->GetSizeRegionRatio();
     }

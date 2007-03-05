@@ -30,9 +30,9 @@ class ITK_EXPORT MinimumLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeType;
+  typedef double AttributeValueType;
 
-  inline const AttributeType operator()( const LabelObjectType * labelObject )
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
     return labelObject->GetMinimum();
     }
@@ -43,9 +43,9 @@ class ITK_EXPORT MaximumLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeType;
+  typedef double AttributeValueType;
 
-  inline const AttributeType operator()( const LabelObjectType * labelObject )
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
     return labelObject->GetMaximum();
     }
@@ -56,9 +56,9 @@ class ITK_EXPORT MeanLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeType;
+  typedef double AttributeValueType;
 
-  inline const AttributeType operator()( const LabelObjectType * labelObject )
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
     return labelObject->GetMean();
     }
@@ -69,9 +69,9 @@ class ITK_EXPORT SumLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeType;
+  typedef double AttributeValueType;
 
-  inline const AttributeType operator()( const LabelObjectType * labelObject )
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
     return labelObject->GetSum();
     }
@@ -82,9 +82,9 @@ class ITK_EXPORT SigmaLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeType;
+  typedef double AttributeValueType;
 
-  inline const AttributeType operator()( const LabelObjectType * labelObject )
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
     return labelObject->GetSigma();
     }
@@ -95,9 +95,9 @@ class ITK_EXPORT VarianceLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeType;
+  typedef double AttributeValueType;
 
-  inline const AttributeType operator()( const LabelObjectType * labelObject )
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
     return labelObject->GetVariance();
     }
@@ -108,9 +108,9 @@ class ITK_EXPORT MedianLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeType;
+  typedef double AttributeValueType;
 
-  inline const AttributeType operator()( const LabelObjectType * labelObject )
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
     return labelObject->GetMedian();
     }

@@ -114,7 +114,7 @@ BinaryAttributeOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuato
   os << indent << "FullyConnected: "  << m_FullyConnected << std::endl;
   os << indent << "BackgroundValue: "  << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
   os << indent << "ForegroundValue: "  << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_ForegroundValue) << std::endl;
-  os << indent << "Lambda: "  << static_cast<typename NumericTraits<AttributeType>::PrintType>(m_Lambda) << std::endl;
+  os << indent << "Lambda: "  << static_cast<typename NumericTraits<AttributeValueType>::PrintType>(m_Lambda) << std::endl;
   os << indent << "ReverseOrdering: "  << m_ReverseOrdering << std::endl;
 }
   

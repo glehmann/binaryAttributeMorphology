@@ -68,7 +68,7 @@ public:
   typedef typename itk::LabelImageToLabelCollectionImageFilter< InputImageType, LabelCollectionImageType > LabelizerType;
   typedef TLabelObjectValuator LabelObjectValuatorType;
   typedef TAttributeAccessor AttributeAccessorType;
-  typedef typename AttributeAccessorType::AttributeType AttributeType;
+  typedef typename AttributeAccessorType::AttributeValueType AttributeValueType;
   typedef typename itk::AttributeOpeningLabelCollectionImageFilter< LabelCollectionImageType, AttributeAccessorType > OpeningType;
   typedef typename itk::LabelCollectionImageToLabelImageFilter< LabelCollectionImageType, OutputImageType > BinarizerType;
 
@@ -97,8 +97,8 @@ public:
   itkSetMacro(BackgroundValue, OutputImagePixelType);
   itkGetConstMacro(BackgroundValue, OutputImagePixelType);
 
-  itkGetConstMacro(Lambda, AttributeType);
-  itkSetMacro(Lambda, AttributeType);
+  itkGetConstMacro(Lambda, AttributeValueType);
+  itkSetMacro(Lambda, AttributeValueType);
 
   itkGetConstMacro( ReverseOrdering, bool );
   itkSetMacro( ReverseOrdering, bool );
@@ -129,7 +129,7 @@ private:
   void operator=(const Self&); //purposely not implemented
 
   OutputImagePixelType m_BackgroundValue;
-  AttributeType m_Lambda;
+  AttributeValueType m_Lambda;
   bool m_ReverseOrdering;
 } ; // end of class
 

@@ -68,7 +68,7 @@ public:
   typedef typename itk::BinaryImageToLabelCollectionImageFilter< InputImageType, LabelCollectionImageType > LabelizerType;
   typedef TLabelObjectValuator LabelObjectValuatorType;
   typedef TAttributeAccessor AttributeAccessorType;
-  typedef typename AttributeAccessorType::AttributeType AttributeType;
+  typedef typename AttributeAccessorType::AttributeValueType AttributeValueType;
   typedef typename itk::AttributeOpeningLabelCollectionImageFilter< LabelCollectionImageType, AttributeAccessorType > OpeningType;
   typedef typename itk::LabelCollectionImageToBinaryImageFilter< LabelCollectionImageType, OutputImageType > BinarizerType;
 
@@ -114,8 +114,8 @@ public:
   itkSetMacro(ForegroundValue, OutputImagePixelType);
   itkGetConstMacro(ForegroundValue, OutputImagePixelType);
 
-  itkGetConstMacro(Lambda, AttributeType);
-  itkSetMacro(Lambda, AttributeType);
+  itkGetConstMacro(Lambda, AttributeValueType);
+  itkSetMacro(Lambda, AttributeValueType);
 
   itkGetConstMacro( ReverseOrdering, bool );
   itkSetMacro( ReverseOrdering, bool );
@@ -148,7 +148,7 @@ private:
   bool                m_FullyConnected;
   OutputImagePixelType m_BackgroundValue;
   OutputImagePixelType m_ForegroundValue;
-  AttributeType m_Lambda;
+  AttributeValueType m_Lambda;
   bool m_ReverseOrdering;
 } ; // end of class
 

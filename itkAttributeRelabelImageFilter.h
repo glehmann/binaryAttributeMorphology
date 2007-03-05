@@ -68,7 +68,7 @@ public:
   typedef typename itk::LabelImageToLabelCollectionImageFilter< InputImageType, LabelCollectionImageType > LabelizerType;
   typedef TLabelObjectValuator LabelObjectValuatorType;
   typedef TAttributeAccessor AttributeAccessorType;
-  typedef typename AttributeAccessorType::AttributeType AttributeType;
+  typedef typename AttributeAccessorType::AttributeValueType AttributeValueType;
   typedef typename itk::AttributeRelabelLabelCollectionImageFilter< LabelCollectionImageType, AttributeAccessorType > RelabelType;
   typedef typename itk::LabelCollectionImageToLabelImageFilter< LabelCollectionImageType, OutputImageType > BinarizerType;
 

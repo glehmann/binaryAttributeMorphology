@@ -45,7 +45,7 @@ public:
   typedef typename ImageType::IndexType       IndexType;
   
   typedef TAttributeAccessor AttributeAccessorType;
-  typedef typename AttributeAccessorType::AttributeType AttributeType;
+  typedef typename AttributeAccessorType::AttributeValueType AttributeValueType;
   
   /** ImageDimension constants */
   itkStaticConstMacro(ImageDimension, unsigned int,
@@ -69,8 +69,8 @@ public:
   /** End concept checking */
 #endif
 
-  itkGetConstMacro(Lambda, AttributeType);
-  itkSetMacro(Lambda, AttributeType);
+  itkGetConstMacro(Lambda, AttributeValueType);
+  itkSetMacro(Lambda, AttributeValueType);
 
   itkGetConstMacro( ReverseOrdering, bool );
   itkSetMacro( ReverseOrdering, bool );
@@ -88,7 +88,7 @@ private:
   AttributeOpeningLabelCollectionImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-  AttributeType m_Lambda;
+  AttributeValueType m_Lambda;
   bool m_ReverseOrdering;
 
 } ; // end of class

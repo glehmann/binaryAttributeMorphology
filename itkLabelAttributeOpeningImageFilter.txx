@@ -28,7 +28,7 @@ LabelAttributeOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator
 ::LabelAttributeOpeningImageFilter()
 {
   m_BackgroundValue = NumericTraits<OutputImagePixelType>::NonpositiveMin();
-  m_Lambda = NumericTraits< AttributeType >::Zero;
+  m_Lambda = NumericTraits< AttributeValueType >::Zero;
   m_ReverseOrdering = false;
 }
 
@@ -106,7 +106,7 @@ LabelAttributeOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator
   Superclass::PrintSelf(os, indent);
 
   os << indent << "BackgroundValue: "  << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
-  os << indent << "Lambda: "  << static_cast<typename NumericTraits<AttributeType>::PrintType>(m_Lambda) << std::endl;
+  os << indent << "Lambda: "  << static_cast<typename NumericTraits<AttributeValueType>::PrintType>(m_Lambda) << std::endl;
   os << indent << "ReverseOrdering: "  << m_ReverseOrdering << std::endl;
 }
   

@@ -27,7 +27,7 @@ template <class TImage, class TAttributeAccessor>
 AttributeOpeningLabelCollectionImageFilter<TImage, TAttributeAccessor>
 ::AttributeOpeningLabelCollectionImageFilter()
 {
-  m_Lambda = NumericTraits< AttributeType >::Zero;
+  m_Lambda = NumericTraits< AttributeValueType >::Zero;
   m_ReverseOrdering = false;
 }
 
@@ -80,7 +80,7 @@ AttributeOpeningLabelCollectionImageFilter<TImage, TAttributeAccessor>
   Superclass::PrintSelf(os, indent);
 
   os << indent << "ReverseOrdering: "  << m_ReverseOrdering << std::endl;
-  os << indent << "Lambda: "  << static_cast<typename NumericTraits<AttributeType>::PrintType>(m_Lambda) << std::endl;
+  os << indent << "Lambda: "  << static_cast<typename NumericTraits<AttributeValueType>::PrintType>(m_Lambda) << std::endl;
 }
 
 }// end namespace itk
