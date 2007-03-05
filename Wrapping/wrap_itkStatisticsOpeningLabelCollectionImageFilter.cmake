@@ -1,4 +1,4 @@
-WRAP_CLASS("itk::MedianRelabelLabelCollectionImageFilter" POINTER_WITH_SUPERCLASS)
+WRAP_CLASS("itk::StatisticsOpeningLabelCollectionImageFilter" POINTER)
   FOREACH(d ${WRAP_ITK_DIMS})
     WRAP_TEMPLATE("${ITKM_LI${d}}" "${ITKT_LI${d}}")
   ENDFOREACH(d)
