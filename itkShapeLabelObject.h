@@ -116,12 +116,11 @@ public:
 
   typedef typename Superclass::LineContainerType LineContainerType;
 
-  typedef enum {
-    SIZE=0,
-    PHYSICAL_SIZE=1,
-    REGION_ELONGATION=2,
-    SIZE_REGION_RATIO=3
-  } AttributeType;
+  typedef unsigned int AttributeType;
+  static const AttributeType SIZE=0;
+  static const AttributeType PHYSICAL_SIZE=1;
+  static const AttributeType REGION_ELONGATION=2;
+  static const AttributeType SIZE_REGION_RATIO=3;
 
   typedef ImageRegion< ImageDimension > RegionType;
 

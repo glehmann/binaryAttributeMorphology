@@ -156,15 +156,14 @@ public:
 
   typedef typename Superclass::LineContainerType LineContainerType;
 
-  typedef enum {
-    MINIMUM=0,
-    MAXIMUM,
-    MEAN,
-    SUM,
-    SIGMA,
-    VARIANCE,
-    MEDIAN
-  } AttributeType;
+  typedef typename Superclass::AttributeType AttributeType;
+  static const AttributeType MINIMUM=100;
+  static const AttributeType MAXIMUM=101;
+  static const AttributeType MEAN=102;
+  static const AttributeType SUM=103;
+  static const AttributeType SIGMA=104;
+  static const AttributeType VARIANCE=105;
+  static const AttributeType MEDIAN=106;
 
   typedef ImageRegion< ImageDimension > RegionType;
 
