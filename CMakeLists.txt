@@ -137,9 +137,9 @@ FOREACH(fg 100 200)
         FOREACH(nb 3 10)
           ADD_TEST(BinarySizeKeepNObjects-${fg}-${bg}-${nb}-${order}-${connectivity} ${TEST_COMMAND}
             binary_shape_keep_n_objects
-              ${BINARY_IMAGE} binary_keep_n_objects-${fg}-${bg}-${nb}-${order}-${connectivity}.png
+              ${BINARY_IMAGE} binary_size_keep_n_objects-${fg}-${bg}-${nb}-${order}-${connectivity}.png
               ${fg} ${bg} ${nb} ${order} ${connectivity} Size
-            --compare binary_keep_n_objects-${fg}-${bg}-${nb}-${order}-${connectivity}.png ${CMAKE_SOURCE_DIR}/images/binary_keep_n_objects-${fg}-${bg}-${nb}-${order}-${connectivity}.png
+            --compare binary_size_keep_n_objects-${fg}-${bg}-${nb}-${order}-${connectivity}.png ${CMAKE_SOURCE_DIR}/images/binary_size_keep_n_objects-${fg}-${bg}-${nb}-${order}-${connectivity}.png
           )
         ENDFOREACH(nb)
       ENDFOREACH(connectivity)
