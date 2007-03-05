@@ -1,0 +1,122 @@
+/*=========================================================================
+
+  Program:   Insight Segmentation & Registration Toolkit
+  Module:    $RCSfile: itkBinaryShapeOpeningImageFilter.txx,v $
+  Language:  C++
+  Date:      $Date: 2006/08/01 19:16:18 $
+  Version:   $Revision: 1.7 $
+
+  Copyright (c) Insight Software Consortium. All rights reserved.
+  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
+
+     This software is distributed WITHOUT ANY WARRANTY; without even 
+     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+     PURPOSE.  See the above copyright notices for more information.
+
+=========================================================================*/
+#ifndef __itkBinaryShapeOpeningImageFilter_txx
+#define __itkBinaryShapeOpeningImageFilter_txx
+
+#include "itkBinaryShapeOpeningImageFilter.h"
+#include "itkProgressAccumulator.h"
+
+
+namespace itk {
+
+template<class TInputImage>
+BinaryShapeOpeningImageFilter<TInputImage>
+::BinaryShapeOpeningImageFilter()
+{
+  m_BackgroundValue = NumericTraits<OutputImagePixelType>::NonpositiveMin();
+  m_ForegroundValue = NumericTraits<OutputImagePixelType>::max();
+  m_FullyConnected = false;
+  m_ReverseOrdering = false;
+  m_Attribute = LabelObjectType::SIZE;
+}
+
+template<class TInputImage>
+void 
+BinaryShapeOpeningImageFilter<TInputImage>
+::GenerateInputRequestedRegion()
+{
+  // call the superclass' implementation of this method
+  Superclass::GenerateInputRequestedRegion();
+  
+  // We need all the input.
+  InputImagePointer input = const_cast<InputImageType *>(this->GetInput());
+  if( input )
+    {
+    input->SetRequestedRegion( input->GetLargestPossibleRegion() );
+    }
+}
+
+
+template<class TInputImage>
+void 
+BinaryShapeOpeningImageFilter<TInputImage>
+::EnlargeOutputRequestedRegion(DataObject *)
+{
+  this->GetOutput()
+    ->SetRequestedRegion( this->GetOutput()->GetLargestPossibleRegion() );
+}
+
+
+template<class TInputImage>
+void
+BinaryShapeOpeningImageFilter<TInputImage>
+::GenerateData()
+{
+  // Create a process accumulator for tracking the progress of this minipipeline
+  ProgressAccumulator::Pointer progress = ProgressAccumulator::New();
+  progress->SetMiniPipelineFilter(this);
+
+  // Allocate the output
+  this->AllocateOutputs();
+  
+  typename LabelizerType::Pointer labelizer = LabelizerType::New();
+  labelizer->SetInput( this->GetInput() );
+  labelizer->SetForegroundValue( m_ForegroundValue );
+  labelizer->SetBackgroundValue( m_BackgroundValue );
+  labelizer->SetFullyConnected( m_FullyConnected );
+  progress->RegisterInternalFilter(labelizer, .3f);
+  
+  typename LabelObjectValuatorType::Pointer valuator = LabelObjectValuatorType::New();
+  valuator->SetInput( labelizer->GetOutput() );
+  progress->RegisterInternalFilter(valuator, .3f);
+  
+  typename OpeningType::Pointer opening = OpeningType::New();
+  opening->SetInput( valuator->GetOutput() );
+  opening->SetLambda( m_Lambda );
+  opening->SetReverseOrdering( m_ReverseOrdering );
+  progress->RegisterInternalFilter(opening, .2f);
+  
+  typename BinarizerType::Pointer binarizer = BinarizerType::New();
+  binarizer->SetInput( opening->GetOutput() );
+  binarizer->SetForegroundValue( m_ForegroundValue );
+  binarizer->SetBackgroundValue( m_BackgroundValue );
+  binarizer->SetBackgroundImage( this->GetInput() );
+  progress->RegisterInternalFilter(binarizer, .2f);  
+
+  binarizer->GraftOutput( this->GetOutput() );
+  binarizer->Update();
+  this->GraftOutput( binarizer->GetOutput() );
+}
+
+
+template<class TInputImage>
+void
+BinaryShapeOpeningImageFilter<TInputImage>
+::PrintSelf(std::ostream &os, Indent indent) const
+{
+  Superclass::PrintSelf(os, indent);
+
+  os << indent << "FullyConnected: "  << m_FullyConnected << std::endl;
+  os << indent << "BackgroundValue: "  << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
+  os << indent << "ForegroundValue: "  << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_ForegroundValue) << std::endl;
+  os << indent << "Lambda: "  << static_cast<typename NumericTraits<AttributeType>::PrintType>(m_Lambda) << std::endl;
+  os << indent << "ReverseOrdering: "  << m_ReverseOrdering << std::endl;
+  os << indent << "Attribute: "  << static_cast<typename NumericTraits<AttributeType>::PrintType>(m_Attribute) << std::endl;
+}
+  
+}// end namespace itk
+#endif

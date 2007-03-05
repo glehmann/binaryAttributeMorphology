@@ -24,6 +24,41 @@
 namespace itk
 {
 
+
+namespace Functor {
+
+template< class TLabelObject, class TAttributeAccessor >
+class LabelObjectComparator
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef TAttributeAccessor AttributeAccessorType;
+  bool operator()( const LabelObjectType * a, const LabelObjectType * b )
+    {
+    return accessor( a ) > accessor( b );
+    }
+private:
+  AttributeAccessorType accessor;
+};
+
+template< class TLabelObject, class TAttributeAccessor >
+class LabelObjectReverseComparator
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef TAttributeAccessor AttributeAccessorType;
+  bool operator()( const LabelObjectType * a, const LabelObjectType * b )
+    {
+    return accessor( a ) < accessor( b );
+    }
+private:
+  AttributeAccessorType accessor;
+};
+
+}
+
+
+
 template < unsigned int VImageDimension >
 class LabelObjectLine
 {

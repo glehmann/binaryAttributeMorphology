@@ -2,7 +2,7 @@
 #include "itkImageFileWriter.h"
 #include "itkSimpleFilterWatcher.h"
 
-#include "itkLabelSizeKeepNObjectsImageFilter.h"
+#include "itkLabelShapeKeepNObjectsImageFilter.h"
 
 
 int main(int argc, char * argv[])
@@ -23,7 +23,7 @@ int main(int argc, char * argv[])
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   
-  typedef itk::LabelSizeKeepNObjectsImageFilter< IType > LabelOpeningType;
+  typedef itk::LabelShapeKeepNObjectsImageFilter< IType > LabelOpeningType;
   LabelOpeningType::Pointer opening = LabelOpeningType::New();
   opening->SetInput( reader->GetOutput() );
   opening->SetBackgroundValue( atoi(argv[3]) );

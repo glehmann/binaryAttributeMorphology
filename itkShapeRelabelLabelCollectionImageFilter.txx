@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkAttributeRelabelLabelCollectionImageFilter.txx,v $
+  Module:    $RCSfile: itkShapeRelabelLabelCollectionImageFilter.txx,v $
   Language:  C++
   Date:      $Date: 2005/08/23 15:09:03 $
   Version:   $Revision: 1.6 $
@@ -14,27 +14,55 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkAttributeRelabelLabelCollectionImageFilter_txx
-#define __itkAttributeRelabelLabelCollectionImageFilter_txx
+#ifndef __itkShapeRelabelLabelCollectionImageFilter_txx
+#define __itkShapeRelabelLabelCollectionImageFilter_txx
 
-#include "itkAttributeRelabelLabelCollectionImageFilter.h"
+#include "itkShapeRelabelLabelCollectionImageFilter.h"
 #include "itkProgressReporter.h"
 
 
 namespace itk {
 
-template <class TImage, class TAttributeAccessor>
-AttributeRelabelLabelCollectionImageFilter<TImage, TAttributeAccessor>
-::AttributeRelabelLabelCollectionImageFilter()
+template <class TImage>
+ShapeRelabelLabelCollectionImageFilter<TImage>
+::ShapeRelabelLabelCollectionImageFilter()
 {
   m_ReverseOrdering = false;
+  m_Attribute = LabelObjectType::SIZE;
 }
 
 
-template <class TImage, class TAttributeAccessor>
+template <class TImage>
 void
-AttributeRelabelLabelCollectionImageFilter<TImage, TAttributeAccessor>
+ShapeRelabelLabelCollectionImageFilter<TImage>
 ::GenerateData()
+{
+  switch( m_Attribute )
+    {
+    case LabelObjectType::SIZE:
+      TemplatedGenerateData< typename Functor::SizeLabelObjectAccessor< LabelObjectType > >();
+      break;
+    case LabelObjectType::PHYSICAL_SIZE:
+      TemplatedGenerateData< typename Functor::PhysicalSizeLabelObjectAccessor< LabelObjectType > >();
+      break;
+    case LabelObjectType::SIZE_REGION_RATIO:
+      TemplatedGenerateData< typename Functor::SizeRegionRatioLabelObjectAccessor< LabelObjectType > >();
+      break;
+    case LabelObjectType::REGION_ELONGATION:
+      TemplatedGenerateData< typename Functor::RegionElongationLabelObjectAccessor< LabelObjectType > >();
+      break;
+    default:
+      itkExceptionMacro(<< "Unknown attribute type");
+      break;
+    }
+}
+
+
+template <class TImage>
+template <class TAttributeAccessor>
+void
+ShapeRelabelLabelCollectionImageFilter<TImage>
+::TemplatedGenerateData()
 {
   // Allocate the output
   this->AllocateOutputs();
@@ -61,12 +89,12 @@ AttributeRelabelLabelCollectionImageFilter<TImage, TAttributeAccessor>
   // instantiate the comparator and sort the vector
   if( m_ReverseOrdering )
     {
-    ReverseComparator comparator;
+    Functor::LabelObjectReverseComparator< LabelObjectType, TAttributeAccessor > comparator;
     std::sort( labelObjects.begin(), labelObjects.end(), comparator );
     }
   else
     {
-    Comparator comparator;
+    Functor::LabelObjectComparator< LabelObjectType, TAttributeAccessor > comparator;
     std::sort( labelObjects.begin(), labelObjects.end(), comparator );
     }
 //   progress.CompletedPixel();
@@ -94,14 +122,15 @@ AttributeRelabelLabelCollectionImageFilter<TImage, TAttributeAccessor>
 }
 
 
-template <class TImage, class TAttributeAccessor>
+template <class TImage>
 void
-AttributeRelabelLabelCollectionImageFilter<TImage, TAttributeAccessor>
+ShapeRelabelLabelCollectionImageFilter<TImage>
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os,indent);
 
   os << indent << "ReverseOrdering: "  << m_ReverseOrdering << std::endl;
+  os << indent << "Attribute: "  << static_cast<typename NumericTraits<AttributeType>::PrintType>(m_Attribute) << std::endl;
 }
 
 }// end namespace itk

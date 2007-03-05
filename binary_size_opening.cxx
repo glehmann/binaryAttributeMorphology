@@ -2,7 +2,7 @@
 #include "itkImageFileWriter.h"
 #include "itkSimpleFilterWatcher.h"
 
-#include "itkBinarySizeOpeningImageFilter.h"
+#include "itkBinaryShapeOpeningImageFilter.h"
 
 
 int main(int argc, char * argv[])
@@ -23,7 +23,7 @@ int main(int argc, char * argv[])
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   
-  typedef itk::BinarySizeOpeningImageFilter< IType > BinaryOpeningType;
+  typedef itk::BinaryShapeOpeningImageFilter< IType > BinaryOpeningType;
   BinaryOpeningType::Pointer opening = BinaryOpeningType::New();
   opening->SetInput( reader->GetOutput() );
   opening->SetForegroundValue( atoi(argv[3]) );

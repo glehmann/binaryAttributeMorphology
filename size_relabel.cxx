@@ -2,7 +2,7 @@
 #include "itkImageFileWriter.h"
 #include "itkSimpleFilterWatcher.h"
 
-#include "itkSizeRelabelImageFilter.h"
+#include "itkShapeRelabelImageFilter.h"
 
 
 int main(int argc, char * argv[])
@@ -23,7 +23,7 @@ int main(int argc, char * argv[])
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   
-  typedef itk::SizeRelabelImageFilter< IType > RelabelType;
+  typedef itk::ShapeRelabelImageFilter< IType > RelabelType;
   RelabelType::Pointer relabel = RelabelType::New();
   relabel->SetInput( reader->GetOutput() );
   relabel->SetBackgroundValue( atoi(argv[3]) );

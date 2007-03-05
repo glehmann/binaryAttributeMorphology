@@ -116,6 +116,13 @@ public:
 
   typedef typename Superclass::LineContainerType LineContainerType;
 
+  typedef enum {
+    SIZE=0,
+    PHYSICAL_SIZE=1,
+    REGION_ELONGATION=2,
+    SIZE_REGION_RATIO=3
+  } AttributeType;
+
   typedef ImageRegion< ImageDimension > RegionType;
 
   typedef typename itk::FixedArray<double, ImageDimension> CentroidType;
