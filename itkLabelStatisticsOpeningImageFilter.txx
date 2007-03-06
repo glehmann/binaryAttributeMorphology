@@ -87,6 +87,7 @@ LabelStatisticsOpeningImageFilter<TInputImage, TFeatureImage>
   opening->SetInput( valuator->GetOutput() );
   opening->SetLambda( m_Lambda );
   opening->SetReverseOrdering( m_ReverseOrdering );
+  opening->SetAttribute( m_Attribute );
   progress->RegisterInternalFilter(opening, .2f);
   
   typename BinarizerType::Pointer binarizer = BinarizerType::New();

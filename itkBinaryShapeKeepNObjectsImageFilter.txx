@@ -88,6 +88,7 @@ BinaryShapeKeepNObjectsImageFilter<TInputImage>
   opening->SetInput( valuator->GetOutput() );
   opening->SetNumberOfObjects( m_NumberOfObjects );
   opening->SetReverseOrdering( m_ReverseOrdering );
+  opening->SetAttribute( m_Attribute );
   progress->RegisterInternalFilter(opening, .2f);
   
   typename BinarizerType::Pointer binarizer = BinarizerType::New();
