@@ -30,7 +30,6 @@ StatisticsOpeningLabelCollectionImageFilter<TImage>
   m_Lambda = NumericTraits< double >::Zero;
   m_ReverseOrdering = false;
   m_Attribute = LabelObjectType::MEAN;
-  this->SetNumberOfRequiredInputs(2);
 }
 
 
