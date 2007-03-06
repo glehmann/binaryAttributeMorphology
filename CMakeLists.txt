@@ -3,7 +3,7 @@ PROJECT(binaryAttributeMorphology)
 
 # set the name of the input image used to run the test
 SET(BINARY_IMAGE ${CMAKE_SOURCE_DIR}/images/2th_cthead1.png)
-SET(LABEL_IMAGE ${CMAKE_SOURCE_DIR}/images/cthead1.png)
+SET(LABEL_IMAGE ${CMAKE_SOURCE_DIR}/images/cthead1-label.png)
 
 #include some macros from another file...
 INCLUDE(IJMacros.txt)
@@ -132,6 +132,13 @@ FOREACH(fg 100 200)
               ${fg} ${bg} ${size} ${order} ${connectivity} Size
             --compare binary_size_opening-${fg}-${bg}-${size}-${order}-${connectivity}.png ${CMAKE_SOURCE_DIR}/images/binary_size_opening-${fg}-${bg}-${size}-${order}-${connectivity}.png
           )
+
+          ADD_TEST(BinaryPhysicalSizeOpening-${fg}-${bg}-${size}-${order}-${connectivity} ${TEST_COMMAND}
+            binary_shape_opening
+              ${BINARY_IMAGE} binary_physical_size_opening-${fg}-${bg}-${size}-${order}-${connectivity}.png
+              ${fg} ${bg} ${size} ${order} ${connectivity} PhysicalSize
+            --compare binary_physical_size_opening-${fg}-${bg}-${size}-${order}-${connectivity}.png ${CMAKE_SOURCE_DIR}/images/binary_physical_size_opening-${fg}-${bg}-${size}-${order}-${connectivity}.png
+          )
         ENDFOREACH(size)
 
         FOREACH(nb 3 10)
@@ -147,30 +154,33 @@ FOREACH(fg 100 200)
   ENDFOREACH(bg)
 ENDFOREACH(fg)
 
-FOREACH(bg 0 150)
+FOREACH(bg 0 176)
   FOREACH(order 0 1)
-      FOREACH(size 100 10000)
+      FOREACH(size 3000 10000)
         ADD_TEST(LabelSizeOpening-${bg}-${size}-${order} ${TEST_COMMAND}
           label_shape_opening
             ${LABEL_IMAGE} label_size_opening-${bg}-${size}-${order}.png
             ${bg} ${size} ${order} Size
           --compare label_size_opening-${bg}-${size}-${order}.png ${CMAKE_SOURCE_DIR}/images/label_size_opening-${bg}-${size}-${order}.png
         )
+
+        ADD_TEST(LabelPhysicalSizeOpening-${bg}-${size}-${order} ${TEST_COMMAND}
+          label_shape_opening
+            ${LABEL_IMAGE} label_physical_size_opening-${bg}-${size}-${order}.png
+            ${bg} ${size} ${order} Size
+          --compare label_physical_size_opening-${bg}-${size}-${order}.png ${CMAKE_SOURCE_DIR}/images/label_physical_size_opening-${bg}-${size}-${order}.png
+        )
       ENDFOREACH(size)
 
-      FOREACH(nb 3 10)
+      FOREACH(nb 1 3)
         ADD_TEST(LabelSizeKeepNObjects-${bg}-${nb}-${order} ${TEST_COMMAND}
           label_shape_keep_n_objects
-            ${LABEL_IMAGE} label_keep_n_objects-${bg}-${nb}-${order}.png
+            ${LABEL_IMAGE} label_size_keep_n_objects-${bg}-${nb}-${order}.png
             ${bg} ${nb} ${order} Size
-          --compare label_keep_n_objects-${bg}-${nb}-${order}.png ${CMAKE_SOURCE_DIR}/images/label_keep_n_objects-${bg}-${nb}-${order}.png
+          --compare label_size_keep_n_objects-${bg}-${nb}-${order}.png ${CMAKE_SOURCE_DIR}/images/label_size_keep_n_objects-${bg}-${nb}-${order}.png
         )
       ENDFOREACH(nb)
-  ENDFOREACH(order)
-ENDFOREACH(bg)
 
-FOREACH(bg 0 150)
-  FOREACH(order 0 1)
       FOREACH(useBg 0 1)
         ADD_TEST(SizeRelabel-${bg}-${useBg}-${order} ${TEST_COMMAND}
           shape_relabel
@@ -181,4 +191,3 @@ FOREACH(bg 0 150)
       ENDFOREACH(useBg)
   ENDFOREACH(order)
 ENDFOREACH(bg)
-
