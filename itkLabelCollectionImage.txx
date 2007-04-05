@@ -68,6 +68,17 @@ LabelCollectionImage<TLabelObject>
 }
 
 
+/**
+ *
+ */
+template<class TLabelObject >
+void 
+LabelCollectionImage<TLabelObject>
+::Allocate()
+{
+  this->Initialize();
+}
+
 template<class TLabelObject >
 void 
 LabelCollectionImage<TLabelObject>

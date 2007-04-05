@@ -112,7 +112,7 @@ public:
   virtual void Initialize();
 
   /**  */
-  void Allocate() {}
+  virtual void Allocate();
 
   virtual void Graft(const DataObject *data);
 
