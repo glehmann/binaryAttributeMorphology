@@ -52,6 +52,9 @@ ShapeKeepNObjectsLabelCollectionImageFilter<TImage>
     case LabelObjectType::REGION_ELONGATION:
       TemplatedGenerateData< typename Functor::RegionElongationLabelObjectAccessor< LabelObjectType > >();
       break;
+    case LabelObjectType::SIZE_ON_BORDER:
+      TemplatedGenerateData< typename Functor::SizeOnBorderLabelObjectAccessor< LabelObjectType > >();
+      break;
     default:
       itkExceptionMacro(<< "Unknown attribute type");
       break;

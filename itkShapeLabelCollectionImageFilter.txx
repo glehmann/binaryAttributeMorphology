@@ -49,6 +49,14 @@ ShapeLabelCollectionImageFilter<TImage>
     sizePerPixel *= output->GetSpacing()[i];
     }
   
+  // compute the max the index on the border of the image
+  IndexType borderMin = output->GetLargestPossibleRegion().GetIndex();
+  IndexType borderMax = borderMin;
+  for( int i=0; i<ImageDimension; i++ )
+    {
+    borderMax[i] += output->GetLargestPossibleRegion().GetSize()[i] - 1;
+    }
+
   typename ImageType::LabelObjectContainerType::const_iterator it;
   const typename ImageType::LabelObjectContainerType & labelObjectContainer = output->GetLabelObjectContainer();
   for( it = labelObjectContainer.begin(); it != labelObjectContainer.end(); it++ )
@@ -64,6 +72,7 @@ ShapeLabelCollectionImageFilter<TImage>
     mins.Fill( NumericTraits< long >::max() );
     IndexType maxs;
     maxs.Fill( NumericTraits< long >::NonpositiveMin() );
+    unsigned long sizeOnBorder = 0;
 
     typename LabelObjectType::LineContainerType::const_iterator lit;
     typename LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
@@ -109,6 +118,43 @@ ShapeLabelCollectionImageFilter<TImage>
         {
         maxs[0] = idx[0] + length;
         }
+
+      // object is on a border ?
+      bool isOnBorder = false;
+      for( int i=1; i<ImageDimension; i++)
+        {
+        if( idx[i] == borderMin[i] || idx[i] == borderMax[i])
+          {
+          isOnBorder = true;
+          break;
+          }
+        }
+      if( isOnBorder )
+        {
+        // the line touch a border on a dimension other than 0, so
+        // all the line touch a border
+        sizeOnBorder += length;
+        }
+      else
+        {
+        // we must check for the dimension 0
+        bool isOnBorder0 = false;
+        if( idx[0] == borderMin[0] )
+          {
+          // one more pixel on the border
+          sizeOnBorder++;
+          isOnBorder0 = true;
+          }
+        if( !isOnBorder0 || length > 1 )
+          {
+          // we can check for the end of the line
+          if( idx[0] + length - 1 == borderMax[0] )
+            {
+            // one more pixel on the border
+            sizeOnBorder++;
+            }
+          }
+        }
       }
 
     // final computation
@@ -132,6 +178,7 @@ ShapeLabelCollectionImageFilter<TImage>
     labelObject->SetCentroid( centroid );
     labelObject->SetRegionElongation( maxSize / minSize );
     labelObject->SetSizeRegionRatio( size / (double)region.GetNumberOfPixels() );
+    labelObject->SetSizeOnBorder( sizeOnBorder );
 
 //     std::cout << std::endl;
 //     labelObject->Print( std::cout );

@@ -77,6 +77,19 @@ public:
     }
 };
 
+template< class TLabelObject >
+class ITK_EXPORT SizeOnBorderLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef unsigned long AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetSizeOnBorder();
+    }
+};
+
 }
 
 
@@ -123,6 +136,7 @@ public:
   static const AttributeType SIZE_REGION_RATIO=3;
   static const AttributeType CENTROID=4;
   static const AttributeType REGION=5;
+  static const AttributeType SIZE_ON_BORDER=6;
 
   static AttributeType GetAttributeFromName( const std::string & s )
     {
@@ -150,6 +164,10 @@ public:
       {
       return REGION;
       }
+    else if( s == "SizeOnBorder" )
+      {
+      return SIZE_ON_BORDER;
+      }
     // can't recognize the namespace
     throw std::runtime_error("Unknown attribute.");
     }
@@ -174,6 +192,9 @@ public:
         return "Centroid";
       case REGION:
         return "Region";
+        break;
+      case SIZE_ON_BORDER:
+        return "SizeOnBorder";
         break;
       }
       // can't recognize the namespace
@@ -256,6 +277,18 @@ public:
     m_SizeRegionRatio = v;
     }
 
+//   itkGetConstMacro( SizeOnBorder, bool );
+//   itkSetMacro( SizeOnBorder, bool );
+  const unsigned long & GetSizeOnBorder() const
+    {
+    return m_SizeOnBorder;
+    }
+
+  void SetSizeOnBorder( const unsigned long & v )
+    {
+    m_SizeOnBorder = v;
+    }
+
 
   virtual void CopyDataFrom( const Self * src )
     {
@@ -267,6 +300,7 @@ public:
     m_Centroid = src->m_Centroid;
     m_RegionElongation = src->m_RegionElongation;
     m_SizeRegionRatio = src->m_SizeRegionRatio;
+    m_SizeOnBorder = src->m_SizeOnBorder;
     }
 
 protected:
@@ -276,6 +310,7 @@ protected:
     m_PhysicalSize = 0;
     m_RegionElongation = 0;
     m_SizeRegionRatio = 0;
+    m_SizeOnBorder = false;
     }
   
 
@@ -290,6 +325,7 @@ protected:
     os << indent << "Size: " << m_Size << std::endl;
     os << indent << "RegionElongation: " << m_RegionElongation << std::endl;
     os << indent << "SizeRegionRatio: " << m_SizeRegionRatio << std::endl;
+    os << indent << "SizeOnBorder: " << m_SizeOnBorder << std::endl;
     }
 
 private:
@@ -302,6 +338,7 @@ private:
   CentroidType m_Centroid;
   double m_RegionElongation;
   double m_SizeRegionRatio;
+  unsigned long m_SizeOnBorder;
   
 
 };
