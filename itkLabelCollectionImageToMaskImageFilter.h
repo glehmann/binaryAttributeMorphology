@@ -94,7 +94,7 @@ public:
    /** Set the marker image */
   void SetInput2(TOutputImage *input)
      {
-     this->SetOutputImage( input );
+     this->SetFeatureImage( input );
      }
 
   /**
