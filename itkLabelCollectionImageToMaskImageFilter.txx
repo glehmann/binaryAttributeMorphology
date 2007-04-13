@@ -20,7 +20,8 @@
 #include "itkLabelCollectionImageToMaskImageFilter.h"
 #include "itkNumericTraits.h"
 #include "itkProgressReporter.h"
-#include "itkImageRegionConstIteratorWithIndex.h"
+#include "itkImageRegionConstIterator.h"
+#include "itkImageRegionIterator.h"
 
 namespace itk {
 
@@ -76,22 +77,63 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
   const OutputImageType * input2 = this->GetFeatureImage();
   ProgressReporter progress( this, 0, 1 );
 
-  output->FillBuffer( m_BackgroundValue );
-
-  const typename InputImageType::LabelObjectType * labelObject = input->GetLabelObject( m_Label );
-
-  typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
-  typename InputImageType::LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
-
-  for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
+  if( input->GetUseBackground() && input->GetBackgroundValue() == m_Label )
     {
-    IndexType idx = lit->GetIndex();
-    unsigned long length = lit->GetLength();
-    for( int i=0; i<length; i++)
+    // the user want the mask to be the background of the label collection image
+    // copy the feature image to the output image
+    ImageRegionConstIterator< OutputImageType > featureIt( input2, output->GetRequestedRegion() );
+    ImageRegionIterator< OutputImageType > outputIt( output, output->GetRequestedRegion() );
+
+    for ( featureIt.GoToBegin(), outputIt.GoToBegin();
+          !featureIt.IsAtEnd();
+          ++featureIt, ++outputIt )
       {
-      output->SetPixel( idx, input2->GetPixel( idx ) );
-      idx[0]++;
-//       progress.CompletedPixel();
+      outputIt.Set( featureIt.Get() );
+      }
+    
+    // and mark the pixels from the label objects with the background value
+    typename InputImageType::LabelObjectContainerType::const_iterator it;
+    const typename InputImageType::LabelObjectContainerType & labelObjectContainer = input->GetLabelObjectContainer();
+    for( it = labelObjectContainer.begin(); it != labelObjectContainer.end(); it++ )
+      {
+      const typename InputImageType::LabelObjectType * labeObject = it->second;
+//       const typename InputImageType::LabelType & label = labeObject->GetLabel();
+  
+      typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
+      typename InputImageType::LabelObjectType::LineContainerType lineContainer = labeObject->GetLineContainer();
+  
+      for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
+        {
+        IndexType idx = lit->GetIndex();
+        unsigned long length = lit->GetLength();
+        for( int i=0; i<length; i++)
+          {
+          output->SetPixel( idx, m_BackgroundValue );
+          idx[0]++;
+//           progress.CompletedPixel();
+          }
+        }
+      }
+    }
+  else
+    {
+    output->FillBuffer( m_BackgroundValue );
+  
+    const typename InputImageType::LabelObjectType * labelObject = input->GetLabelObject( m_Label );
+  
+    typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
+    typename InputImageType::LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
+  
+    for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
+      {
+      IndexType idx = lit->GetIndex();
+      unsigned long length = lit->GetLength();
+      for( int i=0; i<length; i++)
+        {
+        output->SetPixel( idx, input2->GetPixel( idx ) );
+        idx[0]++;
+  //       progress.CompletedPixel();
+        }
       }
     }
 }
