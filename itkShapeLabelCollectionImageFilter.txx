@@ -116,7 +116,7 @@ ShapeLabelCollectionImageFilter<TImage>
       // must fix the max for the axis 0
       if( idx[0] + length > maxs[0] )
         {
-        maxs[0] = idx[0] + length;
+        maxs[0] = idx[0] + length - 1;
         }
 
       // object is on a border ?
