@@ -9,7 +9,7 @@ WRAP_CLASS("itk::ImageToImageFilter" POINTER)
     # label collection -> label collection
     WRAP_TEMPLATE("${ITKM_LI${d}}${ITKM_LI${d}}" "${ITKT_LI${d}}, ${ITKT_LI${d}}")
 
-    FOREACH(t ${WRAP_ITK_USIGN_INT})
+    FOREACH(t ${WRAP_ITK_SCALAR})
       # image -> label collection image
       WRAP_TEMPLATE("${ITKM_I${t}${d}}${ITKM_LI${d}}" "${ITKT_I${t}${d}}, ${ITKT_LI${d}}")
       # label collection -> image
