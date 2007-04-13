@@ -76,10 +76,7 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
   const OutputImageType * input2 = this->GetFeatureImage();
   ProgressReporter progress( this, 0, 1 );
 
-  if( input->GetUseBackground() )
-    {
-    output->FillBuffer( m_BackgroundValue );
-    }
+  output->FillBuffer( m_BackgroundValue );
 
   const typename InputImageType::LabelObjectType * labelObject = input->GetLabelObject( m_Label );
 
