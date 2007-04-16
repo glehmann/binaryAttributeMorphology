@@ -142,6 +142,19 @@ public:
     }
 };
 
+template< class TLabelObject >
+class ITK_EXPORT CenterOfGravityLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef typename LabelObjectType::PointType AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetCenterOfGravity();
+    }
+};
+
 
 }
 
@@ -174,6 +187,8 @@ public:
 
   typedef typename Superclass::IndexType IndexType;
 
+  typedef Point< double, ImageDimension > PointType;
+
   typedef TLabel LabelType;
 
   typedef typename Superclass::LineType LineType;
@@ -192,6 +207,7 @@ public:
   static const AttributeType MEDIAN=106;
   static const AttributeType MAXIMUM_INDEX=107;
   static const AttributeType MINIMUM_INDEX=108;
+  static const AttributeType CENTER_OF_GRAVITY=109;
 
   static AttributeType GetAttributeFromName( const std::string & s )
     {
@@ -231,6 +247,10 @@ public:
       {
       return MINIMUM_INDEX;
       }
+    else if( s == "CenterOfGravity" )
+      {
+      return CENTER_OF_GRAVITY;
+      }
     // can't recognize the namespace
     return Superclass::GetAttributeFromName( s );
     }
@@ -266,6 +286,9 @@ public:
       case MINIMUM_INDEX:
         return "MinimumIndex";
         break;
+      case CENTER_OF_GRAVITY:
+        return "CenterOfGravity";
+        break;
       }
       // can't recognize the namespace
       return Superclass::GetNameFromAttribute( a );
@@ -287,6 +310,9 @@ public:
     m_Sigma = src->m_Sigma;
     m_Variance = src->m_Variance;
     m_Median = src->m_Median;
+    m_MaximumIndex = src->m_MaximumIndex;
+    m_MinimumIndex = src->m_MinimumIndex;
+    m_CenterOfGravity = src->m_CenterOfGravity;
     }
 
 //   itkGetConstMacro( Minimum, double );
@@ -373,8 +399,8 @@ public:
     m_Median = v;
     }
 
-//   itkGetConstMacro( MaximumIndex, double );
-//   itkSetMacro( MaximumIndex, double );
+//   itkGetConstMacro( MaximumIndex, IndexType );
+//   itkSetMacro( MaximumIndex, IndexType );
   const IndexType & GetMaximumIndex() const
     {
     return m_MaximumIndex;
@@ -385,8 +411,8 @@ public:
     m_MaximumIndex = v;
     }
 
-//   itkGetConstMacro( MinimumIndex, double );
-//   itkSetMacro( MinimumIndex, double );
+//   itkGetConstMacro( MinimumIndex, IndexType );
+//   itkSetMacro( MinimumIndex, IndexType );
   const IndexType & GetMinimumIndex() const
     {
     return m_MinimumIndex;
@@ -395,6 +421,18 @@ public:
   void SetMinimumIndex( const IndexType & v )
     {
     m_MinimumIndex = v;
+    }
+
+//   itkGetConstMacro( CenterOfGravity, PointType );
+//   itkSetMacro( CenterOfGravity, PointType );
+  const PointType & GetCenterOfGravity() const
+    {
+    return m_CenterOfGravity;
+    }
+
+  void SetCenterOfGravity( const PointType & v )
+    {
+    m_CenterOfGravity = v;
     }
 
 protected:
@@ -409,6 +447,7 @@ protected:
     m_Median = 0;
     m_MaximumIndex.Fill(0);
     m_MinimumIndex.Fill(0);
+    m_CenterOfGravity.Fill(0);
     }
   
 
@@ -425,6 +464,7 @@ protected:
     os << indent << "Median: " << m_Median << std::endl;
     os << indent << "MaximumIndex: " << m_MaximumIndex << std::endl;
     os << indent << "MinimumIndex: " << m_MinimumIndex << std::endl;
+    os << indent << "CenterOfGravity: " << m_CenterOfGravity << std::endl;
     }
 
 private:
@@ -440,6 +480,7 @@ private:
   double m_Median;
   IndexType m_MaximumIndex;
   IndexType m_MinimumIndex;
+  PointType m_CenterOfGravity;
 
 };
 

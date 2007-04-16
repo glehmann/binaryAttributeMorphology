@@ -82,6 +82,8 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
     double sumOfSquares = 0;
     IndexType minIdx;
     IndexType maxIdx;
+    PointType centerOfGravity;
+    centerOfGravity.Fill( 0 );
 
     // iterate over all the lines
     for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
@@ -113,6 +115,14 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
         sum += v;
         sumOfSquares += vcl_pow( (double)v, 2 );
 
+        // center of gravity
+        PointType physicalPosition;
+        output->TransformIndexToPhysicalPoint(idx, physicalPosition);
+        for(unsigned int i=0; i<ImageDimension; i++)
+          {
+          centerOfGravity[i] += physicalPosition[i] * v; 
+          }
+
         }
       }
 
@@ -138,6 +148,12 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
         }
       }
 
+    // Normalize using the total mass
+    for(unsigned int i=0; i<ImageDimension; i++)
+      {
+      centerOfGravity[i] /= sum;
+      }
+
     // finally put the value in the label object
     labelObject->SetMinimum( (double)min );
     labelObject->SetMaximum( (double)max );
@@ -148,10 +164,11 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
     labelObject->SetSigma( sigma );
     labelObject->SetMinimumIndex( minIdx );
     labelObject->SetMaximumIndex( maxIdx );
+    labelObject->SetCenterOfGravity( centerOfGravity );
 
-//     std::cout << std::endl;
-//     labelObject->Print( std::cout );
-//     std::cout << std::endl;
+    std::cout << std::endl;
+    labelObject->Print( std::cout );
+    std::cout << std::endl;
     }
 }
 

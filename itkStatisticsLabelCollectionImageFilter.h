@@ -43,6 +43,7 @@ public:
   typedef typename ImageType::ConstPointer    ImageConstPointer;
   typedef typename ImageType::PixelType       PixelType;
   typedef typename ImageType::IndexType       IndexType;
+  typedef typename ImageType::PointType       PointType;
   
   typedef TFeatureImage FeatureImageType;
   typedef typename FeatureImageType::Pointer         FeatureImagePointer;
