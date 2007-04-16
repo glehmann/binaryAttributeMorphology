@@ -216,7 +216,7 @@ public:
 
   typedef ImageRegion< ImageDimension > RegionType;
 
-  typedef typename itk::FixedArray<double, ImageDimension> CentroidType;
+  typedef typename itk::Point<double, ImageDimension> CentroidType;
 
 /*  itkGetConstMacro( Region, RegionType );
   itkSetMacro( Region, RegionType );*/
