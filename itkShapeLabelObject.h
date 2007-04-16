@@ -90,6 +90,19 @@ public:
     }
 };
 
+template< class TLabelObject >
+class ITK_EXPORT CentroidLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef typename LabelObjectType::CentroidType AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetCentroid();
+    }
+};
+
 }
 
 
