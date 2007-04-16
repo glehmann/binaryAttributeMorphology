@@ -116,6 +116,32 @@ public:
     }
 };
 
+template< class TLabelObject >
+class ITK_EXPORT MaximumIndexLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef typename LabelObjectType::IndexType AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetMaximumIndex();
+    }
+};
+
+template< class TLabelObject >
+class ITK_EXPORT MinimumIndexLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef typename LabelObjectType::IndexType AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetMinimumIndex();
+    }
+};
+
 
 }
 
@@ -164,6 +190,8 @@ public:
   static const AttributeType SIGMA=104;
   static const AttributeType VARIANCE=105;
   static const AttributeType MEDIAN=106;
+  static const AttributeType MAXIMUM_INDEX=107;
+  static const AttributeType MINIMUM_INDEX=108;
 
   static AttributeType GetAttributeFromName( const std::string & s )
     {
@@ -195,6 +223,14 @@ public:
       {
       return MEDIAN;
       }
+    else if( s == "MaximumIndex" )
+      {
+      return MAXIMUM_INDEX;
+      }
+    else if( s == "MinimumIndex" )
+      {
+      return MINIMUM_INDEX;
+      }
     // can't recognize the namespace
     return Superclass::GetAttributeFromName( s );
     }
@@ -223,6 +259,12 @@ public:
         break;
       case MEDIAN:
         return "Median";
+        break;
+      case MAXIMUM_INDEX:
+        return "MaximumIndex";
+        break;
+      case MINIMUM_INDEX:
+        return "MinimumIndex";
         break;
       }
       // can't recognize the namespace
@@ -331,6 +373,30 @@ public:
     m_Median = v;
     }
 
+//   itkGetConstMacro( MaximumIndex, double );
+//   itkSetMacro( MaximumIndex, double );
+  const IndexType & GetMaximumIndex() const
+    {
+    return m_MaximumIndex;
+    }
+
+  void SetMaximumIndex( const IndexType & v )
+    {
+    m_MaximumIndex = v;
+    }
+
+//   itkGetConstMacro( MinimumIndex, double );
+//   itkSetMacro( MinimumIndex, double );
+  const IndexType & GetMinimumIndex() const
+    {
+    return m_MinimumIndex;
+    }
+
+  void SetMinimumIndex( const IndexType & v )
+    {
+    m_MinimumIndex = v;
+    }
+
 protected:
   StatisticsLabelObject()
     {
@@ -341,6 +407,8 @@ protected:
     m_Sigma = 0;
     m_Variance = 0;
     m_Median = 0;
+    m_MaximumIndex.Fill(0);
+    m_MinimumIndex.Fill(0);
     }
   
 
@@ -355,6 +423,8 @@ protected:
     os << indent << "Sigma: " << m_Sigma << std::endl;
     os << indent << "Variance: " << m_Variance << std::endl;
     os << indent << "Median: " << m_Median << std::endl;
+    os << indent << "MaximumIndex: " << m_MaximumIndex << std::endl;
+    os << indent << "MinimumIndex: " << m_MinimumIndex << std::endl;
     }
 
 private:
@@ -368,6 +438,8 @@ private:
   double m_Sigma;
   double m_Variance;
   double m_Median;
+  IndexType m_MaximumIndex;
+  IndexType m_MinimumIndex;
 
 };
 

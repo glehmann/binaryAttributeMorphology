@@ -80,6 +80,8 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
     FeatureImagePixelType max = NumericTraits< FeatureImagePixelType >::NonpositiveMin();
     double sum = 0;
     double sumOfSquares = 0;
+    IndexType minIdx;
+    IndexType maxIdx;
 
     // iterate over all the lines
     for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
@@ -96,8 +98,16 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
         histogram->IncreaseFrequency( mv, 1 );
 
         // update min and max
-        min = std::min( v, min );
-        max = std::max( v, max );
+        if( v < min )
+          {
+          min = v;
+          minIdx = idx;
+          }
+        if( v > max )
+          {
+          max = v;
+          maxIdx = idx;
+          }
   
         //increase the sums
         sum += v;
@@ -136,6 +146,8 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
     labelObject->SetMedian( median );
     labelObject->SetVariance( variance );
     labelObject->SetSigma( sigma );
+    labelObject->SetMinimumIndex( minIdx );
+    labelObject->SetMaximumIndex( maxIdx );
 
 //     std::cout << std::endl;
 //     labelObject->Print( std::cout );
