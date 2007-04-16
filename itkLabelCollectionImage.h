@@ -122,6 +122,10 @@ public:
       {
       itkExceptionMacro( << "No such label." );
       }
+    if( m_UseBackground && m_BackgroundValue == label )
+      {
+      itkExceptionMacro( << "Label is background." );
+      }
     return m_LabelObjectContainer[label].GetPointer();
     }
 
