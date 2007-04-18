@@ -54,7 +54,7 @@ ShapeLabelCollectionImageFilter<TImage>
   IndexType borderMax = borderMin;
   for( int i=0; i<ImageDimension; i++ )
     {
-    borderMax[i] += output->GetLargestPossibleRegion().GetSize()[i] - 1;
+    borderMax[i] += borderMin[i] + output->GetLargestPossibleRegion().GetSize()[i] - 1;
     }
 
   typename ImageType::LabelObjectContainerType::const_iterator it;
