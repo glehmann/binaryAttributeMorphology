@@ -296,7 +296,7 @@ public:
 
   typedef ImageRegion< ImageDimension > RegionType;
 
-  typedef typename itk::FixedArray<double, ImageDimension> CentroidType;
+  typedef typename Superclass::CentroidType CentroidType;
 
 
   virtual void CopyDataFrom( const Self * src )
