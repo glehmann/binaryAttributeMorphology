@@ -156,6 +156,45 @@ public:
 };
 
 
+template< class TLabelObject >
+class ITK_EXPORT CentralMomentsLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef typename LabelObjectType::MatrixType AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetCentralMoments();
+    }
+};
+
+template< class TLabelObject >
+class ITK_EXPORT PrincipalMomentsLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef typename LabelObjectType::VectorType AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetPrincipalMoments();
+    }
+};
+
+template< class TLabelObject >
+class ITK_EXPORT PrincipalAxesLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef typename LabelObjectType::MatrixType AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetPrincipalAxes();
+    }
+};
+
 }
 
 
@@ -197,6 +236,10 @@ public:
 
   typedef typename Superclass::LineContainerType LineContainerType;
 
+  typedef Matrix< double, ImageDimension, ImageDimension >   MatrixType;
+
+  typedef Vector< double, ImageDimension > VectorType;
+
   typedef typename Superclass::AttributeType AttributeType;
   static const AttributeType MINIMUM=100;
   static const AttributeType MAXIMUM=101;
@@ -208,6 +251,9 @@ public:
   static const AttributeType MAXIMUM_INDEX=107;
   static const AttributeType MINIMUM_INDEX=108;
   static const AttributeType CENTER_OF_GRAVITY=109;
+  static const AttributeType CENTRAL_MOMENTS=110;
+  static const AttributeType PRINCIPAL_MOMENTS=111;
+  static const AttributeType PRINCIPAL_AXES=112;
 
   static AttributeType GetAttributeFromName( const std::string & s )
     {
@@ -251,6 +297,18 @@ public:
       {
       return CENTER_OF_GRAVITY;
       }
+    else if( s == "CentralMoments" )
+      {
+      return CENTRAL_MOMENTS;
+      }
+    else if( s == "PrincipalMoments" )
+      {
+      return PRINCIPAL_MOMENTS;
+      }
+    else if( s == "PrincipalAxes" )
+      {
+      return PRINCIPAL_AXES;
+      }
     // can't recognize the namespace
     return Superclass::GetAttributeFromName( s );
     }
@@ -289,6 +347,15 @@ public:
       case CENTER_OF_GRAVITY:
         return "CenterOfGravity";
         break;
+      case CENTRAL_MOMENTS:
+        return "CentralMoments";
+        break;
+      case PRINCIPAL_MOMENTS:
+        return "PrincipalMoments";
+        break;
+      case PRINCIPAL_AXES:
+        return "PrincipalAxes";
+        break;
       }
       // can't recognize the namespace
       return Superclass::GetNameFromAttribute( a );
@@ -313,6 +380,9 @@ public:
     m_MaximumIndex = src->m_MaximumIndex;
     m_MinimumIndex = src->m_MinimumIndex;
     m_CenterOfGravity = src->m_CenterOfGravity;
+    m_CentralMoments = src->m_CentralMoments;
+    m_PrincipalMoments = src->m_PrincipalMoments;
+    m_PrincipalAxes = src->m_PrincipalAxes;
     }
 
 //   itkGetConstMacro( Minimum, double );
@@ -435,6 +505,43 @@ public:
     m_CenterOfGravity = v;
     }
 
+//   itkGetConstMacro( CentralMoments, MatrixType );
+//   itkSetMacro( CentralMoments, MatrixType );
+  const MatrixType & GetCentralMoments() const
+    {
+    return m_CentralMoments;
+    }
+
+  void SetCentralMoments( const MatrixType & v )
+    {
+    m_CentralMoments = v;
+    }
+
+//   itkGetConstMacro( PrincipalMoments, VectorType );
+//   itkSetMacro( PrincipalMoments, VectorType );
+  const VectorType & GetPrincipalMoments() const
+    {
+    return m_PrincipalMoments;
+    }
+
+  void SetPrincipalMoments( const VectorType & v )
+    {
+    m_PrincipalMoments = v;
+    }
+
+//   itkGetConstMacro( PrincipalAxes, MatrixType );
+//   itkSetMacro( PrincipalAxes, MatrixType );
+  const MatrixType & GetPrincipalAxes() const
+    {
+    return m_PrincipalAxes;
+    }
+
+  void SetPrincipalAxes( const MatrixType & v )
+    {
+    m_PrincipalAxes = v;
+    }
+
+
 protected:
   StatisticsLabelObject()
     {
@@ -448,6 +555,9 @@ protected:
     m_MaximumIndex.Fill(0);
     m_MinimumIndex.Fill(0);
     m_CenterOfGravity.Fill(0);
+    m_CentralMoments.Fill(0);
+    m_PrincipalMoments.Fill(0);
+    m_PrincipalAxes.Fill(0);
     }
   
 
@@ -465,6 +575,9 @@ protected:
     os << indent << "MaximumIndex: " << m_MaximumIndex << std::endl;
     os << indent << "MinimumIndex: " << m_MinimumIndex << std::endl;
     os << indent << "CenterOfGravity: " << m_CenterOfGravity << std::endl;
+    os << indent << "CentralMoments: " << m_CentralMoments << std::endl;
+    os << indent << "PrincipalMoments: " << m_PrincipalMoments << std::endl;
+    os << indent << "PrincipalAxes: " << m_PrincipalAxes << std::endl;
     }
 
 private:
@@ -481,6 +594,9 @@ private:
   IndexType m_MaximumIndex;
   IndexType m_MinimumIndex;
   PointType m_CenterOfGravity;
+  MatrixType m_CentralMoments;
+  VectorType m_PrincipalMoments;
+  MatrixType m_PrincipalAxes;
 
 };
 

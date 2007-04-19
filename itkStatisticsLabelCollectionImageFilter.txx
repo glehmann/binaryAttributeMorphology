@@ -21,6 +21,8 @@
 #include "itkMinimumMaximumImageCalculator.h"
 #include "itkProgressReporter.h"
 #include "itkHistogram.h"
+#include "vnl/algo/vnl_real_eigensystem.h"
+#include "vnl/algo/vnl_symmetric_eigensystem.h"
 
 
 namespace itk {
@@ -39,7 +41,8 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
 ::GenerateData()
 {
   // Allocate the output
-  this->AllocateOutputs();
+//   this->AllocateOutputs();
+  Superclass::GenerateData();
 
   ImageType * output = this->GetOutput();
   const FeatureImageType * featureImage = this->GetFeatureImage();
@@ -84,6 +87,12 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
     IndexType maxIdx;
     PointType centerOfGravity;
     centerOfGravity.Fill( 0 );
+    MatrixType centralMoments;
+    centralMoments.Fill( 0 );
+    MatrixType principalAxes;
+    principalAxes.Fill( 0 );
+    VectorType principalMoments;
+    principalMoments.Fill( 0 );
 
     // iterate over all the lines
     for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
@@ -115,12 +124,17 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
         sum += v;
         sumOfSquares += vcl_pow( (double)v, 2 );
 
-        // center of gravity
+        // moments
         PointType physicalPosition;
         output->TransformIndexToPhysicalPoint(idx, physicalPosition);
         for(unsigned int i=0; i<ImageDimension; i++)
           {
           centerOfGravity[i] += physicalPosition[i] * v; 
+          for(unsigned int j=0; j<ImageDimension; j++)
+            {
+            double weight = v * physicalPosition[i] * physicalPosition[j];
+            centralMoments[i][j] += weight;
+            }
           }
 
         }
@@ -154,6 +168,39 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
       centerOfGravity[i] /= sum;
       }
 
+    // Center the second order moments
+    for(unsigned int i=0; i<ImageDimension; i++)
+      {
+      for(unsigned int j=0; j<ImageDimension; j++)
+        {
+        centralMoments[i][j] -= centerOfGravity[i] * centerOfGravity[j];
+        }
+      }
+
+    // Compute principal moments and axes
+    vnl_symmetric_eigensystem<double> eigen( centralMoments.GetVnlMatrix() );
+    vnl_diag_matrix<double> pm = eigen.D;
+    for(unsigned int i=0; i<ImageDimension; i++)
+      {
+      principalMoments[i] = pm(i,i) * sum;
+      }
+    principalAxes = eigen.V.transpose();
+  
+    // Add a final reflection if needed for a proper rotation,
+    // by multiplying the last row by the determinant
+    vnl_real_eigensystem eigenrot( principalAxes.GetVnlMatrix() );
+    vnl_diag_matrix< vcl_complex<double> > eigenval = eigenrot.D;
+    vcl_complex<double> det( 1.0, 0.0 );
+  
+    for(unsigned int i=0; i<ImageDimension; i++)
+      {
+      det *= eigenval( i, i );
+      }
+
+  for(unsigned int i=0; i<ImageDimension; i++)
+    {
+    principalAxes[ ImageDimension-1 ][i] *= std::real( det );
+    }
     // finally put the value in the label object
     labelObject->SetMinimum( (double)min );
     labelObject->SetMaximum( (double)max );
@@ -165,6 +212,9 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
     labelObject->SetMinimumIndex( minIdx );
     labelObject->SetMaximumIndex( maxIdx );
     labelObject->SetCenterOfGravity( centerOfGravity );
+    labelObject->SetPrincipalAxes( principalAxes );
+    labelObject->SetPrincipalMoments( principalMoments );
+    labelObject->SetCentralMoments( centralMoments );
 
     std::cout << std::endl;
     labelObject->Print( std::cout );

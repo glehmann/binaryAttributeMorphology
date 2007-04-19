@@ -44,6 +44,8 @@ public:
   typedef typename ImageType::PixelType       PixelType;
   typedef typename ImageType::IndexType       IndexType;
   typedef typename ImageType::PointType       PointType;
+  typedef typename ImageType::LabelObjectType::MatrixType       MatrixType;
+  typedef typename ImageType::LabelObjectType::VectorType       VectorType;
   
   typedef TFeatureImage FeatureImageType;
   typedef typename FeatureImageType::Pointer         FeatureImagePointer;
