@@ -103,6 +103,19 @@ public:
     }
 };
 
+template< class TLabelObject >
+class ITK_EXPORT FeretDiameterLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef double AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetFeretDiameter();
+    }
+};
+
 }
 
 
@@ -150,6 +163,7 @@ public:
   static const AttributeType CENTROID=4;
   static const AttributeType REGION=5;
   static const AttributeType SIZE_ON_BORDER=6;
+  static const AttributeType FERET_DIAMETER=7;
 
   static AttributeType GetAttributeFromName( const std::string & s )
     {
@@ -181,6 +195,10 @@ public:
       {
       return SIZE_ON_BORDER;
       }
+    else if( s == "FeretDiameter" )
+      {
+      return FERET_DIAMETER;
+      }
     // can't recognize the namespace
     throw std::runtime_error("Unknown attribute.");
     }
@@ -208,6 +226,9 @@ public:
         break;
       case SIZE_ON_BORDER:
         return "SizeOnBorder";
+        break;
+      case FERET_DIAMETER:
+        return "FeretDiameter";
         break;
       }
       // can't recognize the namespace
@@ -302,6 +323,18 @@ public:
     m_SizeOnBorder = v;
     }
 
+//   itkGetConstMacro( FeretDiameter, double );
+//   itkSetMacro( FeretDiameter, double );
+  const double & GetFeretDiameter() const
+    {
+    return m_FeretDiameter;
+    }
+
+  void SetFeretDiameter( const double & v )
+    {
+    m_FeretDiameter = v;
+    }
+
 
   virtual void CopyDataFrom( const Self * src )
     {
@@ -314,6 +347,7 @@ public:
     m_RegionElongation = src->m_RegionElongation;
     m_SizeRegionRatio = src->m_SizeRegionRatio;
     m_SizeOnBorder = src->m_SizeOnBorder;
+    m_FeretDiameter = src->m_FeretDiameter;
     }
 
 protected:
@@ -324,6 +358,7 @@ protected:
     m_RegionElongation = 0;
     m_SizeRegionRatio = 0;
     m_SizeOnBorder = false;
+    m_FeretDiameter = false;
     }
   
 
@@ -339,6 +374,7 @@ protected:
     os << indent << "RegionElongation: " << m_RegionElongation << std::endl;
     os << indent << "SizeRegionRatio: " << m_SizeRegionRatio << std::endl;
     os << indent << "SizeOnBorder: " << m_SizeOnBorder << std::endl;
+    os << indent << "FeretDiameter: " << m_FeretDiameter << std::endl;
     }
 
 private:
@@ -352,6 +388,7 @@ private:
   double m_RegionElongation;
   double m_SizeRegionRatio;
   unsigned long m_SizeOnBorder;
+  double m_FeretDiameter;
   
 
 };

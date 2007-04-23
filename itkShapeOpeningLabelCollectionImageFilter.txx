@@ -55,6 +55,9 @@ ShapeOpeningLabelCollectionImageFilter<TImage>
     case LabelObjectType::SIZE_ON_BORDER:
       TemplatedGenerateData< typename Functor::SizeOnBorderLabelObjectAccessor< LabelObjectType > >();
       break;
+    case LabelObjectType::FERET_DIAMETER:
+      TemplatedGenerateData< typename Functor::FeretDiameterLabelObjectAccessor< LabelObjectType > >();
+      break;
     default:
       itkExceptionMacro(<< "Unknown attribute type");
       break;

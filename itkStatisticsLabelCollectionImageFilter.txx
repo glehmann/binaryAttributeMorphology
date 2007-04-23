@@ -103,7 +103,7 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
       unsigned long length = lit->GetLength();
 
       typename HistogramType::MeasurementVectorType mv;
-      unsigned long endIdx0 = firstIdx[0] + length;
+      long endIdx0 = firstIdx[0] + length;
       for( IndexType idx = firstIdx; idx[0]<endIdx0; idx[0]++)
         {
         const FeatureImagePixelType & v = featureImage->GetPixel( idx );

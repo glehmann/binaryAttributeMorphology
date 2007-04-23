@@ -43,6 +43,7 @@ public:
   typedef typename ImageType::ConstPointer    ImageConstPointer;
   typedef typename ImageType::PixelType       PixelType;
   typedef typename ImageType::IndexType       IndexType;
+  typedef typename ImageType::SizeType        SizeType;
   
   /** ImageDimension constants */
   itkStaticConstMacro(ImageDimension, unsigned int,
@@ -66,6 +67,11 @@ public:
   /** End concept checking */
 #endif
 
+  itkSetMacro(ComputeFeretDiameter, bool);
+  itkGetConstReferenceMacro(ComputeFeretDiameter, bool);
+  itkBooleanMacro(ComputeFeretDiameter);
+
+
 protected:
   ShapeLabelCollectionImageFilter();
   ~ShapeLabelCollectionImageFilter() {};
@@ -74,9 +80,13 @@ protected:
    * to GrayscaleGeodesicErodeImageFilter. */
   void GenerateData();
   
+  void GenerateExtendedData();
+
 private:
   ShapeLabelCollectionImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
+
+  bool m_ComputeFeretDiameter;
 
 } ; // end of class
 

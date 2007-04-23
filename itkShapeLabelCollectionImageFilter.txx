@@ -19,6 +19,9 @@
 
 #include "itkShapeLabelCollectionImageFilter.h"
 #include "itkProgressReporter.h"
+#include "itkNeighborhoodIterator.h"
+#include "itkLabelCollectionImageToLabelImageFilter.h"
+#include "itkConstantBoundaryCondition.h"
 
 
 namespace itk {
@@ -27,6 +30,7 @@ template <class TImage>
 ShapeLabelCollectionImageFilter<TImage>
 ::ShapeLabelCollectionImageFilter()
 {
+  m_ComputeFeretDiameter = false;
 }
 
 
@@ -185,6 +189,125 @@ ShapeLabelCollectionImageFilter<TImage>
 //     std::cout << std::endl;
 
     }
+
+  if( m_ComputeFeretDiameter )
+    {
+    GenerateExtendedData();
+    }
+}
+
+
+template<class TImage>
+void
+ShapeLabelCollectionImageFilter<TImage>
+::GenerateExtendedData()
+{
+
+  // compute here all the data which require to get the input image
+
+  ImageType * output = this->GetOutput();
+
+  // generate an image of the labelized image
+  typedef Image< PixelType, ImageDimension > LabelImageType;
+  typedef LabelCollectionImageToLabelImageFilter< TImage, LabelImageType > LCI2IType;
+  typename LCI2IType::Pointer lci2i = LCI2IType::New();
+  lci2i->SetInput( output );
+  lci2i->Update();
+  typename LabelImageType::Pointer labelImage = lci2i->GetOutput();
+
+
+  // the data which require the pixels on the border
+  if( m_ComputeFeretDiameter )
+    {
+
+    typename ImageType::LabelObjectContainerType::const_iterator it;
+    const typename ImageType::LabelObjectContainerType & labelObjectContainer = output->GetLabelObjectContainer();
+
+    for( it = labelObjectContainer.begin(); it != labelObjectContainer.end(); it++ )
+      {
+      typedef typename ImageType::LabelObjectType LabelObjectType;
+      const PixelType & label = it->first;
+      LabelObjectType * labelObject = it->second;
+  
+      // init the vars
+      unsigned long size = 0;
+      typedef typename std::deque< IndexType > IndexListType;
+      IndexListType idxList;
+      
+      // the iterators
+      typename LabelObjectType::LineContainerType::const_iterator lit;
+      typename LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
+  
+      typedef typename itk::ConstNeighborhoodIterator< LabelImageType > NeighborIteratorType;
+      SizeType neighborHoodRadius;
+      neighborHoodRadius.Fill( 1 );
+      NeighborIteratorType it( neighborHoodRadius, labelImage, labelImage->GetBufferedRegion() );
+      ConstantBoundaryCondition<LabelImageType> lcbc;
+      // use label + 1 to have a label different of the current label on the border
+      lcbc.SetConstant( label + 1 );
+      it.OverrideBoundaryCondition( &lcbc );
+      it.GoToBegin();
+  
+      // iterate over all the lines
+      for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
+        {
+        const IndexType & firstIdx = lit->GetIndex();
+        unsigned long length = lit->GetLength();
+  
+        long endIdx0 = firstIdx[0] + length;
+        for( IndexType idx = firstIdx; idx[0]<endIdx0; idx[0]++)
+          {
+  
+          // move the iterator to the new location
+          it += idx - it.GetIndex();
+  
+          // push the pixel in the list if it is on the border of the object
+          for (unsigned i = 0; i < it.Size(); i++)
+            {
+            if( it.GetPixel(i) != label )
+              {
+              idxList.push_back( idx );
+              size++;
+              break;
+              }
+            }
+          }
+        }
+  
+      // we can now search the feret diameter
+      double feretDiameter = 0;
+      for( typename IndexListType::const_iterator iIt1 = idxList.begin();
+        iIt1 != idxList.end();
+        iIt1++ )
+        {
+        typename IndexListType::const_iterator iIt2 = iIt1;
+        for( iIt2++; iIt2 != idxList.end(); iIt2++ )
+          {
+          // Compute the length between the 2 indexes
+          double length = 0;
+          for( int i=0; i<ImageDimension; i++ )
+            {
+            length += vcl_pow( ( iIt1->GetElement( i ) - iIt2->GetElement( i ) ) * output->GetSpacing()[i], 2 );
+            }
+          if( feretDiameter < length )
+            {
+            feretDiameter = length;
+            }
+          }
+        }
+      // final computation
+      feretDiameter = vcl_sqrt( feretDiameter );
+  
+      // finally put the values in the label object
+      labelObject->SetFeretDiameter( feretDiameter );
+  
+//       std::cout << std::endl;
+//       std::cout << "size: " << size << std::endl;
+//       labelObject->Print( std::cout );
+//       std::cout << std::endl;
+      }
+    }
+
 }
 
 
