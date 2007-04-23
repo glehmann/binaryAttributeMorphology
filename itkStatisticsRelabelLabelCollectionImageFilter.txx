@@ -60,6 +60,12 @@ StatisticsRelabelLabelCollectionImageFilter<TImage>
     case LabelObjectType::MEDIAN:
       TemplatedGenerateData< typename Functor::MedianLabelObjectAccessor< LabelObjectType > >();
       break;
+    case LabelObjectType::KURTOSIS:
+      TemplatedGenerateData< typename Functor::KurtosisLabelObjectAccessor< LabelObjectType > >();
+      break;
+    case LabelObjectType::SKEWNESS:
+      TemplatedGenerateData< typename Functor::SkewnessLabelObjectAccessor< LabelObjectType > >();
+      break;
     default:
       Superclass::GenerateData();
       break;

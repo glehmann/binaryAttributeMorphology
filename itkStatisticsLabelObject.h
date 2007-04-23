@@ -195,6 +195,32 @@ public:
     }
 };
 
+template< class TLabelObject >
+class ITK_EXPORT KurtosisLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef double AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetKurtosis();
+    }
+};
+
+template< class TLabelObject >
+class ITK_EXPORT SkewnessLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef double AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetSkewness();
+    }
+};
+
 }
 
 
@@ -254,6 +280,8 @@ public:
   static const AttributeType CENTRAL_MOMENTS=110;
   static const AttributeType PRINCIPAL_MOMENTS=111;
   static const AttributeType PRINCIPAL_AXES=112;
+  static const AttributeType KURTOSIS=113;
+  static const AttributeType SKEWNESS=114;
 
   static AttributeType GetAttributeFromName( const std::string & s )
     {
@@ -309,6 +337,14 @@ public:
       {
       return PRINCIPAL_AXES;
       }
+    else if( s == "Kurtosis" )
+      {
+      return KURTOSIS;
+      }
+    else if( s == "Skewness" )
+      {
+      return SKEWNESS;
+      }
     // can't recognize the namespace
     return Superclass::GetAttributeFromName( s );
     }
@@ -356,6 +392,12 @@ public:
       case PRINCIPAL_AXES:
         return "PrincipalAxes";
         break;
+      case KURTOSIS:
+        return "Kurtosis";
+        break;
+      case SKEWNESS:
+        return "Skewness";
+        break;
       }
       // can't recognize the namespace
       return Superclass::GetNameFromAttribute( a );
@@ -383,6 +425,8 @@ public:
     m_CentralMoments = src->m_CentralMoments;
     m_PrincipalMoments = src->m_PrincipalMoments;
     m_PrincipalAxes = src->m_PrincipalAxes;
+    m_Kurtosis = src->m_Kurtosis;
+    m_Skewness = src->m_Skewness;
     }
 
 //   itkGetConstMacro( Minimum, double );
@@ -541,6 +585,30 @@ public:
     m_PrincipalAxes = v;
     }
 
+//   itkGetConstMacro( Skewness, double );
+//   itkSetMacro( Skewness, double );
+  const double & GetSkewness() const
+    {
+    return m_Skewness;
+    }
+
+  void SetSkewness( const double & v )
+    {
+    m_Skewness = v;
+    }
+
+//   itkGetConstMacro( Kurtosis, double );
+//   itkSetMacro( Kurtosis, double );
+  const double & GetKurtosis() const
+    {
+    return m_Kurtosis;
+    }
+
+  void SetKurtosis( const double & v )
+    {
+    m_Kurtosis = v;
+    }
+
 
 protected:
   StatisticsLabelObject()
@@ -558,6 +626,8 @@ protected:
     m_CentralMoments.Fill(0);
     m_PrincipalMoments.Fill(0);
     m_PrincipalAxes.Fill(0);
+    m_Kurtosis = 0;
+    m_Skewness = 0;
     }
   
 
@@ -578,6 +648,8 @@ protected:
     os << indent << "CentralMoments: " << m_CentralMoments << std::endl;
     os << indent << "PrincipalMoments: " << m_PrincipalMoments << std::endl;
     os << indent << "PrincipalAxes: " << m_PrincipalAxes << std::endl;
+    os << indent << "Skewness: " << m_Skewness << std::endl;
+    os << indent << "Kurtosis: " << m_Kurtosis << std::endl;
     }
 
 private:
@@ -597,6 +669,8 @@ private:
   MatrixType m_CentralMoments;
   VectorType m_PrincipalMoments;
   MatrixType m_PrincipalAxes;
+  double m_Skewness;
+  double m_Kurtosis;
 
 };
 

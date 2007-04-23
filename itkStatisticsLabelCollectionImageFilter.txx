@@ -82,7 +82,9 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
     FeatureImagePixelType min = NumericTraits< FeatureImagePixelType >::max();
     FeatureImagePixelType max = NumericTraits< FeatureImagePixelType >::NonpositiveMin();
     double sum = 0;
-    double sumOfSquares = 0;
+    double sum2 = 0;
+    double sum3 = 0;
+    double sum4 = 0;
     IndexType minIdx;
     IndexType maxIdx;
     PointType centerOfGravity;
@@ -122,7 +124,9 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
   
         //increase the sums
         sum += v;
-        sumOfSquares += vcl_pow( (double)v, 2 );
+        sum2 += vcl_pow( (double)v, 2 );
+        sum3 += vcl_pow( (double)v, 3 );
+        sum4 += vcl_pow( (double)v, 4 );
 
         // moments
         PointType physicalPosition;
@@ -143,8 +147,11 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
     // final computations
     const typename HistogramType::FrequencyType & totalFreq = histogram->GetTotalFrequency();
     double mean = sum / totalFreq;
-    double variance = ( sumOfSquares - ( vcl_pow( sum, 2 ) / totalFreq ) ) / ( totalFreq - 1 );
+    double variance = ( sum2 - ( vcl_pow( sum, 2 ) / totalFreq ) ) / ( totalFreq - 1 );
     double sigma = vcl_sqrt( variance );
+    double mean2 = mean * mean;
+    double skewness = ( ( sum3 - 3.0 * mean * sum2) / totalFreq + 2.0 * mean * mean2 ) / ( variance * sigma );
+    double kurtosis = ( ( sum4 - 4.0 * mean * sum3 + 6.0 * mean2 * sum2) / totalFreq - 3.0 * mean2 * mean2 ) / ( variance * variance ) - 3.0;
 
     // the median
     double median = 0;
@@ -197,11 +204,12 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
       det *= eigenval( i, i );
       }
 
-  for(unsigned int i=0; i<ImageDimension; i++)
-    {
-    principalAxes[ ImageDimension-1 ][i] *= std::real( det );
-    }
-    // finally put the value in the label object
+    for(unsigned int i=0; i<ImageDimension; i++)
+      {
+      principalAxes[ ImageDimension-1 ][i] *= std::real( det );
+      }
+
+    // finally put the values in the label object
     labelObject->SetMinimum( (double)min );
     labelObject->SetMaximum( (double)max );
     labelObject->SetSum( sum );
@@ -215,10 +223,12 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
     labelObject->SetPrincipalAxes( principalAxes );
     labelObject->SetPrincipalMoments( principalMoments );
     labelObject->SetCentralMoments( centralMoments );
+    labelObject->SetSkewness( skewness );
+    labelObject->SetKurtosis( kurtosis );
 
-    std::cout << std::endl;
-    labelObject->Print( std::cout );
-    std::cout << std::endl;
+//     std::cout << std::endl;
+//     labelObject->Print( std::cout );
+//     std::cout << std::endl;
     }
 }
 
