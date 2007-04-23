@@ -30,7 +30,16 @@ template <class TImage>
 ShapeLabelCollectionImageFilter<TImage>
 ::ShapeLabelCollectionImageFilter()
 {
-  m_ComputeFeretDiameter = false;
+  // by default, compute the feret diameter only if dim = 2
+  // it's way too slow in 3D
+  if( ImageDimension == 2 )
+    {
+    m_ComputeFeretDiameter = true;
+    }
+  else
+    {
+    m_ComputeFeretDiameter = false;
+    }
 }
 
 
