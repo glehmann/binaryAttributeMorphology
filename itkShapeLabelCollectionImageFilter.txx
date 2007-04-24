@@ -22,6 +22,7 @@
 #include "itkNeighborhoodIterator.h"
 #include "itkLabelCollectionImageToLabelImageFilter.h"
 #include "itkConstantBoundaryCondition.h"
+#include "itkLabelPerimeterEstimationCalculator.h"
 
 
 namespace itk {
@@ -199,7 +200,7 @@ ShapeLabelCollectionImageFilter<TImage>
 
     }
 
-  if( m_ComputeFeretDiameter )
+  if( m_ComputeFeretDiameter || m_ComputePerimeter )
     {
     GenerateExtendedData();
     }
@@ -223,6 +224,16 @@ ShapeLabelCollectionImageFilter<TImage>
   lci2i->SetInput( output );
   lci2i->Update();
   typename LabelImageType::Pointer labelImage = lci2i->GetOutput();
+
+
+  if( m_ComputePerimeter )
+    {
+    typedef LabelPerimeterEstimationCalculator< LabelImageType > CalculatorType;
+    typename CalculatorType::Pointer calculator = CalculatorType::New();
+    calculator->SetImage( labelImage );
+    calculator->Compute();
+    
+    }
 
 
   // the data which require the pixels on the border

@@ -71,6 +71,10 @@ public:
   itkGetConstReferenceMacro(ComputeFeretDiameter, bool);
   itkBooleanMacro(ComputeFeretDiameter);
 
+  itkSetMacro(ComputePerimeter, bool);
+  itkGetConstReferenceMacro(ComputePerimeter, bool);
+  itkBooleanMacro(ComputePerimeter);
+
 
 protected:
   ShapeLabelCollectionImageFilter();
@@ -87,6 +91,8 @@ private:
   void operator=(const Self&); //purposely not implemented
 
   bool m_ComputeFeretDiameter;
+
+  bool m_ComputePerimeter;
 
 } ; // end of class
 
