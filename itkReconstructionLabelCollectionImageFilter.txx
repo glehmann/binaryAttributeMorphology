@@ -59,10 +59,10 @@ ReconstructionLabelCollectionImageFilter<TImage, TMaskImage>
     typename LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
 
     // iterate over all the lines to find a pixel inside the object
-    bool removeLabelObject = false;
+    bool keepObject = false;
     
     for( lit = lineContainer.begin();
-      lit != lineContainer.end() && !removeLabelObject;
+      lit != lineContainer.end() && !keepObject;
       lit++ )
       {
       const IndexType & firstIdx = lit->GetIndex();
@@ -70,13 +70,13 @@ ReconstructionLabelCollectionImageFilter<TImage, TMaskImage>
 
       long endIdx0 = firstIdx[0] + length;
       for( IndexType idx = firstIdx;
-        idx[0]<endIdx0 && !removeLabelObject;
+        idx[0]<endIdx0 && !keepObject;
         idx[0]++ )
         {
         const MaskImagePixelType & v = maskImage->GetPixel( idx );
         if( v == m_ForegroundValue )
           {
-          removeLabelObject = true;
+          keepObject = true;
           }
         progress.CompletedPixel();
         }
@@ -84,8 +84,8 @@ ReconstructionLabelCollectionImageFilter<TImage, TMaskImage>
       
       // increment the iterator before removing the object to avoid invalidating the iterator
       it++;
-      
-      if( removeLabelObject )
+//       std::cout << std::endl << "keepObject: " << keepObject << std::endl;
+      if( !keepObject )
         {
         output->RemoveLabel( label );
         }
@@ -96,7 +96,7 @@ ReconstructionLabelCollectionImageFilter<TImage, TMaskImage>
 
 template <class TImage, class TAttributeAccessor>
 void
-AttributeOpeningLabelCollectionImageFilter<TImage, TAttributeAccessor>
+ReconstructionLabelCollectionImageFilter<TImage, TAttributeAccessor>
 ::PrintSelf(std::ostream &os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);

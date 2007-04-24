@@ -63,11 +63,11 @@ public:
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
 /*  itkConceptMacro(InputEqualityComparableCheck,
-    (Concept::EqualityComparable<InputImagePixelType>));
+    (Concept::EqualityComparable<PixelType>));
   itkConceptMacro(IntConvertibleToInputCheck,
-    (Concept::Convertible<int, InputImagePixelType>));
+    (Concept::Convertible<int, PixelType>));
   itkConceptMacro(InputOStreamWritableCheck,
-    (Concept::OStreamWritable<InputImagePixelType>));*/
+    (Concept::OStreamWritable<PixelType>));*/
   /** End concept checking */
 #endif
 
@@ -100,8 +100,8 @@ public:
    * Set/Get the value used as "foreground" in the output image.
    * Defaults to NumericTraits<MaskPixelType>::max().
    */
-  itkSetMacro(ForegroundValue, InputImagePixelType);
-  itkGetConstMacro(ForegroundValue, InputImagePixelType);
+  itkSetMacro(ForegroundValue, PixelType);
+  itkGetConstMacro(ForegroundValue, PixelType);
 
 protected:
   ReconstructionLabelCollectionImageFilter();
