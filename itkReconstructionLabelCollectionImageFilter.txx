@@ -23,18 +23,18 @@
 
 namespace itk {
 
-template <class TImage, class TMaskImage>
-ReconstructionLabelCollectionImageFilter<TImage, TMaskImage>
+template <class TImage, class TMarkerImage>
+ReconstructionLabelCollectionImageFilter<TImage, TMarkerImage>
 ::ReconstructionLabelCollectionImageFilter()
 {
   this->SetNumberOfRequiredInputs(2);
-  m_ForegroundValue = NumericTraits< MaskImagePixelType >::max();
+  m_ForegroundValue = NumericTraits< MarkerImagePixelType >::max();
 }
 
 
-template <class TImage, class TMaskImage>
+template <class TImage, class TMarkerImage>
 void
-ReconstructionLabelCollectionImageFilter<TImage, TMaskImage>
+ReconstructionLabelCollectionImageFilter<TImage, TMarkerImage>
 ::GenerateData()
 {
   // Allocate the output
@@ -42,7 +42,7 @@ ReconstructionLabelCollectionImageFilter<TImage, TMaskImage>
   Superclass::GenerateData();
 
   ImageType * output = this->GetOutput();
-  const MaskImageType * maskImage = this->GetMaskImage();
+  const MarkerImageType * maskImage = this->GetMarkerImage();
 
   ProgressReporter progress( this, 0, output->GetRequestedRegion().GetNumberOfPixels() );
 
@@ -73,7 +73,7 @@ ReconstructionLabelCollectionImageFilter<TImage, TMaskImage>
         idx[0]<endIdx0 && !keepObject;
         idx[0]++ )
         {
-        const MaskImagePixelType & v = maskImage->GetPixel( idx );
+        const MarkerImagePixelType & v = maskImage->GetPixel( idx );
         if( v == m_ForegroundValue )
           {
           keepObject = true;
@@ -101,7 +101,7 @@ ReconstructionLabelCollectionImageFilter<TImage, TAttributeAccessor>
 {
   Superclass::PrintSelf(os, indent);
 
-  os << indent << "ForegroundValue: "  << static_cast<typename NumericTraits<MaskImagePixelType>::PrintType>(m_ForegroundValue) << std::endl;
+  os << indent << "ForegroundValue: "  << static_cast<typename NumericTraits<MarkerImagePixelType>::PrintType>(m_ForegroundValue) << std::endl;
 }
 
 }// end namespace itk

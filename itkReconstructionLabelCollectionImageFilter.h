@@ -25,7 +25,7 @@ namespace itk {
  *
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
-template<class TImage, class TMaskImage>
+template<class TImage, class TMarkerImage>
 class ITK_EXPORT ReconstructionLabelCollectionImageFilter : 
     public InPlaceLabelCollectionImageFilter<TImage>
 {
@@ -44,10 +44,10 @@ public:
   typedef typename ImageType::PixelType       PixelType;
   typedef typename ImageType::IndexType       IndexType;
   
-  typedef TMaskImage MaskImageType;
-  typedef typename MaskImageType::Pointer         MaskImagePointer;
-  typedef typename MaskImageType::ConstPointer    MaskImageConstPointer;
-  typedef typename MaskImageType::PixelType       MaskImagePixelType;
+  typedef TMarkerImage MarkerImageType;
+  typedef typename MarkerImageType::Pointer         MarkerImagePointer;
+  typedef typename MarkerImageType::ConstPointer    MarkerImageConstPointer;
+  typedef typename MarkerImageType::PixelType       MarkerImagePixelType;
   
   /** ImageDimension constants */
   itkStaticConstMacro(ImageDimension, unsigned int,
@@ -72,16 +72,16 @@ public:
 #endif
 
    /** Set the marker image */
-  void SetMaskImage(TMaskImage *input)
+  void SetMarkerImage(TMarkerImage *input)
      {
      // Process object is not const-correct so the const casting is required.
-     this->SetNthInput( 1, const_cast<TMaskImage *>(input) );
+     this->SetNthInput( 1, const_cast<TMarkerImage *>(input) );
      }
 
   /** Get the marker image */
-  MaskImageType * GetMaskImage()
+  MarkerImageType * GetMarkerImage()
     {
-    return static_cast<MaskImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(1)));
+    return static_cast<MarkerImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(1)));
     }
 
    /** Set the input image */
@@ -91,9 +91,9 @@ public:
      }
 
    /** Set the marker image */
-  void SetInput2(TMaskImage *input)
+  void SetInput2(TMarkerImage *input)
      {
-     this->SetMaskImage( input );
+     this->SetMarkerImage( input );
      }
 
   /**
@@ -117,7 +117,7 @@ private:
   ReconstructionLabelCollectionImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
   
-  MaskImagePixelType m_ForegroundValue;
+  MarkerImagePixelType m_ForegroundValue;
 
 } ; // end of class
 

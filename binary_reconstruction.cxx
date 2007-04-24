@@ -48,7 +48,7 @@ int main(int argc, char * argv[])
   typedef itk::ReconstructionLabelCollectionImageFilter< LabelCollectionImageType, IType > ReconstructionType;
   ReconstructionType::Pointer reconstruction = ReconstructionType::New();
   reconstruction->SetInput( i2l->GetOutput() );
-  reconstruction->SetMaskImage( reader2->GetOutput() );
+  reconstruction->SetMarkerImage( reader2->GetOutput() );
   reconstruction->SetInPlace( true );
   reconstruction->SetForegroundValue( atoi(argv[5]) );
   itk::SimpleFilterWatcher watcher3(reconstruction, "filter");
