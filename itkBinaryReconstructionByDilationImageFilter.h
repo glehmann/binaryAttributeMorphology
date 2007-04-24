@@ -18,7 +18,7 @@
 #define __itkBinaryReconstructionByDilationImageFilter_h
 
 #include "itkInPlaceImageFilter.h"
-#include "itkStatisticsLabelObject.h"
+#include "itkLabelObject.h"
 #include "itkLabelCollectionImage.h"
 #include "itkBinaryImageToLabelCollectionImageFilter.h"
 #include "itkReconstructionLabelCollectionImageFilter.h"
@@ -64,7 +64,7 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int,
                       TInputImage::ImageDimension);
 
-  typedef StatisticsLabelObject<unsigned long, ImageDimension> LabelObjectType;
+  typedef LabelObject<unsigned long, ImageDimension> LabelObjectType;
   typedef typename itk::LabelCollectionImage< LabelObjectType > LabelCollectionImageType;
   typedef typename itk::BinaryImageToLabelCollectionImageFilter< InputImageType, LabelCollectionImageType > LabelizerType;
   typedef typename itk::ReconstructionLabelCollectionImageFilter< LabelCollectionImageType, InputImageType > ReconstructionType;
