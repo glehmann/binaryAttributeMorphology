@@ -126,7 +126,7 @@ public:
     }
 
    /** Set the marker image */
-  void SetMaskImage(InputImageType *input)
+  void SetMaskImage( const InputImageType *input)
      {
      // Process object is not const-correct so the const casting is required.
      this->SetNthInput( 1, const_cast<InputImageType *>(input) );
