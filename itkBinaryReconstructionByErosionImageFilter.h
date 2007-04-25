@@ -29,8 +29,19 @@
 namespace itk {
 
 /** \class BinaryReconstructionByErosionImageFilter
- * \brief Identify local maxima whose height above the baseline is greater than h.
+ * \brief binary reconstruction by erosion of an image
  *
+ * Reconstruction by erosion operates on a "marker" image and a "mask"
+ * image, and is defined as the erosion of the marker image with
+ * respect to the mask image iterated until stability.
+ *
+ * Geodesic morphology is described in Chapter 6.2 of Pierre Soille's
+ * book "Morphological Image Analysis: Principles and Applications",
+ * Second Edition, Springer, 2003.
+ *
+ * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ *
+ * \sa MorphologyImageFilter, ReconstructionByErosionImageFilter, BinaryReconstructionByDilationImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template<class TInputImage>
@@ -127,14 +138,14 @@ public:
     return static_cast<InputImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(0)));
     }
 
-   /** Set the marker image */
+   /** Set the mask image */
   void SetMaskImage(const InputImageType *input)
      {
      // Process object is not const-correct so the const casting is required.
      this->SetNthInput( 1, const_cast<InputImageType *>(input) );
      }
 
-  /** Get the marker image */
+  /** Get the mask image */
   InputImageType * GetMaskImage()
     {
     return static_cast<InputImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(1)));

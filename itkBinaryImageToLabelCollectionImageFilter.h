@@ -30,20 +30,17 @@ namespace itk
 
 /**
  * \class BinaryImageToLabelCollectionImageFilter
- * \brief Label the objects in a binary image
+ * \brief Label the connected components in a binary image and produce a collection of label objects
  *
  * BinaryImageToLabelCollectionImageFilter labels the objects in a binary image.
- * Each distinct object is assigned a unique label. The filter experiments
- * with some improvements to the existing implementation, and is based on
- * run length encoding along raster lines.
+ * Each distinct object is assigned a unique label. 
  * The final object labels start with 1 and are consecutive. Objects
  * that are reached earlier by a raster order scan have a lower
- * label. This is different to the behaviour of the original connected
- * component image filter which did not produce consecutive labels or
- * impose any particular ordering.
+ * label.
  *
+ * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
- * \sa ImageToImageFilter
+ * \sa ConnectedComponentImageFilter, LabelImageToLabelCollectionImageFilter, LabelCollectionImage
  */
 
 template <class TInputImage, class TOutputImage>
@@ -141,8 +138,8 @@ public:
   itkGetConstMacro(ForegroundValue, InputPixelType);
 
   /**
-   * Set/Get wether a flat image must be considered as a maxima or not.
-   * Defaults to true.
+   * Set/Get wether the produce labelCollectionImage should use the background value
+   * or not.
    */
   itkSetMacro(UseBackground, bool);
   itkGetConstMacro(UseBackground, bool);

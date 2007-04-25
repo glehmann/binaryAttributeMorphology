@@ -24,19 +24,17 @@ namespace itk {
  * \brief binary morphological closing of an image.
  *
  * This filter removes small (i.e., smaller than the structuring 
- * element) holes and tube like structures in the interior or at the
- * boundaries of the image. The morphological closing of an image
- * "f" is defined as:
- * Closing(f) = Erosion(Dilation(f)).
+ * element) holes in the image. It is defined as:
+ * Closing(f) = ReconstructionByErosion(Dilation(f)).
  *
  * The structuring element is assumed to be composed of binary
  * values (zero or one). Only elements of the structuring element
  * having values > 0 are candidates for affecting the center pixel.
  * 
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA of Jouy-en-Josas, France.
+ * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
- * \sa MorphologyImageFilter, GrayscaleDilateImageFilter, GrayscaleErodeImageFilter
+ * \sa MorphologyImageFilter, ClosingByReconstructionImageFilter, BinaryOpeningByReconstructionImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 
@@ -84,7 +82,6 @@ public:
    * maximum value of InputPixelType. */
   itkGetMacro(ForegroundValue, InputPixelType);
  
-  
   /**
    * Set/Get whether the connected components are defined strictly by
    * face connectivity or by face+edge+vertex connectivity.  Default is

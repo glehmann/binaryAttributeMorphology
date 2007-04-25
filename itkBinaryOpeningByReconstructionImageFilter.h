@@ -24,19 +24,17 @@ namespace itk {
  * \brief binary morphological closing of an image.
  *
  * This filter removes small (i.e., smaller than the structuring 
- * element) structures in the interior or at the
- * boundaries of the image. The morphological opening of an image
- * "f" is defined as:
- * Opening(f) = Dilatation(Erosion(f)).
+ * element) objects in the image. It is defined as:
+ * Opening(f) = ReconstructionByDilatation(Erosion(f)).
  *
  * The structuring element is assumed to be composed of binary
  * values (zero or one). Only elements of the structuring element
  * having values > 0 are candidates for affecting the center pixel.
  * 
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA of Jouy-en-Josas, France.
+ * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
- * \sa MorphologyImageFilter, GrayscaleDilateImageFilter, GrayscaleErodeImageFilter
+ * \sa MorphologyImageFilter, OpeningByReconstructionImageFilter, BinaryClosingByReconstructionImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 
