@@ -110,6 +110,10 @@ public:
   itkSetMacro(Label, InputImagePixelType);
   itkGetConstMacro(Label, InputImagePixelType);
 
+  itkSetMacro(Negated, bool);
+  itkGetConstReferenceMacro(Negated, bool);
+  itkBooleanMacro(Negated);
+
 protected:
   LabelCollectionImageToMaskImageFilter();
   ~LabelCollectionImageToMaskImageFilter() {};
@@ -133,6 +137,7 @@ private:
 
   InputImagePixelType m_Label;
   OutputImagePixelType m_BackgroundValue;
+  bool m_Negated;
 
 } ; // end of class
 
