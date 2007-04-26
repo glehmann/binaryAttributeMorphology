@@ -121,6 +121,23 @@ LabelCollectionImage<TLabelObject>
 
 
 template<class TLabelObject >
+typename LabelCollectionImage<TLabelObject>::LabelObjectType * 
+LabelCollectionImage<TLabelObject>
+::GetLabelObject( const LabelType & label )
+{
+  if( ! this->HasLabel( label ) )
+    {
+    itkExceptionMacro( << "No such label." );
+    }
+  if( m_UseBackground && m_BackgroundValue == label )
+    {
+    itkExceptionMacro( << "Label is background." );
+    }
+  return m_LabelObjectContainer[label].GetPointer();
+}
+
+
+template<class TLabelObject >
 bool 
 LabelCollectionImage<TLabelObject>
 ::HasLabel( const LabelType label ) const
@@ -265,6 +282,35 @@ LabelCollectionImage<TLabelObject>
     }
   m_LabelObjectContainer.erase( label );
 }
+
+
+template<class TLabelObject >
+void
+LabelCollectionImage<TLabelObject>
+::ClearLabels()
+{
+  m_LabelObjectContainer.clear();
+}
+
+
+template<class TLabelObject >
+const typename LabelCollectionImage<TLabelObject>::LabelObjectContainerType &
+LabelCollectionImage<TLabelObject>
+::GetLabelObjectContainer() const
+{
+  return m_LabelObjectContainer;
+}
+
+
+template<class TLabelObject >
+unsigned long
+LabelCollectionImage<TLabelObject>
+::GetNumberOfObjects() const
+{
+  return m_LabelObjectContainer.size();
+}
+
+
 
 
 } // end namespace itk

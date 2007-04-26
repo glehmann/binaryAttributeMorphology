@@ -216,24 +216,10 @@ public:
    * This method thorws an exception if the label doesn't exist in this image,
    * or if the label is the background one.
    */
-  LabelObjectType * GetLabelObject( const LabelType & label )
-    {
-    if( ! this->HasLabel( label ) )
-      {
-      itkExceptionMacro( << "No such label." );
-      }
-    if( m_UseBackground && m_BackgroundValue == label )
-      {
-      itkExceptionMacro( << "Label is background." );
-      }
-    return m_LabelObjectContainer[label].GetPointer();
-    }
+  LabelObjectType * GetLabelObject( const LabelType & label );
 
-//   const LabelObjectType * GetLabelObject( const LabelType & label ) const
-//     {
-//     return m_LabelObjectContainer[label].GetPointer();
-//     }
-    
+//   const LabelObjectType * GetLabelObject( const LabelType & label ) const;
+
   /**
    * Return true is the image contains the label given in parameter and false
    * otherwise. If the label is the background one, true is also returned, so
@@ -293,26 +279,17 @@ public:
   /**
    * Remove all the labels in the image
    */
-  void ClearLabels()
-    {
-    m_LabelObjectContainer.clear();
-    }
+  void ClearLabels();
 
   /**
    * Return the label object container
    */
-  const LabelObjectContainerType & GetLabelObjectContainer() const
-    {
-    return m_LabelObjectContainer;
-    }
-  
+  const LabelObjectContainerType & GetLabelObjectContainer() const;
+
   /**
    * Return the numbner of label objects in the image
    */
-  unsigned long GetNumberOfObjects() const
-    {
-    return m_LabelObjectContainer.size();
-    }
+  unsigned long GetNumberOfObjects() const;
   
   /**
    * Set/Get the background label
