@@ -49,10 +49,9 @@ LabelCollectionImage<TLabelObject>
 {
   Superclass::PrintSelf(os,indent);
   
-//   os << indent << "PixelContainer: " << std::endl;
-//   m_Buffer->Print(os, indent.GetNextIndent());
-
-// m_Origin and m_Spacing are printed in the Superclass
+  os << indent << "BackgroundValue: " << static_cast<typename NumericTraits<LabelType>::PrintType>(m_BackgroundValue) << std::endl;
+  os << indent << "UseBackground: " << static_cast<typename NumericTraits<bool>::PrintType>(m_UseBackground) << std::endl;
+  os << indent << "LabelObjectContainer: " << & m_LabelObjectContainer << std::endl;
 }
 
 
