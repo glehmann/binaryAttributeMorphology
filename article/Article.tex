@@ -33,16 +33,17 @@ colorlinks,linkcolor={blue},citecolor={blue},urlcolor={blue},
 
 % The title should be descriptive enough for people to be able to find
 % the relevant document. 
-\title{}
+\title{Labeled object representation and manipulation with ITK}
 
 % Increment the release number whenever significant changes are made.
 % The author and/or editor can define 'significant' however they like.
-\release{0.00}
+%\release{0.00}
 
 % At minimum, give your name and an email address.  You can include a
 % snail-mail address if you like.
-\author{}
-\authoraddress{}
+\author{Ga\"etan Lehmann{$^2$}}
+\authoraddress{{$^1$}INRA, UMR 1198; ENVA; CNRS, FRE 2857, Biologie du D\'eveloppement et 
+Reproduction, Jouy en Josas, F-78350, France.}
 
 \begin{document}
 \maketitle
@@ -54,11 +55,29 @@ colorlinks,linkcolor={blue},citecolor={blue},urlcolor={blue},
 
 \begin{abstract}
 \noindent
-% The abstract should be a paragraph or two long, and describe the
-% scope of the document.
+Labelizing the objects in an image is a very common task in image analysis. It can be done manually,
+after a binarization, or can be produced directly by some algorithms, like the watershed transform.
+Manipulating those objects can be very useful, to get some informations about them for example, or
+to remove some of them according to those informations.
+This article describes some new classes made to represent and manipulate the labeled objects within
+ITK.
 \end{abstract}
 
 \tableofcontents
+
+\section{Introduction}
+
+\section{Existing naming conventions for binary images and label images}
+
+\section{Data representation}
+
+\section{Data generation and object information computation}
+
+\section{Using new object information}
+
+\section{Future work}
+
+\section{Conclusion}
 
 
 % \url{http://www.itk.org}
