@@ -22,16 +22,16 @@
 namespace itk {
 
 /** \class LabelCollectionImageToBinaryImageFilter
- * \brief Produce a binary image where foreground is the regional maxima of the input image
+ * \brief Convert a LabelCollectionImage to a binary image
  *
- * Regional maxima are flat zones surounded by pixels of lower value.
+ * LabelCollectionImageToBinaryImageFilter to a binary image. All the objects in the image
+ * are used as foreground.
+ * The background values of the original binary image can be restored by passing this image
+ * to the filter with the SetBackgroundImage() method.
  *
- * If the input image is constant, the entire image can be considered as a maxima or not.
- * The desired behavior can be selected with the SetFlatIsMaxima() method.
- * 
  * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
- * \sa ValuedLabelCollectionImageToBinaryImageFilter, HConvexImageFilter, RegionalMinimaImageFilter
+ * \sa LabelCollectionImageToLabelImageFilter, LabelCollectionImageToMaskImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template<class TInputImage, class TOutputImage>
@@ -86,14 +86,13 @@ public:
   itkSetMacro(ForegroundValue, OutputImagePixelType);
   itkGetConstMacro(ForegroundValue, OutputImagePixelType);
 
-   /** Set the marker image */
+   /** Set/Get the background image top be used to restore the background values */
   void SetBackgroundImage( const OutputImageType *input)
      {
      // Process object is not const-correct so the const casting is required.
      this->SetNthInput( 1, const_cast<OutputImageType *>(input) );
      }
 
-  /** Get the marker image */
   OutputImageType * GetBackgroundImage()
     {
     return static_cast<OutputImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(1)));

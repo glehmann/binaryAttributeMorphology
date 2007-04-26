@@ -22,16 +22,14 @@
 namespace itk {
 
 /** \class LabelImageToLabelCollectionImageFilter
- * \brief Produce a binary image where foreground is the regional maxima of the input image
+ * \brief convert a labeled image to a label collection image
  *
- * Regional maxima are flat zones surounded by pixels of lower value.
- *
- * If the input image is constant, the entire image can be considered as a maxima or not.
- * The desired behavior can be selected with the SetFlatIsMaxima() method.
+ * LabelImageToLabelCollectionImageFilter converts a label image to a label collection image.
+ * The labels are the same in the input and the output image.
  * 
  * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
- * \sa ValuedLabelImageToLabelCollectionImageFilter, HConvexImageFilter, RegionalMinimaImageFilter
+ * \sa BinaryImageToLabelCollectionImageFilter, LabelCollectionImageToLabelImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template<class TInputImage, class TOutputImage>
@@ -79,8 +77,8 @@ public:
   itkGetConstMacro(BackgroundValue, OutputImagePixelType);
 
   /**
-   * Set/Get wether a flat image must be considered as a maxima or not.
-   * Defaults to true.
+   * Set/Get wether the LabelCollectionImage produced should use the background
+   * or not (true by default).
    */
   itkSetMacro(UseBackground, bool);
   itkGetConstMacro(UseBackground, bool);

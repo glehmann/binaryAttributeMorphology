@@ -58,7 +58,12 @@ private:
 }
 
 
-
+/**
+ * LabelObjectLine is the line object used in the LabelObject class
+ * to store the line which are part of the object.
+ * A line is formed of and index and a length in the dimension 0.
+ * It is used in a run-length encoding
+ */
 template < unsigned int VImageDimension >
 class LabelObjectLine
 {
@@ -137,20 +142,26 @@ private:
   LengthType m_Length;
 };
 
-// template <class TLabelObject > class LabelCollectionImage;
 
 
 /** \class LabelObject
- *  \brief LabelObject class
+ *  \brief The base class for the representation of an labeled binary object in an image
  * 
- * This class derives from the Object class.
+ * LabelObject is the base class to represent a labeled object in an image.
+ * It should be used associated with the LabelCollectionImage.
  *
- * The class is templated over the type of the elements.
+ * LabelObject store mainly 2 things: the label of the object, and a set of lines
+ * which are part of the object.
+ * No attribute is available in that class, so this class can be used as a base class
+ * to implement a label object with attribute, or when no attribute is needed (see the
+ * reconstruction filters for an example. If a simple attribute is needed,
+ * AttributeLabelObject can be used directly.
  *
- * Template parameters for class LabelObject:
+ * Every subclass of LabelObject have to reinplement the CopyDataFrom() method.
  *
- * - TAttribute = Element type stored in the node
+ * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
+ * \sa LabelCollectionImageFilter, AttributeLabelObject
  * \ingroup DataRepresentation 
  */
 template < class TLabel, unsigned int VImageDimension >
@@ -159,7 +170,7 @@ class ITK_EXPORT LabelObject : public LightObject
 public:
   /** Standard class typedefs */
   typedef LabelObject         Self;
-  typedef Object              Superclass;
+  typedef LightObject         Superclass;
   typedef SmartPointer<Self>  Pointer;
   typedef SmartPointer<const Self>  ConstPointer;
   typedef WeakPointer<const Self>  ConstWeakPointer;
@@ -182,6 +193,9 @@ public:
 
   typedef typename std::deque< LineType > LineContainerType;
 
+  /**
+   * Set/Get the label associated with that object.
+   */
   const LabelType & GetLabel() const
     {
     return m_Label;
@@ -192,6 +206,10 @@ public:
     m_Label = label;
     }
 
+  /**
+   * Return true if the object contain the given index and false otherwise.
+   * Worst case complexity is O(L) where L is the number of lines in the object.
+   */
   bool HasIndex( const IndexType & idx ) const
     {
     for( typename LineContainerType::const_iterator it=m_LineContainer.begin();
@@ -206,8 +224,14 @@ public:
     return false;
     }
 
+  /**
+   * Add an index to the object. If the index is already in the object, the index can
+   * be found several time in the object.
+   */
   void AddIndex( const IndexType & idx ) 
     {
+    assert( !this->HasIndex( idx ) );
+
     if( !m_LineContainer.empty() )
       {
       // can we use the last line to add that index ?
@@ -222,30 +246,31 @@ public:
     this->AddLine( idx, 1 );
     }
 
+  /**
+   * Add a new line to the object, without any check.
+   */
   void AddLine( const IndexType & idx, const LengthType & length )
     {
     LineType line( idx, length );
     this->AddLine( line );
     }
 
+  /**
+   * Add a new line to the object, without any check.
+   */
   void AddLine( const LineType & line )
     {
     // TODO: add an assert to be sure that some indexes in the line are not already stored here
     m_LineContainer.push_back( line );
     }
-    
-  void PrintSelf(std::ostream& os, Indent indent) const
-    {
-//     Superclass::PrintSelf( os, indent );
-    os << indent << "LineContainer: " << & m_LineContainer << std::endl;
-    os << indent << "Label: " << static_cast<typename NumericTraits<LabelType>::PrintType>(m_Label) << std::endl; 
-    }
-
+  
+  /** Return the line container of this object */
   const LineContainerType & GetLineContainer() const
     {
     return m_LineContainer;
     }
 
+  /** Copy the data of another node to this one */
   virtual void CopyDataFrom( const Self * src )
     {
     m_LineContainer = src->m_LineContainer;
@@ -259,6 +284,13 @@ protected:
     m_LineContainer.clear();
     }
   
+  void PrintSelf(std::ostream& os, Indent indent) const
+    {
+    Superclass::PrintSelf( os, indent );
+    os << indent << "LineContainer: " << & m_LineContainer << std::endl;
+    os << indent << "Label: " << static_cast<typename NumericTraits<LabelType>::PrintType>(m_Label) << std::endl; 
+    }
+
 
 private:
   LabelObject(const Self&); //purposely not implemented

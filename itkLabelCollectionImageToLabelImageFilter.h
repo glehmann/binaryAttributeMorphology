@@ -22,16 +22,13 @@
 namespace itk {
 
 /** \class LabelCollectionImageToLabelImageFilter
- * \brief Produce a binary image where foreground is the regional maxima of the input image
+ * \brief Convert a LabelCollectionImage to a labeled image
  *
- * Regional maxima are flat zones surounded by pixels of lower value.
+ * LabelCollectionImageToBinaryImageFilter to a label image.
  *
- * If the input image is constant, the entire image can be considered as a maxima or not.
- * The desired behavior can be selected with the SetFlatIsMaxima() method.
- * 
  * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
- * \sa ValuedLabelCollectionImageToLabelImageFilter, HConvexImageFilter, RegionalMinimaImageFilter
+ * \sa LabelCollectionImageToBinaryImageFilter, LabelCollectionImageToMaskImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template<class TInputImage, class TOutputImage>

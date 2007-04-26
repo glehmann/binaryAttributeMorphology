@@ -22,16 +22,18 @@
 namespace itk {
 
 /** \class LabelCollectionImageToMaskImageFilter
- * \brief Produce a binary image where foreground is the regional maxima of the input image
+ * \brief Mask and image with a LabelCollectionImage
  *
- * Regional maxima are flat zones surounded by pixels of lower value.
+ * LabelCollectionImageToMaskImageFilter mask the content of an input image according
+ * to the content of the input LabelCollectionImage. The masked pixel of the input image
+ * are set to the BackgroundValue.
+ * LabelCollectionImageToMaskImageFilter can keep the input image for one label only, with
+ * Negated = false (the default) or it can mask the input image for a single label, when
+ * Negated equals true. In Both cases, the label is set with SetLabel(). 
  *
- * If the input image is constant, the entire image can be considered as a maxima or not.
- * The desired behavior can be selected with the SetFlatIsMaxima() method.
- * 
  * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
- * \sa ValuedLabelCollectionImageToMaskImageFilter, HConvexImageFilter, RegionalMinimaImageFilter
+ * \sa LabelCollectionImageToBinaryImageFilter, LabelCollectionImageToLabelImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template<class TInputImage, class TOutputImage>
@@ -72,14 +74,14 @@ public:
   itkTypeMacro(LabelCollectionImageToMaskImageFilter, 
                ImageToImageFilter);
 
-   /** Set the marker image */
+   /** Set the feature image */
   void SetFeatureImage(TOutputImage *input)
      {
      // Process object is not const-correct so the const casting is required.
      this->SetNthInput( 1, const_cast<TOutputImage *>(input) );
      }
 
-  /** Get the marker image */
+  /** Get the feature image */
   OutputImageType * GetFeatureImage()
     {
     return static_cast<OutputImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(1)));
@@ -91,7 +93,7 @@ public:
      this->SetInput( input );
      }
 
-   /** Set the marker image */
+   /** Set the feature image */
   void SetInput2(TOutputImage *input)
      {
      this->SetFeatureImage( input );
@@ -105,11 +107,14 @@ public:
   itkGetConstMacro(BackgroundValue, OutputImagePixelType);
 
   /**
-   * 
+   * The label to mask or to not mask, depending on the value of the Negated ivar.
    */
   itkSetMacro(Label, InputImagePixelType);
   itkGetConstMacro(Label, InputImagePixelType);
 
+  /**
+   * Set/Get whether the Label should be masked or not.
+   */
   itkSetMacro(Negated, bool);
   itkGetConstReferenceMacro(Negated, bool);
   itkBooleanMacro(Negated);
