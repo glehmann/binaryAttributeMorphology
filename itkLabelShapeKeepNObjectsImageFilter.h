@@ -39,6 +39,7 @@ namespace itk {
  *
  * \sa ShapeLabelObject, BinaryShapeKeepNObjectsImageFilter, LabelStatisticsKeepNObjectsImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
+ */
 template<class TInputImage>
 class ITK_EXPORT LabelShapeKeepNObjectsImageFilter : 
     public InPlaceImageFilter<TInputImage, TInputImage>

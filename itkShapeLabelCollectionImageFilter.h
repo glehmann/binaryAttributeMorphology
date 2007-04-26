@@ -21,7 +21,12 @@
 
 namespace itk {
 /** \class ShapeLabelCollectionImageFilter
- * \brief 
+ * \brief The valuator class for the ShapeLabelObject
+ *
+ * ShapeLabelCollectionImageFilter can be used to set the attributes values
+ * of the ShapeLabelObject in a LabelCollectionImage.
+ *
+ * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
@@ -67,10 +72,20 @@ public:
   /** End concept checking */
 #endif
 
+  /**
+   * Set/Get whether the maximum Feret diameter should be computed by default
+   * or not. The defaut value in true for 2D images, and false for the other,
+   * because of the high computation time required for that last case.
+   */
   itkSetMacro(ComputeFeretDiameter, bool);
   itkGetConstReferenceMacro(ComputeFeretDiameter, bool);
   itkBooleanMacro(ComputeFeretDiameter);
 
+  /**
+   * Set/Get whether the perimeter should be computed by default
+   * or not. The defaut value in true for 2D images, and false for the other,
+   * because of the high computation time required for that last case.
+   */
   itkSetMacro(ComputePerimeter, bool);
   itkGetConstReferenceMacro(ComputePerimeter, bool);
   itkBooleanMacro(ComputePerimeter);

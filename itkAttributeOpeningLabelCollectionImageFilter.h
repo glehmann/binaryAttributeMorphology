@@ -21,8 +21,15 @@
 
 namespace itk {
 /** \class AttributeOpeningLabelCollectionImageFilter
- * \brief 
+ * \brief remove the objects according to the value of their attribute
  *
+ * AttributeOpeningLabelCollectionImageFilter removes the objects in a label collection image
+ * with an attribute value smaller or greater than a threshold called Lambda.
+ * The attribute is provide by an attribute accessor given in template parameter.
+ *
+ * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ *
+ * \sa AttributeLabelObject
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template<class TImage, class TAttributeAccessor >
@@ -69,9 +76,18 @@ public:
   /** End concept checking */
 #endif
 
+  /**
+   * Set/Get the threshold used to keep or remove the objects.
+   */
   itkGetConstMacro(Lambda, AttributeValueType);
   itkSetMacro(Lambda, AttributeValueType);
 
+  /**
+   * Set/Get the ordering of the objects. By default, the objects with
+   * an attribute value smaller than Lamba are removed. Turning ReverseOrdering
+   * to true make this filter remove the object with an attribute value greater
+   * than Lambda instead.
+   */
   itkGetConstMacro( ReverseOrdering, bool );
   itkSetMacro( ReverseOrdering, bool );
   itkBooleanMacro( ReverseOrdering );

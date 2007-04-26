@@ -21,7 +21,13 @@
 
 namespace itk {
 /** \class AttributeKeepNObjectsLabelCollectionImageFilter
- * \brief 
+ * \brief keep N objects according to their attribute
+ *
+ * AttributeKeepNObjectsLabelCollectionImageFilter keep the N objects in a label collection image
+ * with the highest (or lowest) attribute value. The attribute is provide by an
+ * attribute accessor given in template parameter.
+ *
+ * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
@@ -70,10 +76,18 @@ public:
   /** End concept checking */
 #endif
 
+  /**
+   * Set/Get the ordering of the objects. By default, the ones with the
+   * highest value are kept. Turming ReverseOrdering to true make this filter
+   * keep the objects with the smallest values
+   */
   itkSetMacro( ReverseOrdering, bool );
   itkGetConstReferenceMacro( ReverseOrdering, bool );
   itkBooleanMacro( ReverseOrdering );
 
+  /**
+   * Set/Get the number of objects to keep
+   */
   itkSetMacro( NumberOfObjects, unsigned long );
   itkGetConstReferenceMacro( NumberOfObjects, unsigned long );
 

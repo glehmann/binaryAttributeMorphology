@@ -21,8 +21,15 @@
 
 namespace itk {
 /** \class ShapeOpeningLabelCollectionImageFilter
- * \brief 
+ * \brief remove the objects according to the value of their shape attribute
  *
+ * ShapeOpeningLabelCollectionImageFilter removes the objects in a label collection image
+ * with an attribute value smaller or greater than a threshold called Lambda.
+ * The attributes are the ones of the ShapeLabelObject.
+ *
+ * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ *
+ * \sa ShapeLabelObject, BinaryShapeOpeningImageFilter, LabelStatisticsOpeningImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template<class TImage>
@@ -69,13 +76,26 @@ public:
   /** End concept checking */
 #endif
 
+  /**
+   * Set/Get the threshold used to keep or remove the objects.
+   */
   itkGetConstMacro(Lambda, double);
   itkSetMacro(Lambda, double);
 
+  /**
+   * Set/Get the ordering of the objects. By default, the objects with
+   * an attribute value smaller than Lamba are removed. Turning ReverseOrdering
+   * to true make this filter remove the object with an attribute value greater
+   * than Lambda instead.
+   */
   itkGetConstMacro( ReverseOrdering, bool );
   itkSetMacro( ReverseOrdering, bool );
   itkBooleanMacro( ReverseOrdering );
   
+  /**
+   * Set/Get the attribute to use to select the object to remove. The default
+   * is "Size".
+   */
   itkGetConstMacro( Attribute, AttributeType );
   itkSetMacro( Attribute, AttributeType );
   void SetAttribute( const std::string & s )

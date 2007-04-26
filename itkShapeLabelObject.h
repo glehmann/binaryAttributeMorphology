@@ -120,7 +120,11 @@ public:
 
 
 /** \class ShapeLabelObject
- *  \brief ShapeLabelObject class
+ *  \brief A Label object to store the common attributes related to the shape of the object
+ *
+ * ShapeLabelObject stores  the common attributes related to the shape of the object
+ *
+ * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \ingroup DataRepresentation 
  */

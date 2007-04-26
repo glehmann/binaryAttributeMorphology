@@ -41,7 +41,11 @@ public:
 
 
 /** \class AttributeLabelObject
- *  \brief AttributeLabelObject class
+ *  \brief A LabelObject with a generic attribute
+ *
+ * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ *
+ *\sa LabelObject, ShapeLabelObject, StatisticsLabelObject
  *
  * \ingroup DataRepresentation 
  */

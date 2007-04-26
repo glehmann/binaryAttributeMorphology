@@ -29,6 +29,7 @@ AttributeRelabelImageFilter<TInputImage, TLabelObject, TLabelObjectValuator, TAt
 {
   m_BackgroundValue = NumericTraits<OutputImagePixelType>::NonpositiveMin();
   m_ReverseOrdering = false;
+  m_UseBackground = true;
 }
 
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>

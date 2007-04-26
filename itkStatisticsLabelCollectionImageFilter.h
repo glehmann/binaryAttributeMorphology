@@ -21,7 +21,12 @@
 
 namespace itk {
 /** \class StatisticsLabelCollectionImageFilter
- * \brief 
+ * \brief The valuator class for the ShapeLabelObject
+ *
+ * StatisticsCollectionImageFilter can be used to set the attributes values
+ * of the StatisticsLabelObject in a LabelCollectionImage.
+ *
+ * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
@@ -74,14 +79,14 @@ public:
   /** End concept checking */
 #endif
 
-   /** Set the marker image */
+   /** Set the feature image */
   void SetFeatureImage(TFeatureImage *input)
      {
      // Process object is not const-correct so the const casting is required.
      this->SetNthInput( 1, const_cast<TFeatureImage *>(input) );
      }
 
-  /** Get the marker image */
+  /** Get the feature image */
   FeatureImageType * GetFeatureImage()
     {
     return static_cast<FeatureImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(1)));
@@ -93,7 +98,7 @@ public:
      this->SetInput( input );
      }
 
-   /** Set the marker image */
+   /** Set the feature image */
   void SetInput2(TFeatureImage *input)
      {
      this->SetFeatureImage( input );

@@ -21,8 +21,14 @@
 
 namespace itk {
 /** \class ShapeRelabelLabelCollectionImageFilter
- * \brief 
+ * \brief relabel objects according to their shape attributes
  *
+ * ShapeRelabelImageFilter relabel a label collection image according to the shape attributes of
+ * the objects. The label produced are always consecutives.
+ *
+ * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ *
+ * \sa ShapeLabelObject, RelabelComponentImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template<class TImage >
@@ -69,10 +75,18 @@ public:
   /** End concept checking */
 #endif
 
+  /**
+   * Set/Get the order of labeling of the objects. By default, the objects with
+   * the highest attribute values are labeled first. Set ReverseOrdering to true
+   * make the one with the smallest attributes be labeled first.
+   */
   itkSetMacro( ReverseOrdering, bool );
   itkGetConstReferenceMacro( ReverseOrdering, bool );
   itkBooleanMacro( ReverseOrdering );
 
+  /**
+   * Set/Get the attribute to use. Default is "Size".
+   */
   itkGetConstMacro( Attribute, AttributeType );
   itkSetMacro( Attribute, AttributeType );
   void SetAttribute( const std::string & s )

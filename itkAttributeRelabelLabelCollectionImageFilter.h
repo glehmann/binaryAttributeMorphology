@@ -21,8 +21,15 @@
 
 namespace itk {
 /** \class AttributeRelabelLabelCollectionImageFilter
- * \brief 
+ * \brief relabel objects according to their shape attributes
  *
+ * AttributeRelabelLabelCollectionImageFilter relabel a label collection image according to the
+ * attribute of the objects.
+ * The attribute is provide by an attribute accessor given in template parameter.
+ *
+ * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ *
+ * \sa AttributeLabelObject, RelabelComponentImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template<class TImage, class TAttributeAccessor >
@@ -70,6 +77,11 @@ public:
   /** End concept checking */
 #endif
 
+  /**
+   * Set/Get the order of labeling of the objects. By default, the objects with
+   * the highest attribute values are labeled first. Set ReverseOrdering to true
+   * make the one with the smallest attributes be labeled first.
+   */
   itkSetMacro( ReverseOrdering, bool );
   itkGetConstReferenceMacro( ReverseOrdering, bool );
   itkBooleanMacro( ReverseOrdering );
