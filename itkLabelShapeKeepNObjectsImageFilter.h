@@ -29,10 +29,16 @@
 namespace itk {
 
 /** \class LabelShapeKeepNObjectsImageFilter
- * \brief Identify local maxima whose height above the baseline is greater than h.
+ * \brief keep N objects according to their shape attributes
  *
+ * LabelShapeKeepNObjectsImageFilter keep the N objects in a labeled image
+ * with the highest (or lowest) attribute value. The attributes are the ones
+ * of the ShapeLabelObject.
+ *
+ * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ *
+ * \sa ShapeLabelObject, BinaryShapeKeepNObjectsImageFilter, LabelStatisticsKeepNObjectsImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
- */
 template<class TInputImage>
 class ITK_EXPORT LabelShapeKeepNObjectsImageFilter : 
     public InPlaceImageFilter<TInputImage, TInputImage>
@@ -98,13 +104,25 @@ public:
   itkSetMacro(BackgroundValue, OutputImagePixelType);
   itkGetConstMacro(BackgroundValue, OutputImagePixelType);
 
+  /**
+   * Set/Get the number of objects to keep
+   */
   itkGetConstMacro(NumberOfObjects, unsigned long);
   itkSetMacro(NumberOfObjects, unsigned long);
 
+  /**
+   * Set/Get the ordering of the objects. By default, the ones with the
+   * highest value are kept. Turming ReverseOrdering to true make this filter
+   * keep the objects with the smallest values
+   */
   itkGetConstMacro( ReverseOrdering, bool );
   itkSetMacro( ReverseOrdering, bool );
   itkBooleanMacro( ReverseOrdering );
 
+  /**
+   * Set/Get the attribute to use to select the object to keep. The default
+   * is "Size".
+   */
   itkGetConstMacro( Attribute, AttributeType );
   itkSetMacro( Attribute, AttributeType );
   void SetAttribute( const std::string & s )

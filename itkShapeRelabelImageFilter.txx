@@ -30,6 +30,7 @@ ShapeRelabelImageFilter<TInputImage>
   m_BackgroundValue = NumericTraits<OutputImagePixelType>::NonpositiveMin();
   m_ReverseOrdering = false;
   m_Attribute = LabelObjectType::SIZE;
+  m_UseBackground = true;
 }
 
 template<class TInputImage>

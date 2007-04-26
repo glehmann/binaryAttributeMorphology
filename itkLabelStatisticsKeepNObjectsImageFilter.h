@@ -29,8 +29,15 @@
 namespace itk {
 
 /** \class LabelStatisticsKeepNObjectsImageFilter
- * \brief Identify local maxima whose height above the baseline is greater than h.
+ * \brief keep N objects according to their statistics attributes
  *
+ * LabelStatisticsKeepNObjectsImageFilter keep the N objects in a labeled image
+ * with the highest (or lowest) attribute value. The attributes are the ones
+ * of the StatisticsLabelObject.
+ *
+ * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ *
+ * \sa StatisticsLabelObject, BinaryStatisticsKeepNObjectsImageFilter, LabelShapeKeepNObjectsImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template<class TInputImage, class TFeatureImage>
@@ -103,13 +110,25 @@ public:
   itkSetMacro(BackgroundValue, OutputImagePixelType);
   itkGetConstMacro(BackgroundValue, OutputImagePixelType);
 
+  /**
+   * Set/Get the number of objects to keep
+   */
   itkGetConstMacro(NumberOfObjects, unsigned long);
   itkSetMacro(NumberOfObjects, unsigned long);
 
+  /**
+   * Set/Get the ordering of the objects. By default, the ones with the
+   * highest value are kept. Turming ReverseOrdering to true make this filter
+   * keep the objects with the smallest values
+   */
   itkGetConstMacro( ReverseOrdering, bool );
   itkSetMacro( ReverseOrdering, bool );
   itkBooleanMacro( ReverseOrdering );
 
+  /**
+   * Set/Get the attribute to use to select the object to keep. The default
+   * is "Mean".
+   */
   itkGetConstMacro( Attribute, AttributeType );
   itkSetMacro( Attribute, AttributeType );
   void SetAttribute( const std::string & s )
@@ -118,14 +137,14 @@ public:
     }
 
 
-   /** Set the marker image */
+   /** Set the feature image */
   void SetFeatureImage(TFeatureImage *input)
      {
      // Process object is not const-correct so the const casting is required.
      this->SetNthInput( 1, const_cast<TFeatureImage *>(input) );
      }
 
-  /** Get the marker image */
+  /** Get the feature image */
   FeatureImageType * GetFeatureImage()
     {
     return static_cast<FeatureImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(1)));
@@ -137,7 +156,7 @@ public:
      this->SetInput( input );
      }
 
-   /** Set the marker image */
+   /** Set the feature image */
   void SetInput2(FeatureImageType *input)
      {
      this->SetFeatureImage( input );

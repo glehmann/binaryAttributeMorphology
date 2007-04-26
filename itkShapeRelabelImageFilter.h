@@ -29,8 +29,14 @@
 namespace itk {
 
 /** \class ShapeRelabelImageFilter
- * \brief Identify local maxima whose height above the baseline is greater than h.
+ * \brief relabel objects according to their shape attributes
  *
+ * ShapeRelabelImageFilter relabel a labeled image according to the shape attributes of
+ * the objects. The label produced are always consecutives.
+ *
+ * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ *
+ * \sa ShapeLabelObject, RelabelComponentImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template<class TInputImage>
@@ -98,14 +104,26 @@ public:
   itkSetMacro(BackgroundValue, OutputImagePixelType);
   itkGetConstMacro(BackgroundValue, OutputImagePixelType);
 
+  /**
+   * Set/Get the order of labeling of the objects. By default, the objects with
+   * the highest attribute values are labeled first. Set ReverseOrdering to true
+   * make the one with the smallest attributes be labeled first.
+   */
   itkGetConstMacro( ReverseOrdering, bool );
   itkSetMacro( ReverseOrdering, bool );
   itkBooleanMacro( ReverseOrdering );
 
+  /**
+   * Set/Get wether the filter should consider a background or not. The background is
+   * not relabeled. Default is true.
+   */
   itkGetConstMacro( UseBackground, bool );
   itkSetMacro( UseBackground, bool );
   itkBooleanMacro( UseBackground );
 
+  /**
+   * Set/Get the attribute to use. Default is "Size".
+   */
   itkGetConstMacro( Attribute, AttributeType );
   itkSetMacro( Attribute, AttributeType );
   void SetAttribute( const std::string & s )

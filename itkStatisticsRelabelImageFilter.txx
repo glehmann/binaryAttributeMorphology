@@ -30,6 +30,7 @@ StatisticsRelabelImageFilter<TInputImage, TFeatureImage>
   m_BackgroundValue = NumericTraits<OutputImagePixelType>::NonpositiveMin();
   m_ReverseOrdering = false;
   m_Attribute = LabelObjectType::MEAN;
+  m_UseBackground = true;
   this->SetNumberOfRequiredInputs(2);
 }
 
