@@ -26,7 +26,23 @@
 namespace itk
 {
 /** \class LabelCollectionImage
- *  \brief Templated n-dimensional image class.
+ *  \brief Templated n-dimensional image to store labeled objects.
+ *
+ * LabelCollectionImage is an image class specialized in storing the labeled
+ * images. It represent the image in a different way than itk::Image.
+ * Instead of storing the content of the image in an array of pixels values,
+ * it store the a collection of labeled objects, and optionally a background
+ * value.
+ * This way of storing the content of the image allow an easy and efficient
+ * manipulation of the objects in the image.
+ *
+ * The LabelCollectionImage shares a lot of methods with the itk::Image class.
+ * it make it usable as input or output of the itk::ImageToImageFilter for example.
+ * However the methods don't have the same complexity in the 2 classes, because
+ * of the different way to store the data. GetPixel() is run in constant time
+ * for example in itk::Image, but have a worst case complexity of O(L), where
+ * L is the number of lines in the image (imageSize[1] * imageSize[2] for a 3D
+ * image).
  *
  * \ingroup ImageObjects */
 template <class TLabelObject >
@@ -194,6 +210,12 @@ public:
       }
     }
 
+
+  /**
+   * Return the LabelObject with the label given in parameter.
+   * This method thorws an exception if the label doesn't exist in this image,
+   * or if the label is the background one.
+   */
   LabelObjectType * GetLabelObject( const LabelType & label )
     {
     if( ! this->HasLabel( label ) )
@@ -212,40 +234,95 @@ public:
 //     return m_LabelObjectContainer[label].GetPointer();
 //     }
     
+  /**
+   * Return true is the image contains the label given in parameter and false
+   * otherwise. If the label is the background one, true is also returned, so
+   * this method may not be a good enough test before calling GetLabelObject().
+   */
   bool HasLabel( const LabelType label ) const;
   
+  /**
+   * Return the pixel value at a given index in the image. This method
+   * has a worst case complexity of O(L) where L is the number of lines in the
+   * image - use it with care.
+   */
   const LabelType & GetPixel( const IndexType & idx ) const;
   
+  /**
+   * Set the pixel value at a given index in the image.
+   * If no label object has this pixel value, a new label object is created. If
+   * a label object already exist, the index is added to it.
+   * The worst case complexity of this method is O(L) where L is the number of
+   * lines in the image. However, the execution time will be quite low if the
+   * pixels are set in the image in raster mode.
+   */
   void SetPixel( const IndexType & idx, const LabelType & label );
 
+  /**
+   * Set a full line in the image. If no label object has this label in the image,
+   * a new object is created. If a label object already exist with that label, the
+   * line is added to it WITHOUT any check - it means that if the label object may
+   * contain several time the same pixel after have run that method.
+   * This method runs in constant time.
+   */
   void SetLine( const IndexType & idx, const unsigned long & length, const LabelType & label );
 
+  /**
+   * Return the label object at a given index. This method
+   * has a worst case complexity of O(L) where L is the number of lines in the
+   * image - use it with care.
+   */
   LabelObjectType * GetLabelObject( const IndexType & idx ) const;
   
+  /**
+   * Add a label object to the image. If a label object already has the label,
+   * it is overiden.
+   */
   void AddLabelObject( LabelObjectType * labelObject );
   
+  /**
+   * Remove a label object.
+   */
   void RemoveLabelObject( LabelObjectType * labelObject );
   
+  /**
+   * Remove a label object.
+   */
   void RemoveLabel( const LabelType & label );
 
+  /**
+   * Remove all the labels in the image
+   */
   void ClearLabels()
     {
     m_LabelObjectContainer.clear();
     }
 
+  /**
+   * Return the label object container
+   */
   const LabelObjectContainerType & GetLabelObjectContainer() const
     {
     return m_LabelObjectContainer;
     }
   
+  /**
+   * Return the numbner of label objects in the image
+   */
   unsigned long GetNumberOfObjects() const
     {
     return m_LabelObjectContainer.size();
     }
   
+  /**
+   * Set/Get the background label
+   */
   itkGetConstMacro(BackgroundValue, LabelType);
   itkSetMacro(BackgroundValue, LabelType);
   
+  /**
+   * Set/Get whether the background should be used are not.
+   */
   itkGetConstMacro(UseBackground, bool);
   itkSetMacro(UseBackground, bool);
   itkBooleanMacro(UseBackground);

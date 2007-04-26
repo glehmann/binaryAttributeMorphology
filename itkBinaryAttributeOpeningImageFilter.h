@@ -27,8 +27,20 @@
 namespace itk {
 
 /** \class BinaryAttributeOpeningImageFilter
- * \brief Identify local maxima whose height above the baseline is greater than h.
+ * \brief remove the objects in a binary image according to a generic attribute
  *
+ * BinaryAttributeOpeningImageFilter remove the objects in a binary image
+ * with an attribute value smaller or greater than a threshold called Lambda.
+ * The attribute is valued with and attribute valuator given in template parameter
+ * and is accessed with an attribute accessor also given in template parameter.
+ *
+ * Used in combination with AttributeLabelObject, and a specilized attribute valuator,
+ * this class is the most efficient way to perform an attribute opening in a binary
+ * image.
+ *
+ * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ *
+ * \sa AttributeLabelObject, InPlaceLabelCollectionImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
@@ -114,9 +126,18 @@ public:
   itkSetMacro(ForegroundValue, OutputImagePixelType);
   itkGetConstMacro(ForegroundValue, OutputImagePixelType);
 
+  /**
+   * Set/Get the threshold used to keep or remove the objects.
+   */
   itkGetConstMacro(Lambda, AttributeValueType);
   itkSetMacro(Lambda, AttributeValueType);
 
+  /**
+   * Set/Get the ordering of the objects. By default, the objects with
+   * an attribute value smaller than Lamba are removed. Turning ReverseOrdering
+   * to true make this filter remove the object with an attribute value greater
+   * than Lambda instead.
+   */
   itkGetConstMacro( ReverseOrdering, bool );
   itkSetMacro( ReverseOrdering, bool );
   itkBooleanMacro( ReverseOrdering );
