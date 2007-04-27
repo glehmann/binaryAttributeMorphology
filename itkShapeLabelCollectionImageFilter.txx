@@ -309,7 +309,7 @@ ShapeLabelCollectionImageFilter<TImage>
           double length = 0;
           for( int i=0; i<ImageDimension; i++ )
             {
-            length += vcl_pow( ( iIt1->GetElement( i ) - iIt2->GetElement( i ) ) * output->GetSpacing()[i], 2 );
+            length += vcl_pow( ( iIt1->operator[]( i ) - iIt2->operator[]( i ) ) * output->GetSpacing()[i], 2 );
             }
           if( feretDiameter < length )
             {
