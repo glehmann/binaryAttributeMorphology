@@ -55,25 +55,90 @@ Reproduction, Jouy en Josas, F-78350, France.}
 
 \begin{abstract}
 \noindent
-Labelizing the objects in an image is a very common task in image analysis. It can be done manually,
-after a binarization, or can be produced directly by some algorithms, like the watershed transform.
-Manipulating those objects can be very useful, to get some informations about them for example, or
-to remove some of them according to those informations.
-This article describes some new classes made to represent and manipulate the labeled objects within
-ITK.
+
+Richard Beare has recently introduced a new filter to efficiently labelize the connected component with ITK, and has also proposed to use the run-length encoding used in that filter to implement some of the most useful binary mathematical morphology operators: the opening by attribute.
+Following that idea, and after have searched a way to use the ITK's spatial objects for this task, a new set of classes have been developed to represent and manipulate the labeled images and the objects within them in ITK.
+Those new classes have been used to implement several labeled images manipulation based on object attributes, as well as the binary specialization of some mathematical morphology filter already include in ITK, and not related to the attribute of the objects.
+
+All the source codes are provided, as well as a full set of test and several usage example of the new classes.
+
 \end{abstract}
 
 \tableofcontents
 
 \section{Introduction}
 
-\section{Existing naming conventions for binary images and label images}
+Identifying the objects in an image is a very common task, often realized by producing an image of the same size with a single pixel value per object. This image is called a labeled image. There are several way to create this image. It can be done by searching the connected components in a binary image, it can be produced directly by some algorithms, like the watershed transform, it can even be simply done by hand, etc.
+
+\section{Definitions}
+
+In that article, some terms will be cited very frequently. I will try to define them, in the context of the image analysis.
+
+\subsection{Label}
+
+A label is an identifier of something with the same caracteristics in the image. Those caracteristics can be whatever you want, for example, the range of pixel values, the same object in sense of connected component, etc.
+A label can be represented by anything and only need to be unique in the image. It doesn't even require to be ordered. In practice, we choose to use the integral number types, for several reasons: they are commonly used in image analysis, they efficiently reprensent the label in memory, and its easy to find the next label by adding 1.
+
+\subsection{Labeled image}
+
+A label image is an image which contains several labeled pixels. Often, the labels are representing some objects placed on a background, and so the label image may use a particular label for the background.
+
+
+\subsection{Binary image}
+
+A binary image is an image with two labels: a foreground label and a background label. In practice, the binary images are using a pixel type able to store more than those two values. The foreground is thus defined with a particular label, and the other label in the image are considered as the background. A side effect of that is that a labeled image can be considered as a binary image, and so, it let us manipulate a single object in a labeled image.
+
+\subsection{Attribute}
+
+An attribute is a value of any type associated with a label. It can be for example the size of an object, the mean of its pixels intensities, etc.
+
+\section{Existing classes and naming convention in ITK}
+
+In ITK, the labeled and the binary images are implemented as a simple {\em itk::Image}. The pixel types used are most of the time integral, signed or unsigned, but may be of other types.
+Several definitions of a binary image or used in ITK. Depending of the class which implement it, a binary image can be:
+\begin{itemize}
+  \item All the pixels with a given value are in the foreground. The others are in the background. That's the definition proposed in that article.
+  \item All the pixels with a given value are in the background. The others are in the foreground.
+  \item All the pixels greater than the mean of the maximum value in the image and the minimum value in the image are in the image are in the foreground. The other are in the background.
+\end{itemize}
+All those definitions should be uniformised. In that article (and all the others from the same author), the first one is the only one used.
+
+The filter which are mainpulating binary images are often prefixed with the word "Binary", to differenciate the grayscale version which don't have a prefix. It seem to be a quite good practice which have been kept in that article.
+
+The filter dedicated to the manipulation of labeled images have the word "Label" somewhere in there name. Again, it seem to be a good practice which have been kept in that article.
+
 
 \section{Data representation}
+
+A labeled image is can be seen as two things:
+\begin{itemize}
+  \item  an image
+  \item  a set of objects.
+\end{itemize}
+
+The new classes provided in that contribution fit those two point of view.
+
+\subsection{LabelCollectionImage}
+
+The {\em itk::LabelCollectionImage} is in charge of managing the collection of labeled
+objects of the image, as well as storing the metadata associated with the image like
+the spacing, the physical position, etc.
+
+The labeled objects are referenced in a {\em std::map} object to ensure that only one
+
+The {\em itk::LabelCollectionImage} provide most of the API of the {\em itk::Image} class,
+like the spacing support, the physical position, etc, and so can be manipulated as an
+image\footnote{It doesn't support the itk::Image iterators though}.
+
+\subsection{LabelObject and its specializations}
+
+\subsection{LabelObjectLine}
 
 \section{Data generation and object information computation}
 
 \section{Using new object information}
+
+\section{Binary specialization of mathematical morphology filters}
 
 \section{Future work}
 
