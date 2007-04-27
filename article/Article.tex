@@ -99,9 +99,9 @@ Several definitions of a binary image or used in ITK. Depending of the class whi
 \begin{itemize}
   \item All the pixels with a given value are in the foreground. The others are in the background. That's the definition proposed in that article.
   \item All the pixels with a given value are in the background. The others are in the foreground.
-  \item All the pixels greater than the mean of the maximum value in the image and the minimum value in the image are in the image are in the foreground. The other are in the background.
+  \item All the pixels greater than the mean of the maximum value in the image and the minimum value in the image are in the foreground. The other are in the background.
 \end{itemize}
-All those definitions should be uniformised. In that article (and all the others from the same author), the first one is the only one used.
+All those definitions should be uniformized to enhance user experience with ITK. In that article (and all the others from the same author), the first one is the only one used.
 
 The filter which are mainpulating binary images are often prefixed with the word "Binary", to differenciate the grayscale version which don't have a prefix. It seem to be a quite good practice which have been kept in that article.
 
@@ -110,35 +110,76 @@ The filter dedicated to the manipulation of labeled images have the word "Label"
 
 \section{Data representation}
 
-A labeled image is can be seen as two things:
-\begin{itemize}
-  \item  an image
-  \item  a set of objects.
-\end{itemize}
+The labeled images are often used the represent the connected components of an image. As connected component, they can be efficiently store in memory as a set of lines, using the run-length encoding: a starting point for each line, and the length of the line on a given dimension (by convention, the dimension 0). The image the can be seen as a collection of objects.
 
-The new classes provided in that contribution fit those two point of view.
+\subsection{itk::LabelCollectionImage}
 
-\subsection{LabelCollectionImage}
-
-The {\em itk::LabelCollectionImage} is in charge of managing the collection of labeled
+The {\em itk::LabelCollectionImage} class is in charge of managing the collection of labeled
 objects of the image, as well as storing the metadata associated with the image like
 the spacing, the physical position, etc.
 
-The labeled objects are referenced in a {\em std::map} object to ensure that only one
+The {\em itk::LabelCollectionImage} provide a part of the API of the {\em itk::Image} class,
+and so can be manipulated as an image\footnote{It doesn't support the itk::Image iterators though}
+in may cases. The performance can be very different however.
 
-The {\em itk::LabelCollectionImage} provide most of the API of the {\em itk::Image} class,
-like the spacing support, the physical position, etc, and so can be manipulated as an
-image\footnote{It doesn't support the itk::Image iterators though}.
+\subsection{itk::LabelObject and its specializations}
 
-\subsection{LabelObject and its specializations}
+The {\em itk::LabelObject} class represent the label obejcts. It has two main features:
+\begin{itemize}
+  \item It manage the set pixels which compose the object. The pixels are stored using the run-length encoding.
+  \item It has a label.
+\end{itemize}
 
-\subsection{LabelObjectLine}
+No attribute are stored in this class, which can thus be see as the base class for the abjects with some attributes, or which can be used when no attributes are required.
 
-\section{Data generation and object information computation}
+Several subclasses are provided with that article:
+\begin{itemize}
+  \item {\em itk::AttributeLabelObject} is able to store a generic attribute. It is generic in the sense that its type is given in template parameter.
+  \item {\em itk::ShapeLabelObject} contains numerous attribute related to the shape of the labeled object.
+  \item {\em itk::StatisticsLabelObject} contains numerous statistics about the grey values of a feature image in the same place than the labeled object.
+\end{itemize}
 
-\section{Using new object information}
+
+\subsection{itk::LabelObjectLine}
+
+{\em itk::LabelObjectLine} is the object used to store the position and the size of a single line.
+
+\section{General view of the usage}
+
+\subsection{Generating the itk::LabelCollectionImage}
+
+The {\em itk::LabelCollectionImage} class provide some methods to fill the image. However, the most efficient way is to convert a labeled image or a binary image stored in an {\em itk::Image} to a {\em itk::LabelCollectionImage}, by using {\em itk::BinaryImageToLabelCollectionImageFilter} or {\em itk::LabelImageToLabelCollectionImageFilter}.
+
+\subsection{Valuating the attributes}
+
+The label objects produced by those filters have no attribute value set, and thus the attributes must be valuated. Some filters are provided for the most common used one: {\em itk::ShapeLabelCollectionImageFilter} to fill the attributes of the {\em itk::ShapeLabelObject}s, and {\em itk::ShapeLabelCollectionImageFilter} to fill the attributes of the {\em itk::StatisticsLabelObject}s. For the {\em itk::AttributeLabelObject} class or other classes, the user must set the value by himself, for example by implementing a subclass of {\em itk::InPlaceLabelCollectionImageFilter}.
+
+\subsection{Manipulating the itk::LabelCollectionImage}
+
+Once created and, optionally, valued, several filters are provided to manipulate the {\em itk::LabelCollectionImage}:
+
+\begin{itemize}
+  \item An opening can be performed with the {\em OpeningLabelCollectionImageFilter} classes. Those classes will remove all the objects with an attribute value lower or greater than a given value. It's a very convenient way to enhance a segmentation for example, because we often can use that way some criteria  which have not been used during the segmentation procedure, like the size of the object, the mean value of its pixels, etc.
+  \item A fixed number of objects can be kept, with the {\em KeepNObjectsLabelCollectionImageFilter} classes. They are chosen according to the value of their attribute. The user can choose to keep the ones with the highest, or with the lowest attribute values.
+  \item The objects can be relabel, with the {\em RelabelLabelCollectionImageFilter} classes. The order of the label is dependant of the value of the attribute. Again, the user can choose to have the objects with the highest attribute value in the first labels, or to have the objects with the lowest attribute values in the first labels.
+\end{itemize}
+
+It can also be useful to simply get the attribute values associated with the objects. In that case, the classes provided in with that article can be used in place of {\em itk::LabelStatisticsImageFilter}, or to get some data about the shape or the position of the object.
+
+\subsection{Generating an itk::Image from the itk::LabelCollectionImage}
+
+\section{Prebuilt mini-pipeline filters}
+
+\subsection{Binary filters}
+
+\subsection{Label filters}
 
 \section{Binary specialization of mathematical morphology filters}
+
+\section{Usage examples}
+
+\subsection{...}
+
 
 \section{Future work}
 
