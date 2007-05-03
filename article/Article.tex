@@ -194,9 +194,73 @@ Several subclasses are provided with that article:
   \item {\em itk::AttributeLabelObject} is able to store a generic attribute. It
 is generic in the sense that its type is given in template parameter.
   \item {\em itk::ShapeLabelObject} contains numerous attribute related to the
-shape of the labeled object.
+shape of the labeled object. Computing the values of those attributes does not
+require a feaure image.
   \item {\em itk::StatisticsLabelObject} contains numerous statistics about the
 grey values of a feature image in the same place than the labeled object.
+Computing the values of those attributes does require a feature image.
+\end{itemize}
+
+The scalar values of the attributes of the {\em itk::ShapeLabelObject} and the
+{\em itk::StatisticsLabelObject} classes are often given both in pixel and in physical units,
+in order to be able to give some parameter independant of the image spacing.
+
+\subsubsection{itk::ShapeLabelObject attributes}
+
+\begin{itemize}
+  \item {\em Size} is the size of the object in number of pixels. Its type is
+{\em unsigned long}.
+  \item {\em PhysicalSize} is the size of the object in physical unit. It is equal
+to the {\em Size} multiplicated by the physical pixel size. Its type is {\em double}.
+  \item {\em Centroid} is the position of the center of the shape. It is not
+constrained to be in the object, and thus can be outside if the object is convex.
+Its type is {\em Point< double, ImageDimension >}. 
+  \item {\em Region} is the bounding box of the object given in the pixel coordinates.
+The physical coordinate can easily be computed from it. Its type is
+{\em ImageRegion< ImageDimension >}.
+  \item {\em RegionElongation} is the ratio of the longest physical size of the region
+on one dimension and its smallest physical size. This descriptor is not robust, and in
+particular is sensitive to rotation. Its type is {\em double}.
+  \item {\em SizeRegionRatio} is the ratio of the size of the object region (the
+bounding box) and the real size of the object. Its type is {\em double}.
+  \item {\em SizeOnBorder} is the number of pixels in the objects which are on the border
+of the image. This attribute is particulary useful to remove the objects which are touching
+too much the border. Its type is {\em unsigned long}.
+  \item {\em FeretDiameter} is the diameter in physical units of the sphere which include
+all the object. The feret diameter is computed by default only if the dimension of the image
+is $2$, because of its high computation cost for higher dimensions. Its type is {\em double}.
+%   \item {\em Perimeter}
+\end{itemize}
+
+
+\subsubsection{itk::StatisticsLabelObject attributes}
+
+\begin{itemize}
+  \item {\em Minimum} is the minimum value in the feature image for the object. Its type is
+the feature image pixel type.
+  \item {\em MinimumIndex} is the index position in the image where the first minimum was
+found. Its type is{\em Index< ImageDimension >}.
+  \item {\em Maximum} is the maximum value in the feature image for the object. Its type is
+the feature image pixel type.
+  \item {\em MaximumIndex} is the index position in the image where the first maximum was
+found. Its type is{\em Index< ImageDimension >}.
+  \item {\em Mean} is the mean of the pixel values in the object. Its type is {\em double}.
+  \item {\em Sum} is the sum of all the pixel values in the objects. Its type is {\em double}.
+  \item {\em Sigma} is the standard deviation of the pixels values in the objects. Its type
+is {\em double}.
+  \item {\em Variance} is the variance of the pixels values in the objects. Its type is
+{\em double}.
+  \item {\em Median} is the median of the pixels values in the obejct. Its type is
+{\em double}
+  \item {\em CenterOfGravity} is the center of gravity of the object. It type is
+{\em Point< double >}.
+%   \item {\em CentralMoments}
+%   \item {\em PrincipalMoments}
+%   \item {\em PrincipalAxes}
+  \item {\em Kurtosis} is the kurtosis of the pixel values in the objects. Its type is
+{\em double}.
+  \item {\em Skewness} is the skewness of the pixel values in the objects. Its type is
+{\em double}.
 \end{itemize}
 
 
@@ -219,7 +283,7 @@ itk::LabelImageToLabelCollectionImageFilter}.
 
 The label objects produced by those filters have no attribute value set, and
 thus the attributes must be valuated. Some filters are provided for the most
-common used one: {\em itk::ShapeLabelCollectionImageFilter} to fill the
+common used ones: {\em itk::ShapeLabelCollectionImageFilter} to fill the
 attributes of the {\em itk::ShapeLabelObject}s, and {\em
 itk::ShapeLabelCollectionImageFilter} to fill the attributes of the {\em
 itk::StatisticsLabelObject}s. For the {\em itk::AttributeLabelObject} class or
@@ -254,6 +318,12 @@ objects. In that case, the classes provided in with that article can be used in
 place of {\em itk::LabelStatisticsImageFilter}, or to get some data about the
 shape or the position of the object.
 
+Finally, it has been chosen to develop a specific filter for the morphological
+reconstruction. It would have been possible to implement the reconstruction
+with the most common case (build the object collection, valuate the attributes
+filter the object, and rebuild the image), but for more efficiency, the reconstruction
+filter filters the collection directly, without giving them an attribute.
+
 \subsection{Generating an itk::Image from the itk::LabelCollectionImage}
 
 Once the manipulation of the objects is done, it can be useful to go back to a
@@ -275,43 +345,6 @@ itk::LabelCollectionImage}. This filter is mostly useful to have a global view
 of the attribute values in the image.
 \end{itemize}
 
-\section{Available attributes}
-
-\subsection{Shape}
-
-\begin{itemize}
-  \item {\em Size}
-  \item {\em PhysicalSize}
-  \item {\em Centroid}
-  \item {\em Region}
-  \item {\em RegionElongation}
-  \item {\em SizeRegionRatio}
-  \item {\em SizeOnBorder}
-  \item {\em FeretDiameter}
-%   \item {\em Perimeter}
-\end{itemize}
-
-
-\subsection{Statistics}
-
-\begin{itemize}
-  \item {\em Minimum}
-  \item {\em Maximum}
-  \item {\em Mean}
-  \item {\em Sum}
-  \item {\em Sigma}
-  \item {\em Variance}
-  \item {\em Median}
-  \item {\em MaximumIndex}
-  \item {\em MinimumIndex}
-  \item {\em CenterOfGravity}
-%   \item {\em CentralMoments}
-%   \item {\em PrincipalMoments}
-%   \item {\em PrincipalAxes}
-  \item {\em Kurtosis}
-  \item {\em Skewness}
-\end{itemize}
-
 \section{Prebuilt mini-pipeline filters}
 
 The general view of the previous section show a very common way to use those
@@ -320,13 +353,15 @@ the mini-pipeline:
 \begin{itemize}
   \item creation of the {\em itk::LabelCollectionImage} from an {\em
 itk::Image},
+  \item valuation of the attribute(s) of the objects,
   \item filtering of the {\em itk::LabelCollectionImage},
   \item creation of an {\em itk::Image} from the filtered {\em
 itk::LabelCollectionImage},
 \end{itemize}
 with a specific attribute.
 
-Those filters have been made for binary, and labeled images.
+Because the objects are often get from a labeled image oor from a binary image,
+those filters have been made for binary, and labeled images.
 
 \subsection{Binary filters}
 
@@ -375,6 +410,26 @@ to help the developer to implement some new features, can be used with WrapITK,
 and have been fully tested with python.
 
 \section{Future work}
+
+To fit the ITK style, some iterators should be implemented to be able to iterate
+over all the 
+\begin{itemize}
+  \item objects,
+  \item lines,
+  \item or pixels
+\end{itemize}
+
+of an image, starting from 
+\begin{itemize}
+  \item an image,
+  \item an object,
+  \item or a line.
+\end{itemize}
+
+Doing that require a good knownledge of the iterator design. Any help on that point is
+welcome.
+
+Also, more attributes will be implemented, like the perimeter estimation, the usual moments, etc.
 
 \section{Conclusion}
 
