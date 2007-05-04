@@ -17,7 +17,7 @@
 #ifndef __itkBinaryReconstructionByErosionImageFilter_h
 #define __itkBinaryReconstructionByErosionImageFilter_h
 
-#include "itkInPlaceImageFilter.h"
+#include "itkImageToImageFilter.h"
 #include "itkLabelObject.h"
 #include "itkLabelCollectionImage.h"
 #include "itkBinaryNotImageFilter.h"
@@ -46,12 +46,12 @@ namespace itk {
  */
 template<class TInputImage>
 class ITK_EXPORT BinaryReconstructionByErosionImageFilter : 
-    public InPlaceImageFilter<TInputImage, TInputImage>
+    public ImageToImageFilter<TInputImage, TInputImage>
 {
 public:
   /** Standard class typedefs. */
   typedef BinaryReconstructionByErosionImageFilter Self;
-  typedef InPlaceImageFilter<TInputImage, TInputImage>
+  typedef ImageToImageFilter<TInputImage, TInputImage>
   Superclass;
   typedef SmartPointer<Self>        Pointer;
   typedef SmartPointer<const Self>  ConstPointer;
@@ -88,7 +88,7 @@ public:
 
   /** Runtime information support. */
   itkTypeMacro(BinaryReconstructionByErosionImageFilter, 
-               InPlaceImageFilter);
+               ImageToImageFilter);
 
   /**
    * Set/Get whether the connected components are defined strictly by

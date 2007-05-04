@@ -17,7 +17,7 @@
 #ifndef __itkShapeRelabelImageFilter_h
 #define __itkShapeRelabelImageFilter_h
 
-#include "itkInPlaceImageFilter.h"
+#include "itkImageToImageFilter.h"
 #include "itkShapeLabelObject.h"
 #include "itkLabelCollectionImage.h"
 #include "itkLabelImageToLabelCollectionImageFilter.h"
@@ -41,12 +41,12 @@ namespace itk {
  */
 template<class TInputImage>
 class ITK_EXPORT ShapeRelabelImageFilter : 
-    public InPlaceImageFilter<TInputImage, TInputImage>
+    public ImageToImageFilter<TInputImage, TInputImage>
 {
 public:
   /** Standard class typedefs. */
   typedef ShapeRelabelImageFilter Self;
-  typedef InPlaceImageFilter<TInputImage, TInputImage>
+  typedef ImageToImageFilter<TInputImage, TInputImage>
   Superclass;
   typedef SmartPointer<Self>        Pointer;
   typedef SmartPointer<const Self>  ConstPointer;
@@ -84,7 +84,7 @@ public:
 
   /** Runtime information support. */
   itkTypeMacro(ShapeRelabelImageFilter, 
-               InPlaceImageFilter);
+               ImageToImageFilter);
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */

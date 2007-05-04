@@ -17,7 +17,7 @@
 #ifndef __itkBinaryAttributeKeepNObjectsImageFilter_h
 #define __itkBinaryAttributeKeepNObjectsImageFilter_h
 
-#include "itkInPlaceImageFilter.h"
+#include "itkImageToImageFilter.h"
 #include "itkLabelCollectionImage.h"
 #include "itkBinaryImageToLabelCollectionImageFilter.h"
 #include "itkAttributeKeepNObjectsLabelCollectionImageFilter.h"
@@ -44,12 +44,12 @@ namespace itk {
  */
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
 class ITK_EXPORT BinaryAttributeKeepNObjectsImageFilter : 
-    public InPlaceImageFilter<TInputImage, TInputImage>
+    public ImageToImageFilter<TInputImage, TInputImage>
 {
 public:
   /** Standard class typedefs. */
   typedef BinaryAttributeKeepNObjectsImageFilter Self;
-  typedef InPlaceImageFilter<TInputImage, TInputImage>
+  typedef ImageToImageFilter<TInputImage, TInputImage>
   Superclass;
   typedef SmartPointer<Self>        Pointer;
   typedef SmartPointer<const Self>  ConstPointer;
@@ -88,7 +88,7 @@ public:
 
   /** Runtime information support. */
   itkTypeMacro(BinaryAttributeKeepNObjectsImageFilter, 
-               InPlaceImageFilter);
+               ImageToImageFilter);
 
   /**
    * Set/Get whether the connected components are defined strictly by

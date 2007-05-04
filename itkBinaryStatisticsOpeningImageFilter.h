@@ -17,7 +17,7 @@
 #ifndef __itkBinaryStatisticsOpeningImageFilter_h
 #define __itkBinaryStatisticsOpeningImageFilter_h
 
-#include "itkInPlaceImageFilter.h"
+#include "itkImageToImageFilter.h"
 #include "itkStatisticsLabelObject.h"
 #include "itkLabelCollectionImage.h"
 #include "itkBinaryImageToLabelCollectionImageFilter.h"
@@ -42,12 +42,12 @@ namespace itk {
  */
 template<class TInputImage, class TFeatureImage>
 class ITK_EXPORT BinaryStatisticsOpeningImageFilter : 
-    public InPlaceImageFilter<TInputImage, TInputImage>
+    public ImageToImageFilter<TInputImage, TInputImage>
 {
 public:
   /** Standard class typedefs. */
   typedef BinaryStatisticsOpeningImageFilter Self;
-  typedef InPlaceImageFilter<TInputImage, TInputImage>
+  typedef ImageToImageFilter<TInputImage, TInputImage>
   Superclass;
   typedef SmartPointer<Self>        Pointer;
   typedef SmartPointer<const Self>  ConstPointer;
@@ -90,7 +90,7 @@ public:
 
   /** Runtime information support. */
   itkTypeMacro(BinaryStatisticsOpeningImageFilter, 
-               InPlaceImageFilter);
+               ImageToImageFilter);
 
   /**
    * Set/Get whether the connected components are defined strictly by

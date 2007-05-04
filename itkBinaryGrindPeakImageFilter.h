@@ -17,7 +17,7 @@
 #ifndef __itkFillholeImageFilter_h
 #define __itkFillholeImageFilter_h
 
-#include "itkInPlaceImageFilter.h"
+#include "itkImageToImageFilter.h"
 
 namespace itk {
 
@@ -37,12 +37,12 @@ namespace itk {
  */
 template<class TInputImage>
 class ITK_EXPORT BinaryGrindPeakImageFilter : 
-    public InPlaceImageFilter<TInputImage, TInputImage>
+    public ImageToImageFilter<TInputImage, TInputImage>
 {
 public:
   /** Standard class typedefs. */
   typedef BinaryGrindPeakImageFilter Self;
-  typedef InPlaceImageFilter<TInputImage, TInputImage>
+  typedef ImageToImageFilter<TInputImage, TInputImage>
   Superclass;
   typedef SmartPointer<Self>        Pointer;
   typedef SmartPointer<const Self>  ConstPointer;
@@ -70,7 +70,7 @@ public:
 
   /** Runtime information support. */
   itkTypeMacro(BinaryGrindPeakImageFilter, 
-               InPlaceImageFilter);
+               ImageToImageFilter);
   
   /**
    * Set/Get whether the connected components are defined strictly by

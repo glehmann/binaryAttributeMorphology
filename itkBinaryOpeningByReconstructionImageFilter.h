@@ -15,7 +15,7 @@
 #ifndef __itkBinaryOpeningByReconstructionImageFilter_h
 #define __itkBinaryOpeningByReconstructionImageFilter_h
 
-#include "itkInPlaceImageFilter.h"
+#include "itkImageToImageFilter.h"
 
 namespace itk {
 
@@ -40,12 +40,12 @@ namespace itk {
 
 template<class TInputImage, class TKernel>
 class ITK_EXPORT BinaryOpeningByReconstructionImageFilter : 
-    public InPlaceImageFilter<TInputImage, TInputImage>
+    public ImageToImageFilter<TInputImage, TInputImage>
 {
 public:
   /** Standard class typedefs. */
   typedef BinaryOpeningByReconstructionImageFilter Self;
-  typedef InPlaceImageFilter<TInputImage, TInputImage> Superclass;
+  typedef ImageToImageFilter<TInputImage, TInputImage> Superclass;
   typedef SmartPointer<Self>        Pointer;
   typedef SmartPointer<const Self>  ConstPointer;
   
@@ -54,7 +54,7 @@ public:
 
   /** Runtime information support. */
   itkTypeMacro(BinaryOpeningByReconstructionImageFilter, 
-               InPlaceImageFilter);
+               ImageToImageFilter);
 
   typedef TInputImage InputImageType;
   typedef TInputImage OutputImageType;
