@@ -126,11 +126,15 @@ LabelCollectionImage<TLabelObject>
 {
   if( ! this->HasLabel( label ) )
     {
-    itkExceptionMacro( << "No such label." );
+    itkExceptionMacro( << "No label object with label "
+      << static_cast<typename NumericTraits< LabelType >::PrintType>(label)
+      << "." );
     }
   if( m_UseBackground && m_BackgroundValue == label )
     {
-    itkExceptionMacro( << "Label is background." );
+    itkExceptionMacro( << "Label "
+      << static_cast<typename NumericTraits< LabelType >::PrintType>(label)
+      << " is the background label." );
     }
   return m_LabelObjectContainer[label].GetPointer();
 }
@@ -242,7 +246,7 @@ LabelCollectionImage<TLabelObject>
       return it->second.GetPointer();
       }
     }
-    itkExceptionMacro( << "No label object at this position." );
+    itkExceptionMacro( << "No label object at index " << idx << "." );
 //   return NULL;
 }
 
