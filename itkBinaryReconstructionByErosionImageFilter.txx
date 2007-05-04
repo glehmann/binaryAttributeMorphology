@@ -42,7 +42,13 @@ BinaryReconstructionByErosionImageFilter<TInputImage>
   Superclass::GenerateInputRequestedRegion();
   
   // We need all the input.
-  InputImagePointer input = const_cast<InputImageType *>(this->GetInput());
+  InputImagePointer input = const_cast<InputImageType *>(this->GetMarkerImage());
+  if( input )
+    {
+    input->SetRequestedRegion( input->GetLargestPossibleRegion() );
+    }
+
+  input = const_cast<InputImageType *>(this->GetMaskImage());
   if( input )
     {
     input->SetRequestedRegion( input->GetLargestPossibleRegion() );
