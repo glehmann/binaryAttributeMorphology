@@ -20,7 +20,7 @@
 #ifndef __itkInPlaceLabelCollectionImageFilter_h
 #define __itkInPlaceLabelCollectionImageFilter_h
 
-#include "itkImageToImageFilter.h"
+#include "itkLabelCollectionImageFilter.h"
 
 namespace itk
 {
@@ -59,12 +59,12 @@ namespace itk
  * \ingroup ImageFilters
  */
 template <class TInputImage>
-class ITK_EXPORT InPlaceLabelCollectionImageFilter : public ImageToImageFilter<TInputImage, TInputImage>
+class ITK_EXPORT InPlaceLabelCollectionImageFilter : public LabelCollectionImageFilter<TInputImage, TInputImage>
 {
 public:
   /** Standard class typedefs. */
   typedef InPlaceLabelCollectionImageFilter  Self;
-  typedef ImageToImageFilter<TInputImage, TInputImage>  Superclass;
+  typedef LabelCollectionImageFilter<TInputImage, TInputImage>  Superclass;
   typedef SmartPointer<Self>  Pointer;
   typedef SmartPointer<const Self>  ConstPointer;
   
@@ -116,14 +116,6 @@ public:
        return (typeid(TInputImage) == typeid(TOutputImage));
      };
 
-  /** AttributeOpeningComponentTreeFilter needs the entire input be
-   * available. Thus, it needs to provide an implementation of
-   * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion() ;
-
-  /** AttributeOpeningComponentTreeFilter will produce the entire output. */
-  void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
-  
  protected:
   InPlaceLabelCollectionImageFilter();
   ~InPlaceLabelCollectionImageFilter();
@@ -155,13 +147,15 @@ public:
    * \sa ProcessObject::ReleaseInputs() */
   virtual void ReleaseInputs(); 
   
-  virtual void GenerateData()
-    {
-    // Allocate the output
-    this->AllocateOutputs();
-    // and do nothing much
-    }
 
+  /**
+   * Return the output label collection image, instead of the input as in the default
+   * implementation
+   */
+  virtual InputImageType * GetLabelCollectionImage()
+    {
+    return this->GetOutput();
+    }
 
 private:
   InPlaceLabelCollectionImageFilter(const Self&); //purposely not implemented

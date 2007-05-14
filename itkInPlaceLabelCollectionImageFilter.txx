@@ -133,34 +133,6 @@ InPlaceLabelCollectionImageFilter<TInputImage>
 }
 
 
-template <class TInputImage>
-void 
-InPlaceLabelCollectionImageFilter<TInputImage>
-::GenerateInputRequestedRegion()
-{
-  // call the superclass' implementation of this method
-  Superclass::GenerateInputRequestedRegion();
-  
-  // We need all the input.
-  InputImagePointer input = const_cast<InputImageType *>(this->GetInput());
-  
-  if ( !input )
-    { return; }
-
-  input->SetRequestedRegion( input->GetLargestPossibleRegion() );
-}
-
-
-template <class TInputImage>
-void 
-InPlaceLabelCollectionImageFilter<TInputImage>
-::EnlargeOutputRequestedRegion(DataObject *)
-{
-  this->GetOutput()
-    ->SetRequestedRegion( this->GetOutput()->GetLargestPossibleRegion() );
-}
-
-
 } // end namespace itk
 
 #endif
