@@ -17,7 +17,7 @@
 #ifndef __itkLabelCollectionImageToLabelImageFilter_h
 #define __itkLabelCollectionImageToLabelImageFilter_h
 
-#include "itkImageToImageFilter.h"
+#include "itkLabelCollectionImageFilter.h"
 
 namespace itk {
 
@@ -33,12 +33,12 @@ namespace itk {
  */
 template<class TInputImage, class TOutputImage>
 class ITK_EXPORT LabelCollectionImageToLabelImageFilter : 
-    public ImageToImageFilter<TInputImage, TOutputImage>
+    public LabelCollectionImageFilter<TInputImage, TOutputImage>
 {
 public:
   /** Standard class typedefs. */
   typedef LabelCollectionImageToLabelImageFilter Self;
-  typedef ImageToImageFilter<TInputImage, TOutputImage>
+  typedef LabelCollectionImageFilter<TInputImage, TOutputImage>
   Superclass;
   typedef SmartPointer<Self>        Pointer;
   typedef SmartPointer<const Self>  ConstPointer;
@@ -50,6 +50,8 @@ public:
   typedef typename InputImageType::ConstPointer    InputImageConstPointer;
   typedef typename InputImageType::RegionType      InputImageRegionType;
   typedef typename InputImageType::PixelType       InputImagePixelType;
+  typedef typename InputImageType::LabelObjectType LabelObjectType;
+  
   typedef typename OutputImageType::Pointer        OutputImagePointer;
   typedef typename OutputImageType::ConstPointer   OutputImageConstPointer;
   typedef typename OutputImageType::RegionType     OutputImageRegionType;
@@ -73,18 +75,9 @@ protected:
   LabelCollectionImageToLabelImageFilter();
   ~LabelCollectionImageToLabelImageFilter() {};
 
-  /** LabelCollectionImageToLabelImageFilter needs the entire input be
-   * available. Thus, it needs to provide an implementation of
-   * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion() ;
+  virtual void BeforeThreadedGenerateData();
 
-  /** LabelCollectionImageToLabelImageFilter will produce the entire output. */
-  void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
-  
-  /** Single-threaded version of GenerateData.  This filter delegates
-   * to GrayscaleGeodesicErodeImageFilter. */
-  void GenerateData();
-  
+  virtual void ThreadedGenerateData( LabelObjectType * labelObject );  
 
 private:
   LabelCollectionImageToLabelImageFilter(const Self&); //purposely not implemented

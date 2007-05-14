@@ -30,68 +30,43 @@ LabelCollectionImageToLabelImageFilter<TInputImage, TOutputImage>
 {
 }
 
-template <class TInputImage, class TOutputImage>
-void 
-LabelCollectionImageToLabelImageFilter<TInputImage, TOutputImage>
-::GenerateInputRequestedRegion()
-{
-  // call the superclass' implementation of this method
-  Superclass::GenerateInputRequestedRegion();
-  
-  // We need all the input.
-  InputImagePointer input = const_cast<InputImageType *>(this->GetInput());
-  if ( !input )
-    { return; }
-  input->SetRequestedRegion( input->GetLargestPossibleRegion() );
-}
 
-
-template <class TInputImage, class TOutputImage>
-void 
+template<class TInputImage, class TOutputImage>
+void
 LabelCollectionImageToLabelImageFilter<TInputImage, TOutputImage>
-::EnlargeOutputRequestedRegion(DataObject *)
+::BeforeThreadedGenerateData()
 {
-  this->GetOutput()
-    ->SetRequestedRegion( this->GetOutput()->GetLargestPossibleRegion() );
+  OutputImageType * output = this->GetOutput();
+  const InputImageType * input = this->GetInput();
+
+  if( input->GetUseBackground() )
+    {
+    output->FillBuffer( input->GetBackgroundValue() );
+    }
+    
+  Superclass::BeforeThreadedGenerateData();
+    
 }
 
 
 template<class TInputImage, class TOutputImage>
 void
 LabelCollectionImageToLabelImageFilter<TInputImage, TOutputImage>
-::GenerateData()
+::ThreadedGenerateData( LabelObjectType * labelObject )
 {
-  // Allocate the output
-  this->AllocateOutputs();
-  OutputImageType * output = this->GetOutput();
-  const InputImageType * input = this->GetInput();
-  ProgressReporter progress( this, 0, output->GetRequestedRegion().GetNumberOfPixels() );
+  const typename LabelObjectType::LabelType & label = labelObject->GetLabel();
 
-  if( input->GetUseBackground() )
+  typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
+  typename InputImageType::LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
+
+  for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
     {
-    output->FillBuffer( input->GetBackgroundValue() );
-    }
-
-  typename InputImageType::LabelObjectContainerType::const_iterator it;
-  const typename InputImageType::LabelObjectContainerType & labelObjectContainer = input->GetLabelObjectContainer();
-  for( it = labelObjectContainer.begin(); it != labelObjectContainer.end(); it++ )
-    {
-    const typename InputImageType::LabelObjectType * labeObject = it->second;
-    const typename InputImageType::LabelType & label = labeObject->GetLabel();
-
-    typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
-    typename InputImageType::LabelObjectType::LineContainerType lineContainer = labeObject->GetLineContainer();
-
-    for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
+    IndexType idx = lit->GetIndex();
+    unsigned long length = lit->GetLength();
+    for( int i=0; i<length; i++)
       {
-      IndexType idx = lit->GetIndex();
-      unsigned long length = lit->GetLength();
-      for( int i=0; i<length; i++)
-        {
-        output->SetPixel( idx, label );
-        idx[0]++;
-        progress.CompletedPixel();
-        }
+      this->GetOutput()->SetPixel( idx, label );
+      idx[0]++;
       }
     }
 }
