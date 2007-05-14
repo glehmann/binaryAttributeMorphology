@@ -81,7 +81,7 @@ LabelCollectionImageFilter<TInputImage, TOutputImage>
   m_LabelObjectIterator = this->GetLabelCollectionImage()->GetLabelObjectContainer().begin();
 
   // and the mutex
-  m_LabelObjectIteratorLock = FastMutexLock::New();
+  m_LabelObjectContainerLock = FastMutexLock::New();
 
   // initialize the progress reporter
   // TODO: really report the progress!
@@ -97,12 +97,12 @@ LabelCollectionImageFilter<TInputImage, TOutputImage>
   while( true )
     {
     // first lock the mutex
-    m_LabelObjectIteratorLock->Lock();
+    m_LabelObjectContainerLock->Lock();
 
     if( m_LabelObjectIterator == this->GetLabelCollectionImage()->GetLabelObjectContainer().end() )
       {
       // no more objects. Release the lock and return
-      m_LabelObjectIteratorLock->Unlock();
+      m_LabelObjectContainerLock->Unlock();
       return;
       }
 
@@ -113,7 +113,7 @@ LabelCollectionImageFilter<TInputImage, TOutputImage>
     // pretend one more object is processed, even if it will be done later, to simplify the lock management
     // TODO: progress++
     // unlock the mutex, so the other threads can get an object
-    m_LabelObjectIteratorLock->Unlock();
+    m_LabelObjectContainerLock->Unlock();
     // and run the user defined method for that object
     ThreadedGenerateData( labelObject );
     }

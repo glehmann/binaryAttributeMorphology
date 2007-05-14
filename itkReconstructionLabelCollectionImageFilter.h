@@ -43,6 +43,7 @@ public:
   typedef typename ImageType::ConstPointer    ImageConstPointer;
   typedef typename ImageType::PixelType       PixelType;
   typedef typename ImageType::IndexType       IndexType;
+  typedef typename ImageType::LabelObjectType LabelObjectType;
   
   typedef TMarkerImage MarkerImageType;
   typedef typename MarkerImageType::Pointer         MarkerImagePointer;
@@ -107,9 +108,7 @@ protected:
   ReconstructionLabelCollectionImageFilter();
   ~ReconstructionLabelCollectionImageFilter() {};
 
-  /** Single-threaded version of GenerateData.  This filter delegates
-   * to GrayscaleGeodesicErodeImageFilter. */
-  void GenerateData();
+  virtual void ThreadedGenerateData( LabelObjectType * labelObject );
   
   void PrintSelf(std::ostream& os, Indent indent) const;
 

@@ -100,12 +100,12 @@ public:
     return static_cast<InputImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(0)));
     }
 
+  typename FastMutexLock::Pointer m_LabelObjectContainerLock;
 
 private:
   LabelCollectionImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-  typename FastMutexLock::Pointer m_LabelObjectIteratorLock;
   typename InputImageType::LabelObjectContainerType::const_iterator m_LabelObjectIterator;
 
 };

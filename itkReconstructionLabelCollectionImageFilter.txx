@@ -35,62 +35,35 @@ ReconstructionLabelCollectionImageFilter<TImage, TMarkerImage>
 template <class TImage, class TMarkerImage>
 void
 ReconstructionLabelCollectionImageFilter<TImage, TMarkerImage>
-::GenerateData()
+::ThreadedGenerateData( LabelObjectType * labelObject )
 {
-  // Allocate the output
-  this->AllocateOutputs();
-  Superclass::GenerateData();
-
-  ImageType * output = this->GetOutput();
   const MarkerImageType * maskImage = this->GetMarkerImage();
 
-  ProgressReporter progress( this, 0, output->GetRequestedRegion().GetNumberOfPixels() );
+  typename LabelObjectType::LineContainerType::const_iterator lit;
+  typename LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
 
-  const typename ImageType::LabelObjectContainerType & labelObjectContainer = output->GetLabelObjectContainer();
-  typename ImageType::LabelObjectContainerType::const_iterator it = labelObjectContainer.begin();
-  
-  while( it != labelObjectContainer.end() )
+  // iterate over all the lines to find a pixel inside the object
+  for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
     {
-    typedef typename ImageType::LabelObjectType LabelObjectType;
-    LabelObjectType * labelObject = it->second;
-    const PixelType & label = it->first;
+    const IndexType & firstIdx = lit->GetIndex();
+    unsigned long length = lit->GetLength();
 
-    typename LabelObjectType::LineContainerType::const_iterator lit;
-    typename LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
-
-    // iterate over all the lines to find a pixel inside the object
-    bool keepObject = false;
-    
-    for( lit = lineContainer.begin();
-      lit != lineContainer.end() && !keepObject;
-      lit++ )
+    long endIdx0 = firstIdx[0] + length;
+    for( IndexType idx = firstIdx; idx[0]<endIdx0; idx[0]++ )
       {
-      const IndexType & firstIdx = lit->GetIndex();
-      unsigned long length = lit->GetLength();
-
-      long endIdx0 = firstIdx[0] + length;
-      for( IndexType idx = firstIdx;
-        idx[0]<endIdx0 && !keepObject;
-        idx[0]++ )
+      const MarkerImagePixelType & v = maskImage->GetPixel( idx );
+      if( v == m_ForegroundValue )
         {
-        const MarkerImagePixelType & v = maskImage->GetPixel( idx );
-        if( v == m_ForegroundValue )
-          {
-          keepObject = true;
-          }
-        progress.CompletedPixel();
+        // keep the object
+        return;
         }
       }
-      
-      // increment the iterator before removing the object to avoid invalidating the iterator
-      it++;
-//       std::cout << std::endl << "keepObject: " << keepObject << std::endl;
-      if( !keepObject )
-        {
-        output->RemoveLabel( label );
-        }
-
     }
+
+  this->m_LabelObjectContainerLock->Lock();
+  this->GetOutput()->RemoveLabelObject( labelObject );
+  this->m_LabelObjectContainerLock->Unlock();
+
 }
 
 
