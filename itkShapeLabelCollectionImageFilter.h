@@ -49,6 +49,7 @@ public:
   typedef typename ImageType::PixelType       PixelType;
   typedef typename ImageType::IndexType       IndexType;
   typedef typename ImageType::SizeType        SizeType;
+  typedef typename ImageType::LabelObjectType LabelObjectType;
   
   /** ImageDimension constants */
   itkStaticConstMacro(ImageDimension, unsigned int,
@@ -95,9 +96,7 @@ protected:
   ShapeLabelCollectionImageFilter();
   ~ShapeLabelCollectionImageFilter() {};
 
-  /** Single-threaded version of GenerateData.  This filter delegates
-   * to GrayscaleGeodesicErodeImageFilter. */
-  void GenerateData();
+  virtual void ThreadedGenerateData( LabelObjectType * labelObject );
   
   void GenerateExtendedData();
 
