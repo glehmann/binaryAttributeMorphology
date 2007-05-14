@@ -18,6 +18,7 @@
 #define __itkLabelCollectionImageToAttributeImageFilter_h
 
 #include "itkImageToImageFilter.h"
+#include "itkAttributeLabelObject.h"
 
 namespace itk {
 
@@ -32,7 +33,8 @@ namespace itk {
  * \sa LabelCollectionImageToBinaryImageFilter, LabelCollectionImageToMaskImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
-template<class TInputImage, class TOutputImage, class TAttributeAccessor >
+template<class TInputImage, class TOutputImage, class TAttributeAccessor=
+    typename Functor::AttributeLabelObjectAccessor< typename TImage::LabelObjectType > >
 class ITK_EXPORT LabelCollectionImageToAttributeImageFilter : 
     public ImageToImageFilter<TInputImage, TOutputImage>
 {

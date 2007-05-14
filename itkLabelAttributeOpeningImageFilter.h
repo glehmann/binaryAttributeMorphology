@@ -22,6 +22,7 @@
 #include "itkLabelImageToLabelCollectionImageFilter.h"
 #include "itkAttributeOpeningLabelCollectionImageFilter.h"
 #include "itkLabelCollectionImageToLabelImageFilter.h"
+#include "itkAttributeLabelObject.h"
 
 
 namespace itk {
@@ -43,7 +44,8 @@ namespace itk {
  * \sa AttributeLabelObject, InPlaceLabelCollectionImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
-template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor>
+template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor=
+    typename Functor::AttributeLabelObjectAccessor< typename TImage::LabelObjectType > >
 class ITK_EXPORT LabelAttributeOpeningImageFilter : 
     public ImageToImageFilter<TInputImage, TInputImage>
 {

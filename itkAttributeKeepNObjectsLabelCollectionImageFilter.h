@@ -18,6 +18,7 @@
 #define __itkAttributeKeepNObjectsLabelCollectionImageFilter_h
 
 #include "itkInPlaceLabelCollectionImageFilter.h"
+#include "itkAttributeLabelObject.h"
 
 namespace itk {
 /** \class AttributeKeepNObjectsLabelCollectionImageFilter
@@ -31,7 +32,8 @@ namespace itk {
  *
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
-template<class TImage, class TAttributeAccessor >
+template<class TImage, class TAttributeAccessor=
+    typename Functor::AttributeLabelObjectAccessor< typename TImage::LabelObjectType > >
 class ITK_EXPORT AttributeKeepNObjectsLabelCollectionImageFilter : 
     public InPlaceLabelCollectionImageFilter<TImage>
 {

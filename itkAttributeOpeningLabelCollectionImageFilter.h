@@ -18,6 +18,7 @@
 #define __itkAttributeOpeningLabelCollectionImageFilter_h
 
 #include "itkInPlaceLabelCollectionImageFilter.h"
+#include "itkAttributeLabelObject.h"
 
 namespace itk {
 /** \class AttributeOpeningLabelCollectionImageFilter
@@ -32,7 +33,8 @@ namespace itk {
  * \sa AttributeLabelObject
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
-template<class TImage, class TAttributeAccessor >
+template<class TImage, class TAttributeAccessor=
+    typename Functor::AttributeLabelObjectAccessor< typename TImage::LabelObjectType > >
 class ITK_EXPORT AttributeOpeningLabelCollectionImageFilter : 
     public InPlaceLabelCollectionImageFilter<TImage>
 {
