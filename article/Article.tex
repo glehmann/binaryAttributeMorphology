@@ -136,9 +136,10 @@ which implement it, a binary image can be:
 in the background. That's the definition proposed in that article.
   \item All the pixels with a given value are in the background. The others are
 in the foreground.
-  \item All the pixels greater than the mean of the maximum value in the image
-and the minimum value in the image are in the foreground. The other are in the
-background.
+  \item All the pixels greater than a value (zero by default, or the mean of the maximum value in the image
+and the minimum value in the image) are in the foreground. The other are in the
+background. This definition is often used in the levelset framework, where a border
+can be defined at a subpixel resolution.
 \end{itemize}
 All those definitions should be uniformized to enhance user experience with ITK.
 In that article (and all the others from the same author), the first one is the
@@ -156,7 +157,7 @@ kept in that article.
 \section{Data representation}
 
 The labeled images are often used the represent the connected components of an
-image. As connected component, they can be efficiently store in memory as a set
+image. As connected component, they can be efficiently stored in memory as a set
 of lines, using the run-length encoding: a starting point for each line, and the
 length of the line on a given dimension (by convention, the dimension 0). The
 image the can be seen as a collection of objects.
@@ -212,8 +213,8 @@ in order to be able to give some parameter independant of the image spacing.
 {\em unsigned long}.
   \item {\em PhysicalSize} is the size of the object in physical unit. It is equal
 to the {\em Size} multiplicated by the physical pixel size. Its type is {\em double}.
-  \item {\em Centroid} is the position of the center of the shape. It is not
-constrained to be in the object, and thus can be outside if the object is convex.
+  \item {\em Centroid} is the position of the center of the shape in physical coordinates. It is not
+constrained to be in the object, and thus can be outside if the object is not convex.
 Its type is {\em Point< double, ImageDimension >}. 
   \item {\em Region} is the bounding box of the object given in the pixel coordinates.
 The physical coordinate can easily be computed from it. Its type is
@@ -430,6 +431,8 @@ Doing that require a good knownledge of the iterator design. Any help on that po
 welcome.
 
 Also, more attributes will be implemented, like the perimeter estimation, the usual moments, etc.
+
+Finally, all the binary and label filters should be implemented as a subclass of {\em InPlaceImageFilter}.
 
 \section{Conclusion}
 
