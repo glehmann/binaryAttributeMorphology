@@ -85,7 +85,7 @@ public:
   LabelCollectionImageFilter();
   ~LabelCollectionImageFilter();
 
-  virtual void GenerateData();
+  virtual void BeforeThreadedGenerateData();
 
   virtual void ThreadedGenerateData(const OutputImageRegionType& outputRegionForThread, int threadId );
 

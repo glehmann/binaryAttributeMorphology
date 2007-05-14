@@ -75,22 +75,17 @@ LabelCollectionImageFilter<TInputImage, TOutputImage>
 template <class TInputImage, class TOutputImage>
 void
 LabelCollectionImageFilter<TInputImage, TOutputImage>
-::GenerateData()
+::BeforeThreadedGenerateData()
 {
-
   // initialize the iterator
   m_LabelObjectIterator = this->GetLabelCollectionImage()->GetLabelObjectContainer().begin();
 
   // and the mutex
   m_LabelObjectIteratorLock = FastMutexLock::New();
-  m_LabelObjectIteratorLock->Unlock();
-  m_LabelObjectIteratorLock->Print( std::cout );
 
   // initialize the progress reporter
   // TODO: really report the progress!
   ProgressReporter progress( this, 0, this->GetLabelCollectionImage()->GetNumberOfObjects() );
-
-  Superclass::GenerateData();
 }
 
 
