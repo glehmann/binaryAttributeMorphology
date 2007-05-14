@@ -82,7 +82,7 @@ ShapeLabelCollectionImageFilter<TImage>
 
     // init the vars
     unsigned long size = 0;
-    typename LabelObjectType::CentroidType centroid;
+    ContinuousIndex< double, ImageDimension> centroid;
     centroid.Fill( 0 );
     IndexType mins;
     mins.Fill( NumericTraits< long >::max() );
@@ -186,6 +186,8 @@ ShapeLabelCollectionImageFilter<TImage>
       maxSize = std::max( s, maxSize );
       }
     typename LabelObjectType::RegionType region( mins, regionSize );
+    typename LabelObjectType::CentroidType physicalCentroid;
+    output->TransformContinuousIndexToPhysicalPoint( centroid, physicalCentroid );
 
     // set the values in the object
     labelObject->SetSize( size );
