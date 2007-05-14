@@ -24,16 +24,16 @@
 
 namespace itk {
 
-template <class TInputImage, class TOutputImage>
-LabelCollectionImageToAttributeImageFilter<TInputImage, TOutputImage>
+template <class TInputImage, class TOutputImage, class TAttributeAccessor>
+LabelCollectionImageToAttributeImageFilter<TInputImage, TOutputImage, TAttributeAccessor>
 ::LabelCollectionImageToAttributeImageFilter()
 {
   m_BackgroundValue = NumericTraits<OutputImagePixelType>::NonpositiveMin();
 }
 
-template <class TInputImage, class TOutputImage>
+template <class TInputImage, class TOutputImage, class TAttributeAccessor>
 void 
-LabelCollectionImageToAttributeImageFilter<TInputImage, TOutputImage>
+LabelCollectionImageToAttributeImageFilter<TInputImage, TOutputImage, TAttributeAccessor>
 ::GenerateInputRequestedRegion()
 {
   // call the superclass' implementation of this method
@@ -47,9 +47,9 @@ LabelCollectionImageToAttributeImageFilter<TInputImage, TOutputImage>
 }
 
 
-template <class TInputImage, class TOutputImage>
+template <class TInputImage, class TOutputImage, class TAttributeAccessor>
 void 
-LabelCollectionImageToAttributeImageFilter<TInputImage, TOutputImage>
+LabelCollectionImageToAttributeImageFilter<TInputImage, TOutputImage, TAttributeAccessor>
 ::EnlargeOutputRequestedRegion(DataObject *)
 {
   this->GetOutput()
@@ -57,9 +57,9 @@ LabelCollectionImageToAttributeImageFilter<TInputImage, TOutputImage>
 }
 
 
-template<class TInputImage, class TOutputImage>
+template<class TInputImage, class TOutputImage, class TAttributeAccessor>
 void
-LabelCollectionImageToAttributeImageFilter<TInputImage, TOutputImage>
+LabelCollectionImageToAttributeImageFilter<TInputImage, TOutputImage, TAttributeAccessor>
 ::GenerateData()
 {
   // Allocate the output
@@ -80,7 +80,7 @@ LabelCollectionImageToAttributeImageFilter<TInputImage, TOutputImage>
   for( it = labelObjectContainer.begin(); it != labelObjectContainer.end(); it++ )
     {
     const typename InputImageType::LabelObjectType * labeObject = it->second;
-    const AttributeType & attribute = accessor( labeObject );
+    const AttributeValueType & attribute = accessor( labeObject );
 
     typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
     typename InputImageType::LabelObjectType::LineContainerType lineContainer = labeObject->GetLineContainer();
@@ -91,7 +91,7 @@ LabelCollectionImageToAttributeImageFilter<TInputImage, TOutputImage>
       unsigned long length = lit->GetLength();
       for( int i=0; i<length; i++)
         {
-        output->SetPixel( idx, attribute );
+        output->SetPixel( idx, static_cast<OutputImagePixelType>( attribute ) );
         idx[0]++;
         progress.CompletedPixel();
         }
@@ -99,14 +99,16 @@ LabelCollectionImageToAttributeImageFilter<TInputImage, TOutputImage>
     }
 }
 
-template<class TInputImage>
+
+template<class TInputImage, class TOutputImage, class TAttributeAccessor>
 void
-BinaryShapeKeepNObjectsImageFilter<TInputImage>
+LabelCollectionImageToAttributeImageFilter<TInputImage, TOutputImage, TAttributeAccessor>
 ::PrintSelf(std::ostream &os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 
   os << indent << "BackgroundValue: "  << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
 }
+
 }// end namespace itk
 #endif

@@ -34,7 +34,7 @@ namespace itk {
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template<class TInputImage, class TOutputImage, class TAttributeAccessor=
-    typename Functor::AttributeLabelObjectAccessor< typename TImage::LabelObjectType > >
+    typename Functor::AttributeLabelObjectAccessor< typename TInputImage::LabelObjectType > >
 class ITK_EXPORT LabelCollectionImageToAttributeImageFilter : 
     public ImageToImageFilter<TInputImage, TOutputImage>
 {
