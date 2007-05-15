@@ -62,75 +62,96 @@ LabelCollectionImageToBinaryImageFilter<TInputImage, TOutputImage>
 template<class TInputImage, class TOutputImage>
 void
 LabelCollectionImageToBinaryImageFilter<TInputImage, TOutputImage>
-::GenerateData()
+::BeforeThreadedGenerateData()
 {
-  // Allocate the output
-  this->AllocateOutputs();
+  m_Barrier = Barrier::New();
+  m_Barrier->Initialize( this->GetNumberOfThreads() );
+
+  Superclass::BeforeThreadedGenerateData();
+
+}
+
+
+template<class TInputImage, class TOutputImage>
+void
+LabelCollectionImageToBinaryImageFilter<TInputImage, TOutputImage>
+::ThreadedGenerateData( const OutputImageRegionType& outputRegionForThread, int threadId )
+{
   OutputImageType * output = this->GetOutput();
   const InputImageType * input = this->GetInput();
-  ProgressReporter progress( this, 0, output->GetRequestedRegion().GetNumberOfPixels() );
 
-  if( input->GetUseBackground() )
+  if( !input->GetUseBackground() )
     {
-    // fill the output with background value - they will be overiden with the foreground value
-    // later, if there is some objects
-    if( this->GetNumberOfInputs() == 2 )
+    // no need to run the full process: the image will be foreground only
+    ProgressReporter progress( this, threadId, outputRegionForThread.GetNumberOfPixels() );
+    ImageRegionIterator< OutputImageType > oIt( output, outputRegionForThread );
+    for( oIt.GoToBegin(); !oIt.IsAtEnd(); ++oIt )
       {
-      if ( this->GetBackgroundImage()->GetRequestedRegion().GetSize() != this->GetInput()->GetRequestedRegion().GetSize() )
-        {
-        itkExceptionMacro( << "Background and input images must have the same size." );
-        }
-      // fill the background with the background values from the background image
-      ImageRegionConstIterator< OutputImageType > bgIt( this->GetBackgroundImage(), output->GetRequestedRegion() );
-      ImageRegionIterator< OutputImageType > oIt( output, output->GetRequestedRegion() );
-      for( oIt.GoToBegin(), bgIt.GoToBegin();
-        !oIt.IsAtEnd();
-        ++oIt, ++bgIt )
-        {
-        const OutputImagePixelType & bg = bgIt.Get();
-        if( bg != m_ForegroundValue )
-          {
-          oIt.Set( bg );
-          }
-        else
-          {
-          oIt.Set( m_BackgroundValue );
-          }
-        }
+      oIt.Set( m_ForegroundValue );
+      progress.CompletedPixel();
       }
-    else
+    return;
+    }
+
+  // fill the output with background value - they will be overiden with the foreground value
+  // later, if there is some objects
+  if( this->GetNumberOfInputs() == 2 )
+    {
+    // fill the background with the background values from the background image
+    ImageRegionConstIterator< OutputImageType > bgIt( this->GetBackgroundImage(), outputRegionForThread );
+    ImageRegionIterator< OutputImageType > oIt( output, outputRegionForThread );
+    for( oIt.GoToBegin(), bgIt.GoToBegin();
+      !oIt.IsAtEnd();
+      ++oIt, ++bgIt )
       {
-      // use the background value
-      output->FillBuffer( m_BackgroundValue );
+      const OutputImagePixelType & bg = bgIt.Get();
+      if( bg != m_ForegroundValue )
+        {
+        oIt.Set( bg );
+        }
+      else
+        {
+        oIt.Set( m_BackgroundValue );
+        }
       }
     }
   else
     {
-    // fill the output buffer with the foreground value and exit
-    output->FillBuffer( m_ForegroundValue );
-    return;
+    // fill the background with the background value
+    ImageRegionIterator< OutputImageType > oIt( output, outputRegionForThread );
+    for( oIt.GoToBegin(); !oIt.IsAtEnd(); ++oIt )
+      {
+      oIt.Set( m_BackgroundValue );
+      }
     }
 
-  typename InputImageType::LabelObjectContainerType::const_iterator it;
-  const typename InputImageType::LabelObjectContainerType & labelObjectContainer = input->GetLabelObjectContainer();
-  for( it = labelObjectContainer.begin(); it != labelObjectContainer.end(); it++ )
+  // wait for the other threads to complete that part
+  m_Barrier->Wait();
+
+  // and delegate to the superclass implementation to use the thread support for the label objects
+  Superclass::ThreadedGenerateData( outputRegionForThread, threadId );
+
+}
+
+
+template<class TInputImage, class TOutputImage>
+void
+LabelCollectionImageToBinaryImageFilter<TInputImage, TOutputImage>
+::ThreadedGenerateData( LabelObjectType * labelObject )
+{
+  OutputImageType * output = this->GetOutput();
+
+  typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
+  typename InputImageType::LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
+
+  for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
     {
-    const typename InputImageType::LabelObjectType * labeObject = it->second;
-    // const typename InputImageType::LabelType & label = labeObject->GetLabel();
-
-    typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
-    typename InputImageType::LabelObjectType::LineContainerType lineContainer = labeObject->GetLineContainer();
-
-    for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
+    IndexType idx = lit->GetIndex();
+    unsigned long length = lit->GetLength();
+    for( int i=0; i<length; i++)
       {
-      IndexType idx = lit->GetIndex();
-      unsigned long length = lit->GetLength();
-      for( int i=0; i<length; i++)
-        {
-        output->SetPixel( idx, m_ForegroundValue );
-        idx[0]++;
-        progress.CompletedPixel();
-        }
+      output->SetPixel( idx, m_ForegroundValue );
+      idx[0]++;
       }
     }
 }

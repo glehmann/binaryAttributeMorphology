@@ -17,7 +17,8 @@
 #ifndef __itkLabelCollectionImageToBinaryImageFilter_h
 #define __itkLabelCollectionImageToBinaryImageFilter_h
 
-#include "itkImageToImageFilter.h"
+#include "itkLabelCollectionImageFilter.h"
+#include "itkBarrier.h"
 
 namespace itk {
 
@@ -36,12 +37,12 @@ namespace itk {
  */
 template<class TInputImage, class TOutputImage>
 class ITK_EXPORT LabelCollectionImageToBinaryImageFilter : 
-    public ImageToImageFilter<TInputImage, TOutputImage>
+    public LabelCollectionImageFilter<TInputImage, TOutputImage>
 {
 public:
   /** Standard class typedefs. */
   typedef LabelCollectionImageToBinaryImageFilter Self;
-  typedef ImageToImageFilter<TInputImage, TOutputImage>
+  typedef LabelCollectionImageFilter<TInputImage, TOutputImage>
   Superclass;
   typedef SmartPointer<Self>        Pointer;
   typedef SmartPointer<const Self>  ConstPointer;
@@ -53,6 +54,8 @@ public:
   typedef typename InputImageType::ConstPointer    InputImageConstPointer;
   typedef typename InputImageType::RegionType      InputImageRegionType;
   typedef typename InputImageType::PixelType       InputImagePixelType;
+  typedef typename InputImageType::LabelObjectType LabelObjectType;
+
   typedef typename OutputImageType::Pointer        OutputImagePointer;
   typedef typename OutputImageType::ConstPointer   OutputImageConstPointer;
   typedef typename OutputImageType::RegionType     OutputImageRegionType;
@@ -122,9 +125,11 @@ protected:
   /** LabelCollectionImageToBinaryImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
   
-  /** Single-threaded version of GenerateData.  This filter delegates
-   * to GrayscaleGeodesicErodeImageFilter. */
-  void GenerateData();
+  virtual void BeforeThreadedGenerateData();
+
+  virtual void ThreadedGenerateData(const OutputImageRegionType& outputRegionForThread, int threadId );
+
+  virtual void ThreadedGenerateData( LabelObjectType * labelObject );
   
 
 private:
@@ -133,6 +138,8 @@ private:
   
   OutputImagePixelType m_BackgroundValue;
   OutputImagePixelType m_ForegroundValue;
+
+  typename Barrier::Pointer m_Barrier;
 
 } ; // end of class
 
