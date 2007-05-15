@@ -81,6 +81,7 @@ LabelStatisticsKeepNObjectsImageFilter<TInputImage, TFeatureImage>
   typename LabelObjectValuatorType::Pointer valuator = LabelObjectValuatorType::New();
   valuator->SetInput( labelizer->GetOutput() );
   valuator->SetFeatureImage( this->GetFeatureImage() );
+  valuator->SetLabelImage( this->GetInput() );
   progress->RegisterInternalFilter(valuator, .3f);
   
   typename KeepNObjectsType::Pointer opening = KeepNObjectsType::New();

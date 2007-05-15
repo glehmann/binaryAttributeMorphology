@@ -80,6 +80,7 @@ ShapeRelabelImageFilter<TInputImage>
   
   typename LabelObjectValuatorType::Pointer valuator = LabelObjectValuatorType::New();
   valuator->SetInput( labelizer->GetOutput() );
+  valuator->SetLabelImage( this->GetInput() );
   progress->RegisterInternalFilter(valuator, .3f);
   
   typename RelabelType::Pointer opening = RelabelType::New();

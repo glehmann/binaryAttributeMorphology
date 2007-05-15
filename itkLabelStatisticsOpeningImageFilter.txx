@@ -81,6 +81,7 @@ LabelStatisticsOpeningImageFilter<TInputImage, TFeatureImage>
   typename LabelObjectValuatorType::Pointer valuator = LabelObjectValuatorType::New();
   valuator->SetInput( labelizer->GetOutput() );
   valuator->SetFeatureImage( this->GetFeatureImage() );
+  valuator->SetLabelImage( this->GetInput() );
   progress->RegisterInternalFilter(valuator, .3f);
   
   typename OpeningType::Pointer opening = OpeningType::New();

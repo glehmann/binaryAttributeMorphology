@@ -26,11 +26,19 @@ namespace itk {
  * ShapeLabelCollectionImageFilter can be used to set the attributes values
  * of the ShapeLabelObject in a LabelCollectionImage.
  *
+ * ShapeLabelCollectionImageFilter take an optional parameter, used only to optimize
+ * the computation time and the memory usage when the perimeter or the feret diameter
+ * are used: the exact copy of the input LabelCollectionImage but stored in an Image.
+ * It can be set with SetLabelImage(). It is cleared at the end of the computation, and
+ * so must be reset before running Update() again. It is not part of the pipeline management
+ * design, to let the subclasses of ShapeLabelCollectionImageFilter use the
+ * pipeline desing to specify a really required input.
+ *
  * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
-template<class TImage>
+template<class TImage, class TLabelImage=Image< typename TImage::PixelType, TImage::ImageDimension > >
 class ITK_EXPORT ShapeLabelCollectionImageFilter : 
     public InPlaceLabelCollectionImageFilter<TImage>
 {
@@ -50,6 +58,11 @@ public:
   typedef typename ImageType::IndexType       IndexType;
   typedef typename ImageType::SizeType        SizeType;
   typedef typename ImageType::LabelObjectType LabelObjectType;
+  
+  typedef TLabelImage LabelImageType;
+  typedef typename LabelImageType::Pointer         LabelImagePointer;
+  typedef typename LabelImageType::ConstPointer    LabelImageConstPointer;
+  typedef typename LabelImageType::PixelType       LabelPixelType;
   
   /** ImageDimension constants */
   itkStaticConstMacro(ImageDimension, unsigned int,
@@ -92,13 +105,21 @@ public:
   itkBooleanMacro(ComputePerimeter);
 
 
+   /** Set the label image */
+  void SetLabelImage( const TLabelImage *input )
+     {
+     m_LabelImage = input;
+     }
+
 protected:
   ShapeLabelCollectionImageFilter();
   ~ShapeLabelCollectionImageFilter() {};
 
   virtual void ThreadedGenerateData( LabelObjectType * labelObject );
   
-  void GenerateExtendedData();
+  virtual void BeforeThreadedGenerateData();
+
+  virtual void AfterThreadedGenerateData();
 
 private:
   ShapeLabelCollectionImageFilter(const Self&); //purposely not implemented
@@ -107,6 +128,8 @@ private:
   bool m_ComputeFeretDiameter;
 
   bool m_ComputePerimeter;
+
+  LabelImageConstPointer m_LabelImage;
 
 } ; // end of class
 
