@@ -44,13 +44,14 @@ public:
 
   /** Some convenient typedefs. */
   typedef TImage ImageType;
-  typedef typename ImageType::Pointer         ImagePointer;
-  typedef typename ImageType::ConstPointer    ImageConstPointer;
-  typedef typename ImageType::PixelType       PixelType;
-  typedef typename ImageType::IndexType       IndexType;
-  typedef typename ImageType::PointType       PointType;
-  typedef typename ImageType::LabelObjectType::MatrixType       MatrixType;
-  typedef typename ImageType::LabelObjectType::VectorType       VectorType;
+  typedef typename ImageType::Pointer          ImagePointer;
+  typedef typename ImageType::ConstPointer     ImageConstPointer;
+  typedef typename ImageType::PixelType        PixelType;
+  typedef typename ImageType::IndexType        IndexType;
+  typedef typename ImageType::PointType        PointType;
+  typedef typename ImageType::LabelObjectType  LabelObjectType;
+  typedef typename LabelObjectType::MatrixType MatrixType;
+  typedef typename LabelObjectType::VectorType VectorType;
   
   typedef TFeatureImage FeatureImageType;
   typedef typename FeatureImageType::Pointer         FeatureImagePointer;
@@ -108,13 +109,16 @@ protected:
   StatisticsLabelCollectionImageFilter();
   ~StatisticsLabelCollectionImageFilter() {};
 
-  /** Single-threaded version of GenerateData.  This filter delegates
-   * to GrayscaleGeodesicErodeImageFilter. */
-  void GenerateData();
+  virtual void ThreadedGenerateData( LabelObjectType * labelObject );
+  
+  virtual void BeforeThreadedGenerateData();
   
 private:
   StatisticsLabelCollectionImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
+
+  FeatureImagePixelType m_Minimum;
+  FeatureImagePixelType m_Maximum;
 
 } ; // end of class
 

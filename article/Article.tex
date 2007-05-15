@@ -202,6 +202,13 @@ grey values of a feature image in the same place than the labeled object.
 Computing the values of those attributes does require a feature image.
 \end{itemize}
 
+The classes {\em itk::ShapeLabelObject} and {\em itk::StatisticsLabelObject} have been
+created to reduce the number of filters made to manipulate the attributes, and to make
+the computation of all the set of attributes much efficient. In the early stage of
+development, all the attributes were managed as in {\em AttributeLabelObject}, and
+a set of 8 classes made to manipulate a single were provided, leading to a huge
+number of classes.
+
 The scalar values of the attributes of the {\em itk::ShapeLabelObject} and the
 {\em itk::StatisticsLabelObject} classes are often given both in pixel and in physical units,
 in order to be able to give some parameter independant of the image spacing.
@@ -430,7 +437,9 @@ of an image, starting from
 Doing that require a good knownledge of the iterator design. Any help on that point is
 welcome.
 
-Also, more attributes will be implemented, like the perimeter estimation, the usual moments, etc.
+Also, more attributes will be implemented, like the perimeter estimation, the usual moments, etc. It may be useful to implement the most commonly used opening, keep N objects and relabel transforms in a more efficient way, by using an {\em AttributeLabelObject} instead of a {\em ShapeLabelObject} or a {\em StatisticsLabelObject}.
+
+All the {\em Shape} filters are currently able to use the Feret diameter only in 2D images. For the other dimensions, the feret diameter is not computed, and so always get a value of $0$. The computation of the Feret diameter should be forced if the user want to use it.
 
 Finally, all the binary and label filters should be implemented as a subclass of {\em InPlaceImageFilter}.
 
