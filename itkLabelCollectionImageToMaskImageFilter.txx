@@ -61,17 +61,71 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
 }
 
 
-template<class TInputImage, class TOutputImage>
-void
+template <class TInputImage, class TOutputImage>
+void 
 LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
-::GenerateData()
+::BeforeThreadedGenerateData()
 {
-  // Allocate the output
-  this->AllocateOutputs();
+  m_Barrier = Barrier::New();
+  m_Barrier->Initialize( this->GetNumberOfThreads() );
+
+  Superclass::BeforeThreadedGenerateData();
+
+}
+
+
+template <class TInputImage, class TOutputImage>
+void 
+LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
+::ThreadedGenerateData( const OutputImageRegionType& outputRegionForThread, int threadId )
+{
   OutputImageType * output = this->GetOutput();
   InputImageType * input = const_cast<InputImageType *>(this->GetInput());
   const OutputImageType * input2 = this->GetFeatureImage();
-  ProgressReporter progress( this, 0, 1 );
+
+  // we will keep the values from the feature image if the same pixel in the label image
+  // equals the label given by the user. The other pixels are set to the background value.
+  if( input->GetUseBackground() && input->GetBackgroundValue() == m_Label )
+    {
+    // the user want the mask to be the background of the label collection image
+    // copy the feature image to the output image
+    ImageRegionConstIterator< OutputImageType > featureIt( input2, outputRegionForThread );
+    ImageRegionIterator< OutputImageType > outputIt( output, outputRegionForThread );
+
+    for ( featureIt.GoToBegin(), outputIt.GoToBegin();
+          !featureIt.IsAtEnd();
+          ++featureIt, ++outputIt )
+      {
+      outputIt.Set( featureIt.Get() );
+      }
+    }
+  else
+    {
+    ImageRegionIterator< OutputImageType > outputIt( output, outputRegionForThread );
+
+    for ( outputIt.GoToBegin(); !outputIt.IsAtEnd(); ++outputIt )
+      {
+      outputIt.Set( m_BackgroundValue );
+      }
+    }
+
+  // wait for the other threads to complete that part
+  m_Barrier->Wait();
+
+  // and delegate to the superclass implementation to use the thread support for the label objects
+  Superclass::ThreadedGenerateData( outputRegionForThread, threadId );
+
+}
+
+
+template<class TInputImage, class TOutputImage>
+void
+LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
+::ThreadedGenerateData( LabelObjectType * labelObject )
+{
+  OutputImageType * output = this->GetOutput();
+  InputImageType * input = const_cast<InputImageType *>(this->GetInput());
+  const OutputImageType * input2 = this->GetFeatureImage();
 
   if( !m_Negated )
     {
@@ -80,47 +134,22 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
     if( input->GetUseBackground() && input->GetBackgroundValue() == m_Label )
       {
       // the user want the mask to be the background of the label collection image
-      // copy the feature image to the output image
-      ImageRegionConstIterator< OutputImageType > featureIt( input2, output->GetRequestedRegion() );
-      ImageRegionIterator< OutputImageType > outputIt( output, output->GetRequestedRegion() );
+      typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
+      typename InputImageType::LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
   
-      for ( featureIt.GoToBegin(), outputIt.GoToBegin();
-            !featureIt.IsAtEnd();
-            ++featureIt, ++outputIt )
+      for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
         {
-        outputIt.Set( featureIt.Get() );
-        }
-      
-      // and mark the pixels from the label objects with the background value
-      typename InputImageType::LabelObjectContainerType::const_iterator it;
-      const typename InputImageType::LabelObjectContainerType & labelObjectContainer = input->GetLabelObjectContainer();
-      for( it = labelObjectContainer.begin(); it != labelObjectContainer.end(); it++ )
-        {
-        const typename InputImageType::LabelObjectType * labeObject = it->second;
-  //       const typename InputImageType::LabelType & label = labeObject->GetLabel();
-    
-        typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
-        typename InputImageType::LabelObjectType::LineContainerType lineContainer = labeObject->GetLineContainer();
-    
-        for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
+        IndexType idx = lit->GetIndex();
+        unsigned long length = lit->GetLength();
+        for( int i=0; i<length; i++)
           {
-          IndexType idx = lit->GetIndex();
-          unsigned long length = lit->GetLength();
-          for( int i=0; i<length; i++)
-            {
-            output->SetPixel( idx, m_BackgroundValue );
-            idx[0]++;
-  //           progress.CompletedPixel();
-            }
+          output->SetPixel( idx, m_BackgroundValue );
+          idx[0]++;
           }
         }
       }
-    else
+    else if( labelObject->GetLabel() == m_Label )
       {
-      output->FillBuffer( m_BackgroundValue );
-    
-      const typename InputImageType::LabelObjectType * labelObject = input->GetLabelObject( m_Label );
-    
       typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
       typename InputImageType::LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
     
@@ -132,7 +161,6 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
           {
           output->SetPixel( idx, input2->GetPixel( idx ) );
           idx[0]++;
-    //       progress.CompletedPixel();
           }
         }
       }
@@ -144,50 +172,24 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
     // user are set to the background value
     if( input->GetUseBackground() && input->GetBackgroundValue() == m_Label )
       {
-
-      // fill the image with the background value
-      output->FillBuffer( m_BackgroundValue );
-
       // and copy the feature image where the label objects are
-      typename InputImageType::LabelObjectContainerType::const_iterator it;
-      const typename InputImageType::LabelObjectContainerType & labelObjectContainer = input->GetLabelObjectContainer();
-      for( it = labelObjectContainer.begin(); it != labelObjectContainer.end(); it++ )
+      typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
+      typename InputImageType::LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
+  
+      for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
         {
-        const typename InputImageType::LabelObjectType * labeObject = it->second;
-  //       const typename InputImageType::LabelType & label = labeObject->GetLabel();
-    
-        typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
-        typename InputImageType::LabelObjectType::LineContainerType lineContainer = labeObject->GetLineContainer();
-    
-        for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
+        IndexType idx = lit->GetIndex();
+        unsigned long length = lit->GetLength();
+        for( int i=0; i<length; i++)
           {
-          IndexType idx = lit->GetIndex();
-          unsigned long length = lit->GetLength();
-          for( int i=0; i<length; i++)
-            {
-            output->SetPixel( idx, input2->GetPixel( idx ) );
-            idx[0]++;
-  //           progress.CompletedPixel();
-            }
+          output->SetPixel( idx, input2->GetPixel( idx ) );
+          idx[0]++;
           }
         }
       }
-    else
+    else if( labelObject->GetLabel() == m_Label )
       {
-      // copy the feature image to the output image
-      ImageRegionConstIterator< OutputImageType > featureIt( input2, output->GetRequestedRegion() );
-      ImageRegionIterator< OutputImageType > outputIt( output, output->GetRequestedRegion() );
-  
-      for ( featureIt.GoToBegin(), outputIt.GoToBegin();
-            !featureIt.IsAtEnd();
-            ++featureIt, ++outputIt )
-        {
-        outputIt.Set( featureIt.Get() );
-        }
-
       // and mark the label object as background
-      const typename InputImageType::LabelObjectType * labelObject = input->GetLabelObject( m_Label );
-    
       typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
       typename InputImageType::LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
     
@@ -199,7 +201,6 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
           {
           output->SetPixel( idx, m_BackgroundValue );
           idx[0]++;
-    //       progress.CompletedPixel();
           }
         }
       }
