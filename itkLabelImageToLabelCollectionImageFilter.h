@@ -51,10 +51,12 @@ public:
   typedef typename InputImageType::ConstPointer    InputImageConstPointer;
   typedef typename InputImageType::RegionType      InputImageRegionType;
   typedef typename InputImageType::PixelType       InputImagePixelType;
-  typedef typename OutputImageType::Pointer        OutputImagePointer;
-  typedef typename OutputImageType::ConstPointer   OutputImageConstPointer;
-  typedef typename OutputImageType::RegionType     OutputImageRegionType;
-  typedef typename OutputImageType::PixelType      OutputImagePixelType;
+  
+  typedef typename OutputImageType::Pointer         OutputImagePointer;
+  typedef typename OutputImageType::ConstPointer    OutputImageConstPointer;
+  typedef typename OutputImageType::RegionType      OutputImageRegionType;
+  typedef typename OutputImageType::PixelType       OutputImagePixelType;
+  typedef typename OutputImageType::LabelObjectType LabelObjectType;
   
   /** ImageDimension constants */
   itkStaticConstMacro(InputImageDimension, unsigned int,
@@ -97,9 +99,11 @@ protected:
   /** LabelImageToLabelCollectionImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
   
-  /** Single-threaded version of GenerateData.  This filter delegates
-   * to GrayscaleGeodesicErodeImageFilter. */
-  void GenerateData();
+  virtual void BeforeThreadedGenerateData();
+
+  virtual void ThreadedGenerateData(const OutputImageRegionType& outputRegionForThread, int threadId );
+
+  virtual void AfterThreadedGenerateData();
   
 
 private:
@@ -108,6 +112,8 @@ private:
 
   bool m_UseBackground;
   OutputImagePixelType m_BackgroundValue;
+  
+  typename std::vector< OutputImagePointer > m_TemporaryImages;
 
 } ; // end of class
 

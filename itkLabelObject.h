@@ -270,6 +270,11 @@ public:
     return m_LineContainer;
     }
 
+  LineContainerType & GetLineContainer()
+    {
+    return m_LineContainer;
+    }
+
   /** Copy the data of another node to this one */
   virtual void CopyDataFrom( const Self * src )
     {
