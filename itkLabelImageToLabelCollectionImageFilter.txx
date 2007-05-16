@@ -20,7 +20,7 @@
 #include "itkLabelImageToLabelCollectionImageFilter.h"
 #include "itkNumericTraits.h"
 #include "itkProgressReporter.h"
-#include "itkImageRegionConstIteratorWithIndex.h"
+#include "itkImageLinearConstIteratorWithIndex.h"
 
 namespace itk {
 
@@ -94,12 +94,40 @@ LabelImageToLabelCollectionImageFilter<TInputImage, TOutputImage>
 {
   ProgressReporter progress( this, threadId, regionForThread.GetNumberOfPixels() );
 
-  ImageRegionConstIteratorWithIndex< InputImageType > it( this->GetInput(), regionForThread );
+  typedef ImageLinearConstIteratorWithIndex< InputImageType > InputLineIteratorType;
+  InputLineIteratorType it( this->GetInput(), regionForThread );
+  it.SetDirection(0);
 
-  for( it.GoToBegin(); !it.IsAtEnd(); ++it )
+  for( it.GoToBegin(); !it.IsAtEnd(); it.NextLine() )
     {
-    m_TemporaryImages[threadId]->SetPixel( it.GetIndex(), it.Get() );
-    progress.CompletedPixel();
+
+    it.GoToBeginOfLine();
+
+    while( !it.IsAtEndOfLine() )
+      {
+      const InputImagePixelType & v = it.Get();
+  
+      if( !m_UseBackground || v != m_BackgroundValue )
+        {
+        // We've hit the start of a run
+        IndexType idx = it.GetIndex();
+        long length=1;
+        ++it;
+        while( !it.IsAtEndOfLine() && it.Get() == v )
+          {
+          ++length;
+          ++it;
+          }
+        // create the run length object to go in the vector
+        m_TemporaryImages[threadId]->SetLine( idx, length, v );
+        }
+      else
+        {
+        // go the the next pixel
+        ++it;
+        }
+      }
+
     }
 
 }
