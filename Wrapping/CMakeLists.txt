@@ -14,6 +14,7 @@ SET(WRAPPER_LIBRARY_GROUPS
   itkStatisticsLabelObject
   itkLabelCollectionImage
   ITKLabelCollectionImageBase
+  itkLabelCollectionImageFilter
   itkInPlaceLabelCollectionImageFilter
 )
 
