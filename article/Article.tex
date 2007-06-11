@@ -187,7 +187,7 @@ using the run-length encoding.
 \end{itemize}
 
 No attribute are stored in this class, which can thus be see as the base class
-for the abjects with some attributes, or which can be used when no attributes
+for the objects with some attributes, or which can be used when no attributes
 are required.
 
 Several subclasses are provided with that article:
@@ -329,8 +329,9 @@ shape or the position of the object.
 Finally, it has been chosen to develop a specific filter for the morphological
 reconstruction. It would have been possible to implement the reconstruction
 with the most common case (build the object collection, valuate the attributes
-filter the object, and rebuild the image), but for more efficiency, the reconstruction
-filter filters the collection directly, without giving them an attribute.
+filter the object, and rebuild the image), but in order to make it compatible
+with the {\em ShapeLabelObject} and {\em StatisticsLabelObject}, the reconstruction
+filter filters the collection directly, without setting an attribute in the objects.
 
 \subsection{Generating an itk::Image from the itk::LabelCollectionImage}
 
@@ -411,13 +412,57 @@ those filters have been made for binary, and labeled images.
 \subsection{...}
 
 
+\section{Threading support}
+
+When possible, the filters provided with that contribution have been multithreaded.
+Some of them however, are not (easily) threadable (the {\em KeepNObjects} and {\em Relabel}
+filters), are shouldn't get any performance improvement in a threaded version
+(the {\em Opening} filters).
+
+The {\em BinaryImageToLabelCollectionImageFilter} class is a slight modification of the
+Richard Beare's {\em ConnectedComponentImageFilter}, and thus, has not been threaded.
+It should however be possible to increase its performance that way.
+
+The classical thread architecture is used when the input image is an {\em Image}: the image
+is splitted in several regions (one per thread), and each thread work on its own region.
+
+Because the {\em LabelCollectionImage} image is not an array of pixels, it can't be splitted
+that way. Instead, several threads are created, and try to take an object in the collection.
+If they get one, they process that object individually, and try to get another one when the
+object is processed. If no object can be get, the thread ends. A {\em FastMutexLock} is used
+to ensure that only one thread take an object at a time.
+
+For the developer, the usage of the threading support is made very simple, by subclassing
+{\em LabelCollectionImageFilter}, or {\em InPlaceLabelCollectionImageFilter}, and implementing
+the method {\em virtual void ThreadedGenerateData( LabelObjectType * labelObject )} in the
+new class. This method only has to process the labelObject passed in parameter. All the
+threading code and mutex lock management is already implemented. The mutex lock remain
+accessible if the subclass need to use it, as the {\em m\_LabelObjectContainerLock} ivar.
+
+\section{In place filtering}
+
+All the filters which are taking a {\em LabelCollectionImage} as input, and are producing a {\em LabelCollectionImage} as output, are implemented as a subclass of {\em InPlaceLabelCollectionImageFilter} and
+thus are running in place by default.
+
+The use can modify this behavior with the {\em SetInPlace( bool )}, {\em InPlaceOn()}, and {\em InPlaceOff()} methods, as with the usual {\em InPlaceImageFilter}.
+
+To use that feature, a developer only have to subclass {\em InPlaceLabelCollectionImageFilter} and
+implement the {\em virtual void ThreadedGenerateData( LabelObjectType * labelObject )}, to get easy thread
+support (see the previous section), or the {\em virtual void GenerateData()} if the filter is not threadable. In that last case,
+the only image to manipulate is the one get with the {\em GetOutput()} method, which is the input image if the filter runs in place, or a copy of the input image if the filter is not running in place.
+
+
 \section{Wrappers support}
 
 All the classes provided with that article, excepted the most generic ones made
 to help the developer to implement some new features, can be used with WrapITK,
 and have been fully tested with python.
 
-\section{Future work}
+\section{Performance}
+
+TODO
+
+\section{Known bugs and future work}
 
 To fit the ITK style, some iterators should be implemented to be able to iterate
 over all the 
@@ -439,38 +484,18 @@ welcome.
 
 Also, more attributes will be implemented, like the perimeter estimation, the usual moments, etc. It may be useful to implement the most commonly used opening, keep N objects and relabel transforms in a more efficient way, by using an {\em AttributeLabelObject} instead of a {\em ShapeLabelObject} or a {\em StatisticsLabelObject}.
 
+The computation of the moments is partially implemented. The help of someone with a good knownledge of that subject would be very helpful to complete that work. The moments for the binary shape shoudl also be implemented.
+
 All the {\em Shape} filters are currently able to use the Feret diameter only in 2D images. For the other dimensions, the feret diameter is not computed, and so always get a value of $0$. The computation of the Feret diameter should be forced if the user want to use it.
+
+The {\em BinaryImageToLabelCollectionImageFilter} class should be threaded to get the best of that filter on multiprocessors systems.
 
 Finally, all the binary and label filters should be implemented as a subclass of {\em InPlaceImageFilter}.
 
 \section{Conclusion}
 
-
-% \url{http://www.itk.org}
-% \code{Insight/Documentation/Style.pdf}
-% \section{Principles of Solar Spot Detection}
-% \cite{ITKSoftwareGuide}.
-% \doxygen{ImageToImageFilter}
-
-% \small \begin{verbatim}
-% \end{verbatim} \normalsize
-
-
-% The {itemize} environment uses a bullet for each \item.  If you want the 
-% \item's numbered, use the {enumerate} environment instead.
-% \begin{itemize}
-%   \item  Insight Toolkit 2.4.
-%   \item  CMake 2.2
-% \end{itemize}
-
-% \ref{cthead1}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics{cthead1}
-\caption{The input image.\label{cthead1}}
-\end{figure}
-
+ITK is currntly lacking a good way to manipulate the binary objects. That contribution I hope to have mostly
+filled that lack.
 
 \appendix
 
