@@ -331,7 +331,10 @@ reconstruction. It would have been possible to implement the reconstruction
 with the most common case (build the object collection, valuate the attributes
 filter the object, and rebuild the image), but in order to make it compatible
 with the {\em ShapeLabelObject} and {\em StatisticsLabelObject}, the reconstruction
-filter filters the collection directly, without setting an attribute in the objects.
+filter filters the collection directly, without setting an attribute in the objects
+\footnote{I'm not really pleased with that design though, and I'thinking about
+reimplementing it using the generic attributes. It would have no impact on the
+binary filters API.}.
 
 \subsection{Generating an itk::Image from the itk::LabelCollectionImage}
 
@@ -409,8 +412,411 @@ those filters have been made for binary, and labeled images.
 
 \section{Usage examples}
 
-\subsection{...}
+\subsection{Prebuilt pipelines}
 
+\subsubsection{Binary shape opening}
+
+The source code is available in the file {\em binary\_shape\_opening.cxx}.
+
+\small \begin{verbatim}
+#include "itkImageFileReader.h"
+#include "itkImageFileWriter.h"
+#include "itkSimpleFilterWatcher.h"
+
+#include "itkBinaryShapeOpeningImageFilter.h"
+
+
+int main(int argc, char * argv[])
+{
+
+  if( argc != 9 )
+    {
+    std::cerr << "usage: " << argv[0] << " input output foreground background lambda reverseOrdering connectivity attribute" << std::endl;
+    // std::cerr << "  : " << std::endl;
+    exit(1);
+    }
+
+  const int dim = 3;
+
+  typedef itk::Image< unsigned char, dim > IType;
+
+  typedef itk::ImageFileReader< IType > ReaderType;
+  ReaderType::Pointer reader = ReaderType::New();
+  reader->SetFileName( argv[1] );
+
+  typedef itk::BinaryShapeOpeningImageFilter< IType > BinaryOpeningType;
+  BinaryOpeningType::Pointer opening = BinaryOpeningType::New();
+  opening->SetInput( reader->GetOutput() );
+  opening->SetForegroundValue( atoi(argv[3]) );
+  opening->SetBackgroundValue( atoi(argv[4]) );
+  opening->SetLambda( atof(argv[5]) );
+  opening->SetReverseOrdering( atoi(argv[6]) );
+  opening->SetFullyConnected( atoi(argv[7]) );
+  opening->SetAttribute( argv[8] );
+  itk::SimpleFilterWatcher watcher(opening, "filter");
+
+  typedef itk::ImageFileWriter< IType > WriterType;
+  WriterType::Pointer writer = WriterType::New();
+  writer->SetInput( opening->GetOutput() );
+  writer->SetFileName( argv[2] );
+  writer->Update();
+  return 0;
+}
+
+\end{verbatim} \normalsize
+
+\subsubsection{Statistics relabel}
+
+The source code is available in the file {\em statistics\_relabel.cxx}.
+
+\small \begin{verbatim}
+#include "itkImageFileReader.h"
+#include "itkImageFileWriter.h"
+#include "itkSimpleFilterWatcher.h"
+
+#include "itkStatisticsRelabelImageFilter.h"
+
+
+int main(int argc, char * argv[])
+{
+
+  if( argc != 8 )
+    {
+    std::cerr << "usage: " << argv[0] << " input input output background useBg reverseOrdering attribute" << std::endl;
+    // std::cerr << "  : " << std::endl;
+    exit(1);
+    }
+
+  const int dim = 3;
+
+  typedef itk::Image< unsigned char, dim > IType;
+
+  typedef itk::ImageFileReader< IType > ReaderType;
+  ReaderType::Pointer reader = ReaderType::New();
+  reader->SetFileName( argv[1] );
+
+  ReaderType::Pointer reader2 = ReaderType::New();
+  reader2->SetFileName( argv[2] );
+
+  typedef itk::StatisticsRelabelImageFilter< IType, IType > RelabelType;
+  RelabelType::Pointer relabel = RelabelType::New();
+  relabel->SetInput( reader->GetOutput() );
+  relabel->SetFeatureImage( reader2->GetOutput() );
+  relabel->SetBackgroundValue( atoi(argv[4]) );
+  relabel->SetUseBackground( atoi(argv[5]) );
+  relabel->SetReverseOrdering( atoi(argv[6]) );
+  relabel->SetAttribute( argv[7] );
+  itk::SimpleFilterWatcher watcher(relabel, "filter");
+
+  typedef itk::ImageFileWriter< IType > WriterType;
+  WriterType::Pointer writer = WriterType::New();
+  writer->SetInput( relabel->GetOutput() );
+  writer->SetFileName( argv[3] );
+  writer->Update();
+  return 0;
+}
+\end{verbatim} \normalsize
+
+
+\subsubsection{Label shape keep N obejcts}
+
+The source code is available in the file {\em label\_shape\_keep\_n\_objects.cxx}.
+
+\small \begin{verbatim}
+#include "itkImageFileReader.h"
+#include "itkImageFileWriter.h"
+#include "itkSimpleFilterWatcher.h"
+
+#include "itkLabelShapeKeepNObjectsImageFilter.h"
+
+
+int main(int argc, char * argv[])
+{
+
+  if( argc != 7 )
+    {
+    std::cerr << "usage: " << argv[0] << " input output background nb reverseOrdering attribute" << std::endl;
+    // std::cerr << "  : " << std::endl;
+    exit(1);
+    }
+
+  const int dim = 3;
+
+  typedef itk::Image< unsigned char, dim > IType;
+
+  typedef itk::ImageFileReader< IType > ReaderType;
+  ReaderType::Pointer reader = ReaderType::New();
+  reader->SetFileName( argv[1] );
+
+  typedef itk::LabelShapeKeepNObjectsImageFilter< IType > LabelOpeningType;
+  LabelOpeningType::Pointer opening = LabelOpeningType::New();
+  opening->SetInput( reader->GetOutput() );
+  opening->SetBackgroundValue( atoi(argv[3]) );
+  opening->SetNumberOfObjects( atoi(argv[4]) );
+  opening->SetReverseOrdering( atoi(argv[5]) );
+  opening->SetAttribute( argv[6] );
+  itk::SimpleFilterWatcher watcher(opening, "filter");
+
+  typedef itk::ImageFileWriter< IType > WriterType;
+  WriterType::Pointer writer = WriterType::New();
+  writer->SetInput( opening->GetOutput() );
+  writer->SetFileName( argv[2] );
+  writer->Update();
+  return 0;
+}
+\end{verbatim} \normalsize
+
+\subsubsection{Binary fill holes}
+
+The source code is available in the file {\em binary\_fillhole.cxx}.
+
+\small \begin{verbatim}
+#include "itkImageFileReader.h"
+#include "itkImageFileWriter.h"
+#include "itkCommand.h"
+#include "itkSimpleFilterWatcher.h"
+
+#include "itkLabelObject.h"
+#include "itkLabelCollectionImage.h"
+#include "itkBinaryFillholeImageFilter.h"
+
+
+int main(int argc, char * argv[])
+{
+
+  if( argc != 5 )
+    {
+    std::cerr << "usage: " << argv[0] << " input output conn fg" << std::endl;
+    // std::cerr << "  : " << std::endl;
+    exit(1);
+    }
+
+  const int dim = 2;
+
+  typedef itk::Image< unsigned char, dim > IType;
+
+  typedef itk::ImageFileReader< IType > ReaderType;
+  ReaderType::Pointer reader = ReaderType::New();
+  reader->SetFileName( argv[1] );
+  reader->Update();
+
+ typedef itk::BinaryFillholeImageFilter< IType > I2LType;
+  I2LType::Pointer reconstruction = I2LType::New();
+  reconstruction->SetInput( reader->GetOutput() );
+  reconstruction->SetFullyConnected( atoi(argv[3]) );
+  reconstruction->SetForegroundValue( atoi(argv[4]) );
+//   reconstruction->SetBackgroundValue( atoi(argv[5]) );
+  itk::SimpleFilterWatcher watcher(reconstruction, "filter");
+
+  typedef itk::ImageFileWriter< IType > WriterType;
+  WriterType::Pointer writer = WriterType::New();
+  writer->SetInput( reconstruction->GetOutput() );
+  writer->SetFileName( argv[2] );
+  writer->Update();
+  return 0;
+}
+\end{verbatim} \normalsize
+
+\subsection{LabelObject and LabelCollectionImage manipulation}
+
+\subsubsection{LabelObject}
+
+\subsubsection{ShapeLabelObject}
+
+\subsubsection{StatisticsLabelObject}
+
+\subsubsection{AttributeLabelObject}
+
+The {\em AttributeLabelObject} let the user specify the type of the attribute
+he wants to use, and thus is the good choice to implement a new attribute.
+
+The source code is available in the file {\em generic\_attribute.cxx}.
+
+First we include the headers of the class we will use, and parse the command line.
+
+\small \begin{verbatim}
+#include "itkImageFileReader.h"
+#include "itkImageFileWriter.h"
+
+#include "itkAttributeLabelObject.h"
+#include "itkLabelCollectionImage.h"
+
+#include "itkLabelImageToLabelCollectionImageFilter.h"
+
+#include "itkAttributeKeepNObjectsLabelCollectionImageFilter.h"
+#include "itkAttributeOpeningLabelCollectionImageFilter.h"
+#include "itkAttributeRelabelLabelCollectionImageFilter.h"
+
+#include "itkLabelCollectionImageToAttributeImageFilter.h"
+#include "itkLabelCollectionImageToLabelImageFilter.h"
+
+
+int main(int argc, char * argv[])
+{
+
+  if( argc != 10 )
+    {
+    std::cerr << "usage: " << argv[0] << " label input attr keep open relabel bg lambda nb" << std::endl;
+    // std::cerr << "  : " << std::endl;
+    exit(1);
+    }
+\end{verbatim} \normalsize
+Declare the dimension used, and the type of the image for input and output.
+\small \begin{verbatim}
+  const int dim = 2;
+  typedef unsigned char PType;
+  typedef itk::Image< PType, dim > IType;
+\end{verbatim} \normalsize
+The AttributeLabelObject class take 3 template parameters: the 2 ones
+from the LabelObject class, and the type of the attribute associated
+with each node. Here we have chosen a double. We then declares the
+type of the LabelCollectionImage with the type of the label object.
+\small \begin{verbatim}
+  typedef itk::AttributeLabelObject< unsigned long, dim, double > LOType;
+  typedef itk::LabelCollectionImage< LOType > LCIType;
+\end{verbatim} \normalsize
+We read the input images.
+\small \begin{verbatim}
+  typedef itk::ImageFileReader< IType > ReaderType;
+  ReaderType::Pointer reader = ReaderType::New();
+  reader->SetFileName( argv[1] );
+
+  ReaderType::Pointer reader2 = ReaderType::New();
+  reader2->SetFileName( argv[2] );
+\end{verbatim} \normalsize
+And convert the label image to a LabelCollectionImage.
+\small \begin{verbatim}
+  typedef itk::LabelImageToLabelCollectionImageFilter< IType, LCIType > I2LType;
+  I2LType::Pointer i2l = I2LType::New();
+  i2l->SetInput( reader->GetOutput() );
+  i2l->SetBackgroundValue( atoi(argv[7]) );
+\end{verbatim} \normalsize
+The next step is made outside the pipeline model, so we call Update() now.
+\small \begin{verbatim}
+  i2l->Update();
+  reader2->Update();
+\end{verbatim} \normalsize
+Now we will valuate the attribute. The attribute will be the mean of the pixels
+values in the 2nd image. Note that the StatisticsLabelObject can give us that value, without
+having to code that by hand - that's an example.
+
+Lets begin by declaring the iterator for the objects in the image, and get the object container, to reuse it later.
+\small \begin{verbatim}
+  LCIType::LabelObjectContainerType::const_iterator it;
+  LCIType::Pointer labelCollection = i2l->GetOutput();
+  const LCIType::LabelObjectContainerType & labelObjectContainer = labelCollection->GetLabelObjectContainer();
+\end{verbatim} \normalsize
+Now iterate over all the objects in the image.
+\small \begin{verbatim}
+  for( it = labelObjectContainer.begin(); it != labelObjectContainer.end(); it++ )
+    {
+\end{verbatim} \normalsize
+The label is there if we need it, but it can also be found at labelObject->GetLabel().
+\small \begin{verbatim}
+    const PType & label = it->first;
+    LOType * labelObject = it->second;
+\end{verbatim} \normalsize
+Init the variables used for the computation.
+\small \begin{verbatim}
+    double mean = 0;
+    unsigned long size = 0;
+\end{verbatim} \normalsize
+Create the iterator for the lines, and iterate over them
+\small \begin{verbatim}
+    LOType::LineContainerType::const_iterator lit;
+    LOType::LineContainerType lineContainer = labelObject->GetLineContainer();
+
+    for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
+      {
+      const LCIType::IndexType & firstIdx = lit->GetIndex();
+      const unsigned long & length = lit->GetLength();
+
+      size += length;
+\end{verbatim} \normalsize
+Then iterate over all the pixels in the line, and get the pixel values in the feature image to compute their mean.
+\small \begin{verbatim}
+      long endIdx0 = firstIdx[0] + length;
+      for( LCIType::IndexType idx = firstIdx; idx[0]<endIdx0; idx[0]++)
+        {
+        mean += reader2->GetOutput()->GetPixel( idx );
+        }
+      }
+\end{verbatim} \normalsize
+Complete the compuation of the mean, and set it as attibute value for the current object.
+\small \begin{verbatim}
+    mean /= size;
+    labelObject->SetAttribute( mean );
+\end{verbatim} \normalsize
+The LabelObject class provides a Print() method to display its ivars.
+\small \begin{verbatim}
+    labelObject->Print( std::cout );
+
+    }
+\end{verbatim} \normalsize
+Now that the objects have their attribute, we are free to manipulate them with
+the common filters, or by hand. The default accessor (AttributeLabelObject)
+is the wright one when using AttributeLabelObject so we don't have to specify it.
+A different one can be used if needed though.
+\small \begin{verbatim}
+  typedef itk::AttributeKeepNObjectsLabelCollectionImageFilter< LCIType > KeepType;
+  KeepType::Pointer keep = KeepType::New();
+  keep->SetInput( labelCollection );
+  keep->SetReverseOrdering( true );
+  keep->SetNumberOfObjects( atoi(argv[9]) );
+\end{verbatim} \normalsize
+Prevent the filter to run in place, so the input image is not modified.
+\small \begin{verbatim}
+  keep->SetInPlace( false );
+
+  typedef itk::AttributeOpeningLabelCollectionImageFilter< LCIType > OpeningType;
+  OpeningType::Pointer opening = OpeningType::New();
+  opening->SetInput( labelCollection );
+  opening->SetLambda( atof(argv[8]) );
+  keep->SetInPlace( false );
+
+  typedef itk::AttributeRelabelLabelCollectionImageFilter< LCIType > RelabelType;
+  RelabelType::Pointer relabel = RelabelType::New();
+  relabel->SetInput( labelCollection );
+  keep->SetInPlace( false );
+\end{verbatim} \normalsize
+The attribute values can be put directly in a classic image.
+\small \begin{verbatim}
+  typedef itk::LabelCollectionImageToAttributeImageFilter< LCIType, IType > A2IType;
+  A2IType::Pointer a2i = A2IType::New();
+  a2i->SetInput( labelCollection );
+\end{verbatim} \normalsize
+Or the label collection can be converted back to an label image, or to a binary image
+(not shown here)
+\small \begin{verbatim}
+  typedef itk::LabelCollectionImageToLabelImageFilter< LCIType, IType > L2IType;
+  L2IType::Pointer l2i = L2IType::New();
+\end{verbatim} \normalsize
+Finally, write the results
+\small \begin{verbatim}
+  typedef itk::ImageFileWriter< IType > WriterType;
+  WriterType::Pointer writer = WriterType::New();
+
+  writer->SetInput( a2i->GetOutput() );
+  writer->SetFileName( argv[3] );
+  writer->Update();
+
+  writer->SetInput( l2i->GetOutput() );
+
+  l2i->SetInput( keep->GetOutput() );
+  writer->SetFileName( argv[4] );
+  writer->Update();
+
+  l2i->SetInput( opening->GetOutput() );
+  writer->SetFileName( argv[5] );
+  writer->Update();
+
+  l2i->SetInput( relabel->GetOutput() );
+  writer->SetFileName( argv[6] );
+  writer->Update();
+
+  return 0;
+}
+\end{verbatim} \normalsize
 
 \section{Threading support}
 
