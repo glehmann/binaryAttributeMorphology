@@ -314,6 +314,22 @@ LabelCollectionImage<TLabelObject>
 }
 
 
+template<class TLabelObject >
+void 
+LabelCollectionImage<TLabelObject>
+::PrintObjects(std::ostream& os) const
+{
+  for( typename LabelObjectContainerType::const_iterator it = m_LabelObjectContainer.begin();
+    it != m_LabelObjectContainer.end();
+    it++ )
+    {
+    assert( it->second != NULL );
+    it->second->Print( os );
+    os << std::endl;
+    }
+}
+
+
 
 
 } // end namespace itk

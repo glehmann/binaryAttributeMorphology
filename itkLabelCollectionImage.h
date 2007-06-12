@@ -304,6 +304,16 @@ public:
   itkSetMacro(UseBackground, bool);
   itkBooleanMacro(UseBackground);
 
+  /**
+   * Print all the objects stored in that collection - a convenient method
+   * for prototyping.
+   */
+  void PrintObjects(std::ostream& os) const;
+  void PrintObjects() const
+    {
+    this->PrintObjects( std::cerr );
+    }
+
 protected:
   LabelCollectionImage();
   virtual ~LabelCollectionImage() {};
