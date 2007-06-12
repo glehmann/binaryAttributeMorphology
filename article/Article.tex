@@ -372,7 +372,7 @@ itk::LabelCollectionImage},
 \end{itemize}
 with a specific attribute.
 
-Because the objects are often get from a labeled image oor from a binary image,
+Because the objects are often get from a labeled image or from a binary image,
 those filters have been made for binary, and labeled images.
 
 \subsection{Binary filters}
@@ -619,12 +619,18 @@ int main(int argc, char * argv[])
 
 \subsection{LabelObject and LabelCollectionImage manipulation}
 
-\subsubsection{LabelObject}
-
-\subsubsection{ShapeLabelObject}
-
-\subsubsection{StatisticsLabelObject}
-
+% \subsubsection{LabelObject}
+% 
+% TODO
+% 
+% \subsubsection{ShapeLabelObject}
+% 
+% TODO
+% 
+% \subsubsection{StatisticsLabelObject}
+% 
+% TODO
+% 
 \subsubsection{AttributeLabelObject}
 
 The {\em AttributeLabelObject} let the user specify the type of the attribute
@@ -854,7 +860,7 @@ The use can modify this behavior with the {\em SetInPlace( bool )}, {\em InPlace
 
 To use that feature, a developer only have to subclass {\em InPlaceLabelCollectionImageFilter} and
 implement the {\em virtual void ThreadedGenerateData( LabelObjectType * labelObject )}, to get easy thread
-support (see the previous section), or the {\em virtual void GenerateData()} if the filter is not threadable. In that last case,
+support \footnote{see the previous section}, or the {\em virtual void GenerateData()} if the filter is not threadable. In that last case,
 the only image to manipulate is the one get with the {\em GetOutput()} method, which is the input image if the filter runs in place, or a copy of the input image if the filter is not running in place.
 
 
@@ -900,7 +906,7 @@ Finally, all the binary and label filters should be implemented as a subclass of
 
 \section{Conclusion}
 
-ITK is currntly lacking a good way to manipulate the binary objects. That contribution I hope to have mostly
+ITK is currently lacking a good way to manipulate the binary objects. That contribution I hope to have mostly
 filled that lack.
 
 \appendix
