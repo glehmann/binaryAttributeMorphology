@@ -181,6 +181,15 @@ FOREACH(fg 100 200)
             --compare binary_size_keep_n_objects-${fg}-${bg}-${nb}-${order}-${connectivity}.png ${CMAKE_SOURCE_DIR}/images/binary_size_keep_n_objects-${fg}-${bg}-${nb}-${order}-${connectivity}.png
           )
         ENDFOREACH(nb)
+
+        FOREACH(nb 60)
+          ADD_TEST(BinarySizeOnBorderOpening-${fg}-${bg}-${nb}-${order}-${connectivity} ${TEST_COMMAND}
+            binary_shape_opening
+              ${BINARY_IMAGE} binary_size_on_border_opening-${fg}-${bg}-${nb}-${order}-${connectivity}.png
+              ${fg} ${bg} ${nb} ${order} ${connectivity} SizeOnBorder
+            --compare binary_size_on_border_opening-${fg}-${bg}-${nb}-${order}-${connectivity}.png ${CMAKE_SOURCE_DIR}/images/binary_size_on_border_opening-${fg}-${bg}-${nb}-${order}-${connectivity}.png
+          )
+        ENDFOREACH(nb)
       ENDFOREACH(connectivity)
     ENDFOREACH(order)
   ENDFOREACH(bg)
