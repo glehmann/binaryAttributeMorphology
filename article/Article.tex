@@ -906,8 +906,18 @@ Finally, all the binary and label filters should be implemented as a subclass of
 
 \section{Conclusion}
 
-ITK is currently lacking a good way to manipulate the binary objects. That contribution I hope to have mostly
+ITK is currently lacking a good way to manipulate the binary objects. With that contribution I hope to have mostly
 filled that lack.
+
+\section{Acknowledgments}
+I thank Richard Beare for his suggestion to use the run length encoding to represent the binary objects, and Julien Jomier for his help for the choice to {\em not} use the {\em SpatialObject} class as base class of the {\em LabelObejct} class.
+
+I thank Dr Pierre Adenot and MIMA2 confocal facilities
+(\url{http://mima2.jouy.inra.fr}) for providing the 3D test image.
+I am grateful to the INRA MIGALE bioinformatics platform
+(\url{http://migale.jouy.inra.fr}) for providing the computational resources
+used for the timing tests.
+
 
 \appendix
 
