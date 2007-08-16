@@ -157,10 +157,13 @@ kept in that article.
 \section{Data representation}
 
 The labeled images are often used the represent the connected components of an
-image. As connected component, they can be efficiently stored in memory as a set
+image. In this contribution, another representation has been chosen.
+
+The objects contained in the image, as connected component, can be efficiently stored in memory as a set
 of lines, using the run-length encoding: a starting point for each line, and the
-length of the line on a given dimension (by convention, the dimension 0). The
-image the can be seen as a collection of objects.
+length of the line on a given dimension (by convention, the dimension 0).
+
+The image is a collection of those objects, which also store some values of the image, like its size, its spacing, etc.
 
 \subsection{itk::LabelCollectionImage}
 
@@ -168,13 +171,18 @@ The {\em itk::LabelCollectionImage} class is in charge of managing the
 collection of labeled
 objects of the image, as well as storing the metadata associated with the image
 like
-the spacing, the physical position, etc.
+the spacing, the physical position - all the metadata found in {\em itk::Image}.
 
 The {\em itk::LabelCollectionImage} provide a part of the API of the {\em
-itk::Image} class,
-and so can be manipulated as an image\footnote{It doesn't support the itk::Image
-iterators though}
-in may cases. The performance can be very different however.
+itk::Image} class, and so can be manipulated as an image\footnote{It doesn't
+support the itk::Image iterators though} in many cases. The performance can be
+very different however, because of the very different data structure used.
+
+The {\em itk::LabelCollectionImage} is a templated class, which take a single
+parameter: the type of {\em labeled object} stored by that class. The dimension
+of the image is took from the {\em labeled object} class, and thus don't need to
+be defined as template parameter of that class. The pixel type of the image
+also comes from the {\em labeled object} class.
 
 \subsection{itk::LabelObject and its specializations}
 
@@ -186,11 +194,18 @@ using the run-length encoding.
   \item It has a label.
 \end{itemize}
 
-No attribute are stored in this class, which can thus be see as the base class
-for the objects with some attributes, or which can be used when no attributes
+No attribute are stored in this class, which can thus be seen as the base class
+for the objects with attributes, or which can be used when no attributes
 are required.
 
-Several subclasses are provided with that article:
+The {\em itk::LabelObject} class is templated and takes to required template parameters:
+\begin{itemize}
+  \item the type of the label,
+  \item the dimension of the image.
+\end{itemize}
+
+Several subclasses are provided with that contribution, to cover the most common
+usages of the labeled objects manipulation:
 \begin{itemize}
   \item {\em itk::AttributeLabelObject} is able to store a generic attribute. It
 is generic in the sense that its type is given in template parameter.
@@ -199,19 +214,24 @@ shape of the labeled object. Computing the values of those attributes does not
 require a feaure image.
   \item {\em itk::StatisticsLabelObject} contains numerous statistics about the
 grey values of a feature image in the same place than the labeled object.
-Computing the values of those attributes does require a feature image.
+Computing the values of those attributes {\em does} require a feature image.
 \end{itemize}
 
 The classes {\em itk::ShapeLabelObject} and {\em itk::StatisticsLabelObject} have been
 created to reduce the number of filters made to manipulate the attributes, and to make
 the computation of all the set of attributes much efficient. In the early stage of
 development, all the attributes were managed as in {\em AttributeLabelObject}, and
-a set of 8 classes made to manipulate a single were provided, leading to a huge
+a set of 8 classes made to manipulate a single attribute were provided, leading to a huge
 number of classes.
 
 The scalar values of the attributes of the {\em itk::ShapeLabelObject} and the
 {\em itk::StatisticsLabelObject} classes are often given both in pixel and in physical units,
 in order to be able to give some parameter independant of the image spacing.
+
+Both {\em itk::ShapeLabelObject} and {\em itk::StatisticsLabelObject} are templated classes.
+They take the same template parameters than the {\em itk::LabelObject} class.
+The 2 first template parameters of the {\em itk::AttributeLabelObject} class or the same
+than the {\em itk::LabelObject} class. The third one is the attribute type.
 
 \subsubsection{itk::ShapeLabelObject attributes}
 
@@ -282,7 +302,7 @@ of a single line.
 \subsection{Generating the itk::LabelCollectionImage}
 
 The {\em itk::LabelCollectionImage} class provide some methods to fill the
-image. However, the most efficient way is to convert a labeled image or a binary
+image "by hand", like the usual {\em SetPixel()} method. However, the most efficient way is to convert a labeled image or a binary
 image stored in an {\em itk::Image} to a {\em itk::LabelCollectionImage}, by
 using {\em itk::BinaryImageToLabelCollectionImageFilter} or {\em
 itk::LabelImageToLabelCollectionImageFilter}.
@@ -290,30 +310,40 @@ itk::LabelImageToLabelCollectionImageFilter}.
 \subsection{Valuating the attributes}
 
 The label objects produced by those filters have no attribute value set, and
-thus the attributes must be valuated. Some filters are provided for the most
-common used ones: {\em itk::ShapeLabelCollectionImageFilter} to fill the
-attributes of the {\em itk::ShapeLabelObject}s, and {\em
-itk::ShapeLabelCollectionImageFilter} to fill the attributes of the {\em
-itk::StatisticsLabelObject}s. For the {\em itk::AttributeLabelObject} class or
+thus, the attributes must be valuated. Some filters are provided for the most
+common used ones:
+
+\begin{itemize}
+  \item {\em itk::ShapeLabelCollectionImageFilter} to fill the
+attributes of the {\em itk::ShapeLabelObject}s, 
+  \item and {\em itk::ShapeLabelCollectionImageFilter} to fill the attributes of the {\em
+itk::StatisticsLabelObject}s.
+\end{itemize}
+
+For the {\em itk::AttributeLabelObject} class or
 other classes, the user must set the value by himself, for example by
 implementing a subclass of {\em itk::InPlaceLabelCollectionImageFilter}.
 
 \subsection{Manipulating the itk::LabelCollectionImage}
 
-Once created and, optionally, valued, several filters are provided to manipulate
+Once created and, optionally, valuated, several filters are provided to manipulate
 the {\em itk::LabelCollectionImage}:
 
 \begin{itemize}
   \item An opening can be performed with the {\em
 OpeningLabelCollectionImageFilter} classes. Those classes will remove all the
-objects with an attribute value lower or greater than a given value. It's a very
-convenient way to enhance a segmentation for example, because we often can use
-that way some criteria  which have not been used during the segmentation
-procedure, like the size of the object, the mean value of its pixels, etc.
+objects with an attribute value lower or greater than a given value.
+Because we often can use some criteria  which have not been used during the segmentation
+procedure, like the size of the object, the mean value of its pixels, etc., the attribute
+opening is often a very efficient way to enhance a segmentation. For example, after
+a thresholding of a grayscale image, the objects too small or too beg to be of interest
+can be removed that way.
+
   \item A fixed number of objects can be kept, with the {\em
 KeepNObjectsLabelCollectionImageFilter} classes. They are chosen according to
 the value of their attribute. The user can choose to keep the ones with the
 highest, or with the lowest attribute values.
+
   \item The objects can be relabel, with the {\em
 RelabelLabelCollectionImageFilter} classes. The order of the label is dependant
 of the value of the attribute. Again, the user can choose to have the objects
@@ -824,6 +854,82 @@ Finally, write the results
 }
 \end{verbatim} \normalsize
 
+\subsection{Reading attribute values}
+
+In that example, we will read a binary image, and get some of attributes
+about the obejcts contained in that image.
+The source code is available in the file {\em attribute\_values.cxx}.
+
+First include the classes we'll use
+\small \begin{verbatim}
+#include "itkImageFileReader.h"
+#include "itkShapeLabelObject.h"
+#include "itkLabelCollectionImage.h"
+#include "itkBinaryImageToLabelCollectionImageFilter.h"
+#include "itkShapeLabelCollectionImageFilter.h"
+
+int main(int, char * argv[])
+{
+  const int dim = 2;
+\end{verbatim} \normalsize
+then declare the type of the input image
+\small \begin{verbatim}
+  typedef unsigned char PixelType;
+  typedef itk::Image< PixelType, dim >    ImageType;
+  
+\end{verbatim} \normalsize
+read the input image
+\small \begin{verbatim}
+  typedef itk::ImageFileReader< ImageType > ReaderType;
+  ReaderType::Pointer reader = ReaderType::New();
+  reader->SetFileName( argv[1] );
+  
+\end{verbatim} \normalsize
+define the object type. Here the ShapeLabelObject type
+is chosen in order to read some attribute related to the shape
+of the objects (by opposition to the content of the object, with
+the StatisticsLabelObejct).
+\small \begin{verbatim}
+  typedef unsigned long LabelType;
+  typedef itk::ShapeLabelObject< LabelType, dim > LabelObjectType;
+  typedef itk::LabelCollectionImage< LabelObjectType > LabelCollectionType;
+
+\end{verbatim} \normalsize
+convert the image in a collection of objects
+\small \begin{verbatim}
+  typedef itk::BinaryImageToLabelCollectionImageFilter< ImageType, LabelCollectionType > ConverterType;
+  ConverterType::Pointer converter = ConverterType::New();
+  converter->SetInput( reader->GetOutput() );
+  converter->SetForegroundValue( 200 );
+
+\end{verbatim} \normalsize
+and valuate the attributes with the dedicated filter: ShapeLabelCollectionImageFilter
+\small \begin{verbatim}
+  typedef itk::ShapeLabelCollectionImageFilter< LabelCollectionType > ShapeFilterType;
+  ShapeFilterType::Pointer shape = ShapeFilterType::New();
+  shape->SetInput( converter->GetOutput() );
+
+\end{verbatim} \normalsize
+update the shape filter, so its output will be up to date
+\small \begin{verbatim}
+  shape->Update();
+
+\end{verbatim} \normalsize
+then we can read the attribute values we're interested in. {\em BinaryImageToLabelCollectionImageFilter}
+produces consecutives labels, so a simple {for} loop will do the job.
+\small \begin{verbatim}
+  LabelCollectionType::Pointer collection = shape->GetOutput();
+  for( int label=1; label<collection->GetNumberOfObjects(); label++ )
+    {
+    LabelObjectType::Pointer labelObject = collection->GetLabelObject( label );
+    std::cout << label << "\t" << labelObject->GetPhysicalSize() << "\t" << labelObject->GetCentroid() << std::endl;
+    }
+  
+  return 0;
+}
+\end{verbatim} \normalsize
+
+
 \section{Threading support}
 
 When possible, the filters provided with that contribution have been multithreaded.
@@ -870,9 +976,9 @@ All the classes provided with that article, excepted the most generic ones made
 to help the developer to implement some new features, can be used with WrapITK,
 and have been fully tested with python.
 
-\section{Performance}
-
-TODO
+% \section{Performance}
+% 
+% TODO
 
 \section{Known bugs and future work}
 
@@ -894,9 +1000,9 @@ of an image, starting from
 Doing that require a good knownledge of the iterator design. Any help on that point is
 welcome.
 
-Also, more attributes will be implemented, like the perimeter estimation, the usual moments, etc. It may be useful to implement the most commonly used opening, keep N objects and relabel transforms in a more efficient way, by using an {\em AttributeLabelObject} instead of a {\em ShapeLabelObject} or a {\em StatisticsLabelObject}.
+Also, more attributes will be implemented, like the perimeter estimation, the usual image moments, etc. It may be useful to implement the most commonly used opening, keep N objects and relabel transforms in a more efficient way, by using an {\em AttributeLabelObject} instead of a {\em ShapeLabelObject} or a {\em StatisticsLabelObject}.
 
-The computation of the moments is partially implemented. The help of someone with a good knownledge of that subject would be very helpful to complete that work. The moments for the binary shape shoudl also be implemented.
+The computation of the moments is partially implemented. The help of someone with a good knownledge of that subject would be very helpful to complete that work. The moments for the binary shape should also be implemented.
 
 All the {\em Shape} filters are currently able to use the Feret diameter only in 2D images. For the other dimensions, the feret diameter is not computed, and so always get a value of $0$. The computation of the Feret diameter should be forced if the user want to use it.
 
