@@ -1,9 +1,10 @@
 #include "itkImageFileReader.h"
-#include "itkShapeLabelObject.h"
+#include "itkStatisticsLabelObject.h"
 #include "itkLabelCollectionImage.h"
 #include "itkBinaryImageToLabelCollectionImageFilter.h"
-#include "itkShapeLabelCollectionImageFilter.h"
+#include "itkStatisticsLabelCollectionImageFilter.h"
 #include "itkTimeProbe.h"
+#include "itkSimpleFilterWatcher.h"
 
 #include <iomanip>
 
@@ -19,40 +20,88 @@ int main(int, char * argv[])
   reader->SetFileName( argv[1] );
   
   typedef unsigned long LabelType;
-  typedef itk::ShapeLabelObject< LabelType, dim > LabelObjectType;
+  typedef itk::StatisticsLabelObject< LabelType, dim > LabelObjectType;
   typedef itk::LabelCollectionImage< LabelObjectType > LabelCollectionType;
 
   typedef itk::BinaryImageToLabelCollectionImageFilter< ImageType, LabelCollectionType > ConverterType;
   ConverterType::Pointer converter = ConverterType::New();
   converter->SetInput( reader->GetOutput() );
   converter->SetForegroundValue( 200 );
+  
   converter->Update();
+  
+  // to be sure that the converter is not run again at that point
+  itk::SimpleFilterWatcher watcher(converter, "converter");
 
+  typedef itk::StatisticsLabelCollectionImageFilter< LabelCollectionType, ImageType > StatisticsFilterType;
+  StatisticsFilterType::Pointer statistics = StatisticsFilterType::New();
+  statistics->SetInPlace( false );  // to avoid running the converter each time
+  statistics->SetInput( converter->GetOutput() );
+  statistics->SetFeatureImage( reader->GetOutput() );
+  
   typedef itk::ShapeLabelCollectionImageFilter< LabelCollectionType > ShapeFilterType;
   ShapeFilterType::Pointer shape = ShapeFilterType::New();
   shape->SetInPlace( false );  // to avoid running the converter each time
   shape->SetInput( converter->GetOutput() );
   
+  typedef itk::InPlaceLabelCollectionImageFilter< LabelCollectionType > InPlaceFilterType;
+  InPlaceFilterType::Pointer inPlace = InPlaceFilterType::New();
+  inPlace->SetInPlace( false );  // to avoid running the converter each time
+  inPlace->SetInput( converter->GetOutput() );
+  
+  typedef itk::LabelCollectionImageFilter< LabelCollectionType, LabelCollectionType > EmptyFilterType;
+  EmptyFilterType::Pointer empty = EmptyFilterType::New();
+  empty->SetInput( converter->GetOutput() );
+
   std::cout << "#nb" << "\t" 
-            << "shape" << std::endl;
+            << "stats" << "\t"
+            << "shape" << "\t"
+            << "inPlace" << "\t"
+            << "empty" << "\t"
+            << std::endl;
 
   for( int t=1; t<=10; t++ )
     {
+    itk::TimeProbe statisticsTime;
     itk::TimeProbe shapeTime;
+    itk::TimeProbe inPlaceTime;
+    itk::TimeProbe emptyTime;
   
+    statistics->SetNumberOfThreads( t );
     shape->SetNumberOfThreads( t );
+    inPlace->SetNumberOfThreads( t );
+    empty->SetNumberOfThreads( t );
     
     for( int i=0; i<50; i++ )
       {
+      statisticsTime.Start();
+      statistics->Update();
+      statisticsTime.Stop();
+
       shapeTime.Start();
       shape->Update();
       shapeTime.Stop();
+
+      inPlaceTime.Start();
+      inPlace->Update();
+      inPlaceTime.Stop();
       
+      statistics->Modified();
       shape->Modified();
+      inPlace->Modified();
+      empty->Modified();
+      
+      emptyTime.Start();
+      empty->Update();
+      emptyTime.Stop();
       }
       
     std::cout << std::setprecision(3) << t << "\t" 
-              << shapeTime.GetMeanTime() << std::endl;
+              << statisticsTime.GetMeanTime() << "\t"
+              << shapeTime.GetMeanTime() << "\t"
+              << inPlaceTime.GetMeanTime() << "\t"
+              << emptyTime.GetMeanTime() << "\t"
+              << std::endl;
     }
   
   

@@ -87,6 +87,7 @@ public:
   typedef typename InputImageType::ConstPointer   InputImageConstPointer;
   typedef typename InputImageType::RegionType     InputImageRegionType; 
   typedef typename InputImageType::PixelType      InputImagePixelType;
+  typedef typename InputImageType::LabelObjectType LabelObjectType;
 
   typedef typename InputImageType::PixelType       PixelType;
   typedef typename InputImageType::IndexType       IndexType;
