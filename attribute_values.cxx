@@ -4,12 +4,19 @@
 #include "itkBinaryImageToLabelCollectionImageFilter.h"
 #include "itkShapeLabelCollectionImageFilter.h"
 
-int main(int, char * argv[])
+int main(int argc, char * argv[])
 {
   const int dim = 2;
   typedef unsigned char PixelType;
   typedef itk::Image< PixelType, dim >    ImageType;
   
+  if( argc != 3)
+    {
+    std::cerr << "usage: " << argv[0] << " input foreground" << std::endl;
+    // std::cerr << "  : " << std::endl;
+    exit(1);
+    }
+
   // read the input image
   typedef itk::ImageFileReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
@@ -27,7 +34,7 @@ int main(int, char * argv[])
   typedef itk::BinaryImageToLabelCollectionImageFilter< ImageType, LabelCollectionType > ConverterType;
   ConverterType::Pointer converter = ConverterType::New();
   converter->SetInput( reader->GetOutput() );
-  converter->SetForegroundValue( 255 );
+  converter->SetForegroundValue( atoi(argv[2]) );
 
   // and valuate the attributes with the dedicated filter: ShapeLabelCollectionImageFilter
   typedef itk::ShapeLabelCollectionImageFilter< LabelCollectionType > ShapeFilterType;
