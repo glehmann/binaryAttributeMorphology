@@ -27,11 +27,12 @@ int main(int, char * argv[])
   typedef itk::BinaryImageToLabelCollectionImageFilter< ImageType, LabelCollectionType > ConverterType;
   ConverterType::Pointer converter = ConverterType::New();
   converter->SetInput( reader->GetOutput() );
-  converter->SetForegroundValue( 200 );
+  converter->SetForegroundValue( 255 );
 
   // and valuate the attributes with the dedicated filter: ShapeLabelCollectionImageFilter
   typedef itk::ShapeLabelCollectionImageFilter< LabelCollectionType > ShapeFilterType;
   ShapeFilterType::Pointer shape = ShapeFilterType::New();
+  shape->SetComputeFeretDiameter( false );
   shape->SetInput( converter->GetOutput() );
 
   // update the shape filter, so its output will be up to date
@@ -39,7 +40,7 @@ int main(int, char * argv[])
 
   // then we can read the attribute values we're interested in
   LabelCollectionType::Pointer collection = shape->GetOutput();
-  for( int label=1; label<collection->GetNumberOfObjects(); label++ )
+  for( int label=1; label<=collection->GetNumberOfObjects(); label++ )
     {
     LabelObjectType::Pointer labelObject = collection->GetLabelObject( label );
     std::cout << label << "\t" << labelObject->GetPhysicalSize() << "\t" << labelObject->GetCentroid() << std::endl;
