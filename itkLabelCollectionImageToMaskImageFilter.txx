@@ -33,6 +33,7 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
   m_Label = NumericTraits< InputImagePixelType >::max();
   m_BackgroundValue = NumericTraits< OutputImagePixelType >::Zero;
   m_Negated = false;
+  m_Crop = false;
 }
 
 template <class TInputImage, class TOutputImage>
@@ -50,6 +51,43 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
   input->SetRequestedRegion( input->GetLargestPossibleRegion() );
 }
 
+template <class TInputImage, class TOutputImage>
+void 
+LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
+::GenerateOutputInformation()
+{
+  Superclass::GenerateOutputInformation();
+
+  if( m_Crop )
+    {
+    const InputImageType * input = this->GetInput();
+
+    if( !(input->GetMTime() > m_CropTimeStamp) && !(this->GetMTime() > m_CropTimeStamp) )
+      {
+      // early exit, crop sizes already computed
+      return;
+      }
+
+    if( input->GetSource())
+      {
+      ProcessObject * upstream = input->GetSource();
+      if (upstream)
+        {
+        this->SetInput(NULL);
+        upstream->Update();
+        this->SetInput(input);
+        }
+      }
+
+    // Prefetch image region and size
+    InputImageRegionType region = input->GetLargestPossibleRegion();
+    SizeType size = region.GetSize();
+
+
+
+    m_cropTimeStamp.Modified();
+    }
+}
 
 template <class TInputImage, class TOutputImage>
 void 

@@ -133,6 +133,8 @@ protected:
 
   /** LabelCollectionImageToMaskImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
+
+  virtual void GenerateOutputInformation();
   
   virtual void BeforeThreadedGenerateData();
 
@@ -148,6 +150,11 @@ private:
   InputImagePixelType m_Label;
   OutputImagePixelType m_BackgroundValue;
   bool m_Negated;
+  bool m_Crop;
+
+  TimeStamp m_CropTimeStamp;
+  IndexType m_OutputIndex;
+  SizeType m_OutputSize;
 
   typename Barrier::Pointer m_Barrier;
 
