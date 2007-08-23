@@ -141,6 +141,27 @@ LabelCollectionImage<TLabelObject>
 
 
 template<class TLabelObject >
+const typename LabelCollectionImage<TLabelObject>::LabelObjectType * 
+LabelCollectionImage<TLabelObject>
+::GetLabelObject( const LabelType & label ) const
+{
+  if( ! this->HasLabel( label ) )
+    {
+    itkExceptionMacro( << "No label object with label "
+      << static_cast<typename NumericTraits< LabelType >::PrintType>(label)
+      << "." );
+    }
+  if( m_UseBackground && m_BackgroundValue == label )
+    {
+    itkExceptionMacro( << "Label "
+      << static_cast<typename NumericTraits< LabelType >::PrintType>(label)
+      << " is the background label." );
+    }
+  return m_LabelObjectContainer.find( label )->second.GetPointer();
+}
+
+
+template<class TLabelObject >
 bool 
 LabelCollectionImage<TLabelObject>
 ::HasLabel( const LabelType label ) const

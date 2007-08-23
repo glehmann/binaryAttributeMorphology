@@ -218,7 +218,7 @@ public:
    */
   LabelObjectType * GetLabelObject( const LabelType & label );
 
-//   const LabelObjectType * GetLabelObject( const LabelType & label ) const;
+  const LabelObjectType * GetLabelObject( const LabelType & label ) const;
 
   /**
    * Return true is the image contains the label given in parameter and false
