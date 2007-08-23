@@ -100,8 +100,58 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
       else
         {
         // compute the bounding box of all the objects which don't have that label
-      
-      
+        IndexType mins;
+        mins.Fill( NumericTraits< long >::max() );
+        IndexType maxs;
+        maxs.Fill( NumericTraits< long >::NonpositiveMin() );
+        typename InputImageType::LabelObjectContainerType container = this->GetInput()->GetLabelObjectContainer();
+        for( typename InputImageType::LabelObjectContainerType::const_iterator loit = container.begin();
+             loit != container.end();
+             loit++ )
+          {
+          if( loit->first != m_Label )
+            {
+            typename LabelObjectType::LineContainerType::const_iterator lit;
+            typename LabelObjectType::LineContainerType lineContainer = loit->second->GetLineContainer();
+            // iterate over all the lines
+            for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
+              {
+              const IndexType & idx = lit->GetIndex();
+              unsigned long length = lit->GetLength();
+    
+              // update the mins and maxs
+              for( int i=0; i<ImageDimension; i++)
+                {
+                if( idx[i] < mins[i] )
+                  {
+                  mins[i] = idx[i];
+                  }
+                if( idx[i] > maxs[i] )
+                  {
+                  maxs[i] = idx[i];
+                  }
+                }
+              // must fix the max for the axis 0
+              if( idx[0] + length > maxs[0] )
+                {
+                maxs[0] = idx[0] + length - 1;
+                }
+              }
+            }
+          }
+          
+          // final computation
+          SizeType regionSize;
+          for( int i=0; i<ImageDimension; i++ )
+            {
+            regionSize[i] = maxs[i] - mins[i] + 1;
+            }
+          RegionType region( mins, regionSize );
+          // std::cout << region << std::endl;
+          
+          // finally set that region as the largest output region
+          this->GetOutput()->SetLargestPossibleRegion( region );
+
         }
       }
     else
