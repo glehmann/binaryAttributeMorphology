@@ -213,6 +213,14 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
     principalAxes[ ImageDimension-1 ][i] *= std::real( det );
     }
 
+  double minPrincipalMoment = NumericTraits< double >::max();
+  double maxPrincipalMoment = NumericTraits< double >::NonpositiveMin();
+  for( int i=0; i<ImageDimension; i++ )
+    {
+    minPrincipalMoment = std::min( principalMoments[i], minPrincipalMoment );
+    maxPrincipalMoment = std::max( principalMoments[i], maxPrincipalMoment );
+    }
+
   // finally put the values in the label object
   labelObject->SetMinimum( (double)min );
   labelObject->SetMaximum( (double)max );
@@ -229,6 +237,7 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
   labelObject->SetCentralMoments( centralMoments );
   labelObject->SetSkewness( skewness );
   labelObject->SetKurtosis( kurtosis );
+  labelObject->SetElongation( maxPrincipalMoment / minPrincipalMoment );
 
 //     std::cout << std::endl;
 //     labelObject->Print( std::cout );

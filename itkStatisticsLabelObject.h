@@ -221,6 +221,19 @@ public:
     }
 };
 
+template< class TLabelObject >
+class ITK_EXPORT ElongationLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef double AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetElongation();
+    }
+};
+
 }
 
 
@@ -286,6 +299,7 @@ public:
   static const AttributeType PRINCIPAL_AXES=112;
   static const AttributeType KURTOSIS=113;
   static const AttributeType SKEWNESS=114;
+  static const AttributeType ELONGATION=115;
 
   static AttributeType GetAttributeFromName( const std::string & s )
     {
@@ -349,6 +363,10 @@ public:
       {
       return SKEWNESS;
       }
+    else if( s == "Elongation" )
+      {
+      return ELONGATION;
+      }
     // can't recognize the namespace
     return Superclass::GetAttributeFromName( s );
     }
@@ -402,6 +420,9 @@ public:
       case SKEWNESS:
         return "Skewness";
         break;
+      case ELONGATION:
+        return "Elongation";
+        break;
       }
       // can't recognize the namespace
       return Superclass::GetNameFromAttribute( a );
@@ -431,6 +452,7 @@ public:
     m_PrincipalAxes = src->m_PrincipalAxes;
     m_Kurtosis = src->m_Kurtosis;
     m_Skewness = src->m_Skewness;
+    m_Elongation = src->m_Elongation;
     }
 
 //   itkGetConstMacro( Minimum, double );
@@ -613,6 +635,18 @@ public:
     m_Kurtosis = v;
     }
 
+//   itkGetConstMacro( Elongation, double );
+//   itkSetMacro( Elongation, double );
+  const double & GetElongation() const
+    {
+    return m_Elongation;
+    }
+
+  void SetElongation( const double & v )
+    {
+    m_Elongation = v;
+    }
+
 
 protected:
   StatisticsLabelObject()
@@ -632,6 +666,7 @@ protected:
     m_PrincipalAxes.Fill(0);
     m_Kurtosis = 0;
     m_Skewness = 0;
+    m_Elongation = 0;
     }
   
 
@@ -654,6 +689,7 @@ protected:
     os << indent << "PrincipalAxes: " << m_PrincipalAxes << std::endl;
     os << indent << "Skewness: " << m_Skewness << std::endl;
     os << indent << "Kurtosis: " << m_Kurtosis << std::endl;
+    os << indent << "Elongation: " << m_Elongation << std::endl;
     }
 
 private:
@@ -675,6 +711,7 @@ private:
   MatrixType m_PrincipalAxes;
   double m_Skewness;
   double m_Kurtosis;
+  double m_Elongation;
 
 };
 
