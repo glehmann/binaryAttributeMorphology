@@ -116,7 +116,7 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
         min = v;
         minIdx = idx;
         }
-      if( v => max )
+      if( v >= max )
         {
         max = v;
         maxIdx = idx;
