@@ -316,6 +316,11 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
       else
         {
         // and mark the label object as background
+        
+        // should we take care to not write outside the image ?
+        bool testIdxIsInside = m_Crop && ( input->GetUseBackground() && input->GetBackgroundValue() == m_Label ) ^ m_Negated;
+        RegionType outputRegion = output->GetLargestPossibleRegion();
+
         typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
         typename InputImageType::LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
       
@@ -325,7 +330,10 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
           unsigned long length = lit->GetLength();
           for( int i=0; i<length; i++)
             {
-            output->SetPixel( idx, m_BackgroundValue );
+            if( !testIdxIsInside || outputRegion.IsInside( idx ) )
+              {
+              output->SetPixel( idx, m_BackgroundValue );
+              }
             idx[0]++;
             }
           progress.CompletedPixel();
@@ -351,6 +359,10 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
     // we will keep the values from the feature image if the same pixel in the label image
     // equals the label given by the user. The other pixels are set to the background value.
 
+    // should we take care to not write outside the image ?
+    bool testIdxIsInside = m_Crop && ( input->GetUseBackground() && input->GetBackgroundValue() == m_Label ) ^ m_Negated;
+    RegionType outputRegion = output->GetLargestPossibleRegion();
+
     // the user want the mask to be the background of the label collection image
     typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
     typename InputImageType::LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
@@ -361,7 +373,10 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
       unsigned long length = lit->GetLength();
       for( int i=0; i<length; i++)
         {
-        output->SetPixel( idx, m_BackgroundValue );
+        if( !testIdxIsInside || outputRegion.IsInside( idx ) )
+          {
+          output->SetPixel( idx, m_BackgroundValue );
+          }
         idx[0]++;
         }
       }
