@@ -111,12 +111,12 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
       histogram->IncreaseFrequency( mv, 1 );
 
       // update min and max
-      if( v < min )
+      if( v <= min )
         {
         min = v;
         minIdx = idx;
         }
-      if( v > max )
+      if( v => max )
         {
         max = v;
         maxIdx = idx;
