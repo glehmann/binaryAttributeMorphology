@@ -205,7 +205,7 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
 
   // we will keep the values from the feature image if the same pixel in the label image
   // equals the label given by the user. The other pixels are set to the background value.
-  if( input->GetUseBackground() && input->GetBackgroundValue() == m_Label )
+  if( ( input->GetUseBackground() && input->GetBackgroundValue() == m_Label ) ^ m_Negated )
     {
     // the user want the mask to be the background of the label collection image
     // copy the feature image to the output image
