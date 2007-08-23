@@ -11,9 +11,9 @@
 int main(int argc, char * argv[])
 {
 
-  if( argc != 6 )
+  if( argc != 8 )
     {
-    std::cerr << "usage: " << argv[0] << " input input2 output label bg" << std::endl;
+    std::cerr << "usage: " << argv[0] << " input input2 output label bg neg crop" << std::endl;
     // std::cerr << "  : " << std::endl;
     exit(1);
     }
@@ -43,6 +43,8 @@ int main(int argc, char * argv[])
   mask->SetFeatureImage( reader2->GetOutput() );
   mask->SetLabel( atoi(argv[4]) );
   mask->SetBackgroundValue( atoi(argv[5]) );
+  mask->SetNegated( atoi(argv[6]) );
+  mask->SetCrop( atoi(argv[7]) );
   itk::SimpleFilterWatcher watcher6(mask, "filter");
 
   typedef itk::ImageFileWriter< IType > WriterType;

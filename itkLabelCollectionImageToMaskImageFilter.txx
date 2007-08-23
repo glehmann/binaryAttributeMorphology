@@ -83,9 +83,91 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
     InputImageRegionType region = input->GetLargestPossibleRegion();
     SizeType size = region.GetSize();
 
+    // now the output image size can be computed
+    if( m_Negated )
+      {
+      if( input->GetUseBackground() && input->GetBackgroundValue() != m_Label )
+        {
+        // the "bad" case - the zone outside the object is at least partially
+        // covered by the background, which is not explicitely defined.
+      
+        // simply do nothing for now
+        // TODO: implement that part
+        std::cerr << "Warning: Cropping according to background label is no yet implemented." << std::endl;
+        std::cerr << "Warning: The full image will be used." << std::endl;
+      
+        }
+      else
+        {
+        // compute the bounding box of all the objects which don't have that label
+      
+      
+        }
+      }
+    else
+      {
+      if( input->GetUseBackground() && input->GetBackgroundValue() == m_Label )
+        {
+        // the other "bad" case - the label we want is not defined as a label object,
+        // but implicitely, in the zones not defined.
+      
+        // simply do nothing for now
+        // TODO: implement that part
+        std::cerr << "Warning: Cropping according to background label is no yet implemented." << std::endl;
+        std::cerr << "Warning: The full image will be used." << std::endl;
+        
+        }
+      else
+        {
+        // just find the bounding box of the object with that label
+        
+        const LabelObjectType * labelObject = input->GetLabelObject( m_Label );
+        typename LabelObjectType::LineContainerType::const_iterator lit;
+        typename LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
+        IndexType mins;
+        mins.Fill( NumericTraits< long >::max() );
+        IndexType maxs;
+        maxs.Fill( NumericTraits< long >::NonpositiveMin() );
+        // iterate over all the lines
+        for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
+          {
+          const IndexType & idx = lit->GetIndex();
+          unsigned long length = lit->GetLength();
 
+          // update the mins and maxs
+          for( int i=0; i<ImageDimension; i++)
+            {
+            if( idx[i] < mins[i] )
+              {
+              mins[i] = idx[i];
+              }
+            if( idx[i] > maxs[i] )
+              {
+              maxs[i] = idx[i];
+              }
+            }
+          // must fix the max for the axis 0
+          if( idx[0] + length > maxs[0] )
+            {
+            maxs[0] = idx[0] + length - 1;
+            }
+          }
+          // final computation
+          SizeType regionSize;
+          for( int i=0; i<ImageDimension; i++ )
+            {
+            regionSize[i] = maxs[i] - mins[i] + 1;
+            }
+          RegionType region( mins, regionSize );
+          // std::cout << region << std::endl;
+          
+          // finally set that region as the largest output region
+          this->GetOutput()->SetLargestPossibleRegion( region );
 
-    m_cropTimeStamp.Modified();
+        }
+      }
+
+    m_CropTimeStamp.Modified();
     }
 }
 

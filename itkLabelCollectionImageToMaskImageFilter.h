@@ -63,11 +63,15 @@ public:
   typedef typename OutputImageType::RegionType     OutputImageRegionType;
   typedef typename OutputImageType::PixelType      OutputImagePixelType;
   typedef typename OutputImageType::IndexType      IndexType;
-  
+  typedef typename OutputImageType::SizeType       SizeType;
+  typedef typename OutputImageType::RegionType     RegionType;
+
   /** ImageDimension constants */
   itkStaticConstMacro(InputImageDimension, unsigned int,
                       TInputImage::ImageDimension);
   itkStaticConstMacro(OutputImageDimension, unsigned int,
+                      TOutputImage::ImageDimension);
+  itkStaticConstMacro(ImageDimension, unsigned int,
                       TOutputImage::ImageDimension);
 
   /** Standard New method. */
@@ -121,6 +125,13 @@ public:
   itkSetMacro(Negated, bool);
   itkGetConstReferenceMacro(Negated, bool);
   itkBooleanMacro(Negated);
+
+  /**
+   * Set/Get whether the image size should be adjusted to the masked image or not.
+   */
+  itkSetMacro(Crop, bool);
+  itkGetConstReferenceMacro(Crop, bool);
+  itkBooleanMacro(Crop);
 
 protected:
   LabelCollectionImageToMaskImageFilter();
