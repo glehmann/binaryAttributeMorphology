@@ -57,6 +57,7 @@ public:
   typedef typename InputImageType::RegionType      InputImageRegionType;
   typedef typename InputImageType::PixelType       InputImagePixelType;
   typedef typename InputImageType::LabelObjectType LabelObjectType;
+  typedef typename LabelObjectType::LabelType      LabelType;
 
   typedef typename OutputImageType::Pointer        OutputImagePointer;
   typedef typename OutputImageType::ConstPointer   OutputImageConstPointer;
@@ -153,6 +154,7 @@ protected:
 
   virtual void ThreadedGenerateData( LabelObjectType * labelObject );
   
+  void PrintSelf(std::ostream& os, Indent indent) const;
 
 private:
   LabelCollectionImageToMaskImageFilter(const Self&); //purposely not implemented
@@ -164,8 +166,6 @@ private:
   bool m_Crop;
 
   TimeStamp m_CropTimeStamp;
-  IndexType m_OutputIndex;
-  SizeType m_OutputSize;
 
   typename Barrier::Pointer m_Barrier;
 

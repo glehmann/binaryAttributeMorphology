@@ -65,6 +65,7 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
     if( !(input->GetMTime() > m_CropTimeStamp) && !(this->GetMTime() > m_CropTimeStamp) )
       {
       // early exit, crop sizes already computed
+      // std::cout << "Don't recompute the output size again." << std::endl;
       return;
       }
 
@@ -387,6 +388,21 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
       }
     }
 }
+
+
+template<class TInputImage, class TOutputImage>
+void
+LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
+::PrintSelf(std::ostream& os, Indent indent) const
+{
+  Superclass::PrintSelf(os,indent);
+  
+  os << indent << "Label: " << static_cast<typename NumericTraits<LabelType>::PrintType>(m_Label) << std::endl;
+  os << indent << "BackgroundValue: " << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
+  os << indent << "Negated: " << m_Negated << std::endl;
+  os << indent << "Crop: " << m_Crop << std::endl;
+}
+
 
 }// end namespace itk
 #endif
