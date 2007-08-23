@@ -116,6 +116,45 @@ public:
     }
 };
 
+template< class TLabelObject >
+class ITK_EXPORT BinaryPrincipalMomentsLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef typename LabelObjectType::VectorType AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetBinaryPrincipalMoments();
+    }
+};
+
+template< class TLabelObject >
+class ITK_EXPORT BinaryPrincipalAxesLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef typename LabelObjectType::MatrixType AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetBinaryPrincipalAxes();
+    }
+};
+
+template< class TLabelObject >
+class ITK_EXPORT BinaryElongationLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef double AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetBinaryElongation();
+    }
+};
+
 }
 
 
@@ -168,6 +207,9 @@ public:
   static const AttributeType REGION=5;
   static const AttributeType SIZE_ON_BORDER=6;
   static const AttributeType FERET_DIAMETER=7;
+  static const AttributeType BINARY_PRINCIPAL_MOMENTS=8;
+  static const AttributeType BINARY_PRINCIPAL_AXES=9;
+  static const AttributeType BINARY_ELONGATION=10;
 
   static AttributeType GetAttributeFromName( const std::string & s )
     {
@@ -203,6 +245,18 @@ public:
       {
       return FERET_DIAMETER;
       }
+    else if( s == "BinaryPrincipalMoments" )
+      {
+      return BINARY_PRINCIPAL_MOMENTS;
+      }
+    else if( s == "BinaryPrincipalAxes" )
+      {
+      return BINARY_PRINCIPAL_AXES;
+      }
+    else if( s == "BinaryElongation" )
+      {
+      return BINARY_ELONGATION;
+      }
     // can't recognize the namespace
     throw std::runtime_error("Unknown attribute.");
     }
@@ -234,6 +288,15 @@ public:
       case FERET_DIAMETER:
         return "FeretDiameter";
         break;
+      case BINARY_PRINCIPAL_MOMENTS:
+        return "BinaryPrincipalMoments";
+        break;
+      case BINARY_PRINCIPAL_AXES:
+        return "BinaryPrincipalAxes";
+        break;
+      case BINARY_ELONGATION:
+        return "BinaryElongation";
+        break;
       }
       // can't recognize the namespace
       throw std::runtime_error("Unknown attribute.");
@@ -242,6 +305,10 @@ public:
   typedef ImageRegion< ImageDimension > RegionType;
 
   typedef typename itk::Point<double, ImageDimension> CentroidType;
+
+  typedef Matrix< double, ImageDimension, ImageDimension >   MatrixType;
+
+  typedef Vector< double, ImageDimension > VectorType;
 
 /*  itkGetConstMacro( Region, RegionType );
   itkSetMacro( Region, RegionType );*/
@@ -339,6 +406,42 @@ public:
     m_FeretDiameter = v;
     }
 
+//   itkGetConstMacro( BinaryPrincipalMoments, VectorType );
+//   itkSetMacro( BinaryPrincipalMoments, VectorType );
+  const VectorType & GetBinaryPrincipalMoments() const
+    {
+    return m_BinaryPrincipalMoments;
+    }
+
+  void SetBinaryPrincipalMoments( const VectorType & v )
+    {
+    m_BinaryPrincipalMoments = v;
+    }
+
+//   itkGetConstMacro( BinaryPrincipalAxes, MatrixType );
+//   itkSetMacro( BinaryPrincipalAxes, MatrixType );
+  const MatrixType & GetBinaryPrincipalAxes() const
+    {
+    return m_BinaryPrincipalAxes;
+    }
+
+  void SetBinaryPrincipalAxes( const MatrixType & v )
+    {
+    m_BinaryPrincipalAxes = v;
+    }
+
+//   itkGetConstMacro( BinaryElongation, double );
+//   itkSetMacro( BinaryElongation, double );
+  const double & GetBinaryElongation() const
+    {
+    return m_BinaryElongation;
+    }
+
+  void SetBinaryElongation( const double & v )
+    {
+    m_BinaryElongation = v;
+    }
+
 
   virtual void CopyDataFrom( const Self * src )
     {
@@ -352,6 +455,9 @@ public:
     m_SizeRegionRatio = src->m_SizeRegionRatio;
     m_SizeOnBorder = src->m_SizeOnBorder;
     m_FeretDiameter = src->m_FeretDiameter;
+    m_BinaryPrincipalMoments = src->m_BinaryPrincipalMoments;
+    m_BinaryPrincipalAxes = src->m_BinaryPrincipalAxes;
+    m_BinaryElongation = src->m_BinaryElongation;
     }
 
 protected:
@@ -363,6 +469,9 @@ protected:
     m_SizeRegionRatio = 0;
     m_SizeOnBorder = false;
     m_FeretDiameter = false;
+    m_BinaryPrincipalMoments.Fill(0);
+    m_BinaryPrincipalAxes.Fill(0);
+    m_BinaryElongation = 0;
     }
   
 
@@ -379,6 +488,9 @@ protected:
     os << indent << "SizeRegionRatio: " << m_SizeRegionRatio << std::endl;
     os << indent << "SizeOnBorder: " << m_SizeOnBorder << std::endl;
     os << indent << "FeretDiameter: " << m_FeretDiameter << std::endl;
+    os << indent << "BinaryPrincipalMoments: " << m_BinaryPrincipalMoments << std::endl;
+    os << indent << "BinaryPrincipalAxes: " << m_BinaryPrincipalAxes << std::endl;
+    os << indent << "BinaryElongation: " << m_BinaryElongation << std::endl;
     }
 
 private:
@@ -393,6 +505,9 @@ private:
   double m_SizeRegionRatio;
   unsigned long m_SizeOnBorder;
   double m_FeretDiameter;
+  VectorType m_BinaryPrincipalMoments;
+  MatrixType m_BinaryPrincipalAxes;
+  double m_BinaryElongation;
   
 
 };
