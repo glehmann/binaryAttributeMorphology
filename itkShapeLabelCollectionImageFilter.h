@@ -121,6 +121,8 @@ protected:
 
   virtual void AfterThreadedGenerateData();
 
+  void PrintSelf(std::ostream& os, Indent indent) const;
+
 private:
   ShapeLabelCollectionImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented

@@ -321,5 +321,17 @@ ShapeLabelCollectionImageFilter<TImage, TLabelImage>
 }
 
 
+template<class TImage, class TLabelImage>
+void
+ShapeLabelCollectionImageFilter<TImage, TLabelImage>
+::PrintSelf(std::ostream& os, Indent indent) const
+{
+  Superclass::PrintSelf(os,indent);
+  
+  os << indent << "ComputeFeretDiameter: " << m_ComputeFeretDiameter << std::endl;
+  os << indent << "ComputePerimeter: " << m_ComputePerimeter << std::endl;
+}
+
+
 }// end namespace itk
 #endif
