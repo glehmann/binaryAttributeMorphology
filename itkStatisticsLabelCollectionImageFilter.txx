@@ -173,6 +173,10 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
   for(unsigned int i=0; i<ImageDimension; i++)
     {
     centerOfGravity[i] /= sum;
+    for(unsigned int j=0; j<ImageDimension; j++)
+      {
+      centralMoments[i][j] /= sum;
+      }
     }
 
   // Center the second order moments
