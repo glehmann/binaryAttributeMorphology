@@ -58,6 +58,8 @@ public:
   typedef typename ImageType::IndexType       IndexType;
   typedef typename ImageType::SizeType        SizeType;
   typedef typename ImageType::LabelObjectType LabelObjectType;
+  typedef typename LabelObjectType::MatrixType MatrixType;
+  typedef typename LabelObjectType::VectorType VectorType;
   
   typedef TLabelImage LabelImageType;
   typedef typename LabelImageType::Pointer         LabelImagePointer;

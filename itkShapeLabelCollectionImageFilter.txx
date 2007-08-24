@@ -23,6 +23,8 @@
 #include "itkLabelCollectionImageToLabelImageFilter.h"
 #include "itkConstantBoundaryCondition.h"
 #include "itkLabelPerimeterEstimationCalculator.h"
+#include "vnl/algo/vnl_real_eigensystem.h"
+#include "vnl/algo/vnl_symmetric_eigensystem.h"
 
 
 namespace itk {
@@ -107,6 +109,8 @@ ShapeLabelCollectionImageFilter<TImage, TLabelImage>
   IndexType maxs;
   maxs.Fill( NumericTraits< long >::NonpositiveMin() );
   unsigned long sizeOnBorder = 0;
+  MatrixType centralMoments;
+  centralMoments.Fill( 0 );
 
   typename LabelObjectType::LineContainerType::const_iterator lit;
   typename LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
@@ -183,6 +187,59 @@ ShapeLabelCollectionImageFilter<TImage, TLabelImage>
           }
         }
       }
+
+    // moments computation
+// ****************************************************************
+// that commented code is the basic implementation. The next peace of code
+// give the same result in a much efficient way, by using expended formulae
+// allowed by the binary case instead of loops.
+// ****************************************************************
+//     long endIdx0 = idx[0] + length;
+//     for( IndexType iidx = idx; iidx[0]<endIdx0; iidx[0]++)
+//       {
+//       typename LabelObjectType::CentroidType pP;
+//       output->TransformIndexToPhysicalPoint(iidx, pP);
+// 
+//       for(unsigned int i=0; i<ImageDimension; i++)
+//         {
+//         for(unsigned int j=0; j<ImageDimension; j++)
+//           {
+//           centralMoments[i][j] += pP[i] * pP[j];
+//           }
+//         }
+//       }
+    // get the physical position and the spacing - they are used several times later
+    typename LabelObjectType::CentroidType physicalPosition;
+    output->TransformIndexToPhysicalPoint( idx, physicalPosition );
+    const typename ImageType::SpacingType & spacing = output->GetSpacing();
+    // the sum of x positions, also reused several times
+    double sumX = physicalPosition[0] * length + spacing[0] * ( ( length * ( length - 1 ) ) / 2.0 );
+    // the real job - the sum of square of x positions
+    // that's the central moments for dims 0, 0
+    centralMoments[0][0] += length * physicalPosition[0] * physicalPosition[0]
+            + spacing[0] * spacing[0] * ( ( length - 1) * length * ( 2 * length - 1 ) / 6.0 )
+            + 2 * physicalPosition[0] * ( ( length * ( length - 1 ) ) / 2.0 );
+    // the other ones
+    for( int i=1; i<ImageDimension; i++ )
+      {
+      // do this one here to avoid the double assigment in the following loop
+      // when i == j
+      centralMoments[i][i] += length * physicalPosition[i] * physicalPosition[i];
+     // central moments are symetrics, so avoid to compute them 2 times
+      for( int j=i+1; j<ImageDimension; j++ )
+        {
+        // note that we won't use that code if the image dimension is less than 3
+        // --> the tests should be in 3D at least
+        double cm = length * physicalPosition[i] * physicalPosition[j];
+        centralMoments[i][j] += cm;
+        centralMoments[j][i] += cm;
+        }
+      // the last moments: the ones for the dimension 0
+      double cm = sumX * physicalPosition[i];
+      centralMoments[i][0] += cm;
+      centralMoments[0][i] += cm;
+      }
+
     }
 
   // final computation
@@ -196,10 +253,57 @@ ShapeLabelCollectionImageFilter<TImage, TLabelImage>
     double s = regionSize[i] * output->GetSpacing()[i];
     minSize = std::min( s, minSize );
     maxSize = std::max( s, maxSize );
+    for(unsigned int j=0; j<ImageDimension; j++)
+      {
+      centralMoments[i][j] /= size;
+      }
     }
   typename LabelObjectType::RegionType region( mins, regionSize );
   typename LabelObjectType::CentroidType physicalCentroid;
   output->TransformContinuousIndexToPhysicalPoint( centroid, physicalCentroid );
+
+  // Center the second order moments
+  for(unsigned int i=0; i<ImageDimension; i++)
+    {
+    for(unsigned int j=0; j<ImageDimension; j++)
+      {
+      centralMoments[i][j] -= physicalCentroid[i] * physicalCentroid[j];
+      }
+    }
+
+  // Compute principal moments and axes
+  VectorType principalMoments;
+  vnl_symmetric_eigensystem<double> eigen( centralMoments.GetVnlMatrix() );
+  vnl_diag_matrix<double> pm = eigen.D;
+  for(unsigned int i=0; i<ImageDimension; i++)
+    {
+    principalMoments[i] = pm(i,i) * size;
+    }
+  MatrixType principalAxes = eigen.V.transpose();
+
+  // Add a final reflection if needed for a proper rotation,
+  // by multiplying the last row by the determinant
+  vnl_real_eigensystem eigenrot( principalAxes.GetVnlMatrix() );
+  vnl_diag_matrix< vcl_complex<double> > eigenval = eigenrot.D;
+  vcl_complex<double> det( 1.0, 0.0 );
+
+  for(unsigned int i=0; i<ImageDimension; i++)
+    {
+    det *= eigenval( i, i );
+    }
+
+  for(unsigned int i=0; i<ImageDimension; i++)
+    {
+    principalAxes[ ImageDimension-1 ][i] *= std::real( det );
+    }
+
+  double minPrincipalMoment = NumericTraits< double >::max();
+  double maxPrincipalMoment = NumericTraits< double >::NonpositiveMin();
+  for( int i=0; i<ImageDimension; i++ )
+    {
+    minPrincipalMoment = std::min( principalMoments[i], minPrincipalMoment );
+    maxPrincipalMoment = std::max( principalMoments[i], maxPrincipalMoment );
+    }
 
   // set the values in the object
   labelObject->SetSize( size );
@@ -209,6 +313,9 @@ ShapeLabelCollectionImageFilter<TImage, TLabelImage>
   labelObject->SetRegionElongation( maxSize / minSize );
   labelObject->SetSizeRegionRatio( size / (double)region.GetNumberOfPixels() );
   labelObject->SetSizeOnBorder( sizeOnBorder );
+  labelObject->SetBinaryPrincipalMoments( principalMoments );
+  labelObject->SetBinaryPrincipalAxes( principalAxes );
+  labelObject->SetBinaryElongation( maxPrincipalMoment / minPrincipalMoment );
 
   if( m_ComputeFeretDiameter )
     {
