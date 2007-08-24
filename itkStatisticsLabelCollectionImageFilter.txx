@@ -136,10 +136,12 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
       for(unsigned int i=0; i<ImageDimension; i++)
         {
         centerOfGravity[i] += physicalPosition[i] * v; 
-        for(unsigned int j=0; j<ImageDimension; j++)
+        centralMoments[i][i] += v * physicalPosition[i] * physicalPosition[i];
+        for(unsigned int j=i+1; j<ImageDimension; j++)
           {
           double weight = v * physicalPosition[i] * physicalPosition[j];
           centralMoments[i][j] += weight;
+          centralMoments[j][i] += weight;
           }
         }
 
