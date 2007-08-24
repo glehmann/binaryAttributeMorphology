@@ -60,6 +60,8 @@ void
 StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
 ::ThreadedGenerateData( LabelObjectType * labelObject )
 {
+  Superclass::ThreadedGenerateData( labelObject );
+
   ImageType * output = this->GetOutput();
   const FeatureImageType * featureImage = this->GetFeatureImage();
 
