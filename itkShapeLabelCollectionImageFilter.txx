@@ -127,11 +127,7 @@ ShapeLabelCollectionImageFilter<TImage, TLabelImage>
       centroid[i] += length * idx[i];
       }
     // then, update the axis 0
-    long i0 = idx[0];
-    for( int i=0; i<length; i++)
-      {
-      centroid[0] += i0 + i;
-      }
+    centroid[0] += idx[0] * length + ( length * ( length - 1 ) ) / 2.0;
 
     // update the mins and maxs
     for( int i=0; i<ImageDimension; i++)
