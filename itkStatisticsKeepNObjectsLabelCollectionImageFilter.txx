@@ -67,6 +67,9 @@ StatisticsKeepNObjectsLabelCollectionImageFilter<TImage>
     case LabelObjectType::SKEWNESS:
       TemplatedGenerateData< typename Functor::SkewnessLabelObjectAccessor< LabelObjectType > >();
       break;
+    case LabelObjectType::ELONGATION:
+      TemplatedGenerateData< typename Functor::ElongationLabelObjectAccessor< LabelObjectType > >();
+      break;
     default:
       Superclass::GenerateData();
       break;

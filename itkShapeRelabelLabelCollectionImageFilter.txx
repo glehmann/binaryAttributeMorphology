@@ -57,6 +57,9 @@ ShapeRelabelLabelCollectionImageFilter<TImage>
     case LabelObjectType::FERET_DIAMETER:
       TemplatedGenerateData< typename Functor::FeretDiameterLabelObjectAccessor< LabelObjectType > >();
       break;
+    case LabelObjectType::BINARY_ELONGATION:
+      TemplatedGenerateData< typename Functor::BinaryElongationLabelObjectAccessor< LabelObjectType > >();
+      break;
     default:
       itkExceptionMacro(<< "Unknown attribute type");
       break;
