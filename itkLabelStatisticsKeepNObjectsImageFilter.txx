@@ -76,12 +76,14 @@ LabelStatisticsKeepNObjectsImageFilter<TInputImage, TFeatureImage>
   typename LabelizerType::Pointer labelizer = LabelizerType::New();
   labelizer->SetInput( this->GetInput() );
   labelizer->SetBackgroundValue( m_BackgroundValue );
+  labelizer->SetNumberOfThreads( this->GetNumberOfThreads() );
   progress->RegisterInternalFilter(labelizer, .3f);
   
   typename LabelObjectValuatorType::Pointer valuator = LabelObjectValuatorType::New();
   valuator->SetInput( labelizer->GetOutput() );
   valuator->SetFeatureImage( this->GetFeatureImage() );
   valuator->SetLabelImage( this->GetInput() );
+  valuator->SetNumberOfThreads( this->GetNumberOfThreads() );
   progress->RegisterInternalFilter(valuator, .3f);
   
   typename KeepNObjectsType::Pointer opening = KeepNObjectsType::New();
@@ -89,10 +91,12 @@ LabelStatisticsKeepNObjectsImageFilter<TInputImage, TFeatureImage>
   opening->SetNumberOfObjects( m_NumberOfObjects );
   opening->SetReverseOrdering( m_ReverseOrdering );
   opening->SetAttribute( m_Attribute );
+  opening->SetNumberOfThreads( this->GetNumberOfThreads() );
   progress->RegisterInternalFilter(opening, .2f);
   
   typename BinarizerType::Pointer binarizer = BinarizerType::New();
   binarizer->SetInput( opening->GetOutput() );
+  binarizer->SetNumberOfThreads( this->GetNumberOfThreads() );
   progress->RegisterInternalFilter(binarizer, .2f);  
 
   binarizer->GraftOutput( this->GetOutput() );

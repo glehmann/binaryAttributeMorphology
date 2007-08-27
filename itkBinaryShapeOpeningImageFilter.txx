@@ -78,10 +78,12 @@ BinaryShapeOpeningImageFilter<TInputImage>
   labelizer->SetForegroundValue( m_ForegroundValue );
   labelizer->SetBackgroundValue( m_BackgroundValue );
   labelizer->SetFullyConnected( m_FullyConnected );
+  labelizer->SetNumberOfThreads( this->GetNumberOfThreads() );
   progress->RegisterInternalFilter(labelizer, .3f);
   
   typename LabelObjectValuatorType::Pointer valuator = LabelObjectValuatorType::New();
   valuator->SetInput( labelizer->GetOutput() );
+  valuator->SetNumberOfThreads( this->GetNumberOfThreads() );
   progress->RegisterInternalFilter(valuator, .3f);
   
   typename OpeningType::Pointer opening = OpeningType::New();
@@ -89,6 +91,7 @@ BinaryShapeOpeningImageFilter<TInputImage>
   opening->SetLambda( m_Lambda );
   opening->SetReverseOrdering( m_ReverseOrdering );
   opening->SetAttribute( m_Attribute );
+  opening->SetNumberOfThreads( this->GetNumberOfThreads() );
   progress->RegisterInternalFilter(opening, .2f);
   
   typename BinarizerType::Pointer binarizer = BinarizerType::New();
@@ -96,6 +99,7 @@ BinaryShapeOpeningImageFilter<TInputImage>
   binarizer->SetForegroundValue( m_ForegroundValue );
   binarizer->SetBackgroundValue( m_BackgroundValue );
   binarizer->SetBackgroundImage( this->GetInput() );
+  binarizer->SetNumberOfThreads( this->GetNumberOfThreads() );
   progress->RegisterInternalFilter(binarizer, .2f);  
 
   binarizer->GraftOutput( this->GetOutput() );

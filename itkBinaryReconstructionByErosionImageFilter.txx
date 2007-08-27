@@ -82,27 +82,29 @@ BinaryReconstructionByErosionImageFilter<TInputImage>
   notMask->SetInput( this->GetMaskImage() );
   notMask->SetForegroundValue( m_ForegroundValue );
   notMask->SetBackgroundValue( m_BackgroundValue );
+  notMask->SetNumberOfThreads( this->GetNumberOfThreads() );
   progress->RegisterInternalFilter(notMask, .1f);
-  notMask->Update();
   
   typename NotType::Pointer notMarker = NotType::New();
   notMarker->SetInput( this->GetMarkerImage() );
   notMarker->SetForegroundValue( m_ForegroundValue );
   notMarker->SetBackgroundValue( m_BackgroundValue );
+  notMarker->SetNumberOfThreads( this->GetNumberOfThreads() );
   progress->RegisterInternalFilter(notMarker, .1f);
-  notMarker->Update();
   
   typename LabelizerType::Pointer labelizer = LabelizerType::New();
   labelizer->SetInput( notMask->GetOutput() );
   labelizer->SetForegroundValue( m_ForegroundValue );
   labelizer->SetBackgroundValue( m_BackgroundValue );
   labelizer->SetFullyConnected( m_FullyConnected );
+  labelizer->SetNumberOfThreads( this->GetNumberOfThreads() );
   progress->RegisterInternalFilter(labelizer, .3f);
   
   typename ReconstructionType::Pointer reconstruction = ReconstructionType::New();
   reconstruction->SetInput( labelizer->GetOutput() );
   reconstruction->SetMarkerImage( notMarker->GetOutput() );
   reconstruction->SetForegroundValue( m_ForegroundValue );
+  reconstruction->SetNumberOfThreads( this->GetNumberOfThreads() );
   progress->RegisterInternalFilter(reconstruction, .3f);
   
   // invert the image during the binarization
@@ -112,6 +114,7 @@ BinaryReconstructionByErosionImageFilter<TInputImage>
   binarizer->SetNegated( true );
   binarizer->SetBackgroundValue( m_ForegroundValue );
   binarizer->SetFeatureImage( this->GetMaskImage() );
+  binarizer->SetNumberOfThreads( this->GetNumberOfThreads() );
   progress->RegisterInternalFilter(binarizer, .2f);
 
   binarizer->GraftOutput( this->GetOutput() );

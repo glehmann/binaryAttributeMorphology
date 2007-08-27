@@ -74,20 +74,24 @@ LabelAttributeOpeningImageFilter<TInputImage, TLabelObject, TLabelObjectValuator
   typename LabelizerType::Pointer labelizer = LabelizerType::New();
   labelizer->SetInput( this->GetInput() );
   labelizer->SetBackgroundValue( m_BackgroundValue );
+  labelizer->SetNumberOfThreads( this->GetNumberOfThreads() );
   progress->RegisterInternalFilter(labelizer, .3f);
   
   typename LabelObjectValuatorType::Pointer valuator = LabelObjectValuatorType::New();
   valuator->SetInput( labelizer->GetOutput() );
+  valuator->SetNumberOfThreads( this->GetNumberOfThreads() );
   progress->RegisterInternalFilter(valuator, .3f);
   
   typename OpeningType::Pointer opening = OpeningType::New();
   opening->SetInput( valuator->GetOutput() );
   opening->SetLambda( m_Lambda );
   opening->SetReverseOrdering( m_ReverseOrdering );
+  opening->SetNumberOfThreads( this->GetNumberOfThreads() );
   progress->RegisterInternalFilter(opening, .2f);
   
   typename BinarizerType::Pointer binarizer = BinarizerType::New();
   binarizer->SetInput( opening->GetOutput() );
+  binarizer->SetNumberOfThreads( this->GetNumberOfThreads() );
   progress->RegisterInternalFilter(binarizer, .2f);  
 
   this->CustomizeInternalFilters( labelizer, valuator, opening, binarizer );

@@ -113,6 +113,7 @@ BinaryGrindPeakImageFilter<TInputImage>
   dilate->SetBackgroundValue( m_BackgroundValue );
   dilate->SetMaskImage( this->GetInput() );
   dilate->SetFullyConnected( m_FullyConnected );
+  dilate->SetNumberOfThreads( this->GetNumberOfThreads() );
   progress->RegisterInternalFilter(dilate,1.0f);
 
   dilate->GraftOutput( this->GetOutput() );

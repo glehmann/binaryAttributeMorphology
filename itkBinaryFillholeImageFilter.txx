@@ -123,6 +123,7 @@ BinaryFillholeImageFilter<TInputImage>
   erode->SetBackgroundValue( backgroundValue );
   erode->SetMaskImage( this->GetInput() );
   erode->SetFullyConnected( m_FullyConnected );
+  erode->SetNumberOfThreads( this->GetNumberOfThreads() );
   progress->RegisterInternalFilter(erode,1.0f);
 
   erode->GraftOutput( this->GetOutput() );
