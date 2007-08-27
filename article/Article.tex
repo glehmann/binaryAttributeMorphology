@@ -255,8 +255,15 @@ bounding box) and the real size of the object. Its type is {\em double}.
 of the image. This attribute is particulary useful to remove the objects which are touching
 too much the border. Its type is {\em unsigned long}.
   \item {\em FeretDiameter} is the diameter in physical units of the sphere which include
-all the object. The feret diameter is computed by default only if the dimension of the image
-is $2$, because of its high computation cost for higher dimensions. Its type is {\em double}.
+all the object. The feret diameter is not computed by default, because of its high computation.
+Its type is {\em double}.
+  \item {\em BinaryPrincipalMoments} contains the principal moments. Its type is
+{\em itk::Vector< double, ImageDimension >}.
+  \item {\em BinaryPrincipalAxes} contains the principal axes of the object. Its type is
+{\em itk::Matrix< double, ImageDimension, ImageDimension >}.
+  \item {\em BinaryElongation} is the elongation of the shape, computed as the ratio
+of the largest principal moment by the smallest principal moment. Its value is greater
+or equal to $1$· Its type si {\em double}.
 %   \item {\em Perimeter}
 \end{itemize}
 
@@ -289,6 +296,13 @@ is {\em double}.
 {\em double}.
   \item {\em Skewness} is the skewness of the pixel values in the objects. Its type is
 {\em double}.
+  \item {\em PrincipalMoments} contains the principal moments. Its type is
+{\em itk::Vector< double, ImageDimension >}.
+  \item {\em PrincipalAxes} contains the principal axes of the object. Its type is
+{\em itk::Matrix< double, ImageDimension, ImageDimension >}.
+  \item {\em Elongation} is the elongation of the shape, computed as the ratio
+of the largest principal moment by the smallest principal moment. Its value is greater
+or equal to $1$· Its type si {\em double}.
 \end{itemize}
 
 
@@ -1000,11 +1014,9 @@ of an image, starting from
 Doing that require a good knownledge of the iterator design. Any help on that point is
 welcome.
 
-Also, more attributes will be implemented, like the perimeter estimation, the usual image moments, etc. It may be useful to implement the most commonly used opening, keep N objects and relabel transforms in a more efficient way, by using an {\em AttributeLabelObject} instead of a {\em ShapeLabelObject} or a {\em StatisticsLabelObject}.
+Also, more attributes will be implemented, like the perimeter estimation. It may be useful to implement the most commonly used opening, keep N objects and relabel transforms in a more efficient way, by using an {\em AttributeLabelObject} instead of a {\em ShapeLabelObject} or a {\em StatisticsLabelObject}.
 
-The computation of the moments is partially implemented. The help of someone with a good knownledge of that subject would be very helpful to complete that work. The moments for the binary shape should also be implemented.
-
-All the {\em Shape} filters are currently able to use the Feret diameter only in 2D images. For the other dimensions, the feret diameter is not computed, and so always get a value of $0$. The computation of the Feret diameter should be forced if the user want to use it.
+All the {\em Shape} filters are currently unable to use the Feret diameter. The feret diameter is not computed by default, and so always get a value of $0$. The computation of the Feret diameter should be forced if the user want to use it.
 
 The {\em BinaryImageToLabelCollectionImageFilter} class should be threaded to get the best of that filter on multiprocessors systems.
 
