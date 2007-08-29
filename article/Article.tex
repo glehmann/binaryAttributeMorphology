@@ -454,6 +454,52 @@ those filters have been made for binary, and labeled images.
   \item {\em itk::BinaryReconstructionByErosionImageFilter}
 \end{itemize}
 
+\section{Computation details}
+
+\subsection{Binary image moments}
+
+\subsection{Roundness}
+
+The computation works with any image dimension, and so use the definition
+of volume and area of an hypersphere in any dimension.
+
+\begin{eqnarray}
+V_n(r) & = {\pi^\frac{n}{2}r^n\over\Gamma(\frac{n}{2} + 1)}
+\end{eqnarray}
+where $V_n$ is the volume of the hypersphere $n$ is the image dimension,
+and $r$ is the radius of the hypersphere.
+
+\begin{eqnarray}
+\Gamma\left(\frac{n}{2}+1\right) = \begin{cases}
+  \left(\frac{n}{2}\right)!               & \text{if $n$ is even}, \\
+  \sqrt{\pi}\frac{n!!}{2^{(n+1)/2}} & \text{if $n$ is odd}.
+                                   \end{cases}
+\end{eqnarray}
+
+$n!!$ is the double factorial, defined as
+
+\begin{eqnarray}
+n!! = \begin{cases}
+  1          & \text{if $n < 2$}, \\
+  n (n-2)!!  & \text{if $n \geq 2$}.
+      \end{cases}
+\end{eqnarray}
+
+\begin{eqnarray}
+A_n(r) & = {\frac{n V_n}{r}}
+\end{eqnarray}
+
+Where $A_n$ is the area of the hypersphere.
+
+\begin{eqnarray}
+R & = {\frac{a}{A_n(r)}}
+\end{eqnarray}
+
+where $R$ is the roundness, $a$ is the measured area of the object, and the $r$ is the radius of an hypersphere with the same volume than the object.
+
+
+
+
 \section{Usage examples}
 
 \subsection{Prebuilt pipelines}
