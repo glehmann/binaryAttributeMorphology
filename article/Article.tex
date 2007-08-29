@@ -458,6 +458,82 @@ those filters have been made for binary, and labeled images.
 
 \subsection{Binary image moments}
 
+Central image moments for grayscale images are usually computed as
+
+\begin{eqnarray}
+Cm_{i,j} = \sum_{p \in D} I(p).p_i.p_j
+\end{eqnarray}
+
+where $Cm_{i,j}$ is the central moment, $D$ is the domain of definition of the
+image $I$, $I(p)$ is the pixel value of the image at the position $p$,
+$0 \leq i < n$, $0 \leq i < n$, $n$ is the image dimension, and $p_i$ is the
+physical position on the axis $i$. With binary images, $I(p)$ is either $0$ 
+if $p$ is outside the object, or $1$ if $p$ is inside.
+
+The complexity is $O(N_{P_I})$, where $N_{P_I}$ is the number of pixels in the image.
+
+
+With the run-length encoding of the binary objects, the complexity can be decreased
+to $O(N_{L_O})$, where $N_{L_O}$ is the number of lines in the object.
+
+\begin{eqnarray}
+Cm_{i,j} & = & \sum_{p \in D} I(p).p_i.p_j \\ \nonumber
+         & = & \sum_{p \in O} p_i.p_j \\ \nonumber
+         & = & \sum_{l \in O}  \sum_{p \in L} p_i.p_j
+\end{eqnarray}
+
+In a line, $p_i$ is a constant if $i > 0$, so
+
+\begin{eqnarray}
+Cm_{i,j} = \begin{cases}
+  \underset{L \in O}\sum l_L.p_i.p_j                & \text{if $i > 0$ and $j > 0$}, \\
+  \underset{L \in O}\sum l_L.p_i.\underset{p \in L}\sum p_0  & \text{if $i > 0$ and $j = 0$}, \\
+  \underset{L \in O}\sum l_L.p_j.\underset{p \in L}\sum p_0  & \text{if $i = 0$ and $j > 0$}, \\
+  \underset{L \in O}\sum \underset{p \in L}\sum p_0^2            & \text{if $i = j = 0$}.
+           \end{cases}
+\end{eqnarray}
+
+It is known that
+\begin{eqnarray}
+\sum_{x=1}^n x   & = & \frac{n(n+1)}{2} \\
+\sum_{x=1}^n x^2 & = & \frac{n(n+1)(2n+1)}{6}
+\end{eqnarray}
+
+In order to use those formulae, the physical position has to be expanded in
+\begin{eqnarray}
+p_j = o_j + s_j i_j
+\end{eqnarray}
+where $o_j$ is the origin of the line on the axis $j$, $s_j$ is the spacing on the axis $j$, and
+$i_j$ is the index on the axis $j$.
+
+With equations TODO and TODO, its easy to compute the sum of physical positions of the axis $0$:
+
+\begin{eqnarray}
+\sum_{p \in L} p_0  & = & \sum_{i_0=0}^{l_L-1} (o_0 + s_0 i_0) \\ \nonumber
+                    & = & l_L.o_0 + s_0\sum_{i_0=0}^{l_L-1} i_0 \\ \nonumber
+                    & = & l_L.o_0 + s_0\left( \frac{(l_L-1)l}{2} \right)
+\end{eqnarray}
+
+where $l_L$ is the length of the line (in pixels), and the the sum of the square of the physical positions of the axis $0$:
+
+\begin{eqnarray}
+\sum_{p \in L} p_0^2  & = & \sum_{i_0=0}^{l_L-1} ( o_0 + s_0 i_0 )^2 \\ \nonumber
+                      & = & \sum_{i_0=0}^{l_L-1} ( o_0^2 + s_0^2 i_0^2 + 2 o_0 i_0) \\ \nonumber
+                      & = & l_L.o_0^2 + s_0^2\sum_{i_0=0}^{l_L-1} i_0^2 + 2 o_0 \sum_{i_0=0}^{l_L-1} i_0 \\ \nonumber
+                      & = & l_L.o_0^2 + s_0^2 \left( \frac{(l_L-1)l_L(2l_L-1)}{6} \right) + 2 o_0 \left( \frac{(l_L-1)l_L}{2} \right)
+\end{eqnarray}
+
+Finally, central moments are:
+\begin{eqnarray}
+Cm_{i,j} = \begin{cases}
+  \underset{L \in O}\sum l_L.p_i.p_j                & \text{if $i > 0$ and $j > 0$}, \\
+  \underset{L \in O}\sum l_L.p_i \left( l_L.o_0 + s_0\left( \frac{(l_L-1)l_L}{2}  \right) \right) & \text{if $i > 0$ and $j = 0$}, \\
+  \underset{L \in O}\sum l_L.p_j \left( l_L.o_0 + s_0\left( \frac{(l_L-1)l_L}{2}  \right) \right) & \text{if $i = 0$ and $j > 0$}, \\
+  \underset{L \in O}\sum \left( l_L.o_0^2 + s_0^2 \left( \frac{(l_L-1)l_L(2l_L-1)}{6} \right) + 2 o_0 \left( \frac{(l_L-1)l_L}{2} \right) \right)            & \text{if $i = j = 0$}.
+           \end{cases}
+\end{eqnarray}
+
+
 \subsection{Roundness}
 
 The computation works with any image dimension, and so use the definition
