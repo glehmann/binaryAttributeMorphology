@@ -60,6 +60,12 @@ ShapeRelabelLabelCollectionImageFilter<TImage>
     case LabelObjectType::BINARY_ELONGATION:
       TemplatedGenerateData< typename Functor::BinaryElongationLabelObjectAccessor< LabelObjectType > >();
       break;
+    case LabelObjectType::PERIMETER:
+      TemplatedGenerateData< typename Functor::PerimeterLabelObjectAccessor< LabelObjectType > >();
+      break;
+    case LabelObjectType::ROUNDNESS:
+      TemplatedGenerateData< typename Functor::RoundnessLabelObjectAccessor< LabelObjectType > >();
+      break;
     default:
       itkExceptionMacro(<< "Unknown attribute type");
       break;

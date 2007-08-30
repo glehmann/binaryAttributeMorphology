@@ -155,6 +155,32 @@ public:
     }
 };
 
+template< class TLabelObject >
+class ITK_EXPORT PerimeterLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef double AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetPerimeter();
+    }
+};
+
+template< class TLabelObject >
+class ITK_EXPORT RoundnessLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef double AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetRoundness();
+    }
+};
+
 }
 
 
@@ -210,6 +236,8 @@ public:
   static const AttributeType BINARY_PRINCIPAL_MOMENTS=8;
   static const AttributeType BINARY_PRINCIPAL_AXES=9;
   static const AttributeType BINARY_ELONGATION=10;
+  static const AttributeType PERIMETER=11;
+  static const AttributeType ROUNDNESS=12;
 
   static AttributeType GetAttributeFromName( const std::string & s )
     {
@@ -257,6 +285,14 @@ public:
       {
       return BINARY_ELONGATION;
       }
+    else if( s == "Perimeter" )
+      {
+      return PERIMETER;
+      }
+    else if( s == "Roundness" )
+      {
+      return ROUNDNESS;
+      }
     // can't recognize the namespace
     throw std::runtime_error("Unknown attribute.");
     }
@@ -296,6 +332,12 @@ public:
         break;
       case BINARY_ELONGATION:
         return "BinaryElongation";
+        break;
+      case PERIMETER:
+        return "Perimeter";
+        break;
+      case ROUNDNESS:
+        return "Roundness";
         break;
       }
       // can't recognize the namespace
@@ -442,6 +484,30 @@ public:
     m_BinaryElongation = v;
     }
 
+//   itkGetConstMacro( Perimeter, double );
+//   itkSetMacro( Perimeter, double );
+  const double & GetPerimeter() const
+    {
+    return m_Perimeter;
+    }
+
+  void SetPerimeter( const double & v )
+    {
+    m_Perimeter = v;
+    }
+
+//   itkGetConstMacro( Roundness, double );
+//   itkSetMacro( Roundness, double );
+  const double & GetRoundness() const
+    {
+    return m_Roundness;
+    }
+
+  void SetRoundness( const double & v )
+    {
+    m_Roundness = v;
+    }
+
 
   virtual void CopyDataFrom( const Self * src )
     {
@@ -458,6 +524,8 @@ public:
     m_BinaryPrincipalMoments = src->m_BinaryPrincipalMoments;
     m_BinaryPrincipalAxes = src->m_BinaryPrincipalAxes;
     m_BinaryElongation = src->m_BinaryElongation;
+    m_Perimeter = src->m_Perimeter;
+    m_Roundness = src->m_Roundness;
     }
 
 protected:
@@ -472,6 +540,8 @@ protected:
     m_BinaryPrincipalMoments.Fill(0);
     m_BinaryPrincipalAxes.Fill(0);
     m_BinaryElongation = 0;
+    m_Perimeter = 0;
+    m_Roundness = 0;
     }
   
 
@@ -491,6 +561,8 @@ protected:
     os << indent << "BinaryPrincipalMoments: " << m_BinaryPrincipalMoments << std::endl;
     os << indent << "BinaryPrincipalAxes: " << m_BinaryPrincipalAxes << std::endl;
     os << indent << "BinaryElongation: " << m_BinaryElongation << std::endl;
+    os << indent << "Perimeter: " << m_Perimeter << std::endl;
+    os << indent << "Roundness: " << m_Roundness << std::endl;
     }
 
 private:
@@ -508,6 +580,8 @@ private:
   VectorType m_BinaryPrincipalMoments;
   MatrixType m_BinaryPrincipalAxes;
   double m_BinaryElongation;
+  double m_Perimeter;
+  double m_Roundness;
   
 
 };

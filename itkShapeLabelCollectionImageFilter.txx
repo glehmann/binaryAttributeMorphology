@@ -22,7 +22,6 @@
 #include "itkNeighborhoodIterator.h"
 #include "itkLabelCollectionImageToLabelImageFilter.h"
 #include "itkConstantBoundaryCondition.h"
-#include "itkLabelPerimeterEstimationCalculator.h"
 #include "vnl/algo/vnl_real_eigensystem.h"
 #include "vnl/algo/vnl_symmetric_eigensystem.h"
 
@@ -64,13 +63,10 @@ ShapeLabelCollectionImageFilter<TImage, TLabelImage>
   // delegate the computation of the perimeter to a dedicated calculator
   if( m_ComputePerimeter )
     {
-    typedef LabelPerimeterEstimationCalculator< LabelImageType > CalculatorType;
-    typename CalculatorType::Pointer calculator = CalculatorType::New();
-    calculator->SetImage( m_LabelImage );
-//     calculator->SetNumberOfThreads( this->GetNumberOfThreads() );
-//     calculator->Compute();
-
-    // TODO: make it work!
+    m_PerimeterCalculator = PerimeterCalculatorType::New();
+    m_PerimeterCalculator->SetImage( m_LabelImage );
+//     m_PerimeterCalculator->SetNumberOfThreads( this->GetNumberOfThreads() );
+    m_PerimeterCalculator->Compute();
     }
 
 }
@@ -82,6 +78,7 @@ ShapeLabelCollectionImageFilter<TImage, TLabelImage>
 ::ThreadedGenerateData( LabelObjectType * labelObject )
 {
   ImageType * output = this->GetOutput();
+  const LabelPixelType & label = labelObject->GetLabel();
 
   // TODO: compute sizePerPixel, borderMin and borderMax in BeforeThreadedGenerateData() ?
 
@@ -395,6 +392,18 @@ ShapeLabelCollectionImageFilter<TImage, TLabelImage>
 
     }
 
+
+  if( m_ComputePerimeter )
+    {
+    double perimeter = m_PerimeterCalculator->GetPerimeter( label );
+    double expectedRadius = hyperSphereRadiusFromVolume( labelObject->GetPhysicalSize() );
+//     std::cout << "expectedRadius: " << expectedRadius << std::endl;
+    double expectedArea = hyperSphereArea( expectedRadius );
+//     std::cout << "expectedArea: " << expectedArea << std::endl;
+    labelObject->SetPerimeter( perimeter );
+    labelObject->SetRoundness( expectedArea / perimeter );
+    }
+
 //   std::cout << std::endl;
 //   labelObject->Print( std::cout );
 //   std::cout << std::endl;
@@ -411,6 +420,8 @@ ShapeLabelCollectionImageFilter<TImage, TLabelImage>
 
   // release the label image
   m_LabelImage = NULL;
+  // and the perimeter calculator
+  m_PerimeterCalculator = NULL;
 }
 
 
@@ -424,6 +435,78 @@ ShapeLabelCollectionImageFilter<TImage, TLabelImage>
   os << indent << "ComputeFeretDiameter: " << m_ComputeFeretDiameter << std::endl;
   os << indent << "ComputePerimeter: " << m_ComputePerimeter << std::endl;
 }
+
+
+template<class TImage, class TLabelImage>
+long
+ShapeLabelCollectionImageFilter<TImage, TLabelImage>
+::factorial( long n )
+{
+  if( n < 1 )
+    {
+    return 1;
+    }
+  return n * factorial( n - 1 );
+}
+
+
+template<class TImage, class TLabelImage>
+long
+ShapeLabelCollectionImageFilter<TImage, TLabelImage>
+::doubleFactorial( long n )
+{
+  if( n < 2 )
+    {
+    return 2;
+    }
+  return n * doubleFactorial( n - 2 );
+}
+
+
+template<class TImage, class TLabelImage>
+double
+ShapeLabelCollectionImageFilter<TImage, TLabelImage>
+::gammaN2p1( long n )
+{
+  bool even = ImageDimension % 2 == 1;
+  if( even )
+    {
+    return factorial( n / 2 );
+    }
+  else
+    {
+    return  vcl_sqrt( PI ) * doubleFactorial( n ) / vcl_pow( 2, ( n + 1 ) / 2.0 );
+    }
+}
+
+
+template<class TImage, class TLabelImage>
+double
+ShapeLabelCollectionImageFilter<TImage, TLabelImage>
+::hyperSphereVolume( double radius )
+{
+  return vcl_pow( PI, ImageDimension / 2.0 ) * vcl_pow( radius, ImageDimension ) / gammaN2p1( ImageDimension );
+}
+
+
+template<class TImage, class TLabelImage>
+double
+ShapeLabelCollectionImageFilter<TImage, TLabelImage>
+::hyperSphereArea( double radius )
+{
+  return ImageDimension * hyperSphereVolume( radius ) / radius;
+}
+
+
+template<class TImage, class TLabelImage>
+double
+ShapeLabelCollectionImageFilter<TImage, TLabelImage>
+::hyperSphereRadiusFromVolume( double volume )
+{
+  return vcl_pow( volume * gammaN2p1( ImageDimension ) / vcl_pow( PI, ImageDimension / 2.0 ), 1.0 / ImageDimension );
+}
+
+
 
 
 }// end namespace itk

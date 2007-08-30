@@ -83,6 +83,14 @@ ShapeRelabelImageFilter<TInputImage>
   valuator->SetInput( labelizer->GetOutput() );
   valuator->SetLabelImage( this->GetInput() );
   valuator->SetNumberOfThreads( this->GetNumberOfThreads() );
+  if( m_Attribute == LabelObjectType::PERIMETER || m_Attribute == LabelObjectType::ROUNDNESS )
+    {
+    valuator->SetComputePerimeter( true );
+    }
+  if( m_Attribute == LabelObjectType::FERET_DIAMETER )
+    {
+    valuator->SetComputeFeretDiameter( true );
+    }
   progress->RegisterInternalFilter(valuator, .3f);
   
   typename RelabelType::Pointer opening = RelabelType::New();

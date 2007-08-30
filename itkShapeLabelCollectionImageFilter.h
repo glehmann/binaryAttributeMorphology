@@ -16,8 +16,11 @@
 =========================================================================*/
 #ifndef __itkShapeLabelCollectionImageFilter_h
 #define __itkShapeLabelCollectionImageFilter_h
+#include "itkLabelPerimeterEstimationCalculator.h"
 
 #include "itkInPlaceLabelCollectionImageFilter.h"
+
+#define PI 3.14159265358979323846
 
 namespace itk {
 /** \class ShapeLabelCollectionImageFilter
@@ -70,6 +73,8 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int,
                       TImage::ImageDimension);
 
+  typedef LabelPerimeterEstimationCalculator< LabelImageType > PerimeterCalculatorType;
+
   /** Standard New method. */
   itkNewMacro(Self);  
 
@@ -107,11 +112,30 @@ public:
   itkBooleanMacro(ComputePerimeter);
 
 
-   /** Set the label image */
+  /** Set the label image */
   void SetLabelImage( const TLabelImage *input )
      {
      m_LabelImage = input;
      }
+
+  /** */
+  static long factorial( long n );
+
+  /** */
+  static long doubleFactorial( long n );
+
+  /** */
+  static double gammaN2p1( long n );
+
+  /** */
+  static double hyperSphereVolume( double radius );
+
+  /** */
+  static double hyperSphereArea( double radius );
+
+  /** */
+  static double hyperSphereRadiusFromVolume( double radius );
+
 
 protected:
   ShapeLabelCollectionImageFilter();
@@ -134,6 +158,8 @@ private:
   bool m_ComputePerimeter;
 
   LabelImageConstPointer m_LabelImage;
+
+  typename PerimeterCalculatorType::Pointer m_PerimeterCalculator;
 
 } ; // end of class
 

@@ -45,6 +45,7 @@ int main(int argc, char * argv[])
   statistics->SetComputeFeretDiameter( false );
   statistics->SetInput( converter->GetOutput() );
   statistics->SetFeatureImage( reader2->GetOutput() );
+  statistics->SetComputePerimeter( true );
 
   // update the statistics filter, so its output will be up to date
   statistics->Update();
