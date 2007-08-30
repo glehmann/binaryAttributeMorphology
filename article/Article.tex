@@ -461,13 +461,15 @@ those filters have been made for binary, and labeled images.
 Central image moments for grayscale images are usually computed as
 
 \begin{eqnarray}
-Cm_{i,j} = \sum_{p \in D} I(p).p_i.p_j
+Cm_{i,j} & = & \frac{S_{i,j}}{M} - Cg_i.Cg_j \\
+S_{i,j}  & = & \sum_{p \in D} \left( I(p).p_i.p_j \right)
 \end{eqnarray}
 
-where $Cm_{i,j}$ is the central moment, $D$ is the domain of definition of the
+where $S_{i,j}$ is the central moment, $D$ is the domain of definition of the
 image $I$, $I(p)$ is the pixel value of the image at the position $p$,
-$0 \leq i < n$, $0 \leq i < n$, $n$ is the image dimension, and $p_i$ is the
-physical position on the axis $i$. With binary images, $I(p)$ is either $0$ 
+$0 \leq i < n$, $0 \leq i < n$, $n$ is the image dimension, $p_i$ is the
+physical position on the axis $i$, $M$ is the total mass, $Cg$ is the center of
+gravity. With binary images, $I(p)$ is either $0$ 
 if $p$ is outside the object, or $1$ if $p$ is inside.
 
 The complexity is $O(N_{P_I})$, where $N_{P_I}$ is the number of pixels in the image.
@@ -477,59 +479,66 @@ With the run-length encoding of the binary objects, the complexity can be decrea
 to $O(N_{L_O})$, where $N_{L_O}$ is the number of lines in the object.
 
 \begin{eqnarray}
-Cm_{i,j} & = & \sum_{p \in D} I(p).p_i.p_j \\ \nonumber
-         & = & \sum_{p \in O} p_i.p_j \\ \nonumber
-         & = & \sum_{l \in O}  \sum_{p \in L} p_i.p_j
+S_{i,j} & = & \sum_{p \in D} \left( I(p).p_i.p_j \right) \\ \nonumber
+         & = & \sum_{p \in O} \left( p_i.p_j \right) \\ \nonumber
+         & = & \sum_{L \in O}  \sum_{p \in L} \left( p_i.p_j \right)
 \end{eqnarray}
 
-In a line, $p_i$ is a constant if $i > 0$, so
+Where $O$ is a binary object in the image, and $L$ is a line of the object $O$, encoded
+with the run-length encoding. In a line, $p_i$ is a constant if $i > 0$, so, $S_{i,j}$
+can be written:
 
 \begin{eqnarray}
-Cm_{i,j} = \begin{cases}
-  \underset{L \in O}\sum l_L.p_i.p_j                & \text{if $i > 0$ and $j > 0$}, \\
-  \underset{L \in O}\sum l_L.p_i.\underset{p \in L}\sum p_0  & \text{if $i > 0$ and $j = 0$}, \\
-  \underset{L \in O}\sum l_L.p_j.\underset{p \in L}\sum p_0  & \text{if $i = 0$ and $j > 0$}, \\
+S_{i,j} = \begin{cases}
+  \underset{L \in O}\sum \left( l_L.p_i.p_j \right)                & \text{if $i > 0$ and $j > 0$}, \\
+  \underset{L \in O}\sum \left( l_L.p_i.\underset{p \in L}\sum p_0 \right)  & \text{if $i > 0$ and $j = 0$}, \\
+  \underset{L \in O}\sum \left( l_L.p_j.\underset{p \in L}\sum p_0 \right)  & \text{if $i = 0$ and $j > 0$}, \\
   \underset{L \in O}\sum \underset{p \in L}\sum p_0^2            & \text{if $i = j = 0$}.
            \end{cases}
 \end{eqnarray}
 
 It is known that
 \begin{eqnarray}
-\sum_{x=1}^n x   & = & \frac{n(n+1)}{2} \\
-\sum_{x=1}^n x^2 & = & \frac{n(n+1)(2n+1)}{6}
+\label{equ:sumx}
+\sum_{x=0}^n x   & = & \frac{n(n+1)}{2} \\
+\label{equ:sumx2}
+\sum_{x=0}^n x^2 & = & \frac{n(n+1)(2n+1)}{6}
 \end{eqnarray}
 
-In order to use those formulae, the physical position has to be expanded in
+In order to use those formulae in the computation of $S_{i,j}$, the physical position has to be expanded in:
 \begin{eqnarray}
+\label{equ:expandedPosition}
 p_j = o_j + s_j i_j
 \end{eqnarray}
 where $o_j$ is the origin of the line on the axis $j$, $s_j$ is the spacing on the axis $j$, and
 $i_j$ is the index on the axis $j$.
 
-With equations TODO and TODO, its easy to compute the sum of physical positions of the axis $0$:
+With equations \ref{equ:expandedPosition}, \ref{equ:sumx} and \ref{equ:sumx2}, it is easy to remove the loop in the computation of the sum of physical positions of the axis $0$:
 
 \begin{eqnarray}
 \sum_{p \in L} p_0  & = & \sum_{i_0=0}^{l_L-1} (o_0 + s_0 i_0) \\ \nonumber
                     & = & l_L.o_0 + s_0\sum_{i_0=0}^{l_L-1} i_0 \\ \nonumber
-                    & = & l_L.o_0 + s_0\left( \frac{(l_L-1)l}{2} \right)
+                    & = & l_L.o_0 + s_0\left( \frac{(l_L-1)l_L}{2} \right) \\ \nonumber
+                    & = & l_L \left( o_0 + \frac{s_0(l_L-1)}{2} \right)
 \end{eqnarray}
 
-where $l_L$ is the length of the line (in pixels), and the the sum of the square of the physical positions of the axis $0$:
+where $l_L$ is the length of the line (in pixels), and in the sum of the square of the physical positions of the axis $0$:
 
 \begin{eqnarray}
 \sum_{p \in L} p_0^2  & = & \sum_{i_0=0}^{l_L-1} ( o_0 + s_0 i_0 )^2 \\ \nonumber
                       & = & \sum_{i_0=0}^{l_L-1} ( o_0^2 + s_0^2 i_0^2 + 2 o_0 i_0) \\ \nonumber
                       & = & l_L.o_0^2 + s_0^2\sum_{i_0=0}^{l_L-1} i_0^2 + 2 o_0 \sum_{i_0=0}^{l_L-1} i_0 \\ \nonumber
-                      & = & l_L.o_0^2 + s_0^2 \left( \frac{(l_L-1)l_L(2l_L-1)}{6} \right) + 2 o_0 \left( \frac{(l_L-1)l_L}{2} \right)
+                      & = & l_L.o_0^2 + s_0^2 \left( \frac{(l_L-1)l_L(2l_L-1)}{6} \right) + 2 o_0 \left( \frac{(l_L-1)l_L}{2} \right) \\ \nonumber
+                      & = & l_L\left( o_0^2 + (l_L-1)\left(\frac{s_0^2(2l_L-1)}{6}  + o_0 \right) \right)
 \end{eqnarray}
 
-Finally, central moments are:
+Finally, $S_{i,j}$, used in the computation of the central moments, is computed as:
 \begin{eqnarray}
-Cm_{i,j} = \begin{cases}
-  \underset{L \in O}\sum l_L.p_i.p_j                & \text{if $i > 0$ and $j > 0$}, \\
-  \underset{L \in O}\sum l_L.p_i \left( l_L.o_0 + s_0\left( \frac{(l_L-1)l_L}{2}  \right) \right) & \text{if $i > 0$ and $j = 0$}, \\
-  \underset{L \in O}\sum l_L.p_j \left( l_L.o_0 + s_0\left( \frac{(l_L-1)l_L}{2}  \right) \right) & \text{if $i = 0$ and $j > 0$}, \\
-  \underset{L \in O}\sum \left( l_L.o_0^2 + s_0^2 \left( \frac{(l_L-1)l_L(2l_L-1)}{6} \right) + 2 o_0 \left( \frac{(l_L-1)l_L}{2} \right) \right)            & \text{if $i = j = 0$}.
+S_{i,j} = \begin{cases}
+  \underset{L \in O}\sum \left( l_L.p_i.p_j \right)                & \text{if $i > 0$ and $j > 0$}, \\
+  \underset{L \in O}\sum \left( p_i.l_L^2 \left( o_0 + \frac{s_0(l_L-1)}{2} \right) \right) & \text{if $i > 0$ and $j = 0$}, \\
+  \underset{L \in O}\sum \left( p_j.l_L^2 \left( o_0 + \frac{s_0(l_L-1)}{2} \right) \right) & \text{if $i = 0$ and $j > 0$}, \\
+  \underset{L \in O}\sum \left( l_L\left( o_0^2 + (l_L-1)\left(\frac{s_0^2(2l_L-1)}{6}  + o_0 \right) \right) \right)            & \text{if $i = j = 0$}.
            \end{cases}
 \end{eqnarray}
 
@@ -540,19 +549,20 @@ The computation works with any image dimension, and so use the definition
 of volume and area of an hypersphere in any dimension.
 
 \begin{eqnarray}
-V_n(r) & = {\pi^\frac{n}{2}r^n\over\Gamma(\frac{n}{2} + 1)}
+\label{equ:hypersphereVolume}
+V_n(r) = \frac{\pi^\frac{n}{2}r^n}{\Gamma(\frac{n}{2} + 1)}
 \end{eqnarray}
 where $V_n$ is the volume of the hypersphere $n$ is the image dimension,
 and $r$ is the radius of the hypersphere.
 
 \begin{eqnarray}
 \Gamma\left(\frac{n}{2}+1\right) = \begin{cases}
-  \left(\frac{n}{2}\right)!               & \text{if $n$ is even}, \\
-  \sqrt{\pi}\frac{n!!}{2^{(n+1)/2}} & \text{if $n$ is odd}.
+  \left(\frac{n}{2}\right)!          & \text{if $n$ is even}, \\
+  \sqrt{\pi}\frac{n!!}{2^{(n+1)/2}}  & \text{if $n$ is odd}.
                                    \end{cases}
 \end{eqnarray}
 
-$n!!$ is the double factorial, defined as
+$n!!$ is the {\em double factorial}, defined as:
 
 \begin{eqnarray}
 n!! = \begin{cases}
@@ -562,16 +572,20 @@ n!! = \begin{cases}
 \end{eqnarray}
 
 \begin{eqnarray}
-A_n(r) & = {\frac{n V_n}{r}}
+A_n(r) = {\frac{n V_n}{r}}
 \end{eqnarray}
 
-Where $A_n$ is the area of the hypersphere.
+where $A_n$ is the area of the hypersphere.
 
 \begin{eqnarray}
-R & = {\frac{a}{A_n(r)}}
+R = {\frac{a}{A_n(r)}}
 \end{eqnarray}
 
-where $R$ is the roundness, $a$ is the measured area of the object, and the $r$ is the radius of an hypersphere with the same volume than the object.
+where $R$ is the roundness, $a$ is the measured area of the 
+object\footnote{More details about perimeter estimation will be published 
+in another article.}, and the $r$ is the radius of an hypersphere with the
+same volume than the object, computed using equation
+\ref{equ:hypersphereVolume}.
 
 
 
