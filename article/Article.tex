@@ -394,7 +394,9 @@ intended to be used with an image produced by the {\em
 itk::BinaryImageToLabelCollectionImageFilter}. The background values of the
 original image can also be restored by this filter.
   \item The {\em itk::LabelCollectionImageToMaskImageFilter} class can be used
-to mask an image with the objects of the {\em itk::LabelCollectionImage}.
+to mask an image with the objects of the {\em itk::LabelCollectionImage}. With
+that filter, the image can be cropped to contain only the masked zone, or the
+masked zone padded by a user defined number of pixels.
   \item Finally, {\em itk::LabelCollectionImageToAttributeImageFilter} produce
 an {\em itk::Image} with the value of the attribute of the objects of the {\em
 itk::LabelCollectionImage}. This filter is mostly useful to have a global view
@@ -588,7 +590,14 @@ same volume than the object, computed using equation
 \ref{equ:hypersphereVolume}.
 
 
+\subsection{Pixel's neighborhood}
 
+The run-length encoding does not allow an easy access to the neighbors of a
+given pixel. If the neighborhood of all the pixels must be accessed, it is
+much easier to convert the {itk::LabelCollectionImage} to a {\em itk::Image}
+with the {\em itk::LabelCollectionImageToLabelImageFilter}, and use that
+image to access the neighbors. That's what is done in {\em itk::ShapeLabelCollectionImageFilter}
+to compute the maximum Feret diameter, and the perimeter estimation.
 
 \section{Usage examples}
 
@@ -1078,6 +1087,107 @@ produces consecutives labels, so a simple {for} loop will do the job.
   return 0;
 }
 \end{verbatim} \normalsize
+
+
+\subsection{The mask features}
+
+The {\em itk::LabelCollectionImageToMaskImageFilter} class let the user mask
+a part of an {\em itk::Image} with the objects of a {\em itk::LabelCollectionImage}.
+It can also crop the image to contain only the masked region.
+
+The source code is available in the file {\em mask.cxx}.
+
+First we include the headers of the class we will use, and parse the command line.
+
+\small \begin{verbatim}
+#include "itkImageFileReader.h"
+#include "itkImageFileWriter.h"
+#include "itkSimpleFilterWatcher.h"
+
+#include "itkLabelObject.h"
+#include "itkLabelCollectionImage.h"
+#include "itkLabelImageToLabelCollectionImageFilter.h"
+#include "itkLabelCollectionImageToMaskImageFilter.h"
+
+
+int main(int argc, char * argv[])
+{
+
+  if( argc != 9 )
+    {
+    std::cerr << "usage: " << argv[0] << " labelImage input output label bg neg crop cropBorder" << std::endl;
+    // std::cerr << "  : " << std::endl;
+    exit(1);
+    }
+\end{verbatim} \normalsize
+the filters are able to work in any dimension. Lets choose 3, so the program can be tested on
+2D and 2D image.
+\small \begin{verbatim}
+  const int dim = 3;
+\end{verbatim} \normalsize
+declare the input image type
+\small \begin{verbatim}
+  typedef itk::Image< unsigned char, dim > ImageType;
+\end{verbatim} \normalsize
+and the label object type to use. The input image is a label image, so the 
+type of the label can be the same type than the pixel type. itk::LabelObject is
+chosen, because only the mask feature is tested here, so we don't need any
+attribute.
+\small \begin{verbatim}
+  typedef itk::LabelObject< unsigned char, dim > LabelObjectType;
+  typedef itk::LabelCollectionImage< LabelObjectType > LabelCollectionImageType;
+\end{verbatim} \normalsize
+read the label image and the input image to be masked.
+\small \begin{verbatim}
+  typedef itk::ImageFileReader< ImageType > ReaderType;
+  ReaderType::Pointer reader = ReaderType::New();
+  reader->SetFileName( argv[1] );
+  
+  ReaderType::Pointer reader2 = ReaderType::New();
+  reader2->SetFileName( argv[2] );
+\end{verbatim} \normalsize
+convert the label image to a label collection image.
+\small \begin{verbatim}
+  typedef itk::LabelImageToLabelCollectionImageFilter< ImageType, LabelCollectionImageType> I2LType;
+  I2LType::Pointer i2l = I2LType::New();
+  i2l->SetInput( reader->GetOutput() );
+  i2l->SetUseBackground( true );
+\end{verbatim} \normalsize
+then mask the image. Two inputs are required (the label collection image, and
+the image to be masked). The label used to mask the image is passed with the 
+{\em SetLabel()} method. The background in the output image, where the image is masked,
+is passed with {\em SetBackground()}. The user can choose to mask the image outside the
+label object (that's the default behavior), or inside the label object with the
+chosen label, by calling {\em SetNegated()}. Finally, the image can be cropped to the
+masked region, by calling {\em SetCrop(true)}, or to a region padded by a border, by
+calling both {\em SetCrop()} and {\em SetCropBorder()}. The crop border defaults to $0$, and the
+image is not cropped by default.
+\small \begin{verbatim}
+  typedef itk::LabelCollectionImageToMaskImageFilter< LabelCollectionImageType, ImageType > MaskType;
+  MaskType::Pointer mask = MaskType::New();
+  mask->SetInput( i2l->GetOutput() );
+  mask->SetFeatureImage( reader2->GetOutput() );
+  mask->SetLabel( atoi(argv[4]) );
+  mask->SetBackgroundValue( atoi(argv[5]) );
+  mask->SetNegated( atoi(argv[6]) );
+  mask->SetCrop( atoi(argv[7]) );
+  MaskType::SizeType border;
+  border.Fill( atoi(argv[8]) );
+  mask->SetCropBorder( border );
+  itk::SimpleFilterWatcher watcher6(mask, "filter");
+\end{verbatim} \normalsize
+Finally, save the output image.
+\small \begin{verbatim}
+  typedef itk::ImageFileWriter< ImageType > WriterType;
+  WriterType::Pointer writer = WriterType::New();
+  writer->SetInput( mask->GetOutput() );
+  writer->SetFileName( argv[3] );
+  writer->Update();
+
+  return 0;
+}
+\end{verbatim} \normalsize
+
 
 
 \section{Threading support}
