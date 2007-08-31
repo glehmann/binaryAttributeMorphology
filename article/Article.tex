@@ -395,8 +395,10 @@ itk::BinaryImageToLabelCollectionImageFilter}. The background values of the
 original image can also be restored by this filter.
   \item The {\em itk::LabelCollectionImageToMaskImageFilter} class can be used
 to mask an image with the objects of the {\em itk::LabelCollectionImage}. With
-that filter, the image can be cropped to contain only the masked zone, or the
-masked zone padded by a user defined number of pixels.
+that filter, the image can be cropped to contain only the non-masked zone\footnote{
+The code used to produce the output region based on the content of the image
+is partially copied from a contribution of Peter Cech \url{http://www.vision.ee.ethz.ch/~pcech/itkAutoCropImageFilter/}.}
+, or the non-masked zone padded by a user defined number of pixels.
   \item Finally, {\em itk::LabelCollectionImageToAttributeImageFilter} produce
 an {\em itk::Image} with the value of the attribute of the objects of the {\em
 itk::LabelCollectionImage}. This filter is mostly useful to have a global view
@@ -1257,14 +1259,20 @@ of an image, starting from
   \item or a line.
 \end{itemize}
 
-Doing that require a good knownledge of the iterator design. Any help on that point is
+Doing that require a good knowledge of the iterator design. Any help on that point is
 welcome.
 
-Also, more attributes will be implemented, like the perimeter estimation. It may be useful to implement the most commonly used opening, keep N objects and relabel transforms in a more efficient way, by using an {\em AttributeLabelObject} instead of a {\em ShapeLabelObject} or a {\em StatisticsLabelObject}.
-
-All the {\em Shape} filters are currently unable to use the Feret diameter. The feret diameter is not computed by default, and so always get a value of $0$. The computation of the Feret diameter should be forced if the user want to use it.
+It may be useful to implement the most commonly used opening, keep N objects and relabel transforms in a more efficient way, by using an {\em AttributeLabelObject} instead of a {\em ShapeLabelObject} or a {\em StatisticsLabelObject}.
 
 The {\em BinaryImageToLabelCollectionImageFilter} class should be threaded to get the best of that filter on multiprocessors systems.
+
+The converters from/to image are provided, but it may be useful to  have the converters from/to other objects representations:
+\begin{itemize}
+  \item spatial objects,
+  \item meshs,
+  \item structuring elements.
+\end{itemize}
+
 
 Finally, all the binary and label filters should be implemented as a subclass of {\em InPlaceImageFilter}.
 
