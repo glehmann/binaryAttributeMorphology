@@ -34,6 +34,7 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
   m_BackgroundValue = NumericTraits< OutputImagePixelType >::Zero;
   m_Negated = false;
   m_Crop = false;
+  m_CropBorder.Fill( 0 );
 }
 
 template <class TInputImage, class TOutputImage>
@@ -81,8 +82,7 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
       }
 
     // Prefetch image region and size
-    InputImageRegionType region = input->GetLargestPossibleRegion();
-    SizeType size = region.GetSize();
+    InputImageRegionType cropRegion = input->GetLargestPossibleRegion();
 
     // now the output image size can be computed
     if( m_Negated )
@@ -96,7 +96,7 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
         // TODO: implement that part
         std::cerr << "Warning: Cropping according to background label is no yet implemented." << std::endl;
         std::cerr << "Warning: The full image will be used." << std::endl;
-      
+
         }
       else
         {
@@ -147,12 +147,9 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
             {
             regionSize[i] = maxs[i] - mins[i] + 1;
             }
-          RegionType region( mins, regionSize );
-          // std::cout << region << std::endl;
+          cropRegion.SetIndex( mins );
+          cropRegion.SetSize( regionSize );
           
-          // finally set that region as the largest output region
-          this->GetOutput()->SetLargestPossibleRegion( region );
-
         }
       }
     else
@@ -209,14 +206,19 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
             {
             regionSize[i] = maxs[i] - mins[i] + 1;
             }
-          RegionType region( mins, regionSize );
-          // std::cout << region << std::endl;
+          cropRegion.SetIndex( mins );
+          cropRegion.SetSize( regionSize );
           
-          // finally set that region as the largest output region
-          this->GetOutput()->SetLargestPossibleRegion( region );
-
         }
       }
+
+    // pad by the crop border, but take care to not be larger than the largest
+    // possible region of the input image
+    cropRegion.PadByRadius( m_CropBorder );
+    cropRegion.Crop( input->GetLargestPossibleRegion() );
+
+    // finally set that region as the largest output region
+    this->GetOutput()->SetLargestPossibleRegion( cropRegion );
 
     m_CropTimeStamp.Modified();
     }
@@ -416,6 +418,7 @@ LabelCollectionImageToMaskImageFilter<TInputImage, TOutputImage>
   os << indent << "BackgroundValue: " << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
   os << indent << "Negated: " << m_Negated << std::endl;
   os << indent << "Crop: " << m_Crop << std::endl;
+  os << indent << "CropBorder: " << m_CropBorder << std::endl;
 }
 
 

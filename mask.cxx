@@ -11,9 +11,9 @@
 int main(int argc, char * argv[])
 {
 
-  if( argc != 8 )
+  if( argc != 9 )
     {
-    std::cerr << "usage: " << argv[0] << " input input2 output label bg neg crop" << std::endl;
+    std::cerr << "usage: " << argv[0] << " input input2 output label bg neg crop cropBorder" << std::endl;
     // std::cerr << "  : " << std::endl;
     exit(1);
     }
@@ -45,6 +45,9 @@ int main(int argc, char * argv[])
   mask->SetBackgroundValue( atoi(argv[5]) );
   mask->SetNegated( atoi(argv[6]) );
   mask->SetCrop( atoi(argv[7]) );
+  MaskType::SizeType border;
+  border.Fill( atoi(argv[8]) );
+  mask->SetCropBorder( border );
   itk::SimpleFilterWatcher watcher6(mask, "filter");
 
   typedef itk::ImageFileWriter< IType > WriterType;

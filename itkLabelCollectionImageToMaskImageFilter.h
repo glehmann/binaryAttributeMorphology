@@ -134,6 +134,13 @@ public:
   itkGetConstReferenceMacro(Crop, bool);
   itkBooleanMacro(Crop);
 
+  /**
+   * Set/Get the boder added to the mask before the crop. The default is 0 on
+   * all the axes.
+   */
+  itkSetMacro(CropBorder, SizeType);
+  itkGetConstReferenceMacro(CropBorder, SizeType);
+
 protected:
   LabelCollectionImageToMaskImageFilter();
   ~LabelCollectionImageToMaskImageFilter() {};
@@ -164,6 +171,7 @@ private:
   OutputImagePixelType m_BackgroundValue;
   bool m_Negated;
   bool m_Crop;
+  SizeType m_CropBorder;
 
   TimeStamp m_CropTimeStamp;
 
