@@ -179,7 +179,7 @@ public:
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(LabelObject, Object);
+  itkTypeMacro(LabelObject, LightObject);
 
   itkStaticConstMacro(ImageDimension, unsigned int, VImageDimension);
 
