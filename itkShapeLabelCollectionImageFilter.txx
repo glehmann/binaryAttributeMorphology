@@ -393,7 +393,10 @@ ShapeLabelCollectionImageFilter<TImage, TLabelImage>
     }
 
 
-  if( m_ComputePerimeter )
+  // be sure tha the calculator has the perimeter estimation for that label.
+  // The calculator may not have the label if the object is only on a border.
+  // It will occurre for sure when processing a 2D image with a 3D filter.
+  if( m_ComputePerimeter && m_PerimeterCalculator->HasLabel( label ) )
     {
     double perimeter = m_PerimeterCalculator->GetPerimeter( label );
     double expectedRadius = hyperSphereRadiusFromVolume( labelObject->GetPhysicalSize() );

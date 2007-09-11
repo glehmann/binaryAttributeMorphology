@@ -80,7 +80,16 @@ public:
       {
       return m_Perimeters.find( label )->second;
       }
-    itkExceptionMacro( << "Unknown label" );
+    itkExceptionMacro( << "Unknown label: " << static_cast<typename NumericTraits<InputImagePixelType>::PrintType>(label) );
+    }
+
+  bool HasLabel( const InputImagePixelType & label ) const
+    {
+    if( m_Perimeters.find( label ) != m_Perimeters.end() )
+      {
+      return true;
+      }
+    return false;
     }
 
 protected:
