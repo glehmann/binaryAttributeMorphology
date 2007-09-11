@@ -109,6 +109,13 @@ A label image is an image which contains several labeled pixels. Often, the
 labels are representing some objects placed on a background, and so the label
 image may use a particular label for the background.
 
+\begin{figure}[htbp]
+\begin{center}
+\subfigure[A label Image.]{\includegraphics[scale=0.7]{cthead1-label2}}
+\subfigure[The same image with colored labels]{\includegraphics[scale=.7]{cthead1-label2-rgb}}
+\caption{(a) the label image of connected components in Figure~\ref{fig:binaryImage}. (b) is the same image with labels colored with {\em itk::LabelToRGBImageFilter}.\label{fig:labelImage}}
+\end{center}
+\end{figure}
 
 \subsection{Binary image}
 
@@ -118,6 +125,14 @@ than those two values. The foreground is thus defined with a particular label,
 and the other label in the image are considered as the background. A side effect
 of that is that a labeled image can be considered as a binary image, and so, it
 let us manipulate a single object in a labeled image.
+
+\begin{figure}[htbp]
+\begin{center}
+\subfigure[A simple binary image.]{\includegraphics[scale=0.7]{cthead1-bin}}
+\subfigure[A binary image, or a label image?]{\includegraphics[scale=.7]{2th_cthead1}}
+\caption{(a) is a simple binary image. Usually, the white pixel have the value 255, and the background the value 0. (b) contains 3 values (0, 100 and 200). The foreground value must be defined by the user, either 0, 100 or 200, and the values which are not the foreground are in the background.\label{fig:binaryImage}}
+\end{center}
+\end{figure}
 
 \subsection{Attribute}
 
@@ -364,6 +379,19 @@ of the value of the attribute. Again, the user can choose to have the objects
 with the highest attribute value in the first labels, or to have the objects
 with the lowest attribute values in the first labels.
 \end{itemize}
+
+\begin{figure}[htbp]
+\begin{center}
+\subfigure[A label image]{\includegraphics[scale=.7]{cthead1-label2-rgb}}
+\subfigure[All the objects smaller than 1000 pixels removed]{\includegraphics[scale=.7]{cthead1-label2-size-bigger-than-1000}}
+\subfigure[All the objects greater than 1000 pixels removed]{\includegraphics[scale=.7]{cthead1-label2-size-smaller-than-1000}}
+\subfigure[All the objects with roundness smaller than 0.8 removed]{\includegraphics[scale=.7]{cthead1-label2-roundness-greater-than-0_8}}
+\subfigure[All the objects with elongation smaller than 10 removed]{\includegraphics[scale=.7]{cthead1-label2-binaryElongation-greater-than-10}}
+\subfigure[All the objects with perimeter smaller than 100 removed]{\includegraphics[scale=.7]{cthead1-label2-perimeter-greater-than-100}}
+\caption{Some example of opening with different attribute and parameters.}
+\end{center}
+\end{figure}
+
 
 It can also be useful to simply get the attribute values associated with the
 objects. In that case, the classes provided in with that article can be used in
