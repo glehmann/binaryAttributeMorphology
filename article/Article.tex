@@ -1192,6 +1192,154 @@ Finally, save the output image.
 
 
 
+\subsection{A full python example}
+
+In that example, we want to:
+\begin{itemize}
+\item find the nuclei in the first image
+\item find the spots insice the nucleus in the second image
+\item get the mean value in the nucleus, in the zone of each spot.
+\end{itemize}
+
+\begin{figure}[htbp]
+\begin{center}
+\subfigure[Nucleus]{\includegraphics[scale=0.45]{noyaux}}
+\subfigure[Spots]{\includegraphics[scale=0.45]{spots}}
+\caption{The input images.}
+\end{center}
+\end{figure}
+
+
+The source code is available in example.py.
+
+Lets begin with the usual {\em imports}.
+\small \begin{verbatim}
+import itk, sys
+itk.auto_progress()
+\end{verbatim} \normalsize
+Then declare the type we will use, as is {\em c++}.
+\small \begin{verbatim}
+Dimension = 2
+PixelType = itk.UC
+ImageType = itk.Image[ PixelType, Dimension ]
+
+DistancePixelType = itk.F
+DistanceImageType = itk.Image[ DistancePixelType, Dimension ]
+
+RGBPixelType = itk.RGBPixel[PixelType]
+RGBImageType = itk.Image[ RGBPixelType, Dimension ]
+
+LabelObjectType = itk.StatisticsLabelObject[itk.UL, Dimension]
+LabelCollectionImageType = itk.LabelCollectionImage[LabelObjectType]
+\end{verbatim} \normalsize
+read the image of the nucleus
+\small \begin{verbatim}
+nuclei = itk.ImageFileReader[ImageType].New(FileName="images/noyaux.png")
+\end{verbatim} \normalsize
+perform a simple binarization. Note that the Otsu filter does not use the same convention as usual: the white part is outside.
+\small \begin{verbatim}
+otsu = itk.OtsuThresholdImageFilter[ImageType, ImageType].New(nuclei,
+    OutsideValue=255, InsideValue=0)
+\end{verbatim} \normalsize
+The nuclei are not separated. We split them with a watershed.
+\small \begin{verbatim}
+maurer = itk.SignedMaurerDistanceMapImageFilter[ImageType, DistanceImageType].New(otsu)
+watershed = itk.MorphologicalWatershedImageFilter[DistanceImageType, ImageType].New(maurer,
+    Level=60, MarkWatershedLine=False)
+mask = itk.MaskImageFilter[ImageType, ImageType, ImageType].New(watershed, otsu)
+\end{verbatim} \normalsize
+And now switch to the label collection representation
+\small \begin{verbatim}
+label = itk.LabelImageToLabelCollectionImageFilter[ImageType, LabelCollectionImageType]
+    .New(mask)
+\end{verbatim} \normalsize
+compute the attribute values
+\small \begin{verbatim}
+stats = itk.StatisticsLabelCollectionImageFilter[LabelCollectionImageType, ImageType]
+    .New(label, nuclei)
+\end{verbatim} \normalsize
+drop the objects too small to be a nucleus, and the ones on the border
+\small \begin{verbatim}
+size = itk.ShapeOpeningLabelCollectionImageFilter[LabelCollectionImageType].New(stats,
+    Attribute='Size', Lambda=100)
+border = itk.ShapeOpeningLabelCollectionImageFilter[LabelCollectionImageType].New(size,
+    Attribute='SizeOnBorder', Lambda=10, ReverseOrdering=True)
+\end{verbatim} \normalsize
+Reoder the labels. The objects with the highest mean are the first ones.
+\small \begin{verbatim}
+relabel = itk.StatisticsRelabelLabelCollectionImageFilter[LabelCollectionImageType]
+    .New(border, Attribute='Mean')
+\end{verbatim} \normalsize
+for visual validation:
+\small \begin{verbatim}
+labelNuclei = itk.LabelCollectionImageToLabelImageFilter[LabelCollectionImageType,
+    ImageType].New(relabel)
+overlay = itk.LabelOverlayImageFilter[ImageType, ImageType, RGBImageType].New(nuclei,
+    labelNuclei, UseBackground=True)
+itk.write(overlay, "nuclei-overlay.png")
+\end{verbatim} \normalsize
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.45]{nuclei-overlay}
+\caption{The segmented nuclei. The too small objects and the ones on the border have been excluded.}
+\label{fig:overseg}
+\end{center}
+\end{figure}
+
+Now, the spots:
+\small \begin{verbatim}
+spots = itk.ImageFileReader[ImageType].New(FileName="images/spots.png")
+\end{verbatim} \normalsize
+Mask the spot image to keep only the nucleus zone. The rest of the image is cropped, excepted a border of 2 pixels
+\small \begin{verbatim}
+maskSpots = itk.LabelCollectionImageToMaskImageFilter.LI2IUC2.New(relabel, spots, Label=1,
+    Crop=True, CropBorder=2)
+\end{verbatim} \normalsize
+A simple thresholding:
+\small \begin{verbatim}
+th = itk.BinaryThresholdImageFilter[ImageType, ImageType].New(maskSpots, LowerThreshold=110)
+\end{verbatim} \normalsize
+Now swith to the label collection representation, and compute the attribute values. This time, the input image is not a label image, but a binary one.
+\small \begin{verbatim}
+slabel = itk.BinaryImageToLabelCollectionImageFilter[ImageType, LabelCollectionImageType]
+    .New(th)
+sstats = itk.StatisticsLabelCollectionImageFilter[LabelCollectionImageType, ImageType]
+    .New(slabel, nuclei)
+\end{verbatim} \normalsize
+we know there are for spots in the nubleus, so keep the 4 biggest spots. The other attribute are also usable - we may have chosen to keep the 4 brightest spots for example.
+\small \begin{verbatim}
+skeep = itk.ShapeKeepNObjectsLabelCollectionImageFilter[LabelCollectionImageType].New(
+    sstats, Attribute='Size', NumberOfObjects=4)
+\end{verbatim} \normalsize
+Reoder the labels. The bigger objects first.
+\small \begin{verbatim}
+srelabel = itk.StatisticsRelabelLabelCollectionImageFilter[LabelCollectionImageType].New(
+    skeep, Attribute='Size')
+\end{verbatim} \normalsize
+Finally, display the values we are interested in:
+\begin{itemize}
+  \item the nucleus number,
+  \item the spot position,
+  \item the mean value in the nucleus in the spot zone.
+\end{itemize}
+
+\small \begin{verbatim}
+print "nuclei", "x", "y", "mean"
+
+for nl in range(1, relabel.GetOutput().GetNumberOfObjects()+1):
+  maskSpots.SetLabel(nl)
+  srelabel.UpdateLargestPossibleRegion()
+  labeCollection = srelabel.GetOutput()
+
+  for l in range(1, labeCollection.GetNumberOfObjects()+1):
+    lo = labeCollection.GetLabelObject(l)
+    print nl, lo.GetCentroid()[0], lo.GetCentroid()[1], lo.GetMean()
+\end{verbatim} \normalsize
+
+
+
+
 \section{Threading support}
 
 When possible, the filters provided with that contribution have been multithreaded.
