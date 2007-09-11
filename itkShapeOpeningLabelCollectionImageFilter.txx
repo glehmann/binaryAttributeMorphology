@@ -122,7 +122,7 @@ ShapeOpeningLabelCollectionImageFilter<TImage>
   Superclass::PrintSelf(os, indent);
 
   os << indent << "ReverseOrdering: "  << m_ReverseOrdering << std::endl;
-  os << indent << "Lambda: "  << static_cast<typename NumericTraits<double>::PrintType>(m_Lambda) << std::endl;
+  os << indent << "Lambda: "  << m_Lambda << std::endl;
   os << indent << "Attribute: "  << LabelObjectType::GetNameFromAttribute(m_Attribute) << " (" << m_Attribute << ")" << std::endl;
 }
 
