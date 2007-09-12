@@ -648,6 +648,65 @@ public:
     }
 
 
+// some helper methods - not really required, but really useful!
+
+  /** Affine transform for mapping to and from principal axis */
+  typedef AffineTransform<double,itkGetStaticConstMacro(ImageDimension)> AffineTransformType;
+  typedef typename AffineTransformType::Pointer      AffineTransformPointer;
+
+  /** Get the affine transform from principal axes to physical axes
+   * This method returns an affine transform which transforms from
+   * the principal axes coordinate system to physical coordinates. */
+  AffineTransformPointer GetPrincipalAxesToPhysicalAxesTransform() const
+    {
+    typename AffineTransformType::MatrixType matrix;
+    typename AffineTransformType::OffsetType offset;
+    for (unsigned int i = 0; i < ImageDimension; i++) 
+      {
+      offset[i]  = m_CenterOfGravity[i];
+      for (unsigned int j = 0; j < ImageDimension; j++)
+        {
+        matrix[j][i] = m_PrincipalAxes[i][j];    // Note the transposition
+        }
+      }
+  
+    AffineTransformPointer result = AffineTransformType::New();
+      
+    result->SetMatrix(matrix);
+    result->SetOffset(offset);
+  
+    return result;
+    }
+
+  /** Get the affine transform from physical axes to principal axes
+   * This method returns an affine transform which transforms from
+   * the physical coordinate system to the principal axes coordinate
+   * system. */
+  AffineTransformPointer GetPhysicalAxesToPrincipalAxesTransform(void) const
+    {
+    typename AffineTransformType::MatrixType matrix;
+    typename AffineTransformType::OffsetType offset;
+    for (unsigned int i = 0; i < ImageDimension; i++) 
+      {
+      offset[i]    = m_CenterOfGravity[i];
+      for (unsigned int j = 0; j < ImageDimension; j++)
+        {
+        matrix[j][i] = m_PrincipalAxes[i][j];    // Note the transposition
+        }
+      }
+  
+    AffineTransformPointer result = AffineTransformType::New();
+    result->SetMatrix(matrix);
+    result->SetOffset(offset);
+  
+    AffineTransformPointer inverse = AffineTransformType::New();
+    result->GetInverse(inverse);
+  
+    return inverse;
+    }
+
+
+
 protected:
   StatisticsLabelObject()
     {
