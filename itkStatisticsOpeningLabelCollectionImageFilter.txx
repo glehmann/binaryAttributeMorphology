@@ -27,9 +27,7 @@ template <class TImage>
 StatisticsOpeningLabelCollectionImageFilter<TImage>
 ::StatisticsOpeningLabelCollectionImageFilter()
 {
-  m_Lambda = NumericTraits< double >::Zero;
-  m_ReverseOrdering = false;
-  m_Attribute = LabelObjectType::MEAN;
+  this->m_Attribute = LabelObjectType::MEAN;
 }
 
 
@@ -38,7 +36,7 @@ void
 StatisticsOpeningLabelCollectionImageFilter<TImage>
 ::GenerateData()
 {
-  switch( m_Attribute )
+  switch( this->m_Attribute )
     {
     case LabelObjectType::MINIMUM:
       TemplatedGenerateData< typename Functor::MinimumLabelObjectAccessor< LabelObjectType > >();
@@ -100,8 +98,8 @@ StatisticsOpeningLabelCollectionImageFilter<TImage>
     typename LabelObjectType::LabelType label = it->first;
     LabelObjectType * labelObject = it->second;
 
-    if( ( !m_ReverseOrdering && accessor( labelObject ) < m_Lambda )
-      || ( m_ReverseOrdering && accessor( labelObject ) > m_Lambda ) )
+    if( ( !this->m_ReverseOrdering && accessor( labelObject ) < this->m_Lambda )
+      || ( this->m_ReverseOrdering && accessor( labelObject ) > this->m_Lambda ) )
       {
       // must increment the iterator before removing the object to avoid invalidating the iterator
       it++;
@@ -114,19 +112,6 @@ StatisticsOpeningLabelCollectionImageFilter<TImage>
 
     progress.CompletedPixel();
     }
-}
-
-
-template <class TImage>
-void
-StatisticsOpeningLabelCollectionImageFilter<TImage>
-::PrintSelf(std::ostream &os, Indent indent) const
-{
-  Superclass::PrintSelf(os, indent);
-
-  os << indent << "ReverseOrdering: "  << m_ReverseOrdering << std::endl;
-  os << indent << "Lambda: "  << static_cast<typename NumericTraits<double>::PrintType>(m_Lambda) << std::endl;
-  os << indent << "Attribute: "  << LabelObjectType::GetNameFromAttribute(m_Attribute) << " (" << m_Attribute << ")" << std::endl;
 }
 
 }// end namespace itk

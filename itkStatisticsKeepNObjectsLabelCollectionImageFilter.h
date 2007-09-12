@@ -76,34 +76,6 @@ public:
     (Concept::OStreamWritable<InputImagePixelType>));*/
   /** End concept checking */
 #endif
-
-  /**
-   * Set/Get the ordering of the objects. By default, the ones with the
-   * highest value are kept. Turming ReverseOrdering to true make this filter
-   * keep the objects with the smallest values
-   */
-  itkSetMacro( ReverseOrdering, bool );
-  itkGetConstReferenceMacro( ReverseOrdering, bool );
-  itkBooleanMacro( ReverseOrdering );
-
-  /**
-   * Set/Get the number of objects to keep
-   */
-  itkSetMacro( NumberOfObjects, unsigned long );
-  itkGetConstReferenceMacro( NumberOfObjects, unsigned long );
-
-  /**
-   * Set/Get the attribute to use to select the object to keep. The default
-   * is "Mean".
-   */
-  itkGetConstMacro( Attribute, AttributeType );
-  itkSetMacro( Attribute, AttributeType );
-  void SetAttribute( const std::string & s )
-    {
-    this->SetAttribute( LabelObjectType::GetAttributeFromName( s ) );
-    }
-
-
 protected:
   StatisticsKeepNObjectsLabelCollectionImageFilter();
   ~StatisticsKeepNObjectsLabelCollectionImageFilter() {};
@@ -112,15 +84,9 @@ protected:
 
   template <class TAttributeAccessor> void TemplatedGenerateData();
   
-  void PrintSelf(std::ostream& os, Indent indent) const;
-
 private:
   StatisticsKeepNObjectsLabelCollectionImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
-
-  bool m_ReverseOrdering;
-  unsigned long m_NumberOfObjects;
-  AttributeType m_Attribute;
 
 } ; // end of class
 

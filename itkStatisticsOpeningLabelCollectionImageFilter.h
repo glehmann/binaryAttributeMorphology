@@ -77,32 +77,6 @@ public:
   /** End concept checking */
 #endif
 
-  /**
-   * Set/Get the threshold used to keep or remove the objects.
-   */
-  itkGetConstMacro(Lambda, double);
-  itkSetMacro(Lambda, double);
-
-  /**
-   * Set/Get the ordering of the objects. By default, the objects with
-   * an attribute value smaller than Lamba are removed. Turning ReverseOrdering
-   * to true make this filter remove the object with an attribute value greater
-   * than Lambda instead.
-   */
-  itkGetConstMacro( ReverseOrdering, bool );
-  itkSetMacro( ReverseOrdering, bool );
-  itkBooleanMacro( ReverseOrdering );
-  
- /**
-   * Set/Get the attribute to use to select the object to remove. The default
-   * is "Mean".
-   */
-  itkGetConstMacro( Attribute, AttributeType );
-  itkSetMacro( Attribute, AttributeType );
-  void SetAttribute( const std::string & s )
-    {
-    this->SetAttribute( LabelObjectType::GetAttributeFromName( s ) );
-    }
 
 
 protected:
@@ -112,16 +86,10 @@ protected:
   void GenerateData();
 
   template <class TAttributeAccessor> void TemplatedGenerateData();
-  
-  void PrintSelf(std::ostream& os, Indent indent) const;
 
 private:
   StatisticsOpeningLabelCollectionImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
-
-  double m_Lambda;
-  bool m_ReverseOrdering;
-  AttributeType m_Attribute;
 
 } ; // end of class
 

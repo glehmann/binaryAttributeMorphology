@@ -105,12 +105,12 @@ protected:
   
   void PrintSelf(std::ostream& os, Indent indent) const;
 
+  bool m_ReverseOrdering;
+  AttributeType m_Attribute;
+
 private:
   ShapeRelabelLabelCollectionImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
-
-  bool m_ReverseOrdering;
-  AttributeType m_Attribute;
 
 } ; // end of class
 

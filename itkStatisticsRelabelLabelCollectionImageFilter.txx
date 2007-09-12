@@ -27,8 +27,7 @@ template <class TImage>
 StatisticsRelabelLabelCollectionImageFilter<TImage>
 ::StatisticsRelabelLabelCollectionImageFilter()
 {
-  m_ReverseOrdering = false;
-  m_Attribute = LabelObjectType::MEAN;
+  this->m_Attribute = LabelObjectType::MEAN;
 }
 
 
@@ -37,7 +36,7 @@ void
 StatisticsRelabelLabelCollectionImageFilter<TImage>
 ::GenerateData()
 {
-  switch( m_Attribute )
+  switch( this->m_Attribute )
     {
     case LabelObjectType::MINIMUM:
       TemplatedGenerateData< typename Functor::MinimumLabelObjectAccessor< LabelObjectType > >();
@@ -105,7 +104,7 @@ StatisticsRelabelLabelCollectionImageFilter<TImage>
     }
 
   // instantiate the comparator and sort the vector
-  if( m_ReverseOrdering )
+  if( this->m_ReverseOrdering )
     {
     Functor::LabelObjectReverseComparator< LabelObjectType, TAttributeAccessor > comparator;
     std::sort( labelObjects.begin(), labelObjects.end(), comparator );
@@ -137,18 +136,6 @@ StatisticsRelabelLabelCollectionImageFilter<TImage>
     label++;
     progress.CompletedPixel();
     }
-}
-
-
-template <class TImage>
-void
-StatisticsRelabelLabelCollectionImageFilter<TImage>
-::PrintSelf(std::ostream& os, Indent indent) const
-{
-  Superclass::PrintSelf(os,indent);
-
-  os << indent << "ReverseOrdering: "  << m_ReverseOrdering << std::endl;
-  os << indent << "Attribute: "  << LabelObjectType::GetNameFromAttribute(m_Attribute) << " (" << m_Attribute << ")" << std::endl;
 }
 
 }// end namespace itk

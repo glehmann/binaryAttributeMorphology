@@ -27,9 +27,7 @@ template <class TImage>
 StatisticsKeepNObjectsLabelCollectionImageFilter<TImage>
 ::StatisticsKeepNObjectsLabelCollectionImageFilter()
 {
-  m_ReverseOrdering = false;
-  m_NumberOfObjects = 1;
-  m_Attribute = LabelObjectType::MEAN;
+  this->m_Attribute = LabelObjectType::MEAN;
 }
 
 
@@ -38,7 +36,7 @@ void
 StatisticsKeepNObjectsLabelCollectionImageFilter<TImage>
 ::GenerateData()
 {
-  switch( m_Attribute )
+  switch( this->m_Attribute )
     {
     case LabelObjectType::MINIMUM:
       TemplatedGenerateData< typename Functor::MinimumLabelObjectAccessor< LabelObjectType > >();
@@ -106,10 +104,10 @@ StatisticsKeepNObjectsLabelCollectionImageFilter<TImage>
     }
 
   // instantiate the comparator and sort the vector
-  if( m_NumberOfObjects < labelObjectContainer.size() )
+  if( this->m_NumberOfObjects < labelObjectContainer.size() )
     {
-    typename VectorType::iterator end = labelObjects.begin() + m_NumberOfObjects;
-    if( m_ReverseOrdering )
+    typename VectorType::iterator end = labelObjects.begin() + this->m_NumberOfObjects;
+    if( this->m_ReverseOrdering )
       {
       Functor::LabelObjectReverseComparator< LabelObjectType, TAttributeAccessor > comparator;
       std::nth_element( labelObjects.begin(), end, labelObjects.end(), comparator );
@@ -130,19 +128,6 @@ StatisticsKeepNObjectsLabelCollectionImageFilter<TImage>
       progress.CompletedPixel();
       }
     }
-}
-
-
-template <class TImage>
-void
-StatisticsKeepNObjectsLabelCollectionImageFilter<TImage>
-::PrintSelf(std::ostream& os, Indent indent) const
-{
-  Superclass::PrintSelf(os,indent);
-
-  os << indent << "ReverseOrdering: "  << m_ReverseOrdering << std::endl;
-  os << indent << "NumberOfObjects: "  << m_NumberOfObjects << std::endl;
-  os << indent << "Attribute: "  << LabelObjectType::GetNameFromAttribute(m_Attribute) << " (" << m_Attribute << ")" << std::endl;
 }
 
 }// end namespace itk

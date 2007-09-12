@@ -76,25 +76,6 @@ public:
   /** End concept checking */
 #endif
 
-  /**
-   * Set/Get the order of labeling of the objects. By default, the objects with
-   * the highest attribute values are labeled first. Set ReverseOrdering to true
-   * make the one with the smallest attributes be labeled first.
-   */
-  itkSetMacro( ReverseOrdering, bool );
-  itkGetConstReferenceMacro( ReverseOrdering, bool );
-  itkBooleanMacro( ReverseOrdering );
-
-  /**
-   * Set/Get the attribute to use. Default is "Mean".
-   */
-  itkGetConstMacro( Attribute, AttributeType );
-  itkSetMacro( Attribute, AttributeType );
-  void SetAttribute( const std::string & s )
-    {
-    this->SetAttribute( LabelObjectType::GetAttributeFromName( s ) );
-    }
-
 
 protected:
   StatisticsRelabelLabelCollectionImageFilter();
@@ -104,14 +85,9 @@ protected:
 
   template <class TAttributeAccessor> void TemplatedGenerateData();
   
-  void PrintSelf(std::ostream& os, Indent indent) const;
-
 private:
   StatisticsRelabelLabelCollectionImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
-
-  bool m_ReverseOrdering;
-  AttributeType m_Attribute;
 
 } ; // end of class
 

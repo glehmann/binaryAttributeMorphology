@@ -114,13 +114,13 @@ protected:
   
   void PrintSelf(std::ostream& os, Indent indent) const;
 
-private:
-  ShapeOpeningLabelCollectionImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
-
   double m_Lambda;
   bool m_ReverseOrdering;
   AttributeType m_Attribute;
+
+private:
+  ShapeOpeningLabelCollectionImageFilter(const Self&); //purposely not implemented
+  void operator=(const Self&); //purposely not implemented
 
 } ; // end of class
 
