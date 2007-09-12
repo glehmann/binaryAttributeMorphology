@@ -225,6 +225,12 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
     maxPrincipalMoment = std::max( principalMoments[i], maxPrincipalMoment );
     }
 
+  double elongation = 0;
+  if( minPrincipalMoment != 0 )
+    {
+    elongation = maxPrincipalMoment / minPrincipalMoment;
+    }
+
   // finally put the values in the label object
   labelObject->SetMinimum( (double)min );
   labelObject->SetMaximum( (double)max );
@@ -241,7 +247,7 @@ StatisticsLabelCollectionImageFilter<TImage, TFeatureImage>
   labelObject->SetCentralMoments( centralMoments );
   labelObject->SetSkewness( skewness );
   labelObject->SetKurtosis( kurtosis );
-  labelObject->SetElongation( maxPrincipalMoment / minPrincipalMoment );
+  labelObject->SetElongation( elongation );
 
 //     std::cout << std::endl;
 //     labelObject->Print( std::cout );

@@ -302,6 +302,12 @@ ShapeLabelCollectionImageFilter<TImage, TLabelImage>
     maxPrincipalMoment = std::max( principalMoments[i], maxPrincipalMoment );
     }
 
+  double elongation = 0;
+  if( minPrincipalMoment != 0 )
+    {
+    elongation = maxPrincipalMoment / minPrincipalMoment;
+    }
+
   // set the values in the object
   labelObject->SetSize( size );
   labelObject->SetPhysicalSize( size * sizePerPixel );
@@ -312,7 +318,7 @@ ShapeLabelCollectionImageFilter<TImage, TLabelImage>
   labelObject->SetSizeOnBorder( sizeOnBorder );
   labelObject->SetBinaryPrincipalMoments( principalMoments );
   labelObject->SetBinaryPrincipalAxes( principalAxes );
-  labelObject->SetBinaryElongation( maxPrincipalMoment / minPrincipalMoment );
+  labelObject->SetBinaryElongation( elongation );
 
   if( m_ComputeFeretDiameter )
     {
