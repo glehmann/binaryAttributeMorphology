@@ -344,7 +344,7 @@ LabelCollectionImage<TLabelObject>
     it != m_LabelObjectContainer.end();
     it++ )
     {
-    assert( it->second != NULL );
+    assert( it->second.IsNotNull() );
     it->second->Print( os );
     os << std::endl;
     }
