@@ -289,7 +289,7 @@ public:
   /**
    * Return the numbner of label objects in the image
    */
-  unsigned long GetNumberOfObjects() const;
+  unsigned long GetNumberOfLabelObjects() const;
   
   /**
    * Set/Get the background label
@@ -308,10 +308,10 @@ public:
    * Print all the objects stored in that collection - a convenient method
    * for prototyping.
    */
-  void PrintObjects(std::ostream& os) const;
-  void PrintObjects() const
+  void PrintLabelObjects(std::ostream& os) const;
+  void PrintLabelObjects() const
     {
-    this->PrintObjects( std::cerr );
+    this->PrintLabelObjects( std::cerr );
     }
 
 protected:

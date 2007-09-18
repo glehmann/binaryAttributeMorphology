@@ -56,11 +56,11 @@ srelabel = itk.StatisticsRelabelLabelMapFilter[LabelMapType].New(skeep, Attribut
 # - the spot position
 # - the mean value in the nucleus in the spot zone
 print "nuclei", "x", "y", "mean"
-for nl in range(1, relabel.GetOutput().GetNumberOfObjects()+1):
+for nl in range(1, relabel.GetOutput().GetNumberOfLabelObjects()+1):
 	maskSpots.SetLabel(nl)
 	srelabel.UpdateLargestPossibleRegion()
 	labeCollection = srelabel.GetOutput()
-	for l in range(1, labeCollection.GetNumberOfObjects()+1):
+	for l in range(1, labeCollection.GetNumberOfLabelObjects()+1):
 		lo = labeCollection.GetLabelObject(l)
 		print nl, lo.GetCentroid()[0], lo.GetCentroid()[1], lo.GetMean()
 

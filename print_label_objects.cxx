@@ -50,7 +50,7 @@ int main(int argc, char * argv[])
   // update the statistics filter, so its output will be up to date
   statistics->Update();
 
-  statistics->GetOutput()->PrintObjects();
+  statistics->GetOutput()->PrintLabelObjects();
 
   return 0;
 }

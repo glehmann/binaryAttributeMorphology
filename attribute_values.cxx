@@ -47,7 +47,7 @@ int main(int argc, char * argv[])
 
   // then we can read the attribute values we're interested in
   LabelCollectionType::Pointer collection = shape->GetOutput();
-  for( int label=1; label<=collection->GetNumberOfObjects(); label++ )
+  for( int label=1; label<=collection->GetNumberOfLabelObjects(); label++ )
     {
     LabelObjectType::Pointer labelObject = collection->GetLabelObject( label );
     std::cout << label << "\t" << labelObject->GetPhysicalSize() << "\t" << labelObject->GetCentroid() << std::endl;

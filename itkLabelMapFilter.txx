@@ -85,7 +85,7 @@ LabelMapFilter<TInputImage, TOutputImage>
 
   // initialize the progress reporter
   // TODO: really report the progress!
-  ProgressReporter progress( this, 0, this->GetLabelMap()->GetNumberOfObjects() );
+  ProgressReporter progress( this, 0, this->GetLabelMap()->GetNumberOfLabelObjects() );
 }
 
 

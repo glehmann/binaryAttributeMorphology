@@ -329,7 +329,7 @@ LabelMap<TLabelObject>
 template<class TLabelObject >
 unsigned long
 LabelMap<TLabelObject>
-::GetNumberOfObjects() const
+::GetNumberOfLabelObjects() const
 {
   return m_LabelObjectContainer.size();
 }
@@ -338,7 +338,7 @@ LabelMap<TLabelObject>
 template<class TLabelObject >
 void 
 LabelMap<TLabelObject>
-::PrintObjects(std::ostream& os) const
+::PrintLabelObjects(std::ostream& os) const
 {
   for( typename LabelObjectContainerType::const_iterator it = m_LabelObjectContainer.begin();
     it != m_LabelObjectContainer.end();
