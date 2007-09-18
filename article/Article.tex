@@ -33,7 +33,7 @@ colorlinks,linkcolor={blue},citecolor={blue},urlcolor={blue},
 
 % The title should be descriptive enough for people to be able to find
 % the relevant document. 
-\title{Labeled object representation and manipulation with ITK}
+\title{Label object representation and manipulation with ITK}
 
 % Increment the release number whenever significant changes are made.
 % The author and/or editor can define 'significant' however they like.
@@ -63,8 +63,8 @@ encoding used in that filter to implement some of the most useful binary
 mathematical morphology operators: the opening by attribute.
 Following that idea, and after have searched a way to use the ITK's spatial
 objects for this task, a new set of classes have been developed to represent and
-manipulate the labeled images and the objects within them in ITK.
-Those new classes have been used to implement several labeled images
+manipulate the label images and the objects within them in ITK.
+Those new classes have been used to implement several label images
 manipulation based on object attributes, as well as the binary specialization of
 some mathematical morphology filter already included in ITK, and not related to
 the attribute of the objects. With those last filters, this contribution comes
@@ -82,7 +82,7 @@ usage examples of the new classes.
 
 Identifying the objects in an image is a very common task, often realized by
 producing an image of the same size with a single pixel value per object. This
-image is called a labeled image. There are several way to create this image. It
+image is called a label image. There are several way to create this image. It
 can be done by searching the connected components in a binary image, it can be
 produced directly by some algorithms, like the watershed transform, it can even
 be simply done by hand, etc.
@@ -103,9 +103,9 @@ integral number types, for several reasons: they are commonly used in image
 analysis, they efficiently reprensent the label in memory, and its easy to find
 the next label by adding 1.
 
-\subsection{Labeled image}
+\subsection{Label image}
 
-A label image is an image which contains several labeled pixels. Often, the
+A label image is an image which contains several label pixels. Often, the
 labels are representing some objects placed on a background, and so the label
 image may use a particular label for the background.
 
@@ -123,8 +123,8 @@ A binary image is an image with two labels: a foreground label and a background
 label. In practice, the binary images are using a pixel type able to store more
 than those two values. The foreground is thus defined with a particular label,
 and the other label in the image are considered as the background. A side effect
-of that is that a labeled image can be considered as a binary image, and so, it
-let us manipulate a single object in a labeled image.
+of that is that a label image can be considered as a binary image, and so, it
+let us manipulate a single object in a label image.
 
 \begin{figure}[htbp]
 \begin{center}
@@ -141,7 +141,7 @@ example the size of an object, the mean of its pixels intensities, etc.
 
 \section{Existing classes and naming convention in ITK}
 
-In ITK, the labeled and the binary images are implemented as a simple {\em
+In ITK, the label and the binary images are implemented as a simple {\em
 itk::Image}. The pixel types used are most of the time integral, signed or
 unsigned, but may be of other types.
 Several definitions of a binary image or used in ITK. Depending of the class
@@ -164,14 +164,14 @@ The filter which are mainpulating binary images are often prefixed with the word
 "Binary", to differenciate the grayscale version which don't have a prefix. It
 seem to be a quite good practice which have been kept in that article.
 
-The filter dedicated to the manipulation of labeled images have the word "Label"
+The filter dedicated to the manipulation of label images have the word "Label"
 somewhere in there name. Again, it seem to be a good practice which have been
 kept in that article.
 
 
 \section{Data representation}
 
-The labeled images are often used the represent the connected components of an
+The label images are often used the represent the connected components of an
 image. In this contribution, another representation has been chosen.
 
 The objects contained in the image, as connected component, can be efficiently stored in memory as a set
@@ -183,7 +183,7 @@ The image is a collection of those objects, which also store some values of the 
 \subsection{itk::LabelMap}
 
 The {\em itk::LabelMap} class is in charge of managing the
-collection of labeled
+collection of label
 objects of the image, as well as storing the metadata associated with the image
 like
 the spacing, the physical position - all the metadata found in {\em itk::Image}.
@@ -194,10 +194,10 @@ support the itk::Image iterators though} in many cases. The performance can be
 very different however, because of the very different data structure used.
 
 The {\em itk::LabelMap} is a templated class, which take a single
-parameter: the type of {\em labeled object} stored by that class. The dimension
-of the image is took from the {\em labeled object} class, and thus don't need to
+parameter: the type of {\em label object} stored by that class. The dimension
+of the image is took from the {\em label object} class, and thus don't need to
 be defined as template parameter of that class. The pixel type of the image
-also comes from the {\em labeled object} class.
+also comes from the {\em label object} class.
 
 \subsection{itk::LabelObject and its specializations}
 
@@ -220,15 +220,15 @@ The {\em itk::LabelObject} class is templated and takes to required template par
 \end{itemize}
 
 Several subclasses are provided with that contribution, to cover the most common
-usages of the labeled objects manipulation:
+usages of the label objects manipulation:
 \begin{itemize}
   \item {\em itk::AttributeLabelObject} is able to store a generic attribute. It
 is generic in the sense that its type is given in template parameter.
   \item {\em itk::ShapeLabelObject} contains numerous attribute related to the
-shape of the labeled object. Computing the values of those attributes does not
+shape of the label object. Computing the values of those attributes does not
 require a feaure image.
   \item {\em itk::StatisticsLabelObject} contains numerous statistics about the
-grey values of a feature image in the same place than the labeled object.
+grey values of a feature image in the same place than the label object.
 Computing the values of those attributes {\em does} require a feature image.
 \end{itemize}
 
@@ -331,7 +331,7 @@ of a single line.
 \subsection{Generating the itk::LabelMap}
 
 The {\em itk::LabelMap} class provide some methods to fill the
-image "by hand", like the usual {\em SetPixel()} method. However, the most efficient way is to convert a labeled image or a binary
+image "by hand", like the usual {\em SetPixel()} method. However, the most efficient way is to convert a label image or a binary
 image stored in an {\em itk::Image} to a {\em itk::LabelMap}, by
 using {\em itk::BinaryImageToLabelMapFilter} or {\em
 itk::LabelImageToLabelMapFilter}.
@@ -414,7 +414,7 @@ Once the manipulation of the objects is done, it can be useful to go back to a
 more classic {\em itk::Image}. Several classes are provided to do that:
 \begin{itemize}
   \item The {\em itk::LabelMapToLabelImageFilter} class simply
-convert a {\em itk::LabelMap} to a labeled image stored in a {\em
+convert a {\em itk::LabelMap} to a label image stored in a {\em
 itk::Image}.
   \item The {\em itk::LabelMapToBinaryImageFilter} put all the
 objects in the foreground of a binary image stored in a {itk::Image}. It is
@@ -448,8 +448,8 @@ itk::LabelMap},
 \end{itemize}
 with a specific attribute.
 
-Because the objects are often get from a labeled image or from a binary image,
-those filters have been made for binary, and labeled images.
+Because the objects are often get from a label image or from a binary image,
+those filters have been made for binary, and label images.
 
 \subsection{Binary filters}
 

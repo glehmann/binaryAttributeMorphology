@@ -1,6 +1,6 @@
 
 # you should use the title of the article instead
-ARTICLE_TITLE = Labeled object representation and manipulation with ITK
+ARTICLE_TITLE = Label object representation and manipulation with ITK
 
 # spaces are not allowed
 empty:=
