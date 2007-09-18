@@ -1476,6 +1476,13 @@ The converters from/to image are provided, but it may be useful to  have the con
 
 Finally, all the binary and label filters should be implemented as a subclass of {\em InPlaceImageFilter}.
 
+Note that some names have been changed in revision 3. To fix your sources, the following commands can be used in your source directory:
+\small \begin{verbatim}
+perl -e 's/LabelCollectionImage/LabelMap/g' -pi *
+perl -e 's/GetNumberOfObjects/GetNumberOfLabelObjects/g' -pi *
+perl -e 's/PrintObjects/PrintLabelObjects/g' -pi *
+\end{verbatim} \normalsize
+
 \section{Conclusion}
 
 ITK is currently lacking a good way to manipulate the binary objects. With that contribution I hope to have mostly
