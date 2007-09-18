@@ -1,8 +1,8 @@
 #include "itkImageFileReader.h"
 #include "itkShapeLabelObject.h"
-#include "itkLabelCollectionImage.h"
-#include "itkBinaryImageToLabelCollectionImageFilter.h"
-#include "itkShapeLabelCollectionImageFilter.h"
+#include "itkLabelMap.h"
+#include "itkBinaryImageToLabelMapFilter.h"
+#include "itkShapeLabelMapFilter.h"
 
 int main(int argc, char * argv[])
 {
@@ -28,16 +28,16 @@ int main(int argc, char * argv[])
   // the StatisticsLabelObejct).
   typedef unsigned long LabelType;
   typedef itk::ShapeLabelObject< LabelType, dim > LabelObjectType;
-  typedef itk::LabelCollectionImage< LabelObjectType > LabelCollectionType;
+  typedef itk::LabelMap< LabelObjectType > LabelCollectionType;
 
   // convert the image in a collection of objects
-  typedef itk::BinaryImageToLabelCollectionImageFilter< ImageType, LabelCollectionType > ConverterType;
+  typedef itk::BinaryImageToLabelMapFilter< ImageType, LabelCollectionType > ConverterType;
   ConverterType::Pointer converter = ConverterType::New();
   converter->SetInput( reader->GetOutput() );
   converter->SetForegroundValue( atoi(argv[2]) );
 
-  // and valuate the attributes with the dedicated filter: ShapeLabelCollectionImageFilter
-  typedef itk::ShapeLabelCollectionImageFilter< LabelCollectionType > ShapeFilterType;
+  // and valuate the attributes with the dedicated filter: ShapeLabelMapFilter
+  typedef itk::ShapeLabelMapFilter< LabelCollectionType > ShapeFilterType;
   ShapeFilterType::Pointer shape = ShapeFilterType::New();
   shape->SetComputeFeretDiameter( false );
   shape->SetInput( converter->GetOutput() );

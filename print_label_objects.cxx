@@ -1,8 +1,8 @@
 #include "itkImageFileReader.h"
 #include "itkStatisticsLabelObject.h"
-#include "itkLabelCollectionImage.h"
-#include "itkBinaryImageToLabelCollectionImageFilter.h"
-#include "itkStatisticsLabelCollectionImageFilter.h"
+#include "itkLabelMap.h"
+#include "itkBinaryImageToLabelMapFilter.h"
+#include "itkStatisticsLabelMapFilter.h"
 
 int main(int argc, char * argv[])
 {
@@ -30,17 +30,17 @@ int main(int argc, char * argv[])
   // of the objects
   typedef unsigned long LabelType;
   typedef itk::StatisticsLabelObject< LabelType, dim > LabelObjectType;
-  typedef itk::LabelCollectionImage< LabelObjectType > LabelCollectionType;
+  typedef itk::LabelMap< LabelObjectType > LabelCollectionType;
 
   // convert the image in a collection of objects
-  typedef itk::BinaryImageToLabelCollectionImageFilter< ImageType, LabelCollectionType > ConverterType;
+  typedef itk::BinaryImageToLabelMapFilter< ImageType, LabelCollectionType > ConverterType;
   ConverterType::Pointer converter = ConverterType::New();
   converter->SetInput( reader->GetOutput() );
   converter->SetForegroundValue( atoi(argv[3]) );
   converter->SetFullyConnected( true );
 
-  // and valuate the attributes with the dedicated filter: StatisticsLabelCollectionImageFilter
-  typedef itk::StatisticsLabelCollectionImageFilter< LabelCollectionType, ImageType > StatisticsFilterType;
+  // and valuate the attributes with the dedicated filter: StatisticsLabelMapFilter
+  typedef itk::StatisticsLabelMapFilter< LabelCollectionType, ImageType > StatisticsFilterType;
   StatisticsFilterType::Pointer statistics = StatisticsFilterType::New();
   statistics->SetComputeFeretDiameter( false );
   statistics->SetInput( converter->GetOutput() );

@@ -3,9 +3,9 @@
 #include "itkSimpleFilterWatcher.h"
 
 #include "itkLabelObject.h"
-#include "itkLabelCollectionImage.h"
-#include "itkLabelImageToLabelCollectionImageFilter.h"
-#include "itkLabelCollectionImageToMaskImageFilter.h"
+#include "itkLabelMap.h"
+#include "itkLabelImageToLabelMapFilter.h"
+#include "itkLabelMapToMaskImageFilter.h"
 
 
 int main(int argc, char * argv[])
@@ -30,7 +30,7 @@ int main(int argc, char * argv[])
   // chosen, because only the mask feature is tested here, so we don't need any
   // attribute.
   typedef itk::LabelObject< unsigned char, dim > LabelObjectType;
-  typedef itk::LabelCollectionImage< LabelObjectType > LabelCollectionImageType;
+  typedef itk::LabelMap< LabelObjectType > LabelMapType;
   
   // read the label image and the input image to be masked.
   typedef itk::ImageFileReader< ImageType > ReaderType;
@@ -41,7 +41,7 @@ int main(int argc, char * argv[])
   reader2->SetFileName( argv[2] );
   
   // convert the label image to a label collection image.
-  typedef itk::LabelImageToLabelCollectionImageFilter< ImageType, LabelCollectionImageType> I2LType;
+  typedef itk::LabelImageToLabelMapFilter< ImageType, LabelMapType> I2LType;
   I2LType::Pointer i2l = I2LType::New();
   i2l->SetInput( reader->GetOutput() );
   i2l->SetUseBackground( true );
@@ -55,7 +55,7 @@ int main(int argc, char * argv[])
   // masked region, by calling SetCrop( true ), or to a region padded by a border, by
   // calling both SetCrop() and SetCropBorder(). The crop border defaults to 0, and the
   // image is not cropped by default.
-  typedef itk::LabelCollectionImageToMaskImageFilter< LabelCollectionImageType, ImageType > MaskType;
+  typedef itk::LabelMapToMaskImageFilter< LabelMapType, ImageType > MaskType;
   MaskType::Pointer mask = MaskType::New();
   mask->SetInput( i2l->GetOutput() );
   mask->SetFeatureImage( reader2->GetOutput() );

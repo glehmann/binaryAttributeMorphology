@@ -1,8 +1,8 @@
 #include "itkImageFileReader.h"
 #include "itkStatisticsLabelObject.h"
-#include "itkLabelCollectionImage.h"
-#include "itkBinaryImageToLabelCollectionImageFilter.h"
-#include "itkStatisticsLabelCollectionImageFilter.h"
+#include "itkLabelMap.h"
+#include "itkBinaryImageToLabelMapFilter.h"
+#include "itkStatisticsLabelMapFilter.h"
 #include "itkTimeProbe.h"
 #include "itkSimpleFilterWatcher.h"
 
@@ -21,9 +21,9 @@ int main(int, char * argv[])
   
   typedef unsigned long LabelType;
   typedef itk::StatisticsLabelObject< LabelType, dim > LabelObjectType;
-  typedef itk::LabelCollectionImage< LabelObjectType > LabelCollectionType;
+  typedef itk::LabelMap< LabelObjectType > LabelCollectionType;
 
-  typedef itk::BinaryImageToLabelCollectionImageFilter< ImageType, LabelCollectionType > ConverterType;
+  typedef itk::BinaryImageToLabelMapFilter< ImageType, LabelCollectionType > ConverterType;
   ConverterType::Pointer converter = ConverterType::New();
   converter->SetInput( reader->GetOutput() );
   converter->SetForegroundValue( 200 );
@@ -33,23 +33,23 @@ int main(int, char * argv[])
   // to be sure that the converter is not run again at that point
   itk::SimpleFilterWatcher watcher(converter, "converter");
 
-  typedef itk::StatisticsLabelCollectionImageFilter< LabelCollectionType, ImageType > StatisticsFilterType;
+  typedef itk::StatisticsLabelMapFilter< LabelCollectionType, ImageType > StatisticsFilterType;
   StatisticsFilterType::Pointer statistics = StatisticsFilterType::New();
   statistics->SetInPlace( false );  // to avoid running the converter each time
   statistics->SetInput( converter->GetOutput() );
   statistics->SetFeatureImage( reader->GetOutput() );
   
-  typedef itk::ShapeLabelCollectionImageFilter< LabelCollectionType > ShapeFilterType;
+  typedef itk::ShapeLabelMapFilter< LabelCollectionType > ShapeFilterType;
   ShapeFilterType::Pointer shape = ShapeFilterType::New();
   shape->SetInPlace( false );  // to avoid running the converter each time
   shape->SetInput( converter->GetOutput() );
   
-  typedef itk::InPlaceLabelCollectionImageFilter< LabelCollectionType > InPlaceFilterType;
+  typedef itk::InPlaceLabelMapFilter< LabelCollectionType > InPlaceFilterType;
   InPlaceFilterType::Pointer inPlace = InPlaceFilterType::New();
   inPlace->SetInPlace( false );  // to avoid running the converter each time
   inPlace->SetInput( converter->GetOutput() );
   
-  typedef itk::LabelCollectionImageFilter< LabelCollectionType, LabelCollectionType > EmptyFilterType;
+  typedef itk::LabelMapFilter< LabelCollectionType, LabelCollectionType > EmptyFilterType;
   EmptyFilterType::Pointer empty = EmptyFilterType::New();
   empty->SetInput( converter->GetOutput() );
 

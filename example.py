@@ -13,7 +13,7 @@ RGBPixelType = itk.RGBPixel[PixelType]
 RGBImageType = itk.Image[ RGBPixelType, Dimension ]
 
 LabelObjectType = itk.StatisticsLabelObject[itk.UL, Dimension]
-LabelCollectionImageType = itk.LabelCollectionImage[LabelObjectType]
+LabelMapType = itk.LabelMap[LabelObjectType]
 
 # read the image of the nucleus
 nuclei = itk.ImageFileReader[ImageType].New(FileName="images/noyaux.png")
@@ -24,30 +24,30 @@ maurer = itk.SignedMaurerDistanceMapImageFilter[ImageType, DistanceImageType].Ne
 watershed = itk.MorphologicalWatershedImageFilter[DistanceImageType, ImageType].New(maurer, Level=60, MarkWatershedLine=False)
 mask = itk.MaskImageFilter[ImageType, ImageType, ImageType].New(watershed, otsu)
 # now switch to the label collection representation
-label = itk.LabelImageToLabelCollectionImageFilter[ImageType, LabelCollectionImageType].New(mask)
+label = itk.LabelImageToLabelMapFilter[ImageType, LabelMapType].New(mask)
 # compute the attribute values, including the perimeter and the Feret diameter
-stats = itk.StatisticsLabelCollectionImageFilter[LabelCollectionImageType, ImageType].New(label, nuclei, ComputePerimeter=True, ComputeFeretDiameter=True)
+stats = itk.StatisticsLabelMapFilter[LabelMapType, ImageType].New(label, nuclei, ComputePerimeter=True, ComputeFeretDiameter=True)
 # drop the objects too small to be a nucleus, and the ones on the border
-size = itk.ShapeOpeningLabelCollectionImageFilter[LabelCollectionImageType].New(stats, Attribute='Size', Lambda=100)
-border = itk.ShapeOpeningLabelCollectionImageFilter[LabelCollectionImageType].New(size, Attribute='SizeOnBorder', Lambda=10, ReverseOrdering=True)
+size = itk.ShapeOpeningLabelMapFilter[LabelMapType].New(stats, Attribute='Size', Lambda=100)
+border = itk.ShapeOpeningLabelMapFilter[LabelMapType].New(size, Attribute='SizeOnBorder', Lambda=10, ReverseOrdering=True)
 # reoder the labels. The objects with the highest mean are the first ones.
-relabel = itk.StatisticsRelabelLabelCollectionImageFilter[LabelCollectionImageType].New(border, Attribute='Mean')
+relabel = itk.StatisticsRelabelLabelMapFilter[LabelMapType].New(border, Attribute='Mean')
 # for visual validation
-labelNuclei = itk.LabelCollectionImageToLabelImageFilter[LabelCollectionImageType, ImageType].New(relabel)
+labelNuclei = itk.LabelMapToLabelImageFilter[LabelMapType, ImageType].New(relabel)
 overlay = itk.LabelOverlayImageFilter[ImageType, ImageType, RGBImageType].New(nuclei, labelNuclei, UseBackground=True)
 itk.write(overlay, "nuclei-overlay.png")
 
 
 spots = itk.ImageFileReader[ImageType].New(FileName="images/spots.png")
 # mask the spot image to keep only the nucleus zone. The rest of the image is cropped, excepted a border of 2 pixels
-maskSpots = itk.LabelCollectionImageToMaskImageFilter[LabelCollectionImageType, ImageType].New(relabel, spots, Label=1, Crop=True, CropBorder=2)
+maskSpots = itk.LabelMapToMaskImageFilter[LabelMapType, ImageType].New(relabel, spots, Label=1, Crop=True, CropBorder=2)
 th = itk.BinaryThresholdImageFilter[ImageType, ImageType].New(maskSpots, LowerThreshold=110)
-slabel = itk.BinaryImageToLabelCollectionImageFilter[ImageType, LabelCollectionImageType].New(th)
-sstats = itk.StatisticsLabelCollectionImageFilter[LabelCollectionImageType, ImageType].New(slabel, nuclei)
+slabel = itk.BinaryImageToLabelMapFilter[ImageType, LabelMapType].New(th)
+sstats = itk.StatisticsLabelMapFilter[LabelMapType, ImageType].New(slabel, nuclei)
 # we know there are for spots in the nubleus, so keep the 4 biggest spots
-skeep = itk.ShapeKeepNObjectsLabelCollectionImageFilter[LabelCollectionImageType].New(sstats, Attribute='Size', NumberOfObjects=4)
+skeep = itk.ShapeKeepNObjectsLabelMapFilter[LabelMapType].New(sstats, Attribute='Size', NumberOfObjects=4)
 # reoder the labels. The bigger objects first.
-srelabel = itk.StatisticsRelabelLabelCollectionImageFilter[LabelCollectionImageType].New(skeep, Attribute='Size')
+srelabel = itk.StatisticsRelabelLabelMapFilter[LabelMapType].New(skeep, Attribute='Size')
 
 
 

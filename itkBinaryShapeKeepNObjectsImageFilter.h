@@ -19,11 +19,11 @@
 
 #include "itkImageToImageFilter.h"
 #include "itkShapeLabelObject.h"
-#include "itkLabelCollectionImage.h"
-#include "itkBinaryImageToLabelCollectionImageFilter.h"
-#include "itkShapeLabelCollectionImageFilter.h"
-#include "itkShapeKeepNObjectsLabelCollectionImageFilter.h"
-#include "itkLabelCollectionImageToBinaryImageFilter.h"
+#include "itkLabelMap.h"
+#include "itkBinaryImageToLabelMapFilter.h"
+#include "itkShapeLabelMapFilter.h"
+#include "itkShapeKeepNObjectsLabelMapFilter.h"
+#include "itkLabelMapToBinaryImageFilter.h"
 
 
 namespace itk {
@@ -73,12 +73,12 @@ public:
                       TInputImage::ImageDimension);
 
   typedef ShapeLabelObject<unsigned long, ImageDimension> LabelObjectType;
-  typedef typename itk::LabelCollectionImage< LabelObjectType > LabelCollectionImageType;
-  typedef typename itk::BinaryImageToLabelCollectionImageFilter< InputImageType, LabelCollectionImageType > LabelizerType;
-  typedef typename itk::ShapeLabelCollectionImageFilter< LabelCollectionImageType > LabelObjectValuatorType;
+  typedef typename itk::LabelMap< LabelObjectType > LabelMapType;
+  typedef typename itk::BinaryImageToLabelMapFilter< InputImageType, LabelMapType > LabelizerType;
+  typedef typename itk::ShapeLabelMapFilter< LabelMapType > LabelObjectValuatorType;
   typedef typename LabelObjectType::AttributeType AttributeType;
-  typedef typename itk::ShapeKeepNObjectsLabelCollectionImageFilter< LabelCollectionImageType > KeepNObjectsType;
-  typedef typename itk::LabelCollectionImageToBinaryImageFilter< LabelCollectionImageType, OutputImageType > BinarizerType;
+  typedef typename itk::ShapeKeepNObjectsLabelMapFilter< LabelMapType > KeepNObjectsType;
+  typedef typename itk::LabelMapToBinaryImageFilter< LabelMapType, OutputImageType > BinarizerType;
 
   /** Standard New method. */
   itkNewMacro(Self);  

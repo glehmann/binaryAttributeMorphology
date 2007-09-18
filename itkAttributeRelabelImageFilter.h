@@ -18,10 +18,10 @@
 #define __itkAttributeRelabelImageFilter_h
 
 #include "itkImageToImageFilter.h"
-#include "itkLabelCollectionImage.h"
-#include "itkLabelImageToLabelCollectionImageFilter.h"
-#include "itkAttributeRelabelLabelCollectionImageFilter.h"
-#include "itkLabelCollectionImageToLabelImageFilter.h"
+#include "itkLabelMap.h"
+#include "itkLabelImageToLabelMapFilter.h"
+#include "itkAttributeRelabelLabelMapFilter.h"
+#include "itkLabelMapToLabelImageFilter.h"
 #include "itkAttributeLabelObject.h"
 
 
@@ -72,13 +72,13 @@ public:
                       TInputImage::ImageDimension);
 
   typedef TLabelObject LabelObjectType;
-  typedef typename itk::LabelCollectionImage< LabelObjectType > LabelCollectionImageType;
-  typedef typename itk::LabelImageToLabelCollectionImageFilter< InputImageType, LabelCollectionImageType > LabelizerType;
+  typedef typename itk::LabelMap< LabelObjectType > LabelMapType;
+  typedef typename itk::LabelImageToLabelMapFilter< InputImageType, LabelMapType > LabelizerType;
   typedef TLabelObjectValuator LabelObjectValuatorType;
   typedef TAttributeAccessor AttributeAccessorType;
   typedef typename AttributeAccessorType::AttributeValueType AttributeValueType;
-  typedef typename itk::AttributeRelabelLabelCollectionImageFilter< LabelCollectionImageType, AttributeAccessorType > RelabelType;
-  typedef typename itk::LabelCollectionImageToLabelImageFilter< LabelCollectionImageType, OutputImageType > BinarizerType;
+  typedef typename itk::AttributeRelabelLabelMapFilter< LabelMapType, AttributeAccessorType > RelabelType;
+  typedef typename itk::LabelMapToLabelImageFilter< LabelMapType, OutputImageType > BinarizerType;
 
   /** Standard New method. */
   itkNewMacro(Self);  

@@ -180,20 +180,20 @@ length of the line on a given dimension (by convention, the dimension 0).
 
 The image is a collection of those objects, which also store some values of the image, like its size, its spacing, etc.
 
-\subsection{itk::LabelCollectionImage}
+\subsection{itk::LabelMap}
 
-The {\em itk::LabelCollectionImage} class is in charge of managing the
+The {\em itk::LabelMap} class is in charge of managing the
 collection of labeled
 objects of the image, as well as storing the metadata associated with the image
 like
 the spacing, the physical position - all the metadata found in {\em itk::Image}.
 
-The {\em itk::LabelCollectionImage} provide a part of the API of the {\em
+The {\em itk::LabelMap} provide a part of the API of the {\em
 itk::Image} class, and so can be manipulated as an image\footnote{It doesn't
 support the itk::Image iterators though} in many cases. The performance can be
 very different however, because of the very different data structure used.
 
-The {\em itk::LabelCollectionImage} is a templated class, which take a single
+The {\em itk::LabelMap} is a templated class, which take a single
 parameter: the type of {\em labeled object} stored by that class. The dimension
 of the image is took from the {\em labeled object} class, and thus don't need to
 be defined as template parameter of that class. The pixel type of the image
@@ -328,13 +328,13 @@ of a single line.
 
 \section{General view of the usage}
 
-\subsection{Generating the itk::LabelCollectionImage}
+\subsection{Generating the itk::LabelMap}
 
-The {\em itk::LabelCollectionImage} class provide some methods to fill the
+The {\em itk::LabelMap} class provide some methods to fill the
 image "by hand", like the usual {\em SetPixel()} method. However, the most efficient way is to convert a labeled image or a binary
-image stored in an {\em itk::Image} to a {\em itk::LabelCollectionImage}, by
-using {\em itk::BinaryImageToLabelCollectionImageFilter} or {\em
-itk::LabelImageToLabelCollectionImageFilter}.
+image stored in an {\em itk::Image} to a {\em itk::LabelMap}, by
+using {\em itk::BinaryImageToLabelMapFilter} or {\em
+itk::LabelImageToLabelMapFilter}.
 
 \subsection{Valuating the attributes}
 
@@ -343,24 +343,24 @@ thus, the attributes must be valuated. Some filters are provided for the most
 common used ones:
 
 \begin{itemize}
-  \item {\em itk::ShapeLabelCollectionImageFilter} to fill the
+  \item {\em itk::ShapeLabelMapFilter} to fill the
 attributes of the {\em itk::ShapeLabelObject}s, 
-  \item and {\em itk::ShapeLabelCollectionImageFilter} to fill the attributes of the {\em
+  \item and {\em itk::ShapeLabelMapFilter} to fill the attributes of the {\em
 itk::StatisticsLabelObject}s.
 \end{itemize}
 
 For the {\em itk::AttributeLabelObject} class or
 other classes, the user must set the value by himself, for example by
-implementing a subclass of {\em itk::InPlaceLabelCollectionImageFilter}.
+implementing a subclass of {\em itk::InPlaceLabelMapFilter}.
 
-\subsection{Manipulating the itk::LabelCollectionImage}
+\subsection{Manipulating the itk::LabelMap}
 
 Once created and, optionally, valuated, several filters are provided to manipulate
-the {\em itk::LabelCollectionImage}:
+the {\em itk::LabelMap}:
 
 \begin{itemize}
   \item An opening can be performed with the {\em
-OpeningLabelCollectionImageFilter} classes. Those classes will remove all the
+OpeningLabelMapFilter} classes. Those classes will remove all the
 objects with an attribute value lower or greater than a given value.
 Because we often can use some criteria  which have not been used during the segmentation
 procedure, like the size of the object, the mean value of its pixels, etc., the attribute
@@ -369,12 +369,12 @@ a thresholding of a grayscale image, the objects too small or too beg to be of i
 can be removed that way.
 
   \item A fixed number of objects can be kept, with the {\em
-KeepNObjectsLabelCollectionImageFilter} classes. They are chosen according to
+KeepNObjectsLabelMapFilter} classes. They are chosen according to
 the value of their attribute. The user can choose to keep the ones with the
 highest, or with the lowest attribute values.
 
   \item The objects can be relabel, with the {\em
-RelabelLabelCollectionImageFilter} classes. The order of the label is dependant
+RelabelLabelMapFilter} classes. The order of the label is dependant
 of the value of the attribute. Again, the user can choose to have the objects
 with the highest attribute value in the first labels, or to have the objects
 with the lowest attribute values in the first labels.
@@ -408,28 +408,28 @@ filter filters the collection directly, without setting an attribute in the obje
 reimplementing it using the generic attributes. It would have no impact on the
 binary filters API.}.
 
-\subsection{Generating an itk::Image from the itk::LabelCollectionImage}
+\subsection{Generating an itk::Image from the itk::LabelMap}
 
 Once the manipulation of the objects is done, it can be useful to go back to a
 more classic {\em itk::Image}. Several classes are provided to do that:
 \begin{itemize}
-  \item The {\em itk::LabelCollectionImageToLabelImageFilter} class simply
-convert a {\em itk::LabelCollectionImage} to a labeled image stored in a {\em
+  \item The {\em itk::LabelMapToLabelImageFilter} class simply
+convert a {\em itk::LabelMap} to a labeled image stored in a {\em
 itk::Image}.
-  \item The {\em itk::LabelCollectionImageToBinaryImageFilter} put all the
+  \item The {\em itk::LabelMapToBinaryImageFilter} put all the
 objects in the foreground of a binary image stored in a {itk::Image}. It is
 intended to be used with an image produced by the {\em
-itk::BinaryImageToLabelCollectionImageFilter}. The background values of the
+itk::BinaryImageToLabelMapFilter}. The background values of the
 original image can also be restored by this filter.
-  \item The {\em itk::LabelCollectionImageToMaskImageFilter} class can be used
-to mask an image with the objects of the {\em itk::LabelCollectionImage}. With
+  \item The {\em itk::LabelMapToMaskImageFilter} class can be used
+to mask an image with the objects of the {\em itk::LabelMap}. With
 that filter, the image can be cropped to contain only the non-masked zone\footnote{
 The code used to produce the output region based on the content of the image
 is partially copied from a contribution of Peter Cech \url{http://www.vision.ee.ethz.ch/~pcech/itkAutoCropImageFilter/}.}
 , or the non-masked zone padded by a user defined number of pixels.
-  \item Finally, {\em itk::LabelCollectionImageToAttributeImageFilter} produce
+  \item Finally, {\em itk::LabelMapToAttributeImageFilter} produce
 an {\em itk::Image} with the value of the attribute of the objects of the {\em
-itk::LabelCollectionImage}. This filter is mostly useful to have a global view
+itk::LabelMap}. This filter is mostly useful to have a global view
 of the attribute values in the image.
 \end{itemize}
 
@@ -439,12 +439,12 @@ The general view of the previous section show a very common way to use those
 classes. To make easier to use, some prebuilt classes have been made, to perform
 the mini-pipeline:
 \begin{itemize}
-  \item creation of the {\em itk::LabelCollectionImage} from an {\em
+  \item creation of the {\em itk::LabelMap} from an {\em
 itk::Image},
   \item valuation of the attribute(s) of the objects,
-  \item filtering of the {\em itk::LabelCollectionImage},
+  \item filtering of the {\em itk::LabelMap},
   \item creation of an {\em itk::Image} from the filtered {\em
-itk::LabelCollectionImage},
+itk::LabelMap},
 \end{itemize}
 with a specific attribute.
 
@@ -624,9 +624,9 @@ same volume than the object, computed using equation
 
 The run-length encoding does not allow an easy access to the neighbors of a
 given pixel. If the neighborhood of all the pixels must be accessed, it is
-much easier to convert the {itk::LabelCollectionImage} to a {\em itk::Image}
-with the {\em itk::LabelCollectionImageToLabelImageFilter}, and use that
-image to access the neighbors. That's what is done in {\em itk::ShapeLabelCollectionImageFilter}
+much easier to convert the {itk::LabelMap} to a {\em itk::Image}
+with the {\em itk::LabelMapToLabelImageFilter}, and use that
+image to access the neighbors. That's what is done in {\em itk::ShapeLabelMapFilter}
 to compute the maximum Feret diameter, and the perimeter estimation.
 
 \section{Usage examples}
@@ -796,7 +796,7 @@ The source code is available in the file {\em binary\_fillhole.cxx}.
 #include "itkSimpleFilterWatcher.h"
 
 #include "itkLabelObject.h"
-#include "itkLabelCollectionImage.h"
+#include "itkLabelMap.h"
 #include "itkBinaryFillholeImageFilter.h"
 
 
@@ -836,7 +836,7 @@ int main(int argc, char * argv[])
 }
 \end{verbatim} \normalsize
 
-\subsection{LabelObject and LabelCollectionImage manipulation}
+\subsection{LabelObject and LabelMap manipulation}
 
 % \subsubsection{LabelObject}
 % 
@@ -864,16 +864,16 @@ First we include the headers of the class we will use, and parse the command lin
 #include "itkImageFileWriter.h"
 
 #include "itkAttributeLabelObject.h"
-#include "itkLabelCollectionImage.h"
+#include "itkLabelMap.h"
 
-#include "itkLabelImageToLabelCollectionImageFilter.h"
+#include "itkLabelImageToLabelMapFilter.h"
 
-#include "itkAttributeKeepNObjectsLabelCollectionImageFilter.h"
-#include "itkAttributeOpeningLabelCollectionImageFilter.h"
-#include "itkAttributeRelabelLabelCollectionImageFilter.h"
+#include "itkAttributeKeepNObjectsLabelMapFilter.h"
+#include "itkAttributeOpeningLabelMapFilter.h"
+#include "itkAttributeRelabelLabelMapFilter.h"
 
-#include "itkLabelCollectionImageToAttributeImageFilter.h"
-#include "itkLabelCollectionImageToLabelImageFilter.h"
+#include "itkLabelMapToAttributeImageFilter.h"
+#include "itkLabelMapToLabelImageFilter.h"
 
 
 int main(int argc, char * argv[])
@@ -895,10 +895,10 @@ Declare the dimension used, and the type of the image for input and output.
 The AttributeLabelObject class take 3 template parameters: the 2 ones
 from the LabelObject class, and the type of the attribute associated
 with each node. Here we have chosen a double. We then declares the
-type of the LabelCollectionImage with the type of the label object.
+type of the LabelMap with the type of the label object.
 \small \begin{verbatim}
   typedef itk::AttributeLabelObject< unsigned long, dim, double > LOType;
-  typedef itk::LabelCollectionImage< LOType > LCIType;
+  typedef itk::LabelMap< LOType > LCIType;
 \end{verbatim} \normalsize
 We read the input images.
 \small \begin{verbatim}
@@ -909,9 +909,9 @@ We read the input images.
   ReaderType::Pointer reader2 = ReaderType::New();
   reader2->SetFileName( argv[2] );
 \end{verbatim} \normalsize
-And convert the label image to a LabelCollectionImage.
+And convert the label image to a LabelMap.
 \small \begin{verbatim}
-  typedef itk::LabelImageToLabelCollectionImageFilter< IType, LCIType > I2LType;
+  typedef itk::LabelImageToLabelMapFilter< IType, LCIType > I2LType;
   I2LType::Pointer i2l = I2LType::New();
   i2l->SetInput( reader->GetOutput() );
   i2l->SetBackgroundValue( atoi(argv[7]) );
@@ -983,7 +983,7 @@ the common filters, or by hand. The default accessor (AttributeLabelObject)
 is the wright one when using AttributeLabelObject so we don't have to specify it.
 A different one can be used if needed though.
 \small \begin{verbatim}
-  typedef itk::AttributeKeepNObjectsLabelCollectionImageFilter< LCIType > KeepType;
+  typedef itk::AttributeKeepNObjectsLabelMapFilter< LCIType > KeepType;
   KeepType::Pointer keep = KeepType::New();
   keep->SetInput( labelCollection );
   keep->SetReverseOrdering( true );
@@ -993,27 +993,27 @@ Prevent the filter to run in place, so the input image is not modified.
 \small \begin{verbatim}
   keep->SetInPlace( false );
 
-  typedef itk::AttributeOpeningLabelCollectionImageFilter< LCIType > OpeningType;
+  typedef itk::AttributeOpeningLabelMapFilter< LCIType > OpeningType;
   OpeningType::Pointer opening = OpeningType::New();
   opening->SetInput( labelCollection );
   opening->SetLambda( atof(argv[8]) );
   keep->SetInPlace( false );
 
-  typedef itk::AttributeRelabelLabelCollectionImageFilter< LCIType > RelabelType;
+  typedef itk::AttributeRelabelLabelMapFilter< LCIType > RelabelType;
   RelabelType::Pointer relabel = RelabelType::New();
   relabel->SetInput( labelCollection );
   keep->SetInPlace( false );
 \end{verbatim} \normalsize
 The attribute values can be put directly in a classic image.
 \small \begin{verbatim}
-  typedef itk::LabelCollectionImageToAttributeImageFilter< LCIType, IType > A2IType;
+  typedef itk::LabelMapToAttributeImageFilter< LCIType, IType > A2IType;
   A2IType::Pointer a2i = A2IType::New();
   a2i->SetInput( labelCollection );
 \end{verbatim} \normalsize
 Or the label collection can be converted back to an label image, or to a binary image
 (not shown here)
 \small \begin{verbatim}
-  typedef itk::LabelCollectionImageToLabelImageFilter< LCIType, IType > L2IType;
+  typedef itk::LabelMapToLabelImageFilter< LCIType, IType > L2IType;
   L2IType::Pointer l2i = L2IType::New();
 \end{verbatim} \normalsize
 Finally, write the results
@@ -1053,9 +1053,9 @@ First include the classes we'll use
 \small \begin{verbatim}
 #include "itkImageFileReader.h"
 #include "itkShapeLabelObject.h"
-#include "itkLabelCollectionImage.h"
-#include "itkBinaryImageToLabelCollectionImageFilter.h"
-#include "itkShapeLabelCollectionImageFilter.h"
+#include "itkLabelMap.h"
+#include "itkBinaryImageToLabelMapFilter.h"
+#include "itkShapeLabelMapFilter.h"
 
 int main(int, char * argv[])
 {
@@ -1081,20 +1081,20 @@ the StatisticsLabelObejct).
 \small \begin{verbatim}
   typedef unsigned long LabelType;
   typedef itk::ShapeLabelObject< LabelType, dim > LabelObjectType;
-  typedef itk::LabelCollectionImage< LabelObjectType > LabelCollectionType;
+  typedef itk::LabelMap< LabelObjectType > LabelCollectionType;
 
 \end{verbatim} \normalsize
 convert the image in a collection of objects
 \small \begin{verbatim}
-  typedef itk::BinaryImageToLabelCollectionImageFilter< ImageType, LabelCollectionType > ConverterType;
+  typedef itk::BinaryImageToLabelMapFilter< ImageType, LabelCollectionType > ConverterType;
   ConverterType::Pointer converter = ConverterType::New();
   converter->SetInput( reader->GetOutput() );
   converter->SetForegroundValue( 200 );
 
 \end{verbatim} \normalsize
-and valuate the attributes with the dedicated filter: ShapeLabelCollectionImageFilter
+and valuate the attributes with the dedicated filter: ShapeLabelMapFilter
 \small \begin{verbatim}
-  typedef itk::ShapeLabelCollectionImageFilter< LabelCollectionType > ShapeFilterType;
+  typedef itk::ShapeLabelMapFilter< LabelCollectionType > ShapeFilterType;
   ShapeFilterType::Pointer shape = ShapeFilterType::New();
   shape->SetInput( converter->GetOutput() );
 
@@ -1104,7 +1104,7 @@ update the shape filter, so its output will be up to date
   shape->Update();
 
 \end{verbatim} \normalsize
-then we can read the attribute values we're interested in. {\em BinaryImageToLabelCollectionImageFilter}
+then we can read the attribute values we're interested in. {\em BinaryImageToLabelMapFilter}
 produces consecutives labels, so a simple {for} loop will do the job.
 \small \begin{verbatim}
   LabelCollectionType::Pointer collection = shape->GetOutput();
@@ -1121,8 +1121,8 @@ produces consecutives labels, so a simple {for} loop will do the job.
 
 \subsection{The mask features}
 
-The {\em itk::LabelCollectionImageToMaskImageFilter} class let the user mask
-a part of an {\em itk::Image} with the objects of a {\em itk::LabelCollectionImage}.
+The {\em itk::LabelMapToMaskImageFilter} class let the user mask
+a part of an {\em itk::Image} with the objects of a {\em itk::LabelMap}.
 It can also crop the image to contain only the masked region.
 
 The source code is available in the file {\em mask.cxx}.
@@ -1135,9 +1135,9 @@ First we include the headers of the class we will use, and parse the command lin
 #include "itkSimpleFilterWatcher.h"
 
 #include "itkLabelObject.h"
-#include "itkLabelCollectionImage.h"
-#include "itkLabelImageToLabelCollectionImageFilter.h"
-#include "itkLabelCollectionImageToMaskImageFilter.h"
+#include "itkLabelMap.h"
+#include "itkLabelImageToLabelMapFilter.h"
+#include "itkLabelMapToMaskImageFilter.h"
 
 
 int main(int argc, char * argv[])
@@ -1165,7 +1165,7 @@ chosen, because only the mask feature is tested here, so we don't need any
 attribute.
 \small \begin{verbatim}
   typedef itk::LabelObject< unsigned char, dim > LabelObjectType;
-  typedef itk::LabelCollectionImage< LabelObjectType > LabelCollectionImageType;
+  typedef itk::LabelMap< LabelObjectType > LabelMapType;
 \end{verbatim} \normalsize
 read the label image and the input image to be masked.
 \small \begin{verbatim}
@@ -1178,7 +1178,7 @@ read the label image and the input image to be masked.
 \end{verbatim} \normalsize
 convert the label image to a label collection image.
 \small \begin{verbatim}
-  typedef itk::LabelImageToLabelCollectionImageFilter< ImageType, LabelCollectionImageType> I2LType;
+  typedef itk::LabelImageToLabelMapFilter< ImageType, LabelMapType> I2LType;
   I2LType::Pointer i2l = I2LType::New();
   i2l->SetInput( reader->GetOutput() );
   i2l->SetUseBackground( true );
@@ -1193,7 +1193,7 @@ masked region, by calling {\em SetCrop(true)}, or to a region padded by a border
 calling both {\em SetCrop()} and {\em SetCropBorder()}. The crop border defaults to $0$, and the
 image is not cropped by default.
 \small \begin{verbatim}
-  typedef itk::LabelCollectionImageToMaskImageFilter< LabelCollectionImageType, ImageType > MaskType;
+  typedef itk::LabelMapToMaskImageFilter< LabelMapType, ImageType > MaskType;
   MaskType::Pointer mask = MaskType::New();
   mask->SetInput( i2l->GetOutput() );
   mask->SetFeatureImage( reader2->GetOutput() );
@@ -1258,7 +1258,7 @@ RGBPixelType = itk.RGBPixel[PixelType]
 RGBImageType = itk.Image[ RGBPixelType, Dimension ]
 
 LabelObjectType = itk.StatisticsLabelObject[itk.UL, Dimension]
-LabelCollectionImageType = itk.LabelCollectionImage[LabelObjectType]
+LabelMapType = itk.LabelMap[LabelObjectType]
 \end{verbatim} \normalsize
 read the image of the nucleus
 \small \begin{verbatim}
@@ -1278,29 +1278,29 @@ mask = itk.MaskImageFilter[ImageType, ImageType, ImageType].New(watershed, otsu)
 \end{verbatim} \normalsize
 And now switch to the label collection representation
 \small \begin{verbatim}
-label = itk.LabelImageToLabelCollectionImageFilter[ImageType, LabelCollectionImageType]
+label = itk.LabelImageToLabelMapFilter[ImageType, LabelMapType]
     .New(mask)
 \end{verbatim} \normalsize
 compute the attribute values
 \small \begin{verbatim}
-stats = itk.StatisticsLabelCollectionImageFilter[LabelCollectionImageType, ImageType]
+stats = itk.StatisticsLabelMapFilter[LabelMapType, ImageType]
     .New(label, nuclei)
 \end{verbatim} \normalsize
 drop the objects too small to be a nucleus, and the ones on the border
 \small \begin{verbatim}
-size = itk.ShapeOpeningLabelCollectionImageFilter[LabelCollectionImageType].New(stats,
+size = itk.ShapeOpeningLabelMapFilter[LabelMapType].New(stats,
     Attribute='Size', Lambda=100)
-border = itk.ShapeOpeningLabelCollectionImageFilter[LabelCollectionImageType].New(size,
+border = itk.ShapeOpeningLabelMapFilter[LabelMapType].New(size,
     Attribute='SizeOnBorder', Lambda=10, ReverseOrdering=True)
 \end{verbatim} \normalsize
 Reoder the labels. The objects with the highest mean are the first ones.
 \small \begin{verbatim}
-relabel = itk.StatisticsRelabelLabelCollectionImageFilter[LabelCollectionImageType]
+relabel = itk.StatisticsRelabelLabelMapFilter[LabelMapType]
     .New(border, Attribute='Mean')
 \end{verbatim} \normalsize
 for visual validation:
 \small \begin{verbatim}
-labelNuclei = itk.LabelCollectionImageToLabelImageFilter[LabelCollectionImageType,
+labelNuclei = itk.LabelMapToLabelImageFilter[LabelMapType,
     ImageType].New(relabel)
 overlay = itk.LabelOverlayImageFilter[ImageType, ImageType, RGBImageType].New(nuclei,
     labelNuclei, UseBackground=True)
@@ -1321,7 +1321,7 @@ spots = itk.ImageFileReader[ImageType].New(FileName="images/spots.png")
 \end{verbatim} \normalsize
 Mask the spot image to keep only the nucleus zone. The rest of the image is cropped, excepted a border of 2 pixels
 \small \begin{verbatim}
-maskSpots = itk.LabelCollectionImageToMaskImageFilter.LI2IUC2.New(relabel, spots, Label=1,
+maskSpots = itk.LabelMapToMaskImageFilter.LI2IUC2.New(relabel, spots, Label=1,
     Crop=True, CropBorder=2)
 \end{verbatim} \normalsize
 A simple thresholding:
@@ -1330,19 +1330,19 @@ th = itk.BinaryThresholdImageFilter[ImageType, ImageType].New(maskSpots, LowerTh
 \end{verbatim} \normalsize
 Now swith to the label collection representation, and compute the attribute values. This time, the input image is not a label image, but a binary one.
 \small \begin{verbatim}
-slabel = itk.BinaryImageToLabelCollectionImageFilter[ImageType, LabelCollectionImageType]
+slabel = itk.BinaryImageToLabelMapFilter[ImageType, LabelMapType]
     .New(th)
-sstats = itk.StatisticsLabelCollectionImageFilter[LabelCollectionImageType, ImageType]
+sstats = itk.StatisticsLabelMapFilter[LabelMapType, ImageType]
     .New(slabel, nuclei)
 \end{verbatim} \normalsize
 we know there are for spots in the nubleus, so keep the 4 biggest spots. The other attribute are also usable - we may have chosen to keep the 4 brightest spots for example.
 \small \begin{verbatim}
-skeep = itk.ShapeKeepNObjectsLabelCollectionImageFilter[LabelCollectionImageType].New(
+skeep = itk.ShapeKeepNObjectsLabelMapFilter[LabelMapType].New(
     sstats, Attribute='Size', NumberOfObjects=4)
 \end{verbatim} \normalsize
 Reoder the labels. The bigger objects first.
 \small \begin{verbatim}
-srelabel = itk.StatisticsRelabelLabelCollectionImageFilter[LabelCollectionImageType].New(
+srelabel = itk.StatisticsRelabelLabelMapFilter[LabelMapType].New(
     skeep, Attribute='Size')
 \end{verbatim} \normalsize
 Finally, display the values we are interested in:
@@ -1399,21 +1399,21 @@ Some of them however, are not (easily) threadable (the {\em KeepNObjects} and {\
 filters), are shouldn't get any performance improvement in a threaded version
 (the {\em Opening} filters).
 
-The {\em BinaryImageToLabelCollectionImageFilter} class is a slight modification of the
+The {\em BinaryImageToLabelMapFilter} class is a slight modification of the
 Richard Beare's {\em ConnectedComponentImageFilter}, and thus, has not been threaded.
 It should however be possible to increase its performance that way.
 
 The classical thread architecture is used when the input image is an {\em Image}: the image
 is splitted in several regions (one per thread), and each thread work on its own region.
 
-Because the {\em LabelCollectionImage} image is not an array of pixels, it can't be splitted
+Because the {\em LabelMap} image is not an array of pixels, it can't be splitted
 that way. Instead, several threads are created, and try to take an object in the collection.
 If they get one, they process that object individually, and try to get another one when the
 object is processed. If no object can be get, the thread ends. A {\em FastMutexLock} is used
 to ensure that only one thread take an object at a time.
 
 For the developer, the usage of the threading support is made very simple, by subclassing
-{\em LabelCollectionImageFilter}, or {\em InPlaceLabelCollectionImageFilter}, and implementing
+{\em LabelMapFilter}, or {\em InPlaceLabelMapFilter}, and implementing
 the method {\em virtual void ThreadedGenerateData( LabelObjectType * labelObject )} in the
 new class. This method only has to process the labelObject passed in parameter. All the
 threading code and mutex lock management is already implemented. The mutex lock remain
@@ -1421,12 +1421,12 @@ accessible if the subclass need to use it, as the {\em m\_LabelObjectContainerLo
 
 \section{In place filtering}
 
-All the filters which are taking a {\em LabelCollectionImage} as input, and are producing a {\em LabelCollectionImage} as output, are implemented as a subclass of {\em InPlaceLabelCollectionImageFilter} and
+All the filters which are taking a {\em LabelMap} as input, and are producing a {\em LabelMap} as output, are implemented as a subclass of {\em InPlaceLabelMapFilter} and
 thus are running in place by default.
 
 The use can modify this behavior with the {\em SetInPlace( bool )}, {\em InPlaceOn()}, and {\em InPlaceOff()} methods, as with the usual {\em InPlaceImageFilter}.
 
-To use that feature, a developer only have to subclass {\em InPlaceLabelCollectionImageFilter} and
+To use that feature, a developer only have to subclass {\em InPlaceLabelMapFilter} and
 implement the {\em virtual void ThreadedGenerateData( LabelObjectType * labelObject )}, to get easy thread
 support \footnote{see the previous section}, or the {\em virtual void GenerateData()} if the filter is not threadable. In that last case,
 the only image to manipulate is the one get with the {\em GetOutput()} method, which is the input image if the filter runs in place, or a copy of the input image if the filter is not running in place.
@@ -1464,7 +1464,7 @@ welcome.
 
 It may be useful to implement the most commonly used opening, keep N objects and relabel transforms in a more efficient way, by using an {\em AttributeLabelObject} instead of a {\em ShapeLabelObject} or a {\em StatisticsLabelObject}.
 
-The {\em BinaryImageToLabelCollectionImageFilter} class should be threaded to get the best of that filter on multiprocessors systems.
+The {\em BinaryImageToLabelMapFilter} class should be threaded to get the best of that filter on multiprocessors systems.
 
 The converters from/to image are provided, but it may be useful to  have the converters from/to other objects representations:
 \begin{itemize}

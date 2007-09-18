@@ -4,16 +4,16 @@
 #include "itkSimpleFilterWatcher.h"
 
 #include "itkAttributeLabelObject.h"
-#include "itkLabelCollectionImage.h"
+#include "itkLabelMap.h"
 
-#include "itkLabelImageToLabelCollectionImageFilter.h"
+#include "itkLabelImageToLabelMapFilter.h"
 
-#include "itkAttributeKeepNObjectsLabelCollectionImageFilter.h"
-#include "itkAttributeOpeningLabelCollectionImageFilter.h"
-#include "itkAttributeRelabelLabelCollectionImageFilter.h"
+#include "itkAttributeKeepNObjectsLabelMapFilter.h"
+#include "itkAttributeOpeningLabelMapFilter.h"
+#include "itkAttributeRelabelLabelMapFilter.h"
 
-#include "itkLabelCollectionImageToAttributeImageFilter.h"
-#include "itkLabelCollectionImageToLabelImageFilter.h"
+#include "itkLabelMapToAttributeImageFilter.h"
+#include "itkLabelMapToLabelImageFilter.h"
 
 
 int main(int argc, char * argv[])
@@ -34,9 +34,9 @@ int main(int argc, char * argv[])
   // The AttributeLabelObject class take 3 template parameters: the 2 ones
   // from the LabelObject class, and the type of the attribute associated
   // with each node. Here we have chosen a double. We then declares the
-  // type of the LabelCollectionImage with the type of the label object.
+  // type of the LabelMap with the type of the label object.
   typedef itk::AttributeLabelObject< unsigned long, dim, double > LOType;
-  typedef itk::LabelCollectionImage< LOType > LCIType;
+  typedef itk::LabelMap< LOType > LCIType;
 
   // We read the input image.
   typedef itk::ImageFileReader< IType > ReaderType;
@@ -46,8 +46,8 @@ int main(int argc, char * argv[])
   ReaderType::Pointer reader2 = ReaderType::New();
   reader2->SetFileName( argv[2] );
   
-  // And convert it to a LabelCollectionImage
-  typedef itk::LabelImageToLabelCollectionImageFilter< IType, LCIType > I2LType;
+  // And convert it to a LabelMap
+  typedef itk::LabelImageToLabelMapFilter< IType, LCIType > I2LType;
   I2LType::Pointer i2l = I2LType::New();
   i2l->SetInput( reader->GetOutput() );
   i2l->SetBackgroundValue( atoi(argv[7]) );
@@ -107,7 +107,7 @@ int main(int argc, char * argv[])
   // The default accessor (AttributeLabelObject) is the write one when using AttributeLabelObject
   // so we don't have to specify it. A different one can be used if needed though.
   
-  typedef itk::AttributeKeepNObjectsLabelCollectionImageFilter< LCIType > KeepType;
+  typedef itk::AttributeKeepNObjectsLabelMapFilter< LCIType > KeepType;
   KeepType::Pointer keep = KeepType::New();
   keep->SetInput( labelCollection );
   keep->SetReverseOrdering( true );
@@ -115,27 +115,27 @@ int main(int argc, char * argv[])
   // prevent the filter to run in place, and modify the input image
   keep->SetInPlace( false );
 
-  typedef itk::AttributeOpeningLabelCollectionImageFilter< LCIType > OpeningType;
+  typedef itk::AttributeOpeningLabelMapFilter< LCIType > OpeningType;
   OpeningType::Pointer opening = OpeningType::New();
   opening->SetInput( labelCollection );
   opening->SetLambda( atof(argv[8]) );
   keep->SetInPlace( false );
 
-  typedef itk::AttributeRelabelLabelCollectionImageFilter< LCIType > RelabelType;
+  typedef itk::AttributeRelabelLabelMapFilter< LCIType > RelabelType;
   RelabelType::Pointer relabel = RelabelType::New();
   relabel->SetInput( labelCollection );
   keep->SetInPlace( false );
   
   // The attribute values can be put directly in a classic image
   
-  typedef itk::LabelCollectionImageToAttributeImageFilter< LCIType, IType > A2IType;
+  typedef itk::LabelMapToAttributeImageFilter< LCIType, IType > A2IType;
   A2IType::Pointer a2i = A2IType::New();
   a2i->SetInput( labelCollection );
   
   // or the label collection can be converted back to an label image, or to a binary image
   // (not shown here)
   
-  typedef itk::LabelCollectionImageToLabelImageFilter< LCIType, IType > L2IType;
+  typedef itk::LabelMapToLabelImageFilter< LCIType, IType > L2IType;
   L2IType::Pointer l2i = L2IType::New();
   
   // finally, we write the results

@@ -19,7 +19,7 @@
 
 #include <deque>
 #include <itkLightObject.h>
-#include "itkLabelCollectionImage.h"
+#include "itkLabelMap.h"
 
 namespace itk
 {
@@ -148,7 +148,7 @@ private:
  *  \brief The base class for the representation of an labeled binary object in an image
  * 
  * LabelObject is the base class to represent a labeled object in an image.
- * It should be used associated with the LabelCollectionImage.
+ * It should be used associated with the LabelMap.
  *
  * LabelObject store mainly 2 things: the label of the object, and a set of lines
  * which are part of the object.
@@ -161,7 +161,7 @@ private:
  *
  * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
- * \sa LabelCollectionImageFilter, AttributeLabelObject
+ * \sa LabelMapFilter, AttributeLabelObject
  * \ingroup DataRepresentation 
  */
 template < class TLabel, unsigned int VImageDimension >

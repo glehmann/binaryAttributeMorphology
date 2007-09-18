@@ -12,10 +12,10 @@ SET(WRAPPER_LIBRARY_GROUPS
   itkLabelObject
   itkShapeLabelObject
   itkStatisticsLabelObject
-  itkLabelCollectionImage
-  ITKLabelCollectionImageBase
-  itkLabelCollectionImageFilter
-  itkInPlaceLabelCollectionImageFilter
+  itkLabelMap
+  ITKLabelMapBase
+  itkLabelMapFilter
+  itkInPlaceLabelMapFilter
 )
 
 SET(WRAPPER_LIBRARY_LINK_LIBRARIES ITKCommon ITKStatistics)

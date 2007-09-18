@@ -4,7 +4,7 @@
 #include "itkSimpleFilterWatcher.h"
 
 #include "itkLabelObject.h"
-#include "itkLabelCollectionImage.h"
+#include "itkLabelMap.h"
 #include "itkBinaryBallStructuringElement.h"
 #include "itkBinaryOpeningByReconstructionImageFilter.h"
 

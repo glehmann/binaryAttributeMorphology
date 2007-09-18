@@ -1,7 +1,0 @@
-WRAP_CLASS("itk::StatisticsLabelCollectionImageFilter" POINTER)
-  FOREACH(d ${WRAP_ITK_DIMS})
-    FOREACH(t2 ${WRAP_ITK_SCALAR})
-      WRAP_TEMPLATE("${ITKM_LI${d}}${ITKM_I${t2}${d}}" "${ITKT_LI${d}}, ${ITKT_I${t2}${d}}")
-    ENDFOREACH(t2)
-  ENDFOREACH(d)
-END_WRAP_CLASS()

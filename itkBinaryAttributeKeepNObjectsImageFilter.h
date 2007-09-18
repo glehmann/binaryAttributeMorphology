@@ -18,10 +18,10 @@
 #define __itkBinaryAttributeKeepNObjectsImageFilter_h
 
 #include "itkImageToImageFilter.h"
-#include "itkLabelCollectionImage.h"
-#include "itkBinaryImageToLabelCollectionImageFilter.h"
-#include "itkAttributeKeepNObjectsLabelCollectionImageFilter.h"
-#include "itkLabelCollectionImageToBinaryImageFilter.h"
+#include "itkLabelMap.h"
+#include "itkBinaryImageToLabelMapFilter.h"
+#include "itkAttributeKeepNObjectsLabelMapFilter.h"
+#include "itkLabelMapToBinaryImageFilter.h"
 #include "itkAttributeLabelObject.h"
 
 
@@ -40,7 +40,7 @@ namespace itk {
  *
  * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
- * \sa AttributeLabelObject, InPlaceLabelCollectionImageFilter
+ * \sa AttributeLabelObject, InPlaceLabelMapFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template<class TInputImage, class TLabelObject, class TLabelObjectValuator, class TAttributeAccessor=
@@ -77,13 +77,13 @@ public:
                       TInputImage::ImageDimension);
 
   typedef TLabelObject LabelObjectType;
-  typedef typename itk::LabelCollectionImage< LabelObjectType > LabelCollectionImageType;
-  typedef typename itk::BinaryImageToLabelCollectionImageFilter< InputImageType, LabelCollectionImageType > LabelizerType;
+  typedef typename itk::LabelMap< LabelObjectType > LabelMapType;
+  typedef typename itk::BinaryImageToLabelMapFilter< InputImageType, LabelMapType > LabelizerType;
   typedef TLabelObjectValuator LabelObjectValuatorType;
   typedef TAttributeAccessor AttributeAccessorType;
   typedef typename AttributeAccessorType::AttributeValueType AttributeValueType;
-  typedef typename itk::AttributeKeepNObjectsLabelCollectionImageFilter< LabelCollectionImageType, AttributeAccessorType > KeepNObjectsType;
-  typedef typename itk::LabelCollectionImageToBinaryImageFilter< LabelCollectionImageType, OutputImageType > BinarizerType;
+  typedef typename itk::AttributeKeepNObjectsLabelMapFilter< LabelMapType, AttributeAccessorType > KeepNObjectsType;
+  typedef typename itk::LabelMapToBinaryImageFilter< LabelMapType, OutputImageType > BinarizerType;
 
   /** Standard New method. */
   itkNewMacro(Self);  

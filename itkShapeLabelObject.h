@@ -211,7 +211,7 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(ShapeLabelObject, LabelObject);
 
-  typedef LabelCollectionImage< Self > LabelCollectionImageType;
+  typedef LabelMap< Self > LabelMapType;
 
   itkStaticConstMacro(ImageDimension, unsigned int, VImageDimension);
 

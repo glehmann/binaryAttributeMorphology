@@ -19,11 +19,11 @@
 
 #include "itkImageToImageFilter.h"
 #include "itkLabelObject.h"
-#include "itkLabelCollectionImage.h"
+#include "itkLabelMap.h"
 #include "itkBinaryNotImageFilter.h"
-#include "itkBinaryImageToLabelCollectionImageFilter.h"
-#include "itkReconstructionLabelCollectionImageFilter.h"
-#include "itkLabelCollectionImageToMaskImageFilter.h"
+#include "itkBinaryImageToLabelMapFilter.h"
+#include "itkReconstructionLabelMapFilter.h"
+#include "itkLabelMapToMaskImageFilter.h"
 
 
 namespace itk {
@@ -78,10 +78,10 @@ public:
 
   typedef BinaryNotImageFilter< InputImageType > NotType;
   typedef LabelObject<unsigned long, ImageDimension> LabelObjectType;
-  typedef typename itk::LabelCollectionImage< LabelObjectType > LabelCollectionImageType;
-  typedef typename itk::BinaryImageToLabelCollectionImageFilter< InputImageType, LabelCollectionImageType > LabelizerType;
-  typedef typename itk::ReconstructionLabelCollectionImageFilter< LabelCollectionImageType, InputImageType > ReconstructionType;
-  typedef typename itk::LabelCollectionImageToMaskImageFilter< LabelCollectionImageType, OutputImageType > BinarizerType;
+  typedef typename itk::LabelMap< LabelObjectType > LabelMapType;
+  typedef typename itk::BinaryImageToLabelMapFilter< InputImageType, LabelMapType > LabelizerType;
+  typedef typename itk::ReconstructionLabelMapFilter< LabelMapType, InputImageType > ReconstructionType;
+  typedef typename itk::LabelMapToMaskImageFilter< LabelMapType, OutputImageType > BinarizerType;
 
   /** Standard New method. */
   itkNewMacro(Self);  
