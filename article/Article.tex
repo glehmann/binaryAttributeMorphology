@@ -201,7 +201,7 @@ also comes from the {\em label object} class.
 
 \subsection{itk::LabelObject and its specializations}
 
-The {\em itk::LabelObject} class represent the label obejcts. It has two main
+The {\em itk::LabelObject} class represent the label objects. It has two main
 features:
 \begin{itemize}
   \item It manage the set pixels which compose the object. The pixels are stored
@@ -267,8 +267,15 @@ particular is sensitive to rotation. Its type is {\em double}.
   \item {\em SizeRegionRatio} is the ratio of the size of the object region (the
 bounding box) and the real size of the object. Its type is {\em double}.
   \item {\em SizeOnBorder} is the number of pixels in the objects which are on the border
-of the image. This attribute is particulary useful to remove the objects which are touching
+of the image. A pixel on several borders (a pixel in a corner) is counted only one time, so the
+size on border can't be greater than the size of the object.
+This attribute is particulary useful to remove the objects which are touching
 too much the border. Its type is {\em unsigned long}.
+  \item {\em PhysicalSizeOnBorder} is the physical size of the objects which are on the border
+of the image. In 2D, it is a distance, in 3D, a surface, etc. Contrary to the {\em PhysicalSize}
+attribute which is directly linked to the {\em Size}, this attribute is not directly
+linked to the {\em SizeOnBorder} attribute. This attribute is particulary useful to remove
+the objects which are touching too much the border. Its type is {\em double}.
   \item {\em FeretDiameter} is the diameter in physical units of the sphere which include
 all the object. The feret diameter is not computed by default, because of its high computation.
 Its type is {\em double}.

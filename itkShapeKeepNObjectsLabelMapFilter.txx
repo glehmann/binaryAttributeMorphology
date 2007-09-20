@@ -55,6 +55,9 @@ ShapeKeepNObjectsLabelMapFilter<TImage>
     case LabelObjectType::SIZE_ON_BORDER:
       TemplatedGenerateData< typename Functor::SizeOnBorderLabelObjectAccessor< LabelObjectType > >();
       break;
+    case LabelObjectType::PHYSICAL_SIZE_ON_BORDER:
+      TemplatedGenerateData< typename Functor::PhysicalSizeOnBorderLabelObjectAccessor< LabelObjectType > >();
+      break;
     case LabelObjectType::FERET_DIAMETER:
       TemplatedGenerateData< typename Functor::FeretDiameterLabelObjectAccessor< LabelObjectType > >();
       break;

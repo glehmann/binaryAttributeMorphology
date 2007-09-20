@@ -92,6 +92,19 @@ public:
 };
 
 template< class TLabelObject >
+class ITK_EXPORT PhysicalSizeOnBorderLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef double AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetPhysicalSizeOnBorder();
+    }
+};
+
+template< class TLabelObject >
 class ITK_EXPORT CentroidLabelObjectAccessor
 {
 public:
@@ -233,12 +246,13 @@ public:
   static const AttributeType CENTROID=4;
   static const AttributeType REGION=5;
   static const AttributeType SIZE_ON_BORDER=6;
-  static const AttributeType FERET_DIAMETER=7;
-  static const AttributeType BINARY_PRINCIPAL_MOMENTS=8;
-  static const AttributeType BINARY_PRINCIPAL_AXES=9;
-  static const AttributeType BINARY_ELONGATION=10;
-  static const AttributeType PERIMETER=11;
-  static const AttributeType ROUNDNESS=12;
+  static const AttributeType PHYSICAL_SIZE_ON_BORDER=7;
+  static const AttributeType FERET_DIAMETER=8;
+  static const AttributeType BINARY_PRINCIPAL_MOMENTS=9;
+  static const AttributeType BINARY_PRINCIPAL_AXES=10;
+  static const AttributeType BINARY_ELONGATION=11;
+  static const AttributeType PERIMETER=12;
+  static const AttributeType ROUNDNESS=13;
 
   static AttributeType GetAttributeFromName( const std::string & s )
     {
@@ -269,6 +283,10 @@ public:
     else if( s == "SizeOnBorder" )
       {
       return SIZE_ON_BORDER;
+      }
+    else if( s == "PhysicalSizeOnBorder" )
+      {
+      return PHYSICAL_SIZE_ON_BORDER;
       }
     else if( s == "FeretDiameter" )
       {
@@ -321,6 +339,9 @@ public:
         break;
       case SIZE_ON_BORDER:
         return "SizeOnBorder";
+        break;
+      case PHYSICAL_SIZE_ON_BORDER:
+        return "PhysicalSizeOnBorder";
         break;
       case FERET_DIAMETER:
         return "FeretDiameter";
@@ -435,6 +456,18 @@ public:
   void SetSizeOnBorder( const unsigned long & v )
     {
     m_SizeOnBorder = v;
+    }
+
+//   itkGetConstMacro( PhysicalSizeOnBorder, double );
+//   itkSetMacro( PhysicalSizeOnBorder, double );
+  const double & GetPhysicalSizeOnBorder() const
+    {
+    return m_PhysicalSizeOnBorder;
+    }
+
+  void SetPhysicalSizeOnBorder( const double & v )
+    {
+    m_PhysicalSizeOnBorder = v;
     }
 
 //   itkGetConstMacro( FeretDiameter, double );
@@ -580,6 +613,7 @@ public:
     m_RegionElongation = src->m_RegionElongation;
     m_SizeRegionRatio = src->m_SizeRegionRatio;
     m_SizeOnBorder = src->m_SizeOnBorder;
+    m_PhysicalSizeOnBorder = src->m_PhysicalSizeOnBorder;
     m_FeretDiameter = src->m_FeretDiameter;
     m_BinaryPrincipalMoments = src->m_BinaryPrincipalMoments;
     m_BinaryPrincipalAxes = src->m_BinaryPrincipalAxes;
@@ -596,6 +630,7 @@ protected:
     m_RegionElongation = 0;
     m_SizeRegionRatio = 0;
     m_SizeOnBorder = false;
+    m_PhysicalSizeOnBorder = 0;
     m_FeretDiameter = false;
     m_BinaryPrincipalMoments.Fill(0);
     m_BinaryPrincipalAxes.Fill(0);
@@ -617,6 +652,7 @@ protected:
     os << indent << "RegionElongation: " << m_RegionElongation << std::endl;
     os << indent << "SizeRegionRatio: " << m_SizeRegionRatio << std::endl;
     os << indent << "SizeOnBorder: " << m_SizeOnBorder << std::endl;
+    os << indent << "PhysicalSizeOnBorder: " << m_PhysicalSizeOnBorder << std::endl;
     os << indent << "FeretDiameter: " << m_FeretDiameter << std::endl;
     os << indent << "BinaryPrincipalMoments: " << m_BinaryPrincipalMoments << std::endl;
     os << indent << "BinaryPrincipalAxes: " << m_BinaryPrincipalAxes << std::endl;
@@ -636,6 +672,7 @@ private:
   double m_RegionElongation;
   double m_SizeRegionRatio;
   unsigned long m_SizeOnBorder;
+  double m_PhysicalSizeOnBorder;
   double m_FeretDiameter;
   VectorType m_BinaryPrincipalMoments;
   MatrixType m_BinaryPrincipalAxes;

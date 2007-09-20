@@ -89,6 +89,12 @@ ShapeLabelMapFilter<TImage, TLabelImage>
     sizePerPixel *= output->GetSpacing()[i];
     }
   
+  typename std::vector< double > sizePerPixelPerDimension;
+  for( int i=0; i<ImageDimension; i++ )
+    {
+    sizePerPixelPerDimension.push_back( sizePerPixel / output->GetSpacing()[i] );
+    }
+  
   // compute the max the index on the border of the image
   IndexType borderMin = output->GetLargestPossibleRegion().GetIndex();
   IndexType borderMax = borderMin;
@@ -106,6 +112,7 @@ ShapeLabelMapFilter<TImage, TLabelImage>
   IndexType maxs;
   maxs.Fill( NumericTraits< long >::NonpositiveMin() );
   unsigned long sizeOnBorder = 0;
+  double physicalSizeOnBorder = 0;
   MatrixType centralMoments;
   centralMoments.Fill( 0 );
 
@@ -184,7 +191,34 @@ ShapeLabelMapFilter<TImage, TLabelImage>
           }
         }
       }
-
+      
+    // physical size on border
+    // first, the dimension 0
+    if( idx[0] == borderMin[0] )
+      {
+      // the begining of the line
+      physicalSizeOnBorder += sizePerPixelPerDimension[0];
+      }
+    if( idx[0] + length - 1 == borderMax[0] )
+      {
+      // and the end of the line
+      physicalSizeOnBorder += sizePerPixelPerDimension[0];
+      }
+    // then the other dimensions
+    for( int i=1; i<ImageDimension; i++ )
+      {
+      if( idx[i] == borderMin[i] )
+        {
+        // one border
+        physicalSizeOnBorder += sizePerPixelPerDimension[i] * length;
+        }
+      if( idx[i] == borderMax[i] )
+        {
+        // and the other
+        physicalSizeOnBorder += sizePerPixelPerDimension[i] * length;
+        }
+      }
+    
     // moments computation
 // ****************************************************************
 // that commented code is the basic implementation. The next peace of code
@@ -316,6 +350,7 @@ ShapeLabelMapFilter<TImage, TLabelImage>
   labelObject->SetRegionElongation( maxSize / minSize );
   labelObject->SetSizeRegionRatio( size / (double)region.GetNumberOfPixels() );
   labelObject->SetSizeOnBorder( sizeOnBorder );
+  labelObject->SetPhysicalSizeOnBorder( physicalSizeOnBorder );
   labelObject->SetBinaryPrincipalMoments( principalMoments );
   labelObject->SetBinaryPrincipalAxes( principalAxes );
   labelObject->SetBinaryElongation( elongation );
