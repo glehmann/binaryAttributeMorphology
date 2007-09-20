@@ -1,8 +1,6 @@
 #include "itkImageFileReader.h"
-#include "itkStatisticsLabelObject.h"
-#include "itkLabelMap.h"
-#include "itkBinaryImageToLabelMapFilter.h"
-#include "itkStatisticsLabelMapFilter.h"
+#include "itkSimpleFilterWatcher.h"
+#include "itkBinaryImageToStatisticsLabelMapFilter.h"
 
 int main(int argc, char * argv[])
 {
@@ -25,32 +23,19 @@ int main(int argc, char * argv[])
   ReaderType::Pointer reader2 = ReaderType::New();
   reader2->SetFileName( argv[2] );
   
-  // define the object type. Here the StatisticsLabelObject type
-  // is chosen in order to read some attribute related to the statistics
-  // of the objects
-  typedef unsigned long LabelType;
-  typedef itk::StatisticsLabelObject< LabelType, dim > LabelObjectType;
-  typedef itk::LabelMap< LabelObjectType > LabelCollectionType;
-
-  // convert the image in a collection of objects
-  typedef itk::BinaryImageToLabelMapFilter< ImageType, LabelCollectionType > ConverterType;
+  // convert the image in a collection of objects and valuate the attributes
+  typedef itk::BinaryImageToStatisticsLabelMapFilter< ImageType, ImageType > ConverterType;
   ConverterType::Pointer converter = ConverterType::New();
   converter->SetInput( reader->GetOutput() );
+  converter->SetFeatureImage( reader2->GetOutput() );
   converter->SetForegroundValue( atoi(argv[3]) );
   converter->SetFullyConnected( true );
-
-  // and valuate the attributes with the dedicated filter: StatisticsLabelMapFilter
-  typedef itk::StatisticsLabelMapFilter< LabelCollectionType, ImageType > StatisticsFilterType;
-  StatisticsFilterType::Pointer statistics = StatisticsFilterType::New();
-  statistics->SetComputeFeretDiameter( false );
-  statistics->SetInput( converter->GetOutput() );
-  statistics->SetFeatureImage( reader2->GetOutput() );
-  statistics->SetComputePerimeter( true );
+  itk::SimpleFilterWatcher watcher(converter, "filter");
 
   // update the statistics filter, so its output will be up to date
-  statistics->Update();
+  converter->Update();
 
-  statistics->GetOutput()->PrintLabelObjects();
+  converter->GetOutput()->PrintLabelObjects();
 
   return 0;
 }

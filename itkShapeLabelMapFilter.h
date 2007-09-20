@@ -94,18 +94,16 @@ public:
 #endif
 
   /**
-   * Set/Get whether the maximum Feret diameter should be computed by default
-   * or not. The defaut value in true for 2D images, and false for the other,
-   * because of the high computation time required for that last case.
+   * Set/Get whether the maximum Feret diameter should be computed or not. The
+   * defaut value is false, because of the high computation time required.
    */
   itkSetMacro(ComputeFeretDiameter, bool);
   itkGetConstReferenceMacro(ComputeFeretDiameter, bool);
   itkBooleanMacro(ComputeFeretDiameter);
 
   /**
-   * Set/Get whether the perimeter should be computed by default
-   * or not. The defaut value in true for 2D images, and false for the other,
-   * because of the high computation time required for that last case.
+   * Set/Get whether the perimeter should be computed or not. The defaut value
+   * is false, because of the high computation time required.
    */
   itkSetMacro(ComputePerimeter, bool);
   itkGetConstReferenceMacro(ComputePerimeter, bool);
