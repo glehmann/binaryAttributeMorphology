@@ -255,3 +255,14 @@ ADD_TEST(BinaryFilloles ${TEST_COMMAND}
   0 200
   --compare binary_fillhole.png ${CMAKE_SOURCE_DIR}/images/binary_fillhole.png
 )
+
+
+ADD_TEST(BinaryOpeningByReconstruction ${TEST_COMMAND}
+  binary_opening_by_reconstruction 
+  ${CMAKE_SOURCE_DIR}/images/cthead1-bin.png binary_opening_by_reconstruction.png
+  0 255 0 10
+  --compare binary_opening_by_reconstruction.png ${CMAKE_SOURCE_DIR}/images/binary_opening_by_reconstruction.png
+)
+
+
+
