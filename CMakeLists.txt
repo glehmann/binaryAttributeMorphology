@@ -248,3 +248,10 @@ FOREACH(bg 0 176)
       ENDFOREACH(useBg)
   ENDFOREACH(order)
 ENDFOREACH(bg)
+
+ADD_TEST(BinaryFilloles ${TEST_COMMAND}
+  binary_fillhole
+  ${BINARY_IMAGE} binary_fillhole.png
+  0 200
+  --compare binary_fillhole.png ${CMAKE_SOURCE_DIR}/images/binary_fillhole.png
+)
