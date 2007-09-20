@@ -18,11 +18,12 @@
 #define __itkBinaryReconstructionByErosionImageFilter_h
 
 #include "itkImageToImageFilter.h"
-#include "itkLabelObject.h"
+#include "itkAttributeLabelObject.h"
 #include "itkLabelMap.h"
 #include "itkBinaryNotImageFilter.h"
 #include "itkBinaryImageToLabelMapFilter.h"
-#include "itkReconstructionLabelMapFilter.h"
+#include "itkBinaryReconstructionLabelMapFilter.h"
+#include "itkAttributeOpeningLabelMapFilter.h"
 #include "itkLabelMapToMaskImageFilter.h"
 
 
@@ -77,10 +78,11 @@ public:
                       TInputImage::ImageDimension);
 
   typedef BinaryNotImageFilter< InputImageType > NotType;
-  typedef LabelObject<unsigned long, ImageDimension> LabelObjectType;
+  typedef AttributeLabelObject<unsigned long, ImageDimension, bool> LabelObjectType;
   typedef typename itk::LabelMap< LabelObjectType > LabelMapType;
   typedef typename itk::BinaryImageToLabelMapFilter< InputImageType, LabelMapType > LabelizerType;
-  typedef typename itk::ReconstructionLabelMapFilter< LabelMapType, InputImageType > ReconstructionType;
+  typedef typename itk::BinaryReconstructionLabelMapFilter< LabelMapType, InputImageType > ReconstructionType;
+  typedef typename itk::AttributeOpeningLabelMapFilter< LabelMapType > OpeningType;
   typedef typename itk::LabelMapToMaskImageFilter< LabelMapType, OutputImageType > BinarizerType;
 
   /** Standard New method. */

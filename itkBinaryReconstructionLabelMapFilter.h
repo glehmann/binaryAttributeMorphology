@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkReconstructionLabelMapFilter.h,v $
+  Module:    $RCSfile: itkBinaryReconstructionLabelMapFilter.h,v $
   Language:  C++
   Date:      $Date: 2006/03/28 19:59:05 $
   Version:   $Revision: 1.6 $
@@ -14,24 +14,26 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkReconstructionLabelMapFilter_h
-#define __itkReconstructionLabelMapFilter_h
+#ifndef __itkBinaryReconstructionLabelMapFilter_h
+#define __itkBinaryReconstructionLabelMapFilter_h
 
 #include "itkInPlaceLabelMapFilter.h"
+#include "itkAttributeLabelObject.h"
 
 namespace itk {
-/** \class ReconstructionLabelMapFilter
+/** \class BinaryReconstructionLabelMapFilter
  * \brief 
  *
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
-template<class TImage, class TMarkerImage>
-class ITK_EXPORT ReconstructionLabelMapFilter : 
+template<class TImage, class TMarkerImage, class TAttributeAccessor=
+  typename Functor::AttributeLabelObjectAccessor< typename TImage::LabelObjectType > >
+class ITK_EXPORT BinaryReconstructionLabelMapFilter : 
     public InPlaceLabelMapFilter<TImage>
 {
 public:
   /** Standard class typedefs. */
-  typedef ReconstructionLabelMapFilter Self;
+  typedef BinaryReconstructionLabelMapFilter Self;
   typedef InPlaceLabelMapFilter<TImage>
   Superclass;
   typedef SmartPointer<Self>        Pointer;
@@ -50,6 +52,8 @@ public:
   typedef typename MarkerImageType::ConstPointer    MarkerImageConstPointer;
   typedef typename MarkerImageType::PixelType       MarkerImagePixelType;
   
+  typedef TAttributeAccessor AttributeAccessorType;
+
   /** ImageDimension constants */
   itkStaticConstMacro(ImageDimension, unsigned int,
                       TImage::ImageDimension);
@@ -58,7 +62,7 @@ public:
   itkNewMacro(Self);  
 
   /** Runtime information support. */
-  itkTypeMacro(ReconstructionLabelMapFilter, 
+  itkTypeMacro(BinaryReconstructionLabelMapFilter, 
                InPlaceLabelMapFilter);
 
 #ifdef ITK_USE_CONCEPT_CHECKING
@@ -105,15 +109,15 @@ public:
   itkGetConstMacro(ForegroundValue, PixelType);
 
 protected:
-  ReconstructionLabelMapFilter();
-  ~ReconstructionLabelMapFilter() {};
+  BinaryReconstructionLabelMapFilter();
+  ~BinaryReconstructionLabelMapFilter() {};
 
   virtual void ThreadedGenerateData( LabelObjectType * labelObject );
   
   void PrintSelf(std::ostream& os, Indent indent) const;
 
 private:
-  ReconstructionLabelMapFilter(const Self&); //purposely not implemented
+  BinaryReconstructionLabelMapFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
   
   MarkerImagePixelType m_ForegroundValue;
@@ -123,7 +127,7 @@ private:
 } // end namespace itk
   
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkReconstructionLabelMapFilter.txx"
+#include "itkBinaryReconstructionLabelMapFilter.txx"
 #endif
 
 #endif

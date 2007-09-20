@@ -98,18 +98,24 @@ BinaryReconstructionByErosionImageFilter<TInputImage>
   labelizer->SetBackgroundValue( m_BackgroundValue );
   labelizer->SetFullyConnected( m_FullyConnected );
   labelizer->SetNumberOfThreads( this->GetNumberOfThreads() );
-  progress->RegisterInternalFilter(labelizer, .3f);
+  progress->RegisterInternalFilter(labelizer, .2f);
   
   typename ReconstructionType::Pointer reconstruction = ReconstructionType::New();
   reconstruction->SetInput( labelizer->GetOutput() );
   reconstruction->SetMarkerImage( notMarker->GetOutput() );
   reconstruction->SetForegroundValue( m_ForegroundValue );
   reconstruction->SetNumberOfThreads( this->GetNumberOfThreads() );
-  progress->RegisterInternalFilter(reconstruction, .3f);
+  progress->RegisterInternalFilter(reconstruction, .2f);
   
+  typename OpeningType::Pointer opening = OpeningType::New();
+  opening->SetInput( reconstruction->GetOutput() );
+  opening->SetLambda( true );
+  opening->SetNumberOfThreads( this->GetNumberOfThreads() );
+  progress->RegisterInternalFilter(opening, .2f);
+
   // invert the image during the binarization
   typename BinarizerType::Pointer binarizer = BinarizerType::New();
-  binarizer->SetInput( reconstruction->GetOutput() );
+  binarizer->SetInput( opening->GetOutput() );
   binarizer->SetLabel( m_BackgroundValue );
   binarizer->SetNegated( true );
   binarizer->SetBackgroundValue( m_ForegroundValue );

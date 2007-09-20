@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkReconstructionLabelMapFilter.txx,v $
+  Module:    $RCSfile: itkBinaryReconstructionLabelMapFilter.txx,v $
   Language:  C++
   Date:      $Date: 2005/08/23 15:09:03 $
   Version:   $Revision: 1.6 $
@@ -14,29 +14,31 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkReconstructionLabelMapFilter_txx
-#define __itkReconstructionLabelMapFilter_txx
+#ifndef __itkBinaryReconstructionLabelMapFilter_txx
+#define __itkBinaryReconstructionLabelMapFilter_txx
 
-#include "itkReconstructionLabelMapFilter.h"
+#include "itkBinaryReconstructionLabelMapFilter.h"
 #include "itkProgressReporter.h"
 
 
 namespace itk {
 
-template <class TImage, class TMarkerImage>
-ReconstructionLabelMapFilter<TImage, TMarkerImage>
-::ReconstructionLabelMapFilter()
+template <class TImage, class TMarkerImage, class TAttributeAccessor>
+BinaryReconstructionLabelMapFilter<TImage, TMarkerImage, TAttributeAccessor>
+::BinaryReconstructionLabelMapFilter()
 {
   this->SetNumberOfRequiredInputs(2);
   m_ForegroundValue = NumericTraits< MarkerImagePixelType >::max();
 }
 
 
-template <class TImage, class TMarkerImage>
+template <class TImage, class TMarkerImage, class TAttributeAccessor>
 void
-ReconstructionLabelMapFilter<TImage, TMarkerImage>
+BinaryReconstructionLabelMapFilter<TImage, TMarkerImage, TAttributeAccessor>
 ::ThreadedGenerateData( LabelObjectType * labelObject )
 {
+  AttributeAccessorType accessor;
+
   const MarkerImageType * maskImage = this->GetMarkerImage();
 
   typename LabelObjectType::LineContainerType::const_iterator lit;
@@ -55,21 +57,21 @@ ReconstructionLabelMapFilter<TImage, TMarkerImage>
       if( v == m_ForegroundValue )
         {
         // keep the object
+        accessor( labelObject, true );
         return;
         }
       }
     }
 
-  this->m_LabelObjectContainerLock->Lock();
-  this->GetOutput()->RemoveLabelObject( labelObject );
-  this->m_LabelObjectContainerLock->Unlock();
+  // remove the object
+  accessor( labelObject, false );
 
 }
 
 
-template <class TImage, class TAttributeAccessor>
+template <class TImage, class TMarkerImage, class TAttributeAccessor>
 void
-ReconstructionLabelMapFilter<TImage, TAttributeAccessor>
+BinaryReconstructionLabelMapFilter<TImage, TMarkerImage, TAttributeAccessor>
 ::PrintSelf(std::ostream &os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);

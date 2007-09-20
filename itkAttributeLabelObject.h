@@ -36,6 +36,11 @@ public:
     {
     return labelObject->GetAttribute();
     }
+
+  inline void operator()( LabelObjectType * labelObject, AttributeValueType value )
+    {
+    labelObject->SetAttribute( value );
+    }
 };
 
 }
