@@ -1108,7 +1108,7 @@ then we can read the attribute values we're interested in. {\em BinaryImageToLab
 produces consecutives labels, so a simple {for} loop will do the job.
 \small \begin{verbatim}
   LabelCollectionType::Pointer collection = shape->GetOutput();
-  for( int label=1; label<collection->GetNumberOfObjects(); label++ )
+  for( int label=1; label<collection->GetNumberOfLabelObjects(); label++ )
     {
     LabelObjectType::Pointer labelObject = collection->GetLabelObject( label );
     std::cout << label << "\t" << labelObject->GetPhysicalSize() << "\t" << labelObject->GetCentroid() << std::endl;
@@ -1355,12 +1355,12 @@ Finally, display the values we are interested in:
 \small \begin{verbatim}
 print "nuclei", "x", "y", "mean"
 
-for nl in range(1, relabel.GetOutput().GetNumberOfObjects()+1):
+for nl in range(1, relabel.GetOutput().GetNumberOfLabelObjects()+1):
   maskSpots.SetLabel(nl)
   srelabel.UpdateLargestPossibleRegion()
   labeCollection = srelabel.GetOutput()
 
-  for l in range(1, labeCollection.GetNumberOfObjects()+1):
+  for l in range(1, labeCollection.GetNumberOfLabelObjects()+1):
     lo = labeCollection.GetLabelObject(l)
     print nl, lo.GetCentroid()[0], lo.GetCentroid()[1], lo.GetMean()
 \end{verbatim} \normalsize
