@@ -18,6 +18,8 @@
 #define __itkLabelImageToLabelMapFilter_h
 
 #include "itkImageToImageFilter.h"
+#include "itkLabelMap.h"
+#include "itkLabelObject.h"
 
 namespace itk {
 
@@ -32,7 +34,7 @@ namespace itk {
  * \sa BinaryImageToLabelMapFilter, LabelMapToLabelImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
-template<class TInputImage, class TOutputImage>
+template<class TInputImage, class TOutputImage=LabelMap< LabelObject< typename TInputImage::PixelType, TInputImage::ImageDimension > > >
 class ITK_EXPORT LabelImageToLabelMapFilter : 
     public ImageToImageFilter<TInputImage, TOutputImage>
 {

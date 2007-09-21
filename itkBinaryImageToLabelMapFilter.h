@@ -24,6 +24,8 @@
 #include <vector>
 #include <map>
 #include "itkProgressReporter.h"
+#include "itkLabelMap.h"
+#include "itkLabelObject.h"
 
 namespace itk
 {
@@ -43,7 +45,7 @@ namespace itk
  * \sa ConnectedComponentImageFilter, LabelImageToLabelMapFilter, LabelMap
  */
 
-template <class TInputImage, class TOutputImage>
+template <class TInputImage, class TOutputImage=LabelMap< LabelObject< unsigned long, TInputImage::ImageDimension > > >
 class ITK_EXPORT BinaryImageToLabelMapFilter : 
     public ImageToImageFilter< TInputImage, TOutputImage > 
 {
