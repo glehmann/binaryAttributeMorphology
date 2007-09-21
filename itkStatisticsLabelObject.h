@@ -743,9 +743,9 @@ protected:
     os << indent << "MaximumIndex: " << m_MaximumIndex << std::endl;
     os << indent << "MinimumIndex: " << m_MinimumIndex << std::endl;
     os << indent << "CenterOfGravity: " << m_CenterOfGravity << std::endl;
-    os << indent << "CentralMoments: " << m_CentralMoments << std::endl;
+    os << indent << "CentralMoments: " << std::endl << m_CentralMoments;
     os << indent << "PrincipalMoments: " << m_PrincipalMoments << std::endl;
-    os << indent << "PrincipalAxes: " << m_PrincipalAxes << std::endl;
+    os << indent << "PrincipalAxes: " << std::endl << m_PrincipalAxes;
     os << indent << "Skewness: " << m_Skewness << std::endl;
     os << indent << "Kurtosis: " << m_Kurtosis << std::endl;
     os << indent << "Elongation: " << m_Elongation << std::endl;

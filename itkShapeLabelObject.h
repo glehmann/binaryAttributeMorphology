@@ -655,7 +655,7 @@ protected:
     os << indent << "PhysicalSizeOnBorder: " << m_PhysicalSizeOnBorder << std::endl;
     os << indent << "FeretDiameter: " << m_FeretDiameter << std::endl;
     os << indent << "BinaryPrincipalMoments: " << m_BinaryPrincipalMoments << std::endl;
-    os << indent << "BinaryPrincipalAxes: " << m_BinaryPrincipalAxes << std::endl;
+    os << indent << "BinaryPrincipalAxes: " << std::endl << m_BinaryPrincipalAxes;
     os << indent << "BinaryElongation: " << m_BinaryElongation << std::endl;
     os << indent << "Perimeter: " << m_Perimeter << std::endl;
     os << indent << "Roundness: " << m_Roundness << std::endl;
