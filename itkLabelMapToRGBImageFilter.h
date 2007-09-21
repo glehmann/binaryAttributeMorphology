@@ -19,6 +19,8 @@
 
 #include "itkLabelMapFilter.h"
 #include "itkLabelToRGBFunctor.h"
+#include "itkImage.h"
+#include "itkRGBPixel.h"
 
 
 namespace itk {
@@ -31,7 +33,7 @@ namespace itk {
  * \sa LabelMapToBinaryImageFilter, LabelMapMaskImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
-template<class TInputImage, class TOutputImage>
+template<class TInputImage, class TOutputImage=Image< RGBPixel<unsigned char>, TInputImage::ImageDimension > >
 class ITK_EXPORT LabelMapToRGBImageFilter : 
     public LabelMapFilter<TInputImage, TOutputImage>
 {
@@ -58,7 +60,7 @@ public:
   typedef typename OutputImageType::PixelType      OutputImagePixelType;
   typedef typename OutputImageType::IndexType      IndexType;
   
-  typedef LabelToRGBFunctor< InputImagePixelType, OutputImagePixelType > FunctorType;
+  typedef typename Functor::LabelToRGBFunctor< InputImagePixelType, OutputImagePixelType > FunctorType;
   
   /** ImageDimension constants */
   itkStaticConstMacro(InputImageDimension, unsigned int,
