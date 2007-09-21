@@ -39,7 +39,7 @@ int main(int argc, char * argv[])
   ColorizerType::Pointer colorizer = ColorizerType::New();
   colorizer->SetInput( converter->GetOutput() );
   colorizer->SetFeatureImage( reader2->GetOutput() );
-  colorizer->SetOpacity( atoi(argv[6]) );
+  colorizer->SetOpacity( atof(argv[6]) );
 
   itk::SimpleFilterWatcher watcher(colorizer, "filter");
 
