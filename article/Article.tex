@@ -1328,7 +1328,7 @@ spots = itk.ImageFileReader[ImageType].New(FileName="images/spots.png")
 \end{verbatim} \normalsize
 Mask the spot image to keep only the nucleus zone. The rest of the image is cropped, excepted a border of 2 pixels
 \small \begin{verbatim}
-maskSpots = itk.LabelMapMaskImageFilter.LI2IUC2.New(relabel, spots, Label=1,
+maskSpots = itk.LabelMapMaskImageFilter[LabelMapType, ImageType].New(relabel, spots, Label=1,
     Crop=True, CropBorder=2)
 \end{verbatim} \normalsize
 A simple thresholding:
