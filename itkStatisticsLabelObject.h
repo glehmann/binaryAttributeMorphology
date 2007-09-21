@@ -156,7 +156,7 @@ public:
 };
 
 
-template< class TLabelObject >
+/*template< class TLabelObject >
 class ITK_EXPORT CentralMomentsLabelObjectAccessor
 {
 public:
@@ -167,7 +167,7 @@ public:
     {
     return labelObject->GetCentralMoments();
     }
-};
+};*/
 
 template< class TLabelObject >
 class ITK_EXPORT PrincipalMomentsLabelObjectAccessor
@@ -294,7 +294,7 @@ public:
   static const AttributeType MAXIMUM_INDEX=107;
   static const AttributeType MINIMUM_INDEX=108;
   static const AttributeType CENTER_OF_GRAVITY=109;
-  static const AttributeType CENTRAL_MOMENTS=110;
+//  static const AttributeType CENTRAL_MOMENTS=110;
   static const AttributeType PRINCIPAL_MOMENTS=111;
   static const AttributeType PRINCIPAL_AXES=112;
   static const AttributeType KURTOSIS=113;
@@ -343,10 +343,10 @@ public:
       {
       return CENTER_OF_GRAVITY;
       }
-    else if( s == "CentralMoments" )
+/*    else if( s == "CentralMoments" )
       {
       return CENTRAL_MOMENTS;
-      }
+      }*/
     else if( s == "PrincipalMoments" )
       {
       return PRINCIPAL_MOMENTS;
@@ -405,9 +405,9 @@ public:
       case CENTER_OF_GRAVITY:
         return "CenterOfGravity";
         break;
-      case CENTRAL_MOMENTS:
+/*      case CENTRAL_MOMENTS:
         return "CentralMoments";
-        break;
+        break;*/
       case PRINCIPAL_MOMENTS:
         return "PrincipalMoments";
         break;
@@ -447,7 +447,7 @@ public:
     m_MaximumIndex = src->m_MaximumIndex;
     m_MinimumIndex = src->m_MinimumIndex;
     m_CenterOfGravity = src->m_CenterOfGravity;
-    m_CentralMoments = src->m_CentralMoments;
+//    m_CentralMoments = src->m_CentralMoments;
     m_PrincipalMoments = src->m_PrincipalMoments;
     m_PrincipalAxes = src->m_PrincipalAxes;
     m_Kurtosis = src->m_Kurtosis;
@@ -577,7 +577,7 @@ public:
 
 //   itkGetConstMacro( CentralMoments, MatrixType );
 //   itkSetMacro( CentralMoments, MatrixType );
-  const MatrixType & GetCentralMoments() const
+/*  const MatrixType & GetCentralMoments() const
     {
     return m_CentralMoments;
     }
@@ -585,7 +585,7 @@ public:
   void SetCentralMoments( const MatrixType & v )
     {
     m_CentralMoments = v;
-    }
+    }*/
 
 //   itkGetConstMacro( PrincipalMoments, VectorType );
 //   itkSetMacro( PrincipalMoments, VectorType );
@@ -720,7 +720,7 @@ protected:
     m_MaximumIndex.Fill(0);
     m_MinimumIndex.Fill(0);
     m_CenterOfGravity.Fill(0);
-    m_CentralMoments.Fill(0);
+//    m_CentralMoments.Fill(0);
     m_PrincipalMoments.Fill(0);
     m_PrincipalAxes.Fill(0);
     m_Kurtosis = 0;
@@ -743,7 +743,7 @@ protected:
     os << indent << "MaximumIndex: " << m_MaximumIndex << std::endl;
     os << indent << "MinimumIndex: " << m_MinimumIndex << std::endl;
     os << indent << "CenterOfGravity: " << m_CenterOfGravity << std::endl;
-    os << indent << "CentralMoments: " << std::endl << m_CentralMoments;
+//    os << indent << "CentralMoments: " << std::endl << m_CentralMoments;
     os << indent << "PrincipalMoments: " << m_PrincipalMoments << std::endl;
     os << indent << "PrincipalAxes: " << std::endl << m_PrincipalAxes;
     os << indent << "Skewness: " << m_Skewness << std::endl;
@@ -765,7 +765,7 @@ private:
   IndexType m_MaximumIndex;
   IndexType m_MinimumIndex;
   PointType m_CenterOfGravity;
-  MatrixType m_CentralMoments;
+//  MatrixType m_CentralMoments;
   VectorType m_PrincipalMoments;
   MatrixType m_PrincipalAxes;
   double m_Skewness;
