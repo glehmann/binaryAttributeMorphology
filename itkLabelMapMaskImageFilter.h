@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkLabelMapToMaskImageFilter.h,v $
+  Module:    $RCSfile: itkLabelMapMaskImageFilter.h,v $
   Language:  C++
   Date:      $Date: 2005/08/23 15:09:03 $
   Version:   $Revision: 1.4 $
@@ -14,21 +14,21 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkLabelMapToMaskImageFilter_h
-#define __itkLabelMapToMaskImageFilter_h
+#ifndef __itkLabelMapMaskImageFilter_h
+#define __itkLabelMapMaskImageFilter_h
 
 #include "itkLabelMapFilter.h"
 #include "itkBarrier.h"
 
 namespace itk {
 
-/** \class LabelMapToMaskImageFilter
+/** \class LabelMapMaskImageFilter
  * \brief Mask and image with a LabelMap
  *
- * LabelMapToMaskImageFilter mask the content of an input image according
+ * LabelMapMaskImageFilter mask the content of an input image according
  * to the content of the input LabelMap. The masked pixel of the input image
  * are set to the BackgroundValue.
- * LabelMapToMaskImageFilter can keep the input image for one label only, with
+ * LabelMapMaskImageFilter can keep the input image for one label only, with
  * Negated = false (the default) or it can mask the input image for a single label, when
  * Negated equals true. In Both cases, the label is set with SetLabel(). 
  *
@@ -38,12 +38,12 @@ namespace itk {
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template<class TInputImage, class TOutputImage>
-class ITK_EXPORT LabelMapToMaskImageFilter : 
+class ITK_EXPORT LabelMapMaskImageFilter : 
     public LabelMapFilter<TInputImage, TOutputImage>
 {
 public:
   /** Standard class typedefs. */
-  typedef LabelMapToMaskImageFilter Self;
+  typedef LabelMapMaskImageFilter Self;
   typedef LabelMapFilter<TInputImage, TOutputImage>
   Superclass;
   typedef SmartPointer<Self>        Pointer;
@@ -79,7 +79,7 @@ public:
   itkNewMacro(Self);  
 
   /** Runtime information support. */
-  itkTypeMacro(LabelMapToMaskImageFilter, 
+  itkTypeMacro(LabelMapMaskImageFilter, 
                ImageToImageFilter);
 
    /** Set the feature image */
@@ -142,15 +142,15 @@ public:
   itkGetConstReferenceMacro(CropBorder, SizeType);
 
 protected:
-  LabelMapToMaskImageFilter();
-  ~LabelMapToMaskImageFilter() {};
+  LabelMapMaskImageFilter();
+  ~LabelMapMaskImageFilter() {};
 
-  /** LabelMapToMaskImageFilter needs the entire input be
+  /** LabelMapMaskImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
   void GenerateInputRequestedRegion() ;
 
-  /** LabelMapToMaskImageFilter will produce the entire output. */
+  /** LabelMapMaskImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
 
   virtual void GenerateOutputInformation();
@@ -164,7 +164,7 @@ protected:
   void PrintSelf(std::ostream& os, Indent indent) const;
 
 private:
-  LabelMapToMaskImageFilter(const Self&); //purposely not implemented
+  LabelMapMaskImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
   InputImagePixelType m_Label;
@@ -182,7 +182,7 @@ private:
 } // end namespace itk
   
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkLabelMapToMaskImageFilter.txx"
+#include "itkLabelMapMaskImageFilter.txx"
 #endif
 
 #endif

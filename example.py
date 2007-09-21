@@ -40,7 +40,7 @@ itk.write(overlay, "nuclei-overlay.png")
 
 spots = itk.ImageFileReader[ImageType].New(FileName="images/spots.png")
 # mask the spot image to keep only the nucleus zone. The rest of the image is cropped, excepted a border of 2 pixels
-maskSpots = itk.LabelMapToMaskImageFilter[LabelMapType, ImageType].New(relabel, spots, Label=1, Crop=True, CropBorder=2)
+maskSpots = itk.LabelMapMaskImageFilter[LabelMapType, ImageType].New(relabel, spots, Label=1, Crop=True, CropBorder=2)
 th = itk.BinaryThresholdImageFilter[ImageType, ImageType].New(maskSpots, LowerThreshold=110)
 slabel = itk.BinaryImageToLabelMapFilter[ImageType, LabelMapType].New(th)
 sstats = itk.StatisticsLabelMapFilter[LabelMapType, ImageType].New(slabel, nuclei)

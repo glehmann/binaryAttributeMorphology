@@ -428,7 +428,7 @@ objects in the foreground of a binary image stored in a {itk::Image}. It is
 intended to be used with an image produced by the {\em
 itk::BinaryImageToLabelMapFilter}. The background values of the
 original image can also be restored by this filter.
-  \item The {\em itk::LabelMapToMaskImageFilter} class can be used
+  \item The {\em itk::LabelMapMaskImageFilter} class can be used
 to mask an image with the objects of the {\em itk::LabelMap}. With
 that filter, the image can be cropped to contain only the non-masked zone\footnote{
 The code used to produce the output region based on the content of the image
@@ -1128,7 +1128,7 @@ produces consecutives labels, so a simple {for} loop will do the job.
 
 \subsection{The mask features}
 
-The {\em itk::LabelMapToMaskImageFilter} class let the user mask
+The {\em itk::LabelMapMaskImageFilter} class let the user mask
 a part of an {\em itk::Image} with the objects of a {\em itk::LabelMap}.
 It can also crop the image to contain only the masked region.
 
@@ -1144,7 +1144,7 @@ First we include the headers of the class we will use, and parse the command lin
 #include "itkLabelObject.h"
 #include "itkLabelMap.h"
 #include "itkLabelImageToLabelMapFilter.h"
-#include "itkLabelMapToMaskImageFilter.h"
+#include "itkLabelMapMaskImageFilter.h"
 
 
 int main(int argc, char * argv[])
@@ -1200,7 +1200,7 @@ masked region, by calling {\em SetCrop(true)}, or to a region padded by a border
 calling both {\em SetCrop()} and {\em SetCropBorder()}. The crop border defaults to $0$, and the
 image is not cropped by default.
 \small \begin{verbatim}
-  typedef itk::LabelMapToMaskImageFilter< LabelMapType, ImageType > MaskType;
+  typedef itk::LabelMapMaskImageFilter< LabelMapType, ImageType > MaskType;
   MaskType::Pointer mask = MaskType::New();
   mask->SetInput( i2l->GetOutput() );
   mask->SetFeatureImage( reader2->GetOutput() );
@@ -1328,7 +1328,7 @@ spots = itk.ImageFileReader[ImageType].New(FileName="images/spots.png")
 \end{verbatim} \normalsize
 Mask the spot image to keep only the nucleus zone. The rest of the image is cropped, excepted a border of 2 pixels
 \small \begin{verbatim}
-maskSpots = itk.LabelMapToMaskImageFilter.LI2IUC2.New(relabel, spots, Label=1,
+maskSpots = itk.LabelMapMaskImageFilter.LI2IUC2.New(relabel, spots, Label=1,
     Crop=True, CropBorder=2)
 \end{verbatim} \normalsize
 A simple thresholding:
@@ -1483,11 +1483,12 @@ The converters from/to image are provided, but it may be useful to  have the con
 
 Finally, all the binary and label filters should be implemented as a subclass of {\em InPlaceImageFilter}.
 
-Note that some names have been changed in revision 3. To fix your sources, the following commands can be used in your source directory:
+Note that some names have been changed in revision 3. To fix your sources, the following commands can be used in your source directory (order is important):
 \small \begin{verbatim}
 perl -e 's/LabelCollectionImage/LabelMap/g' -pi *
 perl -e 's/GetNumberOfObjects/GetNumberOfLabelObjects/g' -pi *
 perl -e 's/PrintObjects/PrintLabelObjects/g' -pi *
+perl -e 's/LabelMapToMaskImageFilter/LabelMapMaskImageFilter/g' -pi *
 \end{verbatim} \normalsize
 
 \section{Conclusion}

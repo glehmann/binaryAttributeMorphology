@@ -24,7 +24,7 @@
 #include "itkBinaryImageToLabelMapFilter.h"
 #include "itkBinaryReconstructionLabelMapFilter.h"
 #include "itkAttributeOpeningLabelMapFilter.h"
-#include "itkLabelMapToMaskImageFilter.h"
+#include "itkLabelMapMaskImageFilter.h"
 
 
 namespace itk {
@@ -83,7 +83,7 @@ public:
   typedef typename itk::BinaryImageToLabelMapFilter< InputImageType, LabelMapType > LabelizerType;
   typedef typename itk::BinaryReconstructionLabelMapFilter< LabelMapType, InputImageType > ReconstructionType;
   typedef typename itk::AttributeOpeningLabelMapFilter< LabelMapType > OpeningType;
-  typedef typename itk::LabelMapToMaskImageFilter< LabelMapType, OutputImageType > BinarizerType;
+  typedef typename itk::LabelMapMaskImageFilter< LabelMapType, OutputImageType > BinarizerType;
 
   /** Standard New method. */
   itkNewMacro(Self);  

@@ -1,4 +1,4 @@
-WRAP_CLASS("itk::LabelMapToMaskImageFilter" POINTER)
+WRAP_CLASS("itk::LabelMapMaskImageFilter" POINTER)
   FOREACH(t ${WRAP_ITK_SCALAR})
     FOREACH(d ${WRAP_ITK_DIMS})
       WRAP_TEMPLATE("${ITKM_LM${d}}${ITKM_I${t}${d}}" "${ITKT_LM${d}}, ${ITKT_I${t}${d}}")

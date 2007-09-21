@@ -5,7 +5,7 @@
 #include "itkLabelObject.h"
 #include "itkLabelMap.h"
 #include "itkLabelImageToLabelMapFilter.h"
-#include "itkLabelMapToMaskImageFilter.h"
+#include "itkLabelMapMaskImageFilter.h"
 
 
 int main(int argc, char * argv[])
@@ -55,7 +55,7 @@ int main(int argc, char * argv[])
   // masked region, by calling SetCrop( true ), or to a region padded by a border, by
   // calling both SetCrop() and SetCropBorder(). The crop border defaults to 0, and the
   // image is not cropped by default.
-  typedef itk::LabelMapToMaskImageFilter< LabelMapType, ImageType > MaskType;
+  typedef itk::LabelMapMaskImageFilter< LabelMapType, ImageType > MaskType;
   MaskType::Pointer mask = MaskType::New();
   mask->SetInput( i2l->GetOutput() );
   mask->SetFeatureImage( reader2->GetOutput() );

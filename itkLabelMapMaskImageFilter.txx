@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkLabelMapToMaskImageFilter.txx,v $
+  Module:    $RCSfile: itkLabelMapMaskImageFilter.txx,v $
   Language:  C++
   Date:      $Date: 2005/08/23 15:09:03 $
   Version:   $Revision: 1.6 $
@@ -14,10 +14,10 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkLabelMapToMaskImageFilter_txx
-#define __itkLabelMapToMaskImageFilter_txx
+#ifndef __itkLabelMapMaskImageFilter_txx
+#define __itkLabelMapMaskImageFilter_txx
 
-#include "itkLabelMapToMaskImageFilter.h"
+#include "itkLabelMapMaskImageFilter.h"
 #include "itkNumericTraits.h"
 #include "itkProgressReporter.h"
 #include "itkImageRegionConstIterator.h"
@@ -26,8 +26,8 @@
 namespace itk {
 
 template <class TInputImage, class TOutputImage>
-LabelMapToMaskImageFilter<TInputImage, TOutputImage>
-::LabelMapToMaskImageFilter()
+LabelMapMaskImageFilter<TInputImage, TOutputImage>
+::LabelMapMaskImageFilter()
 {
   this->SetNumberOfRequiredInputs(2);
   m_Label = NumericTraits< InputImagePixelType >::max();
@@ -39,7 +39,7 @@ LabelMapToMaskImageFilter<TInputImage, TOutputImage>
 
 template <class TInputImage, class TOutputImage>
 void 
-LabelMapToMaskImageFilter<TInputImage, TOutputImage>
+LabelMapMaskImageFilter<TInputImage, TOutputImage>
 ::GenerateInputRequestedRegion()
 {
   // call the superclass' implementation of this method
@@ -54,7 +54,7 @@ LabelMapToMaskImageFilter<TInputImage, TOutputImage>
 
 template <class TInputImage, class TOutputImage>
 void 
-LabelMapToMaskImageFilter<TInputImage, TOutputImage>
+LabelMapMaskImageFilter<TInputImage, TOutputImage>
 ::GenerateOutputInformation()
 {
   Superclass::GenerateOutputInformation();
@@ -226,7 +226,7 @@ LabelMapToMaskImageFilter<TInputImage, TOutputImage>
 
 template <class TInputImage, class TOutputImage>
 void 
-LabelMapToMaskImageFilter<TInputImage, TOutputImage>
+LabelMapMaskImageFilter<TInputImage, TOutputImage>
 ::EnlargeOutputRequestedRegion(DataObject *)
 {
   this->GetOutput()
@@ -236,7 +236,7 @@ LabelMapToMaskImageFilter<TInputImage, TOutputImage>
 
 template <class TInputImage, class TOutputImage>
 void 
-LabelMapToMaskImageFilter<TInputImage, TOutputImage>
+LabelMapMaskImageFilter<TInputImage, TOutputImage>
 ::BeforeThreadedGenerateData()
 {
   m_Barrier = Barrier::New();
@@ -249,7 +249,7 @@ LabelMapToMaskImageFilter<TInputImage, TOutputImage>
 
 template <class TInputImage, class TOutputImage>
 void 
-LabelMapToMaskImageFilter<TInputImage, TOutputImage>
+LabelMapMaskImageFilter<TInputImage, TOutputImage>
 ::ThreadedGenerateData( const OutputImageRegionType& outputRegionForThread, int threadId )
 {
   OutputImageType * output = this->GetOutput();
@@ -349,7 +349,7 @@ LabelMapToMaskImageFilter<TInputImage, TOutputImage>
 
 template<class TInputImage, class TOutputImage>
 void
-LabelMapToMaskImageFilter<TInputImage, TOutputImage>
+LabelMapMaskImageFilter<TInputImage, TOutputImage>
 ::ThreadedGenerateData( LabelObjectType * labelObject )
 {
   OutputImageType * output = this->GetOutput();
@@ -409,7 +409,7 @@ LabelMapToMaskImageFilter<TInputImage, TOutputImage>
 
 template<class TInputImage, class TOutputImage>
 void
-LabelMapToMaskImageFilter<TInputImage, TOutputImage>
+LabelMapMaskImageFilter<TInputImage, TOutputImage>
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os,indent);

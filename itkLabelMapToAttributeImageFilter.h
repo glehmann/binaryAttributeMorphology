@@ -30,7 +30,7 @@ namespace itk {
  *
  * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
- * \sa LabelMapToBinaryImageFilter, LabelMapToMaskImageFilter
+ * \sa LabelMapToBinaryImageFilter, LabelMapMaskImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template<class TInputImage, class TOutputImage, class TAttributeAccessor=
