@@ -309,3 +309,17 @@ FOREACH(label 0 100)
 ENDFOREACH(label)
 
 
+ADD_TEST(AttributeValues ${TEST_COMMAND}
+  attribute_values
+  ${CMAKE_SOURCE_DIR}/images/2th_cthead1.png
+  200
+)
+
+
+ADD_TEST(PrintLabelObjects ${TEST_COMMAND}
+  print_label_objects
+  ${CMAKE_SOURCE_DIR}/images/2th_cthead1.png ${CMAKE_SOURCE_DIR}/images/cthead1.png
+  200
+)
+
+
