@@ -277,4 +277,20 @@ ADD_TEST(BinaryOpeningByReconstruction ${TEST_COMMAND}
 )
 
 
+ADD_TEST(LabelMapOverlay ${TEST_COMMAND}
+  label_overlay
+  ${CMAKE_SOURCE_DIR}/images/cthead1-label2.png ${CMAKE_SOURCE_DIR}/images/cthead1.png label_overlay.png
+  1 0 0.5
+  --compare label_overlay.png ${CMAKE_SOURCE_DIR}/images/label_overlay.png
+)
+
+
+ADD_TEST(LabelMapOverlayNoBackground ${TEST_COMMAND}
+  label_overlay
+  ${CMAKE_SOURCE_DIR}/images/cthead1-label2.png ${CMAKE_SOURCE_DIR}/images/cthead1.png label_overlay_no_bg.png
+  0 0 0.5
+  --compare label_overlay_no_bg.png ${CMAKE_SOURCE_DIR}/images/label_overlay_no_bg.png
+)
+
+
 
