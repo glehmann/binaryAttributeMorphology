@@ -94,8 +94,7 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
       
         // simply do nothing for now
         // TODO: implement that part
-        std::cerr << "Warning: Cropping according to background label is no yet implemented." << std::endl;
-        std::cerr << "Warning: The full image will be used." << std::endl;
+        itkWarningMacro( << "Cropping according to background label is no yet implemented. The full image will be used." );
 
         }
       else
@@ -161,8 +160,7 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
       
         // simply do nothing for now
         // TODO: implement that part
-        std::cerr << "Warning: Cropping according to background label is no yet implemented." << std::endl;
-        std::cerr << "Warning: The full image will be used." << std::endl;
+        itkWarningMacro( << "Cropping according to background label is no yet implemented. The full image will be used." );
         
         }
       else
