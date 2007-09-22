@@ -192,13 +192,6 @@ FOREACH(fg 100 200)
               ${fg} ${bg} ${size} ${order} ${connectivity} Size
             --compare binary_size_opening-${fg}-${bg}-${size}-${order}-${connectivity}.png ${CMAKE_SOURCE_DIR}/images/binary_size_opening-${fg}-${bg}-${size}-${order}-${connectivity}.png
           )
-
-          ADD_TEST(BinaryPhysicalSizeOpening-${fg}-${bg}-${size}-${order}-${connectivity} ${TEST_COMMAND}
-            binary_shape_opening
-              ${BINARY_IMAGE} binary_physical_size_opening-${fg}-${bg}-${size}-${order}-${connectivity}.png
-              ${fg} ${bg} ${size} ${order} ${connectivity} PhysicalSize
-            --compare binary_physical_size_opening-${fg}-${bg}-${size}-${order}-${connectivity}.png ${CMAKE_SOURCE_DIR}/images/binary_physical_size_opening-${fg}-${bg}-${size}-${order}-${connectivity}.png
-          )
         ENDFOREACH(size)
 
         FOREACH(nb 3 10)
@@ -207,15 +200,6 @@ FOREACH(fg 100 200)
               ${BINARY_IMAGE} binary_size_keep_n_objects-${fg}-${bg}-${nb}-${order}-${connectivity}.png
               ${fg} ${bg} ${nb} ${order} ${connectivity} Size
             --compare binary_size_keep_n_objects-${fg}-${bg}-${nb}-${order}-${connectivity}.png ${CMAKE_SOURCE_DIR}/images/binary_size_keep_n_objects-${fg}-${bg}-${nb}-${order}-${connectivity}.png
-          )
-        ENDFOREACH(nb)
-
-        FOREACH(nb 60)
-          ADD_TEST(BinarySizeOnBorderOpening-${fg}-${bg}-${nb}-${order}-${connectivity} ${TEST_COMMAND}
-            binary_shape_opening
-              ${BINARY_IMAGE} binary_size_on_border_opening-${fg}-${bg}-${nb}-${order}-${connectivity}.png
-              ${fg} ${bg} ${nb} ${order} ${connectivity} SizeOnBorder
-            --compare binary_size_on_border_opening-${fg}-${bg}-${nb}-${order}-${connectivity}.png ${CMAKE_SOURCE_DIR}/images/binary_size_on_border_opening-${fg}-${bg}-${nb}-${order}-${connectivity}.png
           )
         ENDFOREACH(nb)
       ENDFOREACH(connectivity)
@@ -231,13 +215,6 @@ FOREACH(bg 0 176)
             ${LABEL_IMAGE} label_size_opening-${bg}-${size}-${order}.png
             ${bg} ${size} ${order} Size
           --compare label_size_opening-${bg}-${size}-${order}.png ${CMAKE_SOURCE_DIR}/images/label_size_opening-${bg}-${size}-${order}.png
-        )
-
-        ADD_TEST(LabelPhysicalSizeOpening-${bg}-${size}-${order} ${TEST_COMMAND}
-          label_shape_opening
-            ${LABEL_IMAGE} label_physical_size_opening-${bg}-${size}-${order}.png
-            ${bg} ${size} ${order} Size
-          --compare label_physical_size_opening-${bg}-${size}-${order}.png ${CMAKE_SOURCE_DIR}/images/label_physical_size_opening-${bg}-${size}-${order}.png
         )
       ENDFOREACH(size)
 
@@ -290,6 +267,22 @@ ADD_TEST(LabelMapOverlayNoBackground ${TEST_COMMAND}
   ${CMAKE_SOURCE_DIR}/images/cthead1-label2.png ${CMAKE_SOURCE_DIR}/images/cthead1.png label_overlay_no_bg.png
   0 0 0.5
   --compare label_overlay_no_bg.png ${CMAKE_SOURCE_DIR}/images/label_overlay_no_bg.png
+)
+
+
+ADD_TEST(LabelMapToRGB ${TEST_COMMAND}
+  label_to_rgb
+  ${CMAKE_SOURCE_DIR}/images/cthead1-label2.png label_to_rgb.png
+  1 0
+  --compare label_to_rgb.png ${CMAKE_SOURCE_DIR}/images/label_to_rgb.png
+)
+
+
+ADD_TEST(LabelMapToRGBNoBackground ${TEST_COMMAND}
+  label_to_rgb
+  ${CMAKE_SOURCE_DIR}/images/cthead1-label2.png label_to_rgb_no_bg.png
+  0 0
+  --compare label_to_rgb_no_bg.png ${CMAKE_SOURCE_DIR}/images/label_to_rgb_no_bg.png
 )
 
 
