@@ -323,3 +323,14 @@ ADD_TEST(PrintLabelObjects ${TEST_COMMAND}
 )
 
 
+ADD_TEST(GenericAttribute ${TEST_COMMAND}
+  generic_attribute
+  ${CMAKE_SOURCE_DIR}/images/cthead1-label.png ${CMAKE_SOURCE_DIR}/images/cthead1.png
+  generic_attribute-attr.png generic_attribute-keep.png generic_attribute-open.png generic_attribute-relabel.png
+  0 100 2
+  --compare generic_attribute-attr.png ${CMAKE_SOURCE_DIR}/images/generic_attribute-attr.png
+  --compare generic_attribute-keep.png ${CMAKE_SOURCE_DIR}/images/generic_attribute-keep.png
+  --compare generic_attribute-open.png ${CMAKE_SOURCE_DIR}/images/generic_attribute-open.png
+  --compare generic_attribute-relabel.png ${CMAKE_SOURCE_DIR}/images/generic_attribute-relabel.png
+)
+
