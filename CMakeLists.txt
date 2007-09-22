@@ -286,4 +286,26 @@ ADD_TEST(LabelMapToRGBNoBackground ${TEST_COMMAND}
 )
 
 
+FOREACH(label 0 100)
+  FOREACH(bg 0 1)
+    FOREACH(neg 0 1)
+      ADD_TEST(Mask-${label}-${bg}-${neg} ${TEST_COMMAND}
+        mask
+        ${CMAKE_SOURCE_DIR}/images/2th_cthead1.png ${CMAKE_SOURCE_DIR}/images/cthead1.png mask-${label}-${bg}-${neg}.png
+        ${label} ${bg} ${neg} 0 0
+        --compare mask-${label}-${bg}-${neg}.png ${CMAKE_SOURCE_DIR}/images/mask-${label}-${bg}-${neg}.png
+      )
+        
+      FOREACH(border 0 10)
+        ADD_TEST(MaskCrop-${label}-${bg}-${neg}-${border} ${TEST_COMMAND}
+          mask
+          ${CMAKE_SOURCE_DIR}/images/2th_cthead1.png ${CMAKE_SOURCE_DIR}/images/cthead1.png mask-${label}-${bg}-${neg}-${border}.png
+          ${label} ${bg} ${neg} 1 ${border}
+          --compare mask-${label}-${bg}-${neg}-${border}.png ${CMAKE_SOURCE_DIR}/images/mask-${label}-${bg}-${neg}-${border}.png
+        )
+      ENDFOREACH(border)
+    ENDFOREACH(neg)
+  ENDFOREACH(bg)
+ENDFOREACH(label)
+
 
