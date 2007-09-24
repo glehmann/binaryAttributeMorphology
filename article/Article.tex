@@ -65,10 +65,9 @@ Following that idea, and after have searched a way to use the ITK's spatial
 objects for this task, a new set of classes have been developed to represent and
 manipulate the label images and the objects within them in ITK.
 Those new classes have been used to implement several label images
-manipulation based on object attributes, as well as the binary specialization of
-some mathematical morphology filter already included in ITK, and not related to
-the attribute of the objects. With those last filters, this contribution comes
-with 49 new classes, and should greatly enhance the binary mathematical
+manipulation based on object attributes, as well as the binary and label specialization of
+some mathematical morphology filters based on the morphological reconstruction. This contribution comes
+with 57 new classes, and should greatly enhance the binary mathematical
 morphology in ITK.
 
 All the source codes are provided, as well as a full set of tests and several
@@ -311,9 +310,6 @@ is {\em double}.
 {\em double}
   \item {\em CenterOfGravity} is the center of gravity of the object. It type is
 {\em Point< double >}.
-%   \item {\em CentralMoments}
-%   \item {\em PrincipalMoments}
-%   \item {\em PrincipalAxes}
   \item {\em Kurtosis} is the kurtosis of the pixel values in the objects. Its type is
 {\em double}.
   \item {\em Skewness} is the skewness of the pixel values in the objects. Its type is
@@ -405,16 +401,6 @@ objects. In that case, the classes provided in with that article can be used in
 place of {\em itk::LabelStatisticsImageFilter}, or to get some data about the
 shape or the position of the object.
 
-Finally, it has been chosen to develop a specific filter for the morphological
-reconstruction. It would have been possible to implement the reconstruction
-with the most common case (build the object collection, valuate the attributes
-filter the object, and rebuild the image), but in order to make it compatible
-with the {\em ShapeLabelObject} and {\em StatisticsLabelObject}, the reconstruction
-filter filters the collection directly, without setting an attribute in the objects
-\footnote{I'm not really pleased with that design though, and I'thinking about
-reimplementing it using the generic attributes. It would have no impact on the
-binary filters API.}.
-
 \subsection{Generating an itk::Image from the itk::LabelMap}
 
 Once the manipulation of the objects is done, it can be useful to go back to a
@@ -443,7 +429,7 @@ of the attribute values in the image.
 \section{Prebuilt mini-pipeline filters}
 
 The general view of the previous section show a very common way to use those
-classes. To make easier to use, some prebuilt classes have been made, to perform
+classes. To make them easier to use, some prebuilt classes have been made, to perform
 the mini-pipeline:
 \begin{itemize}
   \item creation of the {\em itk::LabelMap} from an {\em
@@ -455,10 +441,29 @@ itk::LabelMap},
 \end{itemize}
 with a specific attribute.
 
+Also, when using the {\em itk::ShapeLabelObject} or the {\em itk::StatisticsLabelObject}
+class, we usually want them to be valuated. Some classes are provided to perform the
+mini-pipeline:
+\begin{itemize}
+  \item creation of the {\em itk::LabelMap} from an {\em
+itk::Image},
+  \item valuation of the attributes of the objects
+\end{itemize}
+with the {\em itk::ShapeLabelObject} or the {\em itk::StatisticsLabelObject}.
+
 Because the objects are often get from a label image or from a binary image,
 those filters have been made for binary, and label images.
 
 \subsection{Binary filters}
+
+The filters to produce valuated attributes:
+
+\begin{itemize}
+  \item {\em itk::BinaryImageToShapeLabelMapFilter}
+  \item {\em itk::BinaryImageToStatisticsLabelMapFilter}
+\end{itemize}
+
+The filters to fully hide the usage of the label objects:
 
 \begin{itemize}
   \item {\em itk::BinaryAttributeKeepNObjectsImageFilter}
@@ -471,6 +476,16 @@ those filters have been made for binary, and label images.
 
 \subsection{Label filters}
 
+
+The filters to produce valuated attributes:
+
+\begin{itemize}
+  \item {\em itk::LabelImageToShapeLabelMapFilter}
+  \item {\em itk::LabelImageToStatisticsLabelMapFilter}
+\end{itemize}
+
+The filters to fully hide the usage of the label objects:
+
 \begin{itemize}
   \item {\em itk::LabelAttributeKeepNObjectsImageFilter}
   \item {\em itk::LabelAttributeOpeningImageFilter}
@@ -482,7 +497,11 @@ those filters have been made for binary, and label images.
   \item {\em itk::StatisticsRelabelImageFilter}
 \end{itemize}
 
-\section{Binary specialization of mathematical morphology filters}
+\section{Binary and label specialization of mathematical morphology filters}
+
+All the following filters are using a morphological reconstruction, implemented internally
+as an attribute opening with the {\em itk::AttributeLabelObject} class. Some binary filters
+are implemented:
 
 \begin{itemize}
   \item {\em itk::BinaryClosingByReconstructionImageFilter}
@@ -492,6 +511,17 @@ those filters have been made for binary, and label images.
   \item {\em itk::BinaryReconstructionByDilationImageFilter}
   \item {\em itk::BinaryReconstructionByErosionImageFilter}
 \end{itemize}
+
+and some label filters, useful when the label objects are connected, or when we
+want to avoid loosing the label by using a binary filter. Because the notion
+of reconstruction by erosion is difficult with labels, only a few filters
+are implemented:
+
+\begin{itemize}
+  \item {\em itk::LabelReconstructionByDilationImageFilter}
+%  \item {\em itk::LabelOpeningByReconstructionImageFilter}
+\end{itemize}
+
 
 \section{Computation details}
 

@@ -104,7 +104,7 @@ int main(int argc, char * argv[])
     
   // now that the objects have their attribute, we are free to manipulate them with
   // the prebuilt filters, or by hand.
-  // The default accessor (AttributeLabelObject) is the write one when using AttributeLabelObject
+  // The default accessor (AttributeLabelObject) is the right one when using AttributeLabelObject
   // so we don't have to specify it. A different one can be used if needed though.
   
   typedef itk::AttributeKeepNObjectsLabelMapFilter< LCIType > KeepType;
