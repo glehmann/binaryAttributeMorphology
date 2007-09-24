@@ -234,7 +234,7 @@ Computing the values of those attributes {\em does} require a feature image.
 The classes {\em itk::ShapeLabelObject} and {\em itk::StatisticsLabelObject} have been
 created to reduce the number of filters made to manipulate the attributes, and to make
 the computation of all the set of attributes much efficient. In the early stage of
-development, all the attributes were managed as in {\em AttributeLabelObject}, and
+development, all the attributes were managed as in {\em itk::AttributeLabelObject}, and
 a set of 8 classes made to manipulate a single attribute were provided, leading to a huge
 number of classes.
 
@@ -256,10 +256,10 @@ than the {\em itk::LabelObject} class. The third one is the attribute type.
 to the {\em Size} multiplicated by the physical pixel size. Its type is {\em double}.
   \item {\em Centroid} is the position of the center of the shape in physical coordinates. It is not
 constrained to be in the object, and thus can be outside if the object is not convex.
-Its type is {\em Point< double, ImageDimension >}. 
+Its type is {\em itk::Point< double, ImageDimension >}. 
   \item {\em Region} is the bounding box of the object given in the pixel coordinates.
 The physical coordinate can easily be computed from it. Its type is
-{\em ImageRegion< ImageDimension >}.
+{\em itk::ImageRegion< ImageDimension >}.
   \item {\em RegionElongation} is the ratio of the longest physical size of the region
 on one dimension and its smallest physical size. This descriptor is not robust, and in
 particular is sensitive to rotation. Its type is {\em double}.
@@ -295,11 +295,11 @@ or equal to $1$. Its type si {\em double}.
   \item {\em Minimum} is the minimum value in the feature image for the object. Its type is
 the feature image pixel type.
   \item {\em MinimumIndex} is the index position in the image where the first minimum was
-found. Its type is{\em Index< ImageDimension >}.
+found. Its type is{\em itk::Index< ImageDimension >}.
   \item {\em Maximum} is the maximum value in the feature image for the object. Its type is
 the feature image pixel type.
   \item {\em MaximumIndex} is the index position in the image where the first maximum was
-found. Its type is{\em Index< ImageDimension >}.
+found. Its type is{\em itk::Index< ImageDimension >}.
   \item {\em Mean} is the mean of the pixel values in the object. Its type is {\em double}.
   \item {\em Sum} is the sum of all the pixel values in the objects. Its type is {\em double}.
   \item {\em Sigma} is the standard deviation of the pixels values in the objects. Its type
@@ -309,7 +309,7 @@ is {\em double}.
   \item {\em Median} is the median of the pixels values in the obejct. Its type is
 {\em double}
   \item {\em CenterOfGravity} is the center of gravity of the object. It type is
-{\em Point< double >}.
+{\em itk::Point< double >}.
   \item {\em Kurtosis} is the kurtosis of the pixel values in the objects. Its type is
 {\em double}.
   \item {\em Skewness} is the skewness of the pixel values in the objects. Its type is
@@ -889,7 +889,7 @@ int main(int argc, char * argv[])
 % 
 \subsubsection{AttributeLabelObject}
 
-The {\em AttributeLabelObject} let the user specify the type of the attribute
+The {\em itk::AttributeLabelObject} let the user specify the type of the attribute
 he wants to use, and thus is the good choice to implement a new attribute.
 
 The source code is available in the file {\em generic\_attribute.cxx}.
@@ -1141,7 +1141,7 @@ update the shape filter, so its output will be up to date
   shape->Update();
 
 \end{verbatim} \normalsize
-then we can read the attribute values we're interested in. {\em BinaryImageToLabelMapFilter}
+then we can read the attribute values we're interested in. {\em itk::BinaryImageToLabelMapFilter}
 produces consecutives labels, so a simple {for} loop will do the job.
 \small \begin{verbatim}
   LabelCollectionType::Pointer collection = shape->GetOutput();
@@ -1277,7 +1277,7 @@ In that example, we want to:
 
 The source code is available in example.py.
 
-Lets begin with the usual {\em imports}.
+Lets begin with the usual {\em import}s.
 \small \begin{verbatim}
 import itk, sys
 itk.auto_progress()
@@ -1303,8 +1303,8 @@ nuclei = itk.ImageFileReader[ImageType].New(FileName="images/noyaux.png")
 \end{verbatim} \normalsize
 perform a simple binarization. Note that the Otsu filter does not use the same convention as usual: the white part is outside.
 \small \begin{verbatim}
-otsu = itk.OtsuThresholdImageFilter[ImageType, ImageType].New(nuclei,
-    OutsideValue=255, InsideValue=0)
+otsu = itk.OtsuThresholdImageFilter[ImageType, ImageType].New(nuclei, OutsideValue=255,
+    InsideValue=0)
 \end{verbatim} \normalsize
 The nuclei are not separated. We split them with a watershed.
 \small \begin{verbatim}
@@ -1315,30 +1315,26 @@ mask = itk.MaskImageFilter[ImageType, ImageType, ImageType].New(watershed, otsu)
 \end{verbatim} \normalsize
 And now switch to the label collection representation
 \small \begin{verbatim}
-label = itk.LabelImageToLabelMapFilter[ImageType, LabelMapType]
-    .New(mask)
+label = itk.LabelImageToLabelMapFilter[ImageType, LabelMapType].New(mask)
 \end{verbatim} \normalsize
 compute the attribute values
 \small \begin{verbatim}
-stats = itk.StatisticsLabelMapFilter[LabelMapType, ImageType]
-    .New(label, nuclei)
+stats = itk.StatisticsLabelMapFilter[LabelMapType, ImageType].New(label, nuclei)
 \end{verbatim} \normalsize
 drop the objects too small to be a nucleus, and the ones on the border
 \small \begin{verbatim}
-size = itk.ShapeOpeningLabelMapFilter[LabelMapType].New(stats,
-    Attribute='Size', Lambda=100)
-border = itk.ShapeOpeningLabelMapFilter[LabelMapType].New(size,
-    Attribute='SizeOnBorder', Lambda=10, ReverseOrdering=True)
+size = itk.ShapeOpeningLabelMapFilter[LabelMapType].New(stats,Attribute='Size',
+    Lambda=100)
+border = itk.ShapeOpeningLabelMapFilter[LabelMapType].New(size, Attribute='SizeOnBorder',
+    Lambda=10, ReverseOrdering=True)
 \end{verbatim} \normalsize
 Reoder the labels. The objects with the highest mean are the first ones.
 \small \begin{verbatim}
-relabel = itk.StatisticsRelabelLabelMapFilter[LabelMapType]
-    .New(border, Attribute='Mean')
+relabel = itk.StatisticsRelabelLabelMapFilter[LabelMapType].New(border, Attribute='Mean')
 \end{verbatim} \normalsize
 for visual validation:
 \small \begin{verbatim}
-labelNuclei = itk.LabelMapToLabelImageFilter[LabelMapType,
-    ImageType].New(relabel)
+labelNuclei = itk.LabelMapToLabelImageFilter[LabelMapType, ImageType].New(relabel)
 overlay = itk.LabelOverlayImageFilter[ImageType, ImageType, RGBImageType].New(nuclei,
     labelNuclei, UseBackground=True)
 itk.write(overlay, "nuclei-overlay.png")
@@ -1367,20 +1363,17 @@ th = itk.BinaryThresholdImageFilter[ImageType, ImageType].New(maskSpots, LowerTh
 \end{verbatim} \normalsize
 Now swith to the label collection representation, and compute the attribute values. This time, the input image is not a label image, but a binary one.
 \small \begin{verbatim}
-slabel = itk.BinaryImageToLabelMapFilter[ImageType, LabelMapType]
-    .New(th)
-sstats = itk.StatisticsLabelMapFilter[LabelMapType, ImageType]
-    .New(slabel, nuclei)
+slabel = itk.BinaryImageToLabelMapFilter[ImageType, LabelMapType].New(th)
+sstats = itk.StatisticsLabelMapFilter[LabelMapType, ImageType].New(slabel, nuclei)
 \end{verbatim} \normalsize
 we know there are for spots in the nubleus, so keep the 4 biggest spots. The other attribute are also usable - we may have chosen to keep the 4 brightest spots for example.
 \small \begin{verbatim}
-skeep = itk.ShapeKeepNObjectsLabelMapFilter[LabelMapType].New(
-    sstats, Attribute='Size', NumberOfObjects=4)
+skeep = itk.ShapeKeepNObjectsLabelMapFilter[LabelMapType].New(sstats, Attribute='Size',
+    NumberOfObjects=4)
 \end{verbatim} \normalsize
 Reoder the labels. The bigger objects first.
 \small \begin{verbatim}
-srelabel = itk.StatisticsRelabelLabelMapFilter[LabelMapType].New(
-    skeep, Attribute='Size')
+srelabel = itk.StatisticsRelabelLabelMapFilter[LabelMapType].New(skeep, Attribute='Size')
 \end{verbatim} \normalsize
 Finally, display the values we are interested in:
 \begin{itemize}
@@ -1436,21 +1429,21 @@ Some of them however, are not (easily) threadable (the {\em KeepNObjects} and {\
 filters), are shouldn't get any performance improvement in a threaded version
 (the {\em Opening} filters).
 
-The {\em BinaryImageToLabelMapFilter} class is a slight modification of the
-Richard Beare's {\em ConnectedComponentImageFilter}, and thus, has not been threaded.
+The {\em itk::BinaryImageToLabelMapFilter} class is a slight modification of the
+Richard Beare's {\em itk::ConnectedComponentImageFilter}, and thus, has not been threaded.
 It should however be possible to increase its performance that way.
 
-The classical thread architecture is used when the input image is an {\em Image}: the image
+The classical thread architecture is used when the input image is an {\em itk::Image}: the image
 is splitted in several regions (one per thread), and each thread work on its own region.
 
-Because the {\em LabelMap} image is not an array of pixels, it can't be splitted
+Because the {\em itk::LabelMap} image is not an array of pixels, it can't be splitted
 that way. Instead, several threads are created, and try to take an object in the collection.
 If they get one, they process that object individually, and try to get another one when the
-object is processed. If no object can be get, the thread ends. A {\em FastMutexLock} is used
+object is processed. If no object can be get, the thread ends. A {\em itk::FastMutexLock} is used
 to ensure that only one thread take an object at a time.
 
 For the developer, the usage of the threading support is made very simple, by subclassing
-{\em LabelMapFilter}, or {\em InPlaceLabelMapFilter}, and implementing
+{\em itk::LabelMapFilter}, or {\em itk::InPlaceLabelMapFilter}, and implementing
 the method {\em virtual void ThreadedGenerateData( LabelObjectType * labelObject )} in the
 new class. This method only has to process the labelObject passed in parameter. All the
 threading code and mutex lock management is already implemented. The mutex lock remain
@@ -1458,7 +1451,7 @@ accessible if the subclass need to use it, as the {\em m\_LabelObjectContainerLo
 
 \section{In place filtering}
 
-All the filters which are taking a {\em LabelMap} as input, and are producing a {\em LabelMap} as output, are implemented as a subclass of {\em InPlaceLabelMapFilter} and
+All the filters which are taking a {\em itk::LabelMap} as input, and are producing a {\em itk::LabelMap} as output, are implemented as a subclass of {\em InPlaceLabelMapFilter} and
 thus are running in place by default.
 
 The use can modify this behavior with the {\em SetInPlace( bool )}, {\em InPlaceOn()}, and {\em InPlaceOff()} methods, as with the usual {\em InPlaceImageFilter}.
@@ -1499,9 +1492,9 @@ of an image, starting from
 Doing that require a good knowledge of the iterator design. Any help on that point is
 welcome.
 
-It may be useful to implement the most commonly used opening, keep N objects and relabel transforms in a more efficient way, by using an {\em AttributeLabelObject} instead of a {\em ShapeLabelObject} or a {\em StatisticsLabelObject}.
+It may be useful to implement the most commonly used opening, keep N objects and relabel transforms in a more efficient way, by using an {\em itk::AttributeLabelObject} instead of a {\em itk::ShapeLabelObject} or a {\em itk::StatisticsLabelObject}.
 
-The {\em BinaryImageToLabelMapFilter} class should be threaded to get the best of that filter on multiprocessors systems.
+The {\em itk::BinaryImageToLabelMapFilter} class should be threaded to get the best of that filter on multiprocessors systems.
 
 The converters from/to image are provided, but it may be useful to  have the converters from/to other objects representations:
 \begin{itemize}
@@ -1511,7 +1504,7 @@ The converters from/to image are provided, but it may be useful to  have the con
 \end{itemize}
 
 
-Finally, all the binary and label filters should be implemented as a subclass of {\em InPlaceImageFilter}.
+Finally, all the binary and label filters should be implemented as a subclass of {\em itk::InPlaceImageFilter}.
 
 Note that some names have been changed in revision 3. To fix your sources, the following commands can be used in your source directory (order is important):
 \small \begin{verbatim}
@@ -1527,7 +1520,7 @@ ITK is currently lacking a good way to manipulate the binary objects. With that 
 filled that lack.
 
 \section{Acknowledgments}
-I thank Richard Beare for his suggestion to use the run length encoding to represent the binary objects, and Julien Jomier for his help for the choice to {\em not} use the {\em itk::SpatialObject} class as base class of the {\em itk::LabelObejct} class.
+I thank Richard Beare for his suggestion to use the run length encoding to represent the binary objects, and Julien Jomier for his help for the choice to {\em not} use the {\em itk::SpatialObject} class as base class of the {\em itk::LabelObject} class.
 
 I thank Dr Pierre Adenot and MIMA2 confocal facilities
 (\url{http://mima2.jouy.inra.fr}) for providing the 3D test image.
