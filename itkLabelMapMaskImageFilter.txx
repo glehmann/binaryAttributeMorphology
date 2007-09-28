@@ -57,7 +57,6 @@ void
 LabelMapMaskImageFilter<TInputImage, TOutputImage>
 ::GenerateOutputInformation()
 {
-  Superclass::GenerateOutputInformation();
 
   if( m_Crop )
     {
@@ -67,17 +66,25 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
       {
       // early exit, crop sizes already computed
       // std::cout << "Don't recompute the output size again." << std::endl;
+      // std::cout << "LargestPossibleRegion: " << this->GetOutput()->GetLargestPossibleRegion() << std::endl;
+      // std::cout << "BufferedRegion: " << this->GetOutput()->GetBufferedRegion() << std::endl;
+      // std::cout << "RequestedRegion: " << this->GetOutput()->GetRequestedRegion() << std::endl;
       return;
       }
+      
+    // first, call the default implementation, to be sure to forgot nothing
+    Superclass::GenerateOutputInformation();
 
+    // update the input if needed
     if( input->GetSource())
       {
       ProcessObject * upstream = input->GetSource();
       if (upstream)
         {
-        this->SetInput(NULL);
+        // this->SetInput(NULL);
+        // std::cout << "Update the input (again?)." << std::endl;
         upstream->Update();
-        this->SetInput(input);
+        // this->SetInput(input);
         }
       }
 
@@ -219,7 +226,18 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
     this->GetOutput()->SetLargestPossibleRegion( cropRegion );
 
     m_CropTimeStamp.Modified();
+    
     }
+  else
+    {
+    // no crop -> use the default implementation
+    Superclass::GenerateOutputInformation();
+    }
+    
+  // std::cout << "LargestPossibleRegion: " << this->GetOutput()->GetLargestPossibleRegion() << std::endl;
+  // std::cout << "BufferedRegion: " << this->GetOutput()->GetBufferedRegion() << std::endl;
+  // std::cout << "RequestedRegion: " << this->GetOutput()->GetRequestedRegion() << std::endl;
+    
 }
 
 template <class TInputImage, class TOutputImage>
