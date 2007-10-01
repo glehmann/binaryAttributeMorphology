@@ -391,7 +391,8 @@ with the lowest attribute values in the first labels.
 \subfigure[All the objects with roundness smaller than 0.8 removed]{\includegraphics[scale=.7]{cthead1-label2-roundness-greater-than-0_8}}
 \subfigure[All the objects with elongation smaller than 10 removed]{\includegraphics[scale=.7]{cthead1-label2-binaryElongation-greater-than-10}}
 \subfigure[All the objects with perimeter smaller than 100 removed]{\includegraphics[scale=.7]{cthead1-label2-perimeter-greater-than-100}}
-\caption{Some example of opening with different attribute and parameters.}
+\caption{Some example of opening with different attribute and parameters.
+Note that the labels are kept unchanged in the output image.}
 \end{center}
 \end{figure}
 
@@ -420,10 +421,18 @@ that filter, the image can be cropped to contain only the non-masked zone\footno
 The code used to produce the output region based on the content of the image
 is partially copied from a contribution of Peter Cech \url{http://www.vision.ee.ethz.ch/~pcech/itkAutoCropImageFilter/}.}
 , or the non-masked zone padded by a user defined number of pixels.
-  \item Finally, {\em itk::LabelMapToAttributeImageFilter} produce
+  \item The {\em itk::LabelMapToAttributeImageFilter} produce
 an {\em itk::Image} with the value of the attribute of the objects of the {\em
 itk::LabelMap}. This filter is mostly useful to have a global view
 of the attribute values in the image.
+  \item The {\em LabelMapToRGBImageFilter} produce a color {\em itk::Image} with
+{\em itk::RGBPixel} as pixel type. The label objects are in color, as in
+Figure~\ref{fig:labelImage}. This class is mostly useful for a quick visual
+validation without going outside ITK.
+  \item Finally, the {\em LabelMapOvelayImageFilter} produce a color {\em itk::Image} with
+{\em itk::RGBPixel} as pixel type. The label objects are in color on top of a grayscale
+image, as in Figure~\ref{fig:nucleiOverlay}. This class is mostly useful for a quick visual
+validation without going outside ITK.
 \end{itemize}
 
 \section{Prebuilt mini-pipeline filters}
@@ -1344,7 +1353,7 @@ itk.write(overlay, "nuclei-overlay.png")
 \begin{center}
 \includegraphics[scale=0.45]{nuclei-overlay}
 \caption{The segmented nuclei. The too small objects and the ones on the border have been excluded.}
-\label{fig:overseg}
+\label{fig:nucleiOverlay}
 \end{center}
 \end{figure}
 
