@@ -79,7 +79,7 @@ StatisticsLabelMapFilter<TImage, TFeatureImage>
   histogram->Initialize( histogramSize, featureImageMin, featureImageMax );
 
   typename LabelObjectType::LineContainerType::const_iterator lit;
-  typename LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
+  typename LabelObjectType::LineContainerType & lineContainer = labelObject->GetLineContainer();
 
   FeatureImagePixelType min = NumericTraits< FeatureImagePixelType >::max();
   FeatureImagePixelType max = NumericTraits< FeatureImagePixelType >::NonpositiveMin();

@@ -42,7 +42,7 @@ LabelReconstructionLabelMapFilter<TImage, TMarkerImage, TAttributeAccessor>
   const PixelType & label = labelObject->GetLabel();
 
   typename LabelObjectType::LineContainerType::const_iterator lit;
-  typename LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
+  typename LabelObjectType::LineContainerType & lineContainer = labelObject->GetLineContainer();
 
   // iterate over all the lines to find a pixel inside the object
   for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )

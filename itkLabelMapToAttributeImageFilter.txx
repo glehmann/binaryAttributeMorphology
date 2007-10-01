@@ -83,7 +83,7 @@ LabelMapToAttributeImageFilter<TInputImage, TOutputImage, TAttributeAccessor>
     const AttributeValueType & attribute = accessor( labeObject );
 
     typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
-    typename InputImageType::LabelObjectType::LineContainerType lineContainer = labeObject->GetLineContainer();
+    const typename InputImageType::LabelObjectType::LineContainerType & lineContainer = labeObject->GetLineContainer();
 
     for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
       {

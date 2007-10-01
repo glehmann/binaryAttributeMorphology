@@ -78,7 +78,7 @@ int main(int argc, char * argv[])
     
     // the iterator for the lines
     LOType::LineContainerType::const_iterator lit;
-    LOType::LineContainerType lineContainer = labelObject->GetLineContainer();
+    LOType::LineContainerType & lineContainer = labelObject->GetLineContainer();
   
     // iterate over all the lines
     for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )

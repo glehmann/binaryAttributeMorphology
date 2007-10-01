@@ -124,7 +124,7 @@ LabelMapOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
 
   // the user want the mask to be the background of the label collection image
   typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
-  typename InputImageType::LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
+  typename InputImageType::LabelObjectType::LineContainerType & lineContainer = labelObject->GetLineContainer();
 
   for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
     {

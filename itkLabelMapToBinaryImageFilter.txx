@@ -142,7 +142,7 @@ LabelMapToBinaryImageFilter<TInputImage, TOutputImage>
   OutputImageType * output = this->GetOutput();
 
   typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
-  typename InputImageType::LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
+  typename InputImageType::LabelObjectType::LineContainerType & lineContainer = labelObject->GetLineContainer();
 
   for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
     {

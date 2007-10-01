@@ -117,7 +117,7 @@ ShapeLabelMapFilter<TImage, TLabelImage>
   centralMoments.Fill( 0 );
 
   typename LabelObjectType::LineContainerType::const_iterator lit;
-  typename LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
+  typename LabelObjectType::LineContainerType & lineContainer = labelObject->GetLineContainer();
 
   // iterate over all the lines
   for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
@@ -366,7 +366,7 @@ ShapeLabelMapFilter<TImage, TLabelImage>
     
     // the iterators
     typename LabelObjectType::LineContainerType::const_iterator lit;
-    typename LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
+    typename LabelObjectType::LineContainerType & lineContainer = labelObject->GetLineContainer();
 
     typedef typename itk::ConstNeighborhoodIterator< LabelImageType > NeighborIteratorType;
     SizeType neighborHoodRadius;

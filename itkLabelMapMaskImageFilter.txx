@@ -119,7 +119,7 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
           if( loit->first != m_Label )
             {
             typename LabelObjectType::LineContainerType::const_iterator lit;
-            typename LabelObjectType::LineContainerType lineContainer = loit->second->GetLineContainer();
+            typename LabelObjectType::LineContainerType & lineContainer = loit->second->GetLineContainer();
             // iterate over all the lines
             for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
               {
@@ -176,7 +176,7 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
         
         const LabelObjectType * labelObject = input->GetLabelObject( m_Label );
         typename LabelObjectType::LineContainerType::const_iterator lit;
-        typename LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
+        const typename LabelObjectType::LineContainerType & lineContainer = labelObject->GetLineContainer();
         IndexType mins;
         mins.Fill( NumericTraits< long >::max() );
         IndexType maxs;
@@ -317,7 +317,7 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
       if( !m_Negated )
         {
         typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
-        typename InputImageType::LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
+        const typename InputImageType::LabelObjectType::LineContainerType & lineContainer = labelObject->GetLineContainer();
       
         for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
           {
@@ -340,7 +340,7 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
         RegionType outputRegion = output->GetLargestPossibleRegion();
 
         typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
-        typename InputImageType::LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
+        const typename InputImageType::LabelObjectType::LineContainerType & lineContainer = labelObject->GetLineContainer();
       
         for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
           {
@@ -383,7 +383,7 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
 
     // the user want the mask to be the background of the label collection image
     typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
-    typename InputImageType::LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
+    typename InputImageType::LabelObjectType::LineContainerType & lineContainer = labelObject->GetLineContainer();
 
     for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
       {
@@ -407,7 +407,7 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
 
     // and copy the feature image where the label objects are
     typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
-    typename InputImageType::LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
+    typename InputImageType::LabelObjectType::LineContainerType & lineContainer = labelObject->GetLineContainer();
 
     for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
       {
