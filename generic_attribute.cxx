@@ -119,12 +119,12 @@ int main(int argc, char * argv[])
   OpeningType::Pointer opening = OpeningType::New();
   opening->SetInput( labelCollection );
   opening->SetLambda( atof(argv[8]) );
-  keep->SetInPlace( false );
+  opening->SetInPlace( false );
 
   typedef itk::AttributeRelabelLabelMapFilter< LCIType > RelabelType;
   RelabelType::Pointer relabel = RelabelType::New();
   relabel->SetInput( labelCollection );
-  keep->SetInPlace( false );
+  relabel->SetInPlace( false );
   
   // The attribute values can be put directly in a classic image
   

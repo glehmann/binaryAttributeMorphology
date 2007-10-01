@@ -1034,12 +1034,12 @@ Prevent the filter to run in place, so the input image is not modified.
   OpeningType::Pointer opening = OpeningType::New();
   opening->SetInput( labelCollection );
   opening->SetLambda( atof(argv[8]) );
-  keep->SetInPlace( false );
+  opening->SetInPlace( false );
 
   typedef itk::AttributeRelabelLabelMapFilter< LCIType > RelabelType;
   RelabelType::Pointer relabel = RelabelType::New();
   relabel->SetInput( labelCollection );
-  keep->SetInPlace( false );
+  relabel->SetInPlace( false );
 \end{verbatim} \normalsize
 The attribute values can be put directly in a classic image.
 \small \begin{verbatim}
