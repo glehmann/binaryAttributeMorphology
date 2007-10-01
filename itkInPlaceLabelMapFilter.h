@@ -73,7 +73,7 @@ public:
   
   
   /** Run-time type information (and related methods). */
-  itkTypeMacro(InPlaceLabelMapFilter,ImageToImageFilter);
+  itkTypeMacro(InPlaceLabelMapFilter, LabelMapFilter);
 
   /** Standard New method. */
   itkNewMacro(Self);  
