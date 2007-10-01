@@ -34,7 +34,10 @@ namespace itk
  * With that class, the developer don't need to take care of iterating over all the objects in
  * the image, or to manage by hand the threads.
  * 
- * \ingroup ImageFilters
+ * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ *
+ * \sa LabelMapToBinaryImageFilter, LabelMapToLabelImageFilter
+ * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template <class TInputImage, class TOutputImage>
 class ITK_EXPORT LabelMapFilter : public ImageToImageFilter<TInputImage, TOutputImage>

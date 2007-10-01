@@ -56,7 +56,10 @@ namespace itk
  * manage memory using (and perhaps overriding) the implementations of
  * ReleaseInputs() and AllocateOutputs() provided here.
  *
- * \ingroup ImageFilters
+ * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ *
+ * \sa LabelMapToBinaryImageFilter, LabelMapToLabelImageFilter
+ * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template <class TInputImage>
 class ITK_EXPORT InPlaceLabelMapFilter : public LabelMapFilter<TInputImage, TInputImage>
