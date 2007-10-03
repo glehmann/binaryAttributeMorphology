@@ -39,13 +39,10 @@ LabelMapToRGBImageFilter<TInputImage, TOutputImage>
   OutputImageType * output = this->GetOutput();
   const InputImageType * input = this->GetInput();
 
-  if( input->GetUseBackground() )
-    {
-    FunctorType function;
-    function.SetUseBackground( true );
-    function.SetBackgroundValue( input->GetBackgroundValue() );
-    output->FillBuffer( function( input->GetBackgroundValue() ) );
-    }
+  FunctorType function;
+  function.SetUseBackground( true );
+  function.SetBackgroundValue( input->GetBackgroundValue() );
+  output->FillBuffer( function( input->GetBackgroundValue() ) );
     
   Superclass::BeforeThreadedGenerateData();
     
@@ -60,7 +57,7 @@ LabelMapToRGBImageFilter<TInputImage, TOutputImage>
   const typename LabelObjectType::LabelType & label = labelObject->GetLabel();
 
   FunctorType function;
-  function.SetUseBackground( this->GetInput()->GetUseBackground() );
+  function.SetUseBackground( true );
   function.SetBackgroundValue( this->GetInput()->GetBackgroundValue() );
 
   typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;

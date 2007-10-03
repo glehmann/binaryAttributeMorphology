@@ -81,14 +81,6 @@ public:
   itkSetMacro(BackgroundValue, OutputImagePixelType);
   itkGetConstMacro(BackgroundValue, OutputImagePixelType);
 
-  /**
-   * Set/Get wether the LabelMap produced should use the background
-   * or not (true by default).
-   */
-  itkSetMacro(UseBackground, bool);
-  itkGetConstMacro(UseBackground, bool);
-  itkBooleanMacro(UseBackground);
-
 protected:
   LabelImageToLabelMapFilter();
   ~LabelImageToLabelMapFilter() {};
@@ -113,7 +105,6 @@ private:
   LabelImageToLabelMapFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-  bool m_UseBackground;
   OutputImagePixelType m_BackgroundValue;
   
   typename std::vector< OutputImagePointer > m_TemporaryImages;

@@ -27,7 +27,6 @@ template<class TInputImage, class TFeatureImage, class TOutputImage>
 LabelImageToStatisticsLabelMapFilter<TInputImage, TFeatureImage, TOutputImage>
 ::LabelImageToStatisticsLabelMapFilter()
 {
-  m_UseBackground = true;
   m_BackgroundValue = NumericTraits<OutputImagePixelType>::NonpositiveMin();
   m_ComputeFeretDiameter = false;
   m_ComputePerimeter = false;
@@ -75,7 +74,6 @@ LabelImageToStatisticsLabelMapFilter<TInputImage, TFeatureImage, TOutputImage>
   
   typename LabelizerType::Pointer labelizer = LabelizerType::New();
   labelizer->SetInput( this->GetInput() );
-  labelizer->SetUseBackground( m_UseBackground );
   labelizer->SetBackgroundValue( m_BackgroundValue );
   labelizer->SetNumberOfThreads( this->GetNumberOfThreads() );
   progress->RegisterInternalFilter(labelizer, .5f);
@@ -101,7 +99,6 @@ LabelImageToStatisticsLabelMapFilter<TInputImage, TFeatureImage, TOutputImage>
 {
   Superclass::PrintSelf(os, indent);
 
-  os << indent << "UseBackground: "  << m_UseBackground << std::endl;
   os << indent << "BackgroundValue: "  << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
   os << indent << "ComputeFeretDiameter: " << m_ComputeFeretDiameter << std::endl;
   os << indent << "ComputePerimeter: " << m_ComputePerimeter << std::endl;

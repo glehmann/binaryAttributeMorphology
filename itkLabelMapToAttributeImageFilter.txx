@@ -70,10 +70,7 @@ LabelMapToAttributeImageFilter<TInputImage, TOutputImage, TAttributeAccessor>
 
   AttributeAccessorType accessor;
 
-  if( input->GetUseBackground() )
-    {
-    output->FillBuffer( m_BackgroundValue );
-    }
+  output->FillBuffer( m_BackgroundValue );
 
   typename InputImageType::LabelObjectContainerType::const_iterator it;
   const typename InputImageType::LabelObjectContainerType & labelObjectContainer = input->GetLabelObjectContainer();

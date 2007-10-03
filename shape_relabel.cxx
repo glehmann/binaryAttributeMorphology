@@ -27,7 +27,7 @@ int main(int argc, char * argv[])
   RelabelType::Pointer relabel = RelabelType::New();
   relabel->SetInput( reader->GetOutput() );
   relabel->SetBackgroundValue( atoi(argv[3]) );
-  relabel->SetUseBackground( atoi(argv[4]) );
+//  relabel->SetUseBackground( atoi(argv[4]) );
   relabel->SetReverseOrdering( atoi(argv[5]) );
   relabel->SetAttribute( argv[6] );
   itk::SimpleFilterWatcher watcher(relabel, "filter");

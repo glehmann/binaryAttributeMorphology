@@ -31,7 +31,7 @@ namespace itk
  * LabelMap is an image class specialized in storing the labeled
  * images. It represent the image in a different way than itk::Image.
  * Instead of storing the content of the image in an array of pixels values,
- * it store the a collection of labeled objects, and optionally a background
+ * it store the a collection of labeled objects, and a background
  * value.
  * This way of storing the content of the image allow an easy and efficient
  * manipulation of the objects in the image.
@@ -298,13 +298,6 @@ public:
   itkSetMacro(BackgroundValue, LabelType);
   
   /**
-   * Set/Get whether the background should be used are not.
-   */
-  itkGetConstMacro(UseBackground, bool);
-  itkSetMacro(UseBackground, bool);
-  itkBooleanMacro(UseBackground);
-
-  /**
    * Print all the objects stored in that collection - a convenient method
    * for prototyping.
    */
@@ -325,7 +318,6 @@ private:
 
   LabelObjectContainerType m_LabelObjectContainer;
   LabelType m_BackgroundValue;
-  bool m_UseBackground;
 };
 
 } // end namespace itk

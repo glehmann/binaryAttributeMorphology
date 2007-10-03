@@ -80,19 +80,6 @@ LabelMapToBinaryImageFilter<TInputImage, TOutputImage>
   OutputImageType * output = this->GetOutput();
   const InputImageType * input = this->GetInput();
 
-  if( !input->GetUseBackground() )
-    {
-    // no need to run the full process: the image will be foreground only
-    ProgressReporter progress( this, threadId, outputRegionForThread.GetNumberOfPixels() );
-    ImageRegionIterator< OutputImageType > oIt( output, outputRegionForThread );
-    for( oIt.GoToBegin(); !oIt.IsAtEnd(); ++oIt )
-      {
-      oIt.Set( m_ForegroundValue );
-      progress.CompletedPixel();
-      }
-    return;
-    }
-
   // fill the output with background value - they will be overiden with the foreground value
   // later, if there is some objects
   if( this->GetNumberOfInputs() == 2 )

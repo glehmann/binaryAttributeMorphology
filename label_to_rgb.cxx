@@ -26,7 +26,7 @@ int main(int argc, char * argv[])
   typedef itk::LabelImageToLabelMapFilter< IType > ConverterType;
   ConverterType::Pointer converter = ConverterType::New();
   converter->SetInput( reader->GetOutput() );
-  converter->SetUseBackground( atof(argv[3]) );
+//  converter->SetUseBackground( atoi(argv[3]) );
   converter->SetBackgroundValue( atoi(argv[4]) );
   
 //  typedef itk::RGBPixel< unsigned char > RGBPixelType;

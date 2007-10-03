@@ -94,7 +94,7 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
     // now the output image size can be computed
     if( m_Negated )
       {
-      if( input->GetUseBackground() && input->GetBackgroundValue() != m_Label )
+      if( input->GetBackgroundValue() != m_Label )
         {
         // the "bad" case - the zone outside the object is at least partially
         // covered by the background, which is not explicitely defined.
@@ -160,7 +160,7 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
       }
     else
       {
-      if( input->GetUseBackground() && input->GetBackgroundValue() == m_Label )
+      if( input->GetBackgroundValue() == m_Label )
         {
         // the other "bad" case - the label we want is not defined as a label object,
         // but implicitely, in the zones not defined.
@@ -274,7 +274,7 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
 
   // we will keep the values from the feature image if the same pixel in the label image
   // equals the label given by the user. The other pixels are set to the background value.
-  if( ( input->GetUseBackground() && input->GetBackgroundValue() == m_Label ) ^ m_Negated )
+  if( ( input->GetBackgroundValue() == m_Label ) ^ m_Negated )
     {
     // the user want the mask to be the background of the label collection image
     // copy the feature image to the output image
@@ -301,7 +301,7 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
   // wait for the other threads to complete that part
   m_Barrier->Wait();
 
-  if( input->GetUseBackground() && input->GetBackgroundValue() == m_Label )
+  if( input->GetBackgroundValue() == m_Label )
     {
     // and delegate to the superclass implementation to use the thread support for the label objects
     Superclass::ThreadedGenerateData( outputRegionForThread, threadId );
@@ -336,7 +336,7 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
         // and mark the label object as background
         
         // should we take care to not write outside the image ?
-        bool testIdxIsInside = m_Crop && ( input->GetUseBackground() && input->GetBackgroundValue() == m_Label ) ^ m_Negated;
+        bool testIdxIsInside = m_Crop && ( input->GetBackgroundValue() == m_Label ) ^ m_Negated;
         RegionType outputRegion = output->GetLargestPossibleRegion();
 
         typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
@@ -378,7 +378,7 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
     // equals the label given by the user. The other pixels are set to the background value.
 
     // should we take care to not write outside the image ?
-    bool testIdxIsInside = m_Crop && ( input->GetUseBackground() && input->GetBackgroundValue() == m_Label ) ^ m_Negated;
+    bool testIdxIsInside = m_Crop && ( input->GetBackgroundValue() == m_Label ) ^ m_Negated;
     RegionType outputRegion = output->GetLargestPossibleRegion();
 
     // the user want the mask to be the background of the label collection image

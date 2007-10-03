@@ -28,7 +28,6 @@ template <class TInputImage, class TOutputImage>
 LabelImageToLabelMapFilter<TInputImage, TOutputImage>
 ::LabelImageToLabelMapFilter()
 {
-  m_UseBackground = true;
   m_BackgroundValue = NumericTraits<OutputImagePixelType>::NonpositiveMin();
 }
 
@@ -80,7 +79,6 @@ LabelImageToLabelMapFilter<TInputImage, TOutputImage>
       }
       
     // set the minimum data needed to create the objects properly
-    m_TemporaryImages[i]->SetUseBackground( m_UseBackground );
     m_TemporaryImages[i]->SetBackgroundValue( m_BackgroundValue );
 
     }
@@ -107,7 +105,7 @@ LabelImageToLabelMapFilter<TInputImage, TOutputImage>
       {
       const InputImagePixelType & v = it.Get();
   
-      if( !m_UseBackground || v != m_BackgroundValue )
+      if( v != m_BackgroundValue )
         {
         // We've hit the start of a run
         IndexType idx = it.GetIndex();
@@ -182,7 +180,6 @@ LabelImageToLabelMapFilter<TInputImage, TOutputImage>
 {
   Superclass::PrintSelf(os, indent);
 
-  os << indent << "UseBackground: "  << m_UseBackground << std::endl;
   os << indent << "BackgroundValue: "  << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
 }
   

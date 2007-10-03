@@ -139,20 +139,11 @@ public:
   itkSetMacro(ForegroundValue, InputPixelType);
   itkGetConstMacro(ForegroundValue, InputPixelType);
 
-  /**
-   * Set/Get wether the produce labelCollectionImage should use the background value
-   * or not.
-   */
-  itkSetMacro(UseBackground, bool);
-  itkGetConstMacro(UseBackground, bool);
-  itkBooleanMacro(UseBackground);
-
 protected:
   BinaryImageToLabelMapFilter() 
     {
     m_FullyConnected = false;
     m_ObjectCount = 0;
-    m_UseBackground = true;
     m_BackgroundValue = NumericTraits<OutputPixelType>::NonpositiveMin();
     m_ForegroundValue = NumericTraits<InputPixelType>::max();
     }
@@ -179,7 +170,6 @@ protected:
   bool m_FullyConnected;
   
 private:
-  bool m_UseBackground;
   OutputPixelType m_BackgroundValue;
   InputPixelType m_ForegroundValue;
 

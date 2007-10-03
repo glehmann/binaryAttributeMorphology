@@ -80,7 +80,7 @@ AttributeRelabelLabelMapFilter<TImage, TAttributeAccessor>
     it++ )
     {
     // avoid the background label if it is used
-    if( output->GetUseBackground() && label == output->GetBackgroundValue() )
+    if( label == output->GetBackgroundValue() )
       {
       label++;
       }

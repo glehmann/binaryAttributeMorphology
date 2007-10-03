@@ -44,7 +44,7 @@ int main(int argc, char * argv[])
   typedef itk::LabelImageToLabelMapFilter< ImageType, LabelMapType> I2LType;
   I2LType::Pointer i2l = I2LType::New();
   i2l->SetInput( reader->GetOutput() );
-  i2l->SetUseBackground( true );
+//  i2l->SetUseBackground( true );
 
   // then mask the image. Two inputs are required (the label collection image, and
   // the image to be masked). The label used to mask the image is passed with the 

@@ -31,7 +31,7 @@ int main(int argc, char * argv[])
   relabel->SetInput( reader->GetOutput() );
   relabel->SetFeatureImage( reader2->GetOutput() );
   relabel->SetBackgroundValue( atoi(argv[4]) );
-  relabel->SetUseBackground( atoi(argv[5]) );
+//  relabel->SetUseBackground( atoi(argv[5]) );
   relabel->SetReverseOrdering( atoi(argv[6]) );
   relabel->SetAttribute( argv[7] );
   itk::SimpleFilterWatcher watcher(relabel, "filter");

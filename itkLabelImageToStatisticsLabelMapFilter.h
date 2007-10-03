@@ -117,14 +117,6 @@ public:
   itkGetConstReferenceMacro(ComputePerimeter, bool);
   itkBooleanMacro(ComputePerimeter);
 
-  /**
-   * Set/Get wether the LabelMap produced should use the background
-   * or not (true by default).
-   */
-  itkSetMacro(UseBackground, bool);
-  itkGetConstMacro(UseBackground, bool);
-  itkBooleanMacro(UseBackground);
-
    /** Set the feature image */
   void SetFeatureImage(TFeatureImage *input)
      {
@@ -173,7 +165,6 @@ private:
   LabelImageToStatisticsLabelMapFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-  bool m_UseBackground;
   OutputImagePixelType m_BackgroundValue;
   bool m_ComputeFeretDiameter;
   bool m_ComputePerimeter;

@@ -80,22 +80,19 @@ LabelMapOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
   InputImageType * input = const_cast<InputImageType *>(this->GetInput());
   const FeatureImageType * input2 = this->GetFeatureImage();
 
-  if( input->GetUseBackground() )
-    {
-    FunctorType function;
-    function.SetUseBackground( true );
-    function.SetBackgroundValue( input->GetBackgroundValue() );
-    function.SetOpacity( m_Opacity );
-    
-    ImageRegionConstIterator< FeatureImageType > featureIt( input2, outputRegionForThread );
-    ImageRegionIterator< OutputImageType > outputIt( output, outputRegionForThread );
+  FunctorType function;
+  function.SetUseBackground( true );
+  function.SetBackgroundValue( input->GetBackgroundValue() );
+  function.SetOpacity( m_Opacity );
+  
+  ImageRegionConstIterator< FeatureImageType > featureIt( input2, outputRegionForThread );
+  ImageRegionIterator< OutputImageType > outputIt( output, outputRegionForThread );
 
-    for ( featureIt.GoToBegin(), outputIt.GoToBegin();
-          !featureIt.IsAtEnd();
-          ++featureIt, ++outputIt )
-      {
-      outputIt.Set( function( featureIt.Get(), input->GetBackgroundValue() ) );
-      }
+  for ( featureIt.GoToBegin(), outputIt.GoToBegin();
+        !featureIt.IsAtEnd();
+        ++featureIt, ++outputIt )
+    {
+    outputIt.Set( function( featureIt.Get(), input->GetBackgroundValue() ) );
     }
 
   // wait for the other threads to complete that part
@@ -116,7 +113,7 @@ LabelMapOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
   const FeatureImageType * input2 = this->GetFeatureImage();
 
   FunctorType function;
-  function.SetUseBackground( input->GetUseBackground() );
+  function.SetUseBackground( true );
   function.SetBackgroundValue( input->GetBackgroundValue() );
   function.SetOpacity( m_Opacity );
 

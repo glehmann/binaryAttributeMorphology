@@ -30,7 +30,6 @@ StatisticsRelabelImageFilter<TInputImage, TFeatureImage>
   m_BackgroundValue = NumericTraits<OutputImagePixelType>::NonpositiveMin();
   m_ReverseOrdering = false;
   m_Attribute = LabelObjectType::MEAN;
-  m_UseBackground = true;
   this->SetNumberOfRequiredInputs(2);
 }
 
@@ -76,7 +75,6 @@ StatisticsRelabelImageFilter<TInputImage, TFeatureImage>
   typename LabelizerType::Pointer labelizer = LabelizerType::New();
   labelizer->SetInput( this->GetInput() );
   labelizer->SetBackgroundValue( m_BackgroundValue );
-  labelizer->SetUseBackground( m_UseBackground );
   labelizer->SetNumberOfThreads( this->GetNumberOfThreads() );
   progress->RegisterInternalFilter(labelizer, .3f);
   
@@ -122,7 +120,6 @@ StatisticsRelabelImageFilter<TInputImage, TFeatureImage>
 
   os << indent << "ReverseOrdering: "  << m_ReverseOrdering << std::endl;
   os << indent << "BackgroundValue: "  << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
-  os << indent << "UseBackground: "  << m_UseBackground << std::endl;
   os << indent << "Attribute: "  << LabelObjectType::GetNameFromAttribute(m_Attribute) << " (" << m_Attribute << ")" << std::endl;
 }
   

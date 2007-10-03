@@ -34,7 +34,6 @@ LabelMap<TLabelObject>
 ::LabelMap()
 {
   m_BackgroundValue = NumericTraits< LabelType >::Zero;
-  m_UseBackground = true;
   this->Initialize();
 }
 
@@ -50,7 +49,6 @@ LabelMap<TLabelObject>
   Superclass::PrintSelf(os,indent);
   
   os << indent << "BackgroundValue: " << static_cast<typename NumericTraits<LabelType>::PrintType>(m_BackgroundValue) << std::endl;
-  os << indent << "UseBackground: " << static_cast<typename NumericTraits<bool>::PrintType>(m_UseBackground) << std::endl;
   os << indent << "LabelObjectContainer: " << & m_LabelObjectContainer << std::endl;
 }
 
@@ -105,7 +103,6 @@ LabelMap<TLabelObject>
       {
       // Now copy anything remaining that is needed
       m_LabelObjectContainer = imgData->m_LabelObjectContainer;
-      m_UseBackground = imgData->m_UseBackground;
       m_BackgroundValue = imgData->m_BackgroundValue;
       }
     else
@@ -130,7 +127,7 @@ LabelMap<TLabelObject>
       << static_cast<typename NumericTraits< LabelType >::PrintType>(label)
       << "." );
     }
-  if( m_UseBackground && m_BackgroundValue == label )
+  if( m_BackgroundValue == label )
     {
     itkExceptionMacro( << "Label "
       << static_cast<typename NumericTraits< LabelType >::PrintType>(label)
@@ -151,7 +148,7 @@ LabelMap<TLabelObject>
       << static_cast<typename NumericTraits< LabelType >::PrintType>(label)
       << "." );
     }
-  if( m_UseBackground && m_BackgroundValue == label )
+  if( m_BackgroundValue == label )
     {
     itkExceptionMacro( << "Label "
       << static_cast<typename NumericTraits< LabelType >::PrintType>(label)
@@ -166,7 +163,7 @@ bool
 LabelMap<TLabelObject>
 ::HasLabel( const LabelType label ) const
 {
-  if( m_UseBackground && label == m_BackgroundValue )
+  if( label == m_BackgroundValue )
     {
     return true;
     }
@@ -197,7 +194,7 @@ void
 LabelMap<TLabelObject>
 ::SetPixel( const IndexType & idx, const LabelType & label )
 {
-  if( m_UseBackground && label == m_BackgroundValue )
+  if( label == m_BackgroundValue )
     {
     // just do nothing
     return;
@@ -228,7 +225,7 @@ void
 LabelMap<TLabelObject>
 ::SetLine( const IndexType & idx, const unsigned long & length, const LabelType & label )
 {
-  if( m_UseBackground && label == m_BackgroundValue )
+  if( label == m_BackgroundValue )
     {
     // just do nothing
     return;
@@ -299,7 +296,7 @@ void
 LabelMap<TLabelObject>
 ::RemoveLabel( const LabelType & label )
 {
-  if( m_UseBackground && label == m_BackgroundValue )
+  if( label == m_BackgroundValue )
     {
     // just do nothing
     return;

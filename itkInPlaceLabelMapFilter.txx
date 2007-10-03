@@ -88,7 +88,6 @@ InPlaceLabelMapFilter<TInputImage>
     const TInputImage * input = this->GetInput();
     TOutputImage * output = this->GetOutput();
     
-    output->SetUseBackground( input->GetUseBackground() );
     output->SetBackgroundValue( input->GetBackgroundValue() );
 
     typedef typename InputImageType::LabelObjectType LabelObjectType;

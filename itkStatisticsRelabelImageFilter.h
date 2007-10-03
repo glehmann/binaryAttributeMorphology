@@ -119,14 +119,6 @@ public:
   itkBooleanMacro( ReverseOrdering );
 
   /**
-   * Set/Get wether the filter should consider a background or not. The background is
-   * not relabeled. Default is true.
-   */
-  itkGetConstMacro( UseBackground, bool );
-  itkSetMacro( UseBackground, bool );
-  itkBooleanMacro( UseBackground );
-
-  /**
    * Set/Get the attribute to use. Default is "Mean".
    */
   itkGetConstMacro( Attribute, AttributeType );
@@ -184,7 +176,6 @@ private:
   void operator=(const Self&); //purposely not implemented
 
   OutputImagePixelType m_BackgroundValue;
-  bool m_UseBackground;
   bool m_ReverseOrdering;
   AttributeType m_Attribute;
 } ; // end of class
