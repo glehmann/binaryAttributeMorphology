@@ -19,6 +19,7 @@
 
 #include "itkLabelObject.h"
 #include "itkAffineTransform.h"
+#include "itkMatrix.h"
 
 namespace itk
 {
