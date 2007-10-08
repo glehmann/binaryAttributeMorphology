@@ -78,7 +78,12 @@ InPlaceLabelMapFilter<TInputImage>
       = dynamic_cast<TOutputImage *>(const_cast<TInputImage *>(this->GetInput()));
     if (inputAsOutput)
       {
+      // save the largest possible region to restore it after the graft output.
+      // the largest possible region is not that important with LabelMap and
+      // can be managed by the filter, even when running inplace
+      RegionType region = this->GetOutput()->GetLargestPossibleRegion();
       this->GraftOutput( inputAsOutput );
+      this->GetOutput()->SetRegions( region );
       }
     }
   else

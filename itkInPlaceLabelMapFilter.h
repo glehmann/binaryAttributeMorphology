@@ -94,6 +94,7 @@ public:
 
   typedef typename InputImageType::PixelType       PixelType;
   typedef typename InputImageType::IndexType       IndexType;
+  typedef typename InputImageType::RegionType      RegionType;
 
   typedef TInputImage TOutputImage;
   
