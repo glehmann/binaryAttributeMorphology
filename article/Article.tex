@@ -181,11 +181,18 @@ The image is a collection of those objects, which also store some values of the 
 
 \subsection{itk::LabelMap}
 
-The {\em itk::LabelMap} class is in charge of managing the
-collection of label
+The {\em itk::LabelMap} class is in charge of managing the collection of label
 objects of the image, as well as storing the metadata associated with the image
-like
-the spacing, the physical position - all the metadata found in {\em itk::Image}.
+like the spacing, the physical position - all the metadata found in {\em
+itk::Image}. It has been chosen, to simplify the implementation and the tests,
+and because the feature is rarely useful in practice, to not implement the
+conditional background in the {\em itk::LabelMap} class\footnote{The classes
+before the {\em revision 4} were implemented with the conditional background
+feature. All the related code has been removed bitween revision 3 and revision
+4.}. All the images represented by a {\em itk::LabelMap} object have a
+background. If the user want to manipulate such an image with no background,
+he/she has to avoid the background label, for example by using a larger label
+type.
 
 The {\em itk::LabelMap} provide a part of the API of the {\em
 itk::Image} class, and so can be manipulated as an image\footnote{It doesn't
