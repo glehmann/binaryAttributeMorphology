@@ -59,6 +59,27 @@ ChangeRegionLabelMapFilter<TInputImage>
     ->SetRequestedRegion( this->GetOutput()->GetLargestPossibleRegion() );
 }
 
+template <class TInputImage>
+void 
+ChangeRegionLabelMapFilter<TInputImage>
+::GenerateData()
+{
+  if( m_Region.IsInside( this->GetInput()->GetLargestPossibleRegion() ) )
+    {
+    // only copy the image, and do nothing much
+    // oh, we have to pretend we have a progress !
+    ProgressReporter progress( this, 0, 1 );
+    this->AllocateOutputs();
+//     std::cout << "do nothing" << std::endl;
+    }
+  else
+    {
+    // call the superclass implementation so it will take care to create the threads
+    Superclass::GenerateData();
+    }
+}
+
+
 template<class TInputImage>
 void
 ChangeRegionLabelMapFilter<TInputImage>

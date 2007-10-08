@@ -105,6 +105,8 @@ public:
 
   virtual void GenerateOutputInformation();
   
+  void GenerateData();
+
 private:
   ChangeRegionLabelMapFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
