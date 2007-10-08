@@ -768,7 +768,6 @@ int main(int argc, char * argv[])
   relabel->SetInput( reader->GetOutput() );
   relabel->SetFeatureImage( reader2->GetOutput() );
   relabel->SetBackgroundValue( atoi(argv[4]) );
-  relabel->SetUseBackground( atoi(argv[5]) );
   relabel->SetReverseOrdering( atoi(argv[6]) );
   relabel->SetAttribute( argv[7] );
   itk::SimpleFilterWatcher watcher(relabel, "filter");
@@ -1227,7 +1226,6 @@ convert the label image to a label collection image.
   typedef itk::LabelImageToLabelMapFilter< ImageType, LabelMapType> I2LType;
   I2LType::Pointer i2l = I2LType::New();
   i2l->SetInput( reader->GetOutput() );
-  i2l->SetUseBackground( true );
 \end{verbatim} \normalsize
 then mask the image. Two inputs are required (the label collection image, and
 the image to be masked). The label used to mask the image is passed with the 
