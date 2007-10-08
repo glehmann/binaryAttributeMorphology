@@ -38,12 +38,12 @@ namespace itk
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template <class TInputImage>
-class ITK_EXPORT ChangeRegionLabelMapFilter : public LabelMapFilter<TInputImage, TInputImage>
+class ITK_EXPORT ChangeRegionLabelMapFilter : public InPlaceLabelMapFilter<TInputImage>
 {
 public:
   /** Standard class typedefs. */
   typedef ChangeRegionLabelMapFilter  Self;
-  typedef InPlaceLabelMapFilter<TInputImage, TInputImage>  Superclass;
+  typedef InPlaceLabelMapFilter<TInputImage>  Superclass;
   typedef SmartPointer<Self>  Pointer;
   typedef SmartPointer<const Self>  ConstPointer;
   
@@ -70,6 +70,8 @@ public:
 
   typedef typename InputImageType::PixelType       PixelType;
   typedef typename InputImageType::IndexType       IndexType;
+  typedef typename InputImageType::SizeType        SizeType;
+  typedef typename InputImageType::RegionType      RegionType;
 
   typedef TInputImage TOutputImage;
   
@@ -77,6 +79,8 @@ public:
   itkStaticConstMacro(InputImageDimension, unsigned int,
                       TInputImage::ImageDimension);
   itkStaticConstMacro(OutputImageDimension, unsigned int,
+                      TOutputImage::ImageDimension);
+  itkStaticConstMacro(ImageDimension, unsigned int,
                       TOutputImage::ImageDimension);
 
   /** The output region to use */

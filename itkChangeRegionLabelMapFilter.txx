@@ -28,7 +28,7 @@ namespace itk
 
 template <class TInputImage>
 void 
-LabelMapMaskImageFilter<TInputImage>
+ChangeRegionLabelMapFilter<TInputImage>
 ::GenerateInputRequestedRegion()
 {
   // call the superclass' implementation of this method
@@ -43,7 +43,7 @@ LabelMapMaskImageFilter<TInputImage>
 
 template <class TInputImage>
 void 
-LabelMapMaskImageFilter<TInputImage>
+ChangeRegionLabelMapFilter<TInputImage>
 ::GenerateOutputInformation()
 {
   Superclass::GenerateOutputInformation();
@@ -52,35 +52,38 @@ LabelMapMaskImageFilter<TInputImage>
 
 template <class TInputImage>
 void 
-LabelMapMaskImageFilter<TInputImage>
+ChangeRegionLabelMapFilter<TInputImage>
 ::EnlargeOutputRequestedRegion(DataObject *)
 {
   this->GetOutput()
     ->SetRequestedRegion( this->GetOutput()->GetLargestPossibleRegion() );
 }
 
-template<class TInputImage, class TOutputImage>
+template<class TInputImage>
 void
-LabelMapMaskImageFilter<TInputImage, TOutputImage>
+ChangeRegionLabelMapFilter<TInputImage>
 ::ThreadedGenerateData( LabelObjectType * labelObject )
 {
   typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;
   typename InputImageType::LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
   labelObject->GetLineContainer().clear();
+//   std::cout << "lineContainer.size(): " << lineContainer.size() << std::endl;
   
   IndexType idxMin = m_Region.GetIndex();
   IndexType idxMax;
   for( int i=0; i<ImageDimension; i++ )
     {
-    idxMax = idxMin[i] + m_Region.GetSize() - 1;
+    idxMax[i] = idxMin[i] + m_Region.GetSize()[i] - 1;
     }
+//   std::cout << "idxMin: " << idxMin << std::endl;
+//   std::cout << "idxMax: " << idxMax << std::endl;
 
   for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
     {
     IndexType idx = lit->GetIndex();
     unsigned long length = lit->GetLength();
     
-    outside = false;
+    bool outside = false;
     for( int i=1; i<ImageDimension; i++ )
       {
       if( idx[i] < idxMin[i] || idx[i] > idxMax[i] )
@@ -92,25 +95,35 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
     if( !outside )
       {
       long lastIdx0 = idx[0] + length - 1;
-      if( !( ( idx[0] < idxMin[i] && lastIdx0 < idxMin[i] )
-               || ( idx[0] > idxMin[i] && lastIdx0 > idxMin[i] ) ) ) )
+      if( !( ( idx[0] < idxMin[0] && lastIdx0 < idxMin[0] )
+               || ( idx[0] > idxMax[0] && lastIdx0 > idxMax[0] ) ) )
         {
+//         std::cout << "!outside" << std::endl;
         IndexType newIdx = idx;
-        long newLenght = length;
+        long newLength = length;
         if( idx[0] < idxMin[0] )
           {
-          length -= idxMin[0] - idx[0];
+          newLength -= idxMin[0] - idx[0];
           newIdx[0] = idxMin[0];
           }
         if( lastIdx0 > idxMax[0] )
           {
-          length -= lastIdx0 - idxMax[0];
+          newLength -= lastIdx0 - idxMax[0];
           }
         
+        labelObject->AddLine( newIdx, newLength );
         }
       }
   
-    labelObject->AddLine( newIdx, newLength );
+    }
+
+  // remove the object if it is empty
+  if( labelObject->GetLineContainer().empty() )
+    {
+//     std::cout << "remove: " << labelObject << std::endl;
+    this->m_LabelObjectContainerLock->Lock();
+    this->GetOutput()->RemoveLabelObject( labelObject );
+    this->m_LabelObjectContainerLock->Unlock();
     }
 
 }
