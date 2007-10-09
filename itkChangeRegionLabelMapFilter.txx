@@ -48,6 +48,7 @@ ChangeRegionLabelMapFilter<TInputImage>
 {
   Superclass::GenerateOutputInformation();
   this->GetOutput()->SetLargestPossibleRegion( m_Region );
+//  std::cout << "ChangeRegionLabelMapFilter::GenerateOutputInformation(): " << this->GetOutput()->GetLargestPossibleRegion() << std::endl;
 }
 
 template <class TInputImage>
@@ -64,6 +65,8 @@ void
 ChangeRegionLabelMapFilter<TInputImage>
 ::GenerateData()
 {
+//  std::cout << "ChangeRegionLabelMapFilter::GenerateData(): " << this->GetOutput()->GetLargestPossibleRegion() << std::endl;
+
   if( m_Region.IsInside( this->GetInput()->GetLargestPossibleRegion() ) )
     {
     // only copy the image, and do nothing much
