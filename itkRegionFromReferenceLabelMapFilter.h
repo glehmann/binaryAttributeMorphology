@@ -43,7 +43,7 @@ class ITK_EXPORT RegionFromReferenceLabelMapFilter : public ChangeRegionLabelMap
 public:
   /** Standard class typedefs. */
   typedef RegionFromReferenceLabelMapFilter  Self;
-  typedef InPlaceLabelMapFilter<TInputImage>  Superclass;
+  typedef ChangeRegionLabelMapFilter<TInputImage>  Superclass;
   typedef SmartPointer<Self>  Pointer;
   typedef SmartPointer<const Self>  ConstPointer;
   
