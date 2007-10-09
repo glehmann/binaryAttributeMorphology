@@ -42,7 +42,7 @@ int main(int argc, char * argv[])
   idx[1] = atoi( argv[4] );
   ChangeType::SizeType size;
   size[0] = atoi( argv[5] );
-  size[1] = atoi( argv[5] );
+  size[1] = atoi( argv[6] );
   ChangeType::RegionType region;
   region.SetSize( size );
   region.SetIndex( idx );
