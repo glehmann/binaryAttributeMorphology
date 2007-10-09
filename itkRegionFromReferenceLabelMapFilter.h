@@ -92,6 +92,19 @@ public:
   void SetReferenceImage ( const ReferenceImageType *image );
   const ReferenceImageType * GetReferenceImage() const;
 
+   /** Set the input image */
+  void SetInput1(const TInputImage *input)
+     {
+     this->SetInput( input );
+     }
+
+   /** Set the marker image */
+  void SetInput2(const ReferenceImageType *input)
+     {
+     this->SetReferenceImage( input );
+     }
+
+
 
  protected:
   RegionFromReferenceLabelMapFilter()
