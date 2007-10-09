@@ -94,7 +94,10 @@ public:
 
 
  protected:
-  RegionFromReferenceLabelMapFilter() {};
+  RegionFromReferenceLabelMapFilter()
+   {
+   this->SetNumberOfRequiredInputs(2);
+   };
   ~RegionFromReferenceLabelMapFilter() {};
 
   virtual void GenerateOutputInformation();
