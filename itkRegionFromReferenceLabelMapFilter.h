@@ -89,7 +89,15 @@ public:
    *  the information is specified with the SetOutputSpacing, Origin,
    *  and Direction methods. UseReferenceImage must be On and a
    *  Reference image must be present to override the defaul behavior.*/
-  void SetReferenceImage ( const ReferenceImageType *image );
+  void SetReferenceImage ( const ReferenceImageType *image )
+    {
+    itkDebugMacro("setting input ReferenceImage to " << image);
+    if( image != static_cast<const ReferenceImageType *>(this->GetInput( 1 )) )
+      {
+      this->ProcessObject::SetNthInput(1, const_cast< ReferenceImageType *>( image ) );
+      this->Modified();
+      }
+    }
   const ReferenceImageType * GetReferenceImage() const;
 
    /** Set the input image */

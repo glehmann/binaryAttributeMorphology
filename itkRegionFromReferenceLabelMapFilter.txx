@@ -49,20 +49,6 @@ RegionFromReferenceLabelMapFilter<TInputImage>
 }
 
 
-template <class TInputImage>
-void 
-RegionFromReferenceLabelMapFilter<TInputImage>
-::SetReferenceImage( const ReferenceImageType *image )
-{
-  itkDebugMacro("setting input ReferenceImage to " << image);
-  if( image != static_cast<const ReferenceImageType *>(this->GetInput( 1 )) )
-    {
-    this->ProcessObject::SetNthInput(1, const_cast< ReferenceImageType *>( image ) );
-    this->Modified();
-    }
-}
-
-
 } // end namespace itk
 
 #endif
