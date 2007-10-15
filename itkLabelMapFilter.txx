@@ -20,6 +20,7 @@
 #ifndef _itkLabelMapFilter_txx
 #define _itkLabelMapFilter_txx
 #include "itkLabelMapFilter.h"
+#include "itkProgressReporter.h"
 
 
 namespace itk
