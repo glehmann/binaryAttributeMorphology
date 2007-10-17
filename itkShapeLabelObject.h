@@ -628,6 +628,7 @@ protected:
     {
     m_Size = 0;
     m_PhysicalSize = 0;
+    m_Centroid.Fill(0);
     m_RegionElongation = 0;
     m_SizeRegionRatio = 0;
     m_SizeOnBorder = false;
