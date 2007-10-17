@@ -26,15 +26,17 @@ namespace itk
 {
   
 /** \class PadLabelMapFilter
- * \brief Set the region from a reference image
+ * \brief Pad a LabelMap image
  *
- * Change the region of a label map. If the output can't contain some lines of
- * the objects, they are truncated, or remove. All the objects fully outside the
- * output region are removed.
+ * Pad a label map.
+ *
+ * The SetPadSize() method can be used to set the pad size of the lower and
+ * the upper boundaries in a single call.
+ * By default, the filter doesn't pad anything.
  *
  * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
- * \sa LabelMapToBinaryImageFilter, LabelMapToLabelImageFilter
+ * \sa CropLabelMapFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template <class TInputImage>

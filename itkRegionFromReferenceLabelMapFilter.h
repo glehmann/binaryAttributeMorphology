@@ -28,13 +28,14 @@ namespace itk
 /** \class RegionFromReferenceLabelMapFilter
  * \brief Set the region from a reference image
  *
- * Change the region of a label map. If the output can't contain some lines of
- * the objects, they are truncated, or remove. All the objects fully outside the
- * output region are removed.
+ * Change the region of a label map to be the same than the one of a reference image.
+ * This filter implement the same feature than its superclass, but with the input region
+ * well integrated in the pipeline architecture.
+ * If the output can't contain some lines of the objects, they are truncated, or remove.
+ * All the objects fully outside the output region are removed.
  *
  * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
- * \sa LabelMapToBinaryImageFilter, LabelMapToLabelImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template <class TInputImage>
@@ -85,10 +86,7 @@ public:
 
   typedef ImageBase< ImageDimension >    ReferenceImageType;
 
-  /** Copy the output information from another Image.  By default,
-   *  the information is specified with the SetOutputSpacing, Origin,
-   *  and Direction methods. UseReferenceImage must be On and a
-   *  Reference image must be present to override the defaul behavior.*/
+  /** Copy the output information from another Image. */
   void SetReferenceImage ( const ReferenceImageType *image )
     {
     itkDebugMacro("setting input ReferenceImage to " << image);
@@ -106,7 +104,7 @@ public:
      this->SetInput( input );
      }
 
-   /** Set the marker image */
+   /** Set the reference image */
   void SetInput2(const ReferenceImageType *input)
      {
      this->SetReferenceImage( input );

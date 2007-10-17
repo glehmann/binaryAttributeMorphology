@@ -26,15 +26,19 @@ namespace itk
 {
   
 /** \class CropLabelMapFilter
- * \brief Set the region from a reference image
+ * \brief Crop a LabelMap image
  *
- * Change the region of a label map. If the output can't contain some lines of
+ * Crop a label map. If the output can't contain some lines of
  * the objects, they are truncated, or remove. All the objects fully outside the
  * output region are removed.
  *
+ * The SetCropSize() method can be used to set the crop size of the lower and
+ * the upper boundaries in a single call.
+ * By default, the filter doesn't crop anything.
+ *
  * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
- * \sa LabelMapToBinaryImageFilter, LabelMapToLabelImageFilter
+ * \sa PadLabelMapFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template <class TInputImage>

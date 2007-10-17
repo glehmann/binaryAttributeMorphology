@@ -34,7 +34,7 @@ namespace itk
  *
  * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
- * \sa LabelMapToBinaryImageFilter, LabelMapToLabelImageFilter
+ * \sa LabelMapMaskImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template <class TInputImage>
@@ -95,12 +95,8 @@ public:
 
   virtual void ThreadedGenerateData( LabelObjectType * labelObject );
   
-  /** LabelMapMaskImageFilter needs the entire input be
-   * available. Thus, it needs to provide an implementation of
-   * GenerateInputRequestedRegion(). */
   void GenerateInputRequestedRegion() ;
 
-  /** LabelMapMaskImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
 
   virtual void GenerateOutputInformation();
