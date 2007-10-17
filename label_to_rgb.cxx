@@ -8,9 +8,9 @@
 
 int main(int argc, char * argv[])
 {
-  if( argc != 5 )
+  if( argc != 4 )
     {
-    std::cerr << "usage: " << argv[0] << " input output usebg background" << std::endl;
+    std::cerr << "usage: " << argv[0] << " input output background" << std::endl;
     // std::cerr << "  : " << std::endl;
     exit(1);
     }
@@ -26,8 +26,7 @@ int main(int argc, char * argv[])
   typedef itk::LabelImageToLabelMapFilter< IType > ConverterType;
   ConverterType::Pointer converter = ConverterType::New();
   converter->SetInput( reader->GetOutput() );
-//  converter->SetUseBackground( atoi(argv[3]) );
-  converter->SetBackgroundValue( atoi(argv[4]) );
+  converter->SetBackgroundValue( atoi(argv[3]) );
   
 //  typedef itk::RGBPixel< unsigned char > RGBPixelType;
 //  typedef itk::Image< RGBPixelType, dim > RGBImageType;

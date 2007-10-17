@@ -8,9 +8,9 @@
 
 int main(int argc, char * argv[])
 {
-  if( argc != 7 )
+  if( argc != 6 )
     {
-    std::cerr << "usage: " << argv[0] << " input input output usebg background opacity" << std::endl;
+    std::cerr << "usage: " << argv[0] << " input input output background opacity" << std::endl;
     // std::cerr << "  : " << std::endl;
     exit(1);
     }
@@ -26,8 +26,7 @@ int main(int argc, char * argv[])
   typedef itk::LabelImageToLabelMapFilter< IType > ConverterType;
   ConverterType::Pointer converter = ConverterType::New();
   converter->SetInput( reader->GetOutput() );
-//  converter->SetUseBackground( atoi(argv[4]) );
-  converter->SetBackgroundValue( atoi(argv[5]) );
+  converter->SetBackgroundValue( atoi(argv[4]) );
   
   ReaderType::Pointer reader2 = ReaderType::New();
   reader2->SetFileName( argv[2] );
@@ -39,7 +38,7 @@ int main(int argc, char * argv[])
   ColorizerType::Pointer colorizer = ColorizerType::New();
   colorizer->SetInput( converter->GetOutput() );
   colorizer->SetFeatureImage( reader2->GetOutput() );
-//  colorizer->SetOpacity( atof(argv[6]) );
+ colorizer->SetOpacity( atof(argv[5]) );
 
   itk::SimpleFilterWatcher watcher(colorizer, "filter");
 
