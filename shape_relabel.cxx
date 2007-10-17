@@ -8,9 +8,9 @@
 int main(int argc, char * argv[])
 {
 
-  if( argc != 7)
+  if( argc != 6)
     {
-    std::cerr << "usage: " << argv[0] << " input output background useBg reverseOrdering attribute" << std::endl;
+    std::cerr << "usage: " << argv[0] << " input output background reverseOrdering attribute" << std::endl;
     // std::cerr << "  : " << std::endl;
     exit(1);
     }
@@ -27,9 +27,8 @@ int main(int argc, char * argv[])
   RelabelType::Pointer relabel = RelabelType::New();
   relabel->SetInput( reader->GetOutput() );
   relabel->SetBackgroundValue( atoi(argv[3]) );
-//  relabel->SetUseBackground( atoi(argv[4]) );
-  relabel->SetReverseOrdering( atoi(argv[5]) );
-  relabel->SetAttribute( argv[6] );
+  relabel->SetReverseOrdering( atoi(argv[4]) );
+  relabel->SetAttribute( argv[5] );
   itk::SimpleFilterWatcher watcher(relabel, "filter");
 
   typedef itk::ImageFileWriter< IType > WriterType;

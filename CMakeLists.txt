@@ -243,14 +243,12 @@ FOREACH(bg 0 176)
         )
       ENDFOREACH(nb)
 
-      FOREACH(useBg 0 1)
-        ADD_TEST(SizeRelabel-${bg}-${useBg}-${order} ${TEST_COMMAND}
-          shape_relabel
-            ${LABEL_IMAGE} size_relabel-${bg}-${useBg}-${order}.png
-            ${bg} ${useBg} ${order} Size
-          --compare size_relabel-${bg}-${useBg}-${order}.png ${CMAKE_SOURCE_DIR}/images/size_relabel-${bg}-${useBg}-${order}.png
-        )
-      ENDFOREACH(useBg)
+      ADD_TEST(SizeRelabel-${bg}-${order} ${TEST_COMMAND}
+        shape_relabel
+          ${LABEL_IMAGE} size_relabel-${bg}-${order}.png
+          ${bg} ${order} Size
+        --compare size_relabel-${bg}-${order}.png ${CMAKE_SOURCE_DIR}/images/size_relabel-${bg}-${order}.png
+      )
   ENDFOREACH(order)
 ENDFOREACH(bg)
 
