@@ -20,6 +20,7 @@
 #include <deque>
 #include <itkLightObject.h>
 #include "itkLabelMap.h"
+#include "itkLabelObjectLine.h"
 
 namespace itk
 {
@@ -58,92 +59,6 @@ private:
 }
 
 
-/**
- * LabelObjectLine is the line object used in the LabelObject class
- * to store the line which are part of the object.
- * A line is formed of and index and a length in the dimension 0.
- * It is used in a run-length encoding
- */
-template < unsigned int VImageDimension >
-class LabelObjectLine
-{
-public:
-  itkStaticConstMacro(ImageDimension, unsigned int, VImageDimension);
-
-  typedef Index< ImageDimension > IndexType;
-  typedef unsigned long LengthType;
-
-  LabelObjectLine() {};
-
-  LabelObjectLine( const IndexType & idx, const LengthType & length )
-    {
-    this->SetIndex( idx );
-    this->SetLength( length );
-    }
-
-  void SetIndex( const IndexType & idx )
-    {
-    m_Index = idx;
-    }
-
-  IndexType & GetIndex()
-    {
-    return m_Index;
-    }
-
-  const IndexType & GetIndex() const
-    {
-    return m_Index;
-    }
-
-  void SetLength( const LengthType length )
-    {
-    m_Length = length;
-    }
-
-  LengthType & GetLength()
-    {
-    return m_Length;
-    }
-
-  const LengthType & GetLength() const
-    {
-    return m_Length;
-    }
-
-  bool HasIndex( const IndexType idx ) const
-    {
-    // are we talking about the right line ?
-    for( int i=1; i<ImageDimension; i++ )
-      {
-      if( m_Index[i] != idx[i] )
-        {
-        return false;
-        }
-      }
-    return ( idx[0] >= m_Index[0] && idx[0] < m_Index[0] + m_Length );
-    }
-
-  bool IsNextIndex( const IndexType & idx ) const
-    {
-    // are we talking about the right line ?
-    for( int i=1; i<ImageDimension; i++ )
-      {
-      if( m_Index[i] != idx[i] )
-        {
-        return false;
-        }
-      }
-    return idx[0] == m_Index[0] + m_Length;
-    }
-
-private:
-  IndexType m_Index;
-  LengthType m_Length;
-};
-
-
-
 /** \class LabelObject
  *  \brief The base class for the representation of an labeled binary object in an image
  * 
@@ -157,7 +72,7 @@ private:
  * reconstruction filters for an example. If a simple attribute is needed,
  * AttributeLabelObject can be used directly.
  *
- * Every subclass of LabelObject have to reinplement the CopyDataFrom() method.
+ * All the subclasses of LabelObject have to reinplement the CopyDataFrom() method.
  *
  * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
@@ -275,6 +190,55 @@ public:
     return m_LineContainer;
     }
 
+  int GetNumberOfLines() const
+    {
+    return m_LineContainer.size();
+    }
+
+  const LineType & GetLine( int i ) const
+    {
+    return m_LineContainer[i];
+    }
+  
+  LineType & GetLine( int i )
+    {
+    return m_LineContainer[i];
+    }
+
+  int Size() const
+    {
+    int size = 0;
+    for( typename LineContainerType::const_iterator it=m_LineContainer.begin();
+      it != m_LineContainer.end();
+      it++ )
+      {
+      size += it->GetLength();
+      }
+    return size;
+    }
+  
+  IndexType GetIndex( int offset ) const
+    {
+    int o = offset;
+    for( typename LineContainerType::const_iterator it=m_LineContainer.begin();
+      it != m_LineContainer.end();
+      it++ )
+      {
+      int size = it->GetLength();
+      if( o > size)
+        {
+        o -= size;
+        }
+      else
+        {
+        IndexType idx = it->GetIndex();
+        idx[0] += o;
+        return idx;
+        }
+      }
+    itkGenericExceptionMacro(<< "Invalid offset: " << offset);
+    }
+  
   /** Copy the data of another node to this one */
   virtual void CopyDataFrom( const Self * src )
     {

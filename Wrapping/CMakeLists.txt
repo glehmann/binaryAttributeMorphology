@@ -9,6 +9,7 @@ BEGIN_WRAPPER_LIBRARY("${PROJECT_NAME}")
 SET(WRAPPER_LIBRARY_DEPENDS Base BaseTransforms)
 
 SET(WRAPPER_LIBRARY_GROUPS
+  itkLabelObjectLine
   itkLabelObject
   itkShapeLabelObject
   itkStatisticsLabelObject
