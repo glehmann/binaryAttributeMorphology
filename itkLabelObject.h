@@ -28,6 +28,32 @@ namespace itk
 
 namespace Functor {
 
+template< class TLabelObject >
+class ITK_EXPORT LabelLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef typename LabelObjectType::LabelType AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetLabel();
+    }
+};
+
+template< class TLabelObject >
+class ITK_EXPORT NumberOfLinesLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef int AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetNumberOfLines();
+    }
+};
+
 template< class TLabelObject, class TAttributeAccessor >
 class LabelObjectComparator
 {
