@@ -346,7 +346,7 @@ ShapeLabelMapFilter<TImage, TLabelImage>
   labelObject->SetSize( size );
   labelObject->SetPhysicalSize( size * sizePerPixel );
   labelObject->SetRegion( region );
-  labelObject->SetCentroid( centroid );
+  labelObject->SetCentroid( physicalCentroid );
   labelObject->SetRegionElongation( maxSize / minSize );
   labelObject->SetSizeRegionRatio( size / (double)region.GetNumberOfPixels() );
   labelObject->SetSizeOnBorder( sizeOnBorder );
