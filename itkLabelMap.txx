@@ -190,6 +190,54 @@ LabelMap<TLabelObject>
 
 
 template<class TLabelObject >
+typename LabelMap<TLabelObject>::LabelObjectType * 
+LabelMap<TLabelObject>
+::GetNthLabelObject( const unsigned long & pos )
+{
+  unsigned long i = 0;
+  for( typename LabelObjectContainerType::iterator it = m_LabelObjectContainer.begin();
+    it != m_LabelObjectContainer.end();
+    it++ )
+    {
+    if( i == pos )
+      {
+      return it->second;
+      }
+    i++;
+    }
+  itkExceptionMacro( << "Can't access to label object at position "
+    << pos
+    << ". The label map has only "
+    << this->GetNumberOfLabelObjects()
+    << " label objects registered." );
+}
+
+
+template<class TLabelObject >
+const typename LabelMap<TLabelObject>::LabelObjectType * 
+LabelMap<TLabelObject>
+::GetNthLabelObject( const unsigned long & pos ) const
+{
+  unsigned long i = 0;
+  for( typename LabelObjectContainerType::const_iterator it = m_LabelObjectContainer.begin();
+    it != m_LabelObjectContainer.end();
+    it++ )
+    {
+    if( i == pos )
+      {
+      return it->second;
+      }
+    i++;
+    }
+  itkExceptionMacro( << "Can't access to label object at position "
+    << pos
+    << ". The label map has only "
+    << this->GetNumberOfLabelObjects()
+    << " label objects registered." );
+}
+
+
+template<class TLabelObject >
 void 
 LabelMap<TLabelObject>
 ::SetPixel( const IndexType & idx, const LabelType & label )

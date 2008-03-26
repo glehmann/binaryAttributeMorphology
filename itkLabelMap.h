@@ -228,6 +228,16 @@ public:
   bool HasLabel( const LabelType label ) const;
   
   /**
+   * Return the LabelObject with at the position given in parameter.
+   * This method can be useful when the labels are not consecutives, but is quite
+   * inefficient.
+   * This method thorws an exception if the index doesn't exist in this image.
+   */
+  LabelObjectType * GetNthLabelObject( const unsigned long & pos );
+
+  const LabelObjectType * GetNthLabelObject( const unsigned long & pos ) const;
+
+  /**
    * Return the pixel value at a given index in the image. This method
    * has a worst case complexity of O(L) where L is the number of lines in the
    * image - use it with care.
