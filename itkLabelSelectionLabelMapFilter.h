@@ -88,7 +88,7 @@ public:
     return this->GetAttributeSet();
     }
     
-  void SetAttributeSet( const AttributeSetType & set )
+  void SetLabelSet( const AttributeSetType & set )
     {
     this->SetAttributeSet( set );
     }
