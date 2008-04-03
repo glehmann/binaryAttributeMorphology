@@ -40,7 +40,6 @@ LabelMapToRGBImageFilter<TInputImage, TOutputImage>
   const InputImageType * input = this->GetInput();
 
   FunctorType function;
-  function.SetUseBackground( true );
   function.SetBackgroundValue( input->GetBackgroundValue() );
   output->FillBuffer( function( input->GetBackgroundValue() ) );
     
@@ -57,7 +56,6 @@ LabelMapToRGBImageFilter<TInputImage, TOutputImage>
   const typename LabelObjectType::LabelType & label = labelObject->GetLabel();
 
   FunctorType function;
-  function.SetUseBackground( true );
   function.SetBackgroundValue( this->GetInput()->GetBackgroundValue() );
 
   typename InputImageType::LabelObjectType::LineContainerType::const_iterator lit;

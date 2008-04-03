@@ -19,7 +19,7 @@
 
 #include "itkLabelMapFilter.h"
 #include "itkBarrier.h"
-#include "itkLabelOverlayImageFilter.h"
+#include "itkLabelOverlayFunctor.h"
 
 namespace itk {
 
@@ -74,7 +74,7 @@ public:
   typedef typename OutputImageType::SizeType       SizeType;
   typedef typename OutputImageType::RegionType     RegionType;
   
-  typedef typename Functor::LabelOverlay<FeatureImagePixelType, InputImagePixelType, OutputImagePixelType> FunctorType;
+  typedef typename Functor::LabelOverlayFunctor<FeatureImagePixelType, InputImagePixelType, OutputImagePixelType> FunctorType;
 
   /** ImageDimension constants */
   itkStaticConstMacro(InputImageDimension, unsigned int,
