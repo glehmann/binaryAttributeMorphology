@@ -1,8 +1,7 @@
 #include "itkImageFileReader.h"
 #include "itkShapeLabelObject.h"
 #include "itkLabelMap.h"
-#include "itkBinaryImageToLabelMapFilter.h"
-#include "itkShapeLabelMapFilter.h"
+#include "itkBinaryImageToShapeLabelMapFilter.h"
 
 int main(int argc, char * argv[])
 {
@@ -31,22 +30,16 @@ int main(int argc, char * argv[])
   typedef itk::LabelMap< LabelObjectType > LabelCollectionType;
 
   // convert the image in a collection of objects
-  typedef itk::BinaryImageToLabelMapFilter< ImageType, LabelCollectionType > ConverterType;
+  typedef itk::BinaryImageToShapeLabelMapFilter< ImageType, LabelCollectionType > ConverterType;
   ConverterType::Pointer converter = ConverterType::New();
   converter->SetInput( reader->GetOutput() );
   converter->SetForegroundValue( atoi(argv[2]) );
 
-  // and valuate the attributes with the dedicated filter: ShapeLabelMapFilter
-  typedef itk::ShapeLabelMapFilter< LabelCollectionType > ShapeFilterType;
-  ShapeFilterType::Pointer shape = ShapeFilterType::New();
-  shape->SetComputeFeretDiameter( false );
-  shape->SetInput( converter->GetOutput() );
-
   // update the shape filter, so its output will be up to date
-  shape->Update();
+  converter->Update();
 
   // then we can read the attribute values we're interested in
-  LabelCollectionType::Pointer collection = shape->GetOutput();
+  LabelCollectionType::Pointer collection = converter->GetOutput();
   for( int label=1; label<=collection->GetNumberOfLabelObjects(); label++ )
     {
     LabelObjectType::Pointer labelObject = collection->GetLabelObject( label );
