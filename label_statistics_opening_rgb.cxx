@@ -46,7 +46,6 @@ int main(int argc, char * argv[])
   typedef itk::LabelToRGBImageFilter< IType, RGBImageType > ColorizerType;
   ColorizerType::Pointer colorizer = ColorizerType::New();
   colorizer->SetInput( opening->GetOutput() );
-  colorizer->SetUseBackground( true );
 
   typedef itk::ImageFileWriter< RGBImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();

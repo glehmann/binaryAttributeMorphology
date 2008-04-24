@@ -24,8 +24,7 @@
 #include <vector>
 #include <map>
 #include "itkProgressReporter.h"
-#include "itkLabelMap.h"
-#include "itkLabelObject.h"
+#include "itkBarrier.h"
 
 namespace itk
 {
@@ -87,6 +86,7 @@ public:
   typedef typename TOutputImage::IndexType  OutputIndexType;
   typedef typename TOutputImage::SizeType   OutputSizeType;
   typedef typename TOutputImage::OffsetType OutputOffsetType;
+  typedef typename TOutputImage::PixelType  OutputImagePixelType;
 
   typedef std::list<IndexType>              ListType;
 
@@ -154,7 +154,9 @@ protected:
   /**
    * Standard pipeline method. 
    */
-  void GenerateData();
+  void BeforeThreadedGenerateData ();
+  void AfterThreadedGenerateData ();
+  void ThreadedGenerateData (const RegionType& outputRegionForThread, int threadId) ;
 
   /** BinaryImageToLabelMapFilter needs the entire input. Therefore
    * it must provide an implementation GenerateInputRequestedRegion().
@@ -190,7 +192,7 @@ private:
   typedef std::vector<runLength> lineEncoding;
 
   // the map storing lines
-  typedef std::map<long, lineEncoding> LineMapType;
+  typedef std::vector<lineEncoding> LineMapType;
   
   typedef std::vector<long> OffsetVec;
 
@@ -217,6 +219,24 @@ private:
                   ProgressReporter &progress);
 
   void SetupLineOffsets(OffsetVec &LineOffsets);
+
+  void Wait()
+    {
+    long nbOfThreads = this->GetNumberOfThreads();
+    if( itk::MultiThreader::GetGlobalMaximumNumberOfThreads() != 0 )
+      {
+      nbOfThreads = std::min( this->GetNumberOfThreads(), itk::MultiThreader::GetGlobalMaximumNumberOfThreads() );
+      }
+    if( nbOfThreads > 1 )
+      {
+      m_Barrier->Wait();
+      }
+    }
+
+  typename std::vector< long > m_NumberOfLabels;
+  typename std::vector< long > m_FirstLineIdToJoin;
+  typename Barrier::Pointer m_Barrier;
+  LineMapType m_LineMap;
 };
   
 } // end namespace itk
