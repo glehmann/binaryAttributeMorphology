@@ -40,7 +40,7 @@ int main(int argc, char * argv[])
 
   // then we can read the attribute values we're interested in
   LabelCollectionType::Pointer collection = converter->GetOutput();
-  for( int label=1; label<=collection->GetNumberOfLabelObjects(); label++ )
+  for( int label=1; label<collection->GetNumberOfLabelObjects()+1; label++ )
     {
     LabelObjectType::Pointer labelObject = collection->GetLabelObject( label );
     std::cout << label << "\t" << labelObject->GetPhysicalSize() << "\t" << labelObject->GetCentroid() << std::endl;
