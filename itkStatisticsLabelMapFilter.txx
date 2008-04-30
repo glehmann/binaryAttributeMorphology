@@ -197,7 +197,8 @@ StatisticsLabelMapFilter<TImage, TFeatureImage>
   vnl_diag_matrix<double> pm = eigen.D;
   for(unsigned int i=0; i<ImageDimension; i++)
     {
-    principalMoments[i] = pm(i,i) * sum;
+//    principalMoments[i] = 4 * vcl_sqrt( pm(i,i) );
+    principalMoments[i] = pm(i,i);
     }
   principalAxes = eigen.V.transpose();
 
@@ -216,19 +217,12 @@ StatisticsLabelMapFilter<TImage, TFeatureImage>
     {
     principalAxes[ ImageDimension-1 ][i] *= std::real( det );
     }
-
-  double minPrincipalMoment = NumericTraits< double >::max();
-  double maxPrincipalMoment = NumericTraits< double >::NonpositiveMin();
-  for( int i=0; i<ImageDimension; i++ )
-    {
-    minPrincipalMoment = std::min( principalMoments[i], minPrincipalMoment );
-    maxPrincipalMoment = std::max( principalMoments[i], maxPrincipalMoment );
-    }
-
   double elongation = 0;
-  if( minPrincipalMoment != 0 )
+
+  if( principalMoments[0] != 0 )
     {
-    elongation = maxPrincipalMoment / minPrincipalMoment;
+//    elongation = principalMoments[ImageDimension-1] / principalMoments[0];
+    elongation = vcl_sqrt(principalMoments[ImageDimension-1]) / vcl_sqrt(principalMoments[0]);
     }
 
   // finally put the values in the label object
