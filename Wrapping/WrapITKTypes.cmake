@@ -3,7 +3,7 @@
 
 WRAP_TYPE("itk::LabelMap" "LM")
   FOREACH(d ${WRAP_ITK_DIMS})
-    WRAP_TEMPLATE("${d}" "itk::StatisticsLabelObject< ${ITKT_UL}, ${d} >")
+    ADD_TEMPLATE("${d}" "itk::StatisticsLabelObject< ${ITKT_UL}, ${d} >")
   ENDFOREACH(d)
 END_WRAP_TYPE()
 SET(itk_Wrap_LabelMap ${WRAPPER_TEMPLATES})
