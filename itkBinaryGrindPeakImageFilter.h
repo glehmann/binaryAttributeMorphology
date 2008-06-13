@@ -14,8 +14,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkFillholeImageFilter_h
-#define __itkFillholeImageFilter_h
+#ifndef __itkBinaryGrindPeakImageFilter_h
+#define __itkBinaryGrindPeakImageFilter_h
 
 #include "itkImageToImageFilter.h"
 
