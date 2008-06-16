@@ -40,9 +40,11 @@ int main(int argc, char * argv[])
 
   // then we can read the attribute values we're interested in
   LabelCollectionType::Pointer collection = converter->GetOutput();
-  for( int label=1; label<collection->GetNumberOfLabelObjects()+1; label++ )
+  for( int label=1; label<=collection->GetNumberOfLabelObjects(); label++ )
     {
-    LabelObjectType::Pointer labelObject = collection->GetLabelObject( label );
+    // we don't need a SmartPointer of the label object here, because the reference is kept in
+    // in the label map.
+    const LabelObjectType * labelObject = labelMap->GetLabelObject( label );
     std::cout << label << "\t" << labelObject->GetPhysicalSize() << "\t" << labelObject->GetCentroid() << std::endl;
     }
   
