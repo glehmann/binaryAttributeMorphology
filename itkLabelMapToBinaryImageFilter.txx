@@ -78,7 +78,7 @@ LabelMapToBinaryImageFilter<TInputImage, TOutputImage>
 ::ThreadedGenerateData( const OutputImageRegionType& outputRegionForThread, int threadId )
 {
   OutputImageType * output = this->GetOutput();
-  const InputImageType * input = this->GetInput();
+//  const InputImageType * input = this->GetInput();
 
   // fill the output with background value - they will be overiden with the foreground value
   // later, if there is some objects
@@ -135,7 +135,7 @@ LabelMapToBinaryImageFilter<TInputImage, TOutputImage>
     {
     IndexType idx = lit->GetIndex();
     unsigned long length = lit->GetLength();
-    for( int i=0; i<length; i++)
+    for( unsigned int i=0; i<length; i++)
       {
       output->SetPixel( idx, m_ForegroundValue );
       idx[0]++;

@@ -68,7 +68,8 @@ int main(int argc, char * argv[])
   for( it = labelObjectContainer.begin(); it != labelObjectContainer.end(); it++ )
     {
     // the label is there if we need it, but it can also be found at labelObject->GetLabel().
-    const PType & label = it->first;
+    // const PType & label = it->first;
+    
     // the label object
     LOType * labelObject = it->second;
   

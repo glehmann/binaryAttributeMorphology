@@ -83,7 +83,7 @@ public:
         return false;
         }
       }
-    return ( idx[0] >= m_Index[0] && idx[0] < m_Index[0] + m_Length );
+    return ( idx[0] >= m_Index[0] && idx[0] < m_Index[0] + (long)m_Length );
     }
 
   bool IsNextIndex( const IndexType & idx ) const
@@ -96,7 +96,7 @@ public:
         return false;
         }
       }
-    return idx[0] == m_Index[0] + m_Length;
+    return idx[0] == m_Index[0] + (long)m_Length;
     }
 
 private:

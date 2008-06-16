@@ -88,7 +88,9 @@ StatisticsLabelMapFilter<TImage, TFeatureImage>
   double sum3 = 0;
   double sum4 = 0;
   IndexType minIdx;
+  minIdx.Fill( 0 );
   IndexType maxIdx;
+  maxIdx.Fill( 0 );
   PointType centerOfGravity;
   centerOfGravity.Fill( 0 );
   MatrixType centralMoments;

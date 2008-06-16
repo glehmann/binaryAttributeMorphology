@@ -54,7 +54,7 @@ AttributeSelectionLabelMapFilter<TImage, TAttributeAccessor>
     typedef typename ImageType::LabelObjectType LabelObjectType;
     typename LabelObjectType::LabelType label = it->first;
     LabelObjectType * labelObject = it->second;
-    bool notInSet = m_AttributeSet.find(label) == m_AttributeSet.end();
+    bool notInSet = m_AttributeSet.find( accessor( labelObject ) ) == m_AttributeSet.end();
     if( m_Exclude != notInSet )  // no xor in c++, use != instead
       {
       // must increment the iterator before removing the object to avoid invalidating the iterator

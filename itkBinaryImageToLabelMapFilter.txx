@@ -264,7 +264,7 @@ BinaryImageToLabelMapFilter< TInputImage, TOutputImage >
 
   while( m_FirstLineIdToJoin.size() != 0 )
     {
-    if( threadId * 2 < m_FirstLineIdToJoin.size() )
+    if( threadId * 2 < (long)m_FirstLineIdToJoin.size() )
       {
       for(long ThisIdx = m_FirstLineIdToJoin[threadId * 2];
           ThisIdx < m_FirstLineIdToJoin[threadId * 2] + nbOfLineIdToJoin;
@@ -299,7 +299,7 @@ BinaryImageToLabelMapFilter< TInputImage, TOutputImage >
       {
       // remove the region already joined
       typename std::vector< long > newFirstLineIdToJoin;
-      for( int i = 1; i<m_FirstLineIdToJoin.size(); i+=2 )
+      for( int i = 1; i<(long)m_FirstLineIdToJoin.size(); i+=2 )
         {
         newFirstLineIdToJoin.push_back( m_FirstLineIdToJoin[i] );
         }

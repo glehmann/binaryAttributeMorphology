@@ -86,7 +86,7 @@ LabelMapToAttributeImageFilter<TInputImage, TOutputImage, TAttributeAccessor>
       {
       IndexType idx = lit->GetIndex();
       unsigned long length = lit->GetLength();
-      for( int i=0; i<length; i++)
+      for( unsigned int i=0; i<length; i++)
         {
         output->SetPixel( idx, static_cast<OutputImagePixelType>( attribute ) );
         idx[0]++;

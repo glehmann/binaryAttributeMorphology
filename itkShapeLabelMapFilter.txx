@@ -150,7 +150,7 @@ ShapeLabelMapFilter<TImage, TLabelImage>
         }
       }
     // must fix the max for the axis 0
-    if( idx[0] + length > maxs[0] )
+    if( idx[0] + (long)length > maxs[0] )
       {
       maxs[0] = idx[0] + length - 1;
       }
@@ -184,7 +184,7 @@ ShapeLabelMapFilter<TImage, TLabelImage>
       if( !isOnBorder0 || length > 1 )
         {
         // we can check for the end of the line
-        if( idx[0] + length - 1 == borderMax[0] )
+        if( idx[0] + (long)length - 1 == borderMax[0] )
           {
           // one more pixel on the border
           sizeOnBorder++;
@@ -199,7 +199,7 @@ ShapeLabelMapFilter<TImage, TLabelImage>
       // the begining of the line
       physicalSizeOnBorder += sizePerPixelPerDimension[0];
       }
-    if( idx[0] + length - 1 == borderMax[0] )
+    if( idx[0] + (long)length - 1 == borderMax[0] )
       {
       // and the end of the line
       physicalSizeOnBorder += sizePerPixelPerDimension[0];

@@ -99,7 +99,7 @@ AutoCropLabelMapFilter<TInputImage>
           }
         }
       // must fix the max for the axis 0
-      if( idx[0] + length > maxs[0] )
+      if( idx[0] + (long)length > maxs[0] )
         {
         maxs[0] = idx[0] + length - 1;
         }

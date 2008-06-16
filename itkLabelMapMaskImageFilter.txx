@@ -139,7 +139,7 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
                   }
                 }
               // must fix the max for the axis 0
-              if( idx[0] + length > maxs[0] )
+              if( idx[0] + (long)length > maxs[0] )
                 {
                 maxs[0] = idx[0] + length - 1;
                 }
@@ -200,7 +200,7 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
               }
             }
           // must fix the max for the axis 0
-          if( idx[0] + length > maxs[0] )
+          if( idx[0] + (long)length > maxs[0] )
             {
             maxs[0] = idx[0] + length - 1;
             }
@@ -323,7 +323,7 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
           {
           IndexType idx = lit->GetIndex();
           unsigned long length = lit->GetLength();
-          for( int i=0; i<length; i++)
+          for( unsigned int i=0; i<length; i++)
             {
             output->SetPixel( idx, input2->GetPixel( idx ) );
             idx[0]++;
@@ -346,7 +346,7 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
           {
           IndexType idx = lit->GetIndex();
           unsigned long length = lit->GetLength();
-          for( int i=0; i<length; i++)
+          for( unsigned int i=0; i<length; i++)
             {
             if( !testIdxIsInside || outputRegion.IsInside( idx ) )
               {
@@ -389,7 +389,7 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
       {
       IndexType idx = lit->GetIndex();
       unsigned long length = lit->GetLength();
-      for( int i=0; i<length; i++)
+      for( unsigned int i=0; i<length; i++)
         {
         if( !testIdxIsInside || outputRegion.IsInside( idx ) )
           {
@@ -413,7 +413,7 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
       {
       IndexType idx = lit->GetIndex();
       unsigned long length = lit->GetLength();
-      for( int i=0; i<length; i++)
+      for( unsigned int i=0; i<length; i++)
         {
         output->SetPixel( idx, input2->GetPixel( idx ) );
         idx[0]++;
