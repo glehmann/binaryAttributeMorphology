@@ -38,9 +38,12 @@ int main(int argc, char * argv[])
   // update the shape filter, so its output will be up to date
   converter->Update();
 
-  // then we can read the attribute values we're interested in
-  LabelCollectionType::Pointer collection = converter->GetOutput();
-  for( int label=1; label<=collection->GetNumberOfLabelObjects(); label++ )
+  // then we can read the attribute values we're interested in. The BinaryImageToShapeLabelMapFilter
+  // produce consecutive labels, so we can use a for loop and GetLabelObject() method to retrieve
+  // the label objects. If the labels are not consecutive, the GetNthLabelObject() method must be
+  // use instead of GetLabelObject(), or an iterator on the label object container of the label map.
+  LabelCollectionType::Pointer labelMap = converter->GetOutput();
+  for( unsigned int label=1; label<=labelMap->GetNumberOfLabelObjects(); label++ )
     {
     // we don't need a SmartPointer of the label object here, because the reference is kept in
     // in the label map.
