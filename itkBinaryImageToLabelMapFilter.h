@@ -148,7 +148,6 @@ protected:
     m_ForegroundValue = NumericTraits<InputPixelType>::max();
     }
   virtual ~BinaryImageToLabelMapFilter() {}
-  BinaryImageToLabelMapFilter(const Self&) {}
   void PrintSelf(std::ostream& os, Indent indent) const;
 
   /**
@@ -172,6 +171,9 @@ protected:
   bool m_FullyConnected;
   
 private:
+  BinaryImageToLabelMapFilter(const Self&); //purposely not implemented
+  void operator=(const Self&); //purposely not implemented
+
   OutputPixelType m_BackgroundValue;
   InputPixelType m_ForegroundValue;
 
@@ -236,13 +238,17 @@ private:
   typename std::vector< long > m_NumberOfLabels;
   typename std::vector< long > m_FirstLineIdToJoin;
   typename Barrier::Pointer m_Barrier;
+#if !defined(CABLE_CONFIGURATION)
   LineMapType m_LineMap;
+#endif
 };
   
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
+#if !defined(CABLE_CONFIGURATION)
 #include "itkBinaryImageToLabelMapFilter.txx"
+#endif
 #endif
 
 #endif
