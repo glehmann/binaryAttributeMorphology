@@ -30,7 +30,7 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
 ::LabelMapMaskImageFilter()
 {
   this->SetNumberOfRequiredInputs(2);
-  m_Label = NumericTraits< InputImagePixelType >::max();
+  m_Label = NumericTraits< InputImagePixelType >::One;
   m_BackgroundValue = NumericTraits< OutputImagePixelType >::Zero;
   m_Negated = false;
   m_Crop = false;
