@@ -71,7 +71,11 @@ BinaryImageToLabelMapFilter< TInputImage, TOutputImage >
     {
     nbOfThreads = std::min( this->GetNumberOfThreads(), itk::MultiThreader::GetGlobalMaximumNumberOfThreads() );
     }
-//  std::cout << "nbOfThreads: " << nbOfThreads << std::endl;
+  // number of threads can be constrained by the region size, so call the SplitRequestedRegion
+  // to get the real number of threads which will be used
+  typename TOutputImage::RegionType splitRegion;  // dummy region - just to call the following method
+  nbOfThreads = this->SplitRequestedRegion(0, nbOfThreads, splitRegion);
+  // std::cout << "nbOfThreads: " << nbOfThreads << std::endl;
 
   // set up the vars used in the threads
   m_NumberOfLabels.clear();
