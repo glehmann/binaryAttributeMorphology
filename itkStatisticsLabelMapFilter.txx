@@ -175,56 +175,73 @@ StatisticsLabelMapFilter<TImage, TFeatureImage>
       }
     }
 
-  // Normalize using the total mass
-  for(unsigned int i=0; i<ImageDimension; i++)
-    {
-    centerOfGravity[i] /= sum;
-    for(unsigned int j=0; j<ImageDimension; j++)
-      {
-      centralMoments[i][j] /= sum;
-      }
-    }
-
-  // Center the second order moments
-  for(unsigned int i=0; i<ImageDimension; i++)
-    {
-    for(unsigned int j=0; j<ImageDimension; j++)
-      {
-      centralMoments[i][j] -= centerOfGravity[i] * centerOfGravity[j];
-      }
-    }
-
-  // Compute principal moments and axes
-  vnl_symmetric_eigensystem<double> eigen( centralMoments.GetVnlMatrix() );
-  vnl_diag_matrix<double> pm = eigen.D;
-  for(unsigned int i=0; i<ImageDimension; i++)
-    {
-//    principalMoments[i] = 4 * vcl_sqrt( pm(i,i) );
-    principalMoments[i] = pm(i,i);
-    }
-  principalAxes = eigen.V.transpose();
-
-  // Add a final reflection if needed for a proper rotation,
-  // by multiplying the last row by the determinant
-  vnl_real_eigensystem eigenrot( principalAxes.GetVnlMatrix() );
-  vnl_diag_matrix< vcl_complex<double> > eigenval = eigenrot.D;
-  vcl_complex<double> det( 1.0, 0.0 );
-
-  for(unsigned int i=0; i<ImageDimension; i++)
-    {
-    det *= eigenval( i, i );
-    }
-
-  for(unsigned int i=0; i<ImageDimension; i++)
-    {
-    principalAxes[ ImageDimension-1 ][i] *= std::real( det );
-    }
   double elongation = 0;
-
-  if( principalMoments[0] != 0 )
+  if( sum != 0 )
     {
-//    elongation = principalMoments[ImageDimension-1] / principalMoments[0];
-    elongation = vcl_sqrt(principalMoments[ImageDimension-1]) / vcl_sqrt(principalMoments[0]);
+    // Normalize using the total mass
+    for(unsigned int i=0; i<ImageDimension; i++)
+      {
+      centerOfGravity[i] /= sum;
+      for(unsigned int j=0; j<ImageDimension; j++)
+        {
+        centralMoments[i][j] /= sum;
+        }
+      }
+  
+    // Center the second order moments
+    for(unsigned int i=0; i<ImageDimension; i++)
+      {
+      for(unsigned int j=0; j<ImageDimension; j++)
+        {
+        centralMoments[i][j] -= centerOfGravity[i] * centerOfGravity[j];
+        }
+      }
+  
+    // Compute principal moments and axes
+    vnl_symmetric_eigensystem<double> eigen( centralMoments.GetVnlMatrix() );
+    vnl_diag_matrix<double> pm = eigen.D;
+    for(unsigned int i=0; i<ImageDimension; i++)
+      {
+  //    principalMoments[i] = 4 * vcl_sqrt( pm(i,i) );
+      principalMoments[i] = pm(i,i);
+      }
+    principalAxes = eigen.V.transpose();
+  
+    // Add a final reflection if needed for a proper rotation,
+    // by multiplying the last row by the determinant
+    vnl_real_eigensystem eigenrot( principalAxes.GetVnlMatrix() );
+    vnl_diag_matrix< vcl_complex<double> > eigenval = eigenrot.D;
+    vcl_complex<double> det( 1.0, 0.0 );
+  
+    for(unsigned int i=0; i<ImageDimension; i++)
+      {
+      det *= eigenval( i, i );
+      }
+  
+    for(unsigned int i=0; i<ImageDimension; i++)
+      {
+      principalAxes[ ImageDimension-1 ][i] *= std::real( det );
+      }
+  
+    if( principalMoments[0] != 0 )
+      {
+  //    elongation = principalMoments[ImageDimension-1] / principalMoments[0];
+      elongation = vcl_sqrt(principalMoments[ImageDimension-1]) / vcl_sqrt(principalMoments[0]);
+      }
+    }
+  else
+    {
+    // can't compute anything in that case - just set everything to a default value
+    // Normalize using the total mass
+    for(unsigned int i=0; i<ImageDimension; i++)
+      {
+      centerOfGravity[i] = 0;
+      principalMoments[i] = 0;
+      for(unsigned int j=0; j<ImageDimension; j++)
+        {
+        principalAxes[i][j] = 0;
+        }
+      }
     }
 
   // finally put the values in the label object
