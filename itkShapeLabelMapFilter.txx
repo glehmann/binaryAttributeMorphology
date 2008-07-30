@@ -495,7 +495,7 @@ ShapeLabelMapFilter<TImage, TLabelImage>
 {
   if( n < 2 )
     {
-    return 2;
+    return 1;
     }
   return n * doubleFactorial( n - 2 );
 }
@@ -506,7 +506,7 @@ double
 ShapeLabelMapFilter<TImage, TLabelImage>
 ::gammaN2p1( long n )
 {
-  bool even = ImageDimension % 2 == 1;
+  bool even = n % 2 == 0;
   if( even )
     {
     return factorial( n / 2 );
