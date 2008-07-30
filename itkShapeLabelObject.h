@@ -222,6 +222,19 @@ public:
     }
 };
 
+template< class TLabelObject >
+class ITK_EXPORT EquivalentEllipsoidRadiusLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef typename LabelObjectType::VectorType AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetEquivalentEllipsoidRadius();
+    }
+};
+
 }
 
 
@@ -282,6 +295,7 @@ public:
   static const AttributeType ROUNDNESS=13;
   static const AttributeType EQUIVALENT_RADIUS=14;
   static const AttributeType EQUIVALENT_PERIMETER=15;
+  static const AttributeType EQUIVALENT_ELLIPSOID_RADIUS=16;
 
   static AttributeType GetAttributeFromName( const std::string & s )
     {
@@ -349,6 +363,10 @@ public:
       {
       return EQUIVALENT_PERIMETER;
       }
+    else if( s == "EquivalentEllipsoidRadius" )
+      {
+      return EQUIVALENT_ELLIPSOID_RADIUS;
+      }
     // can't recognize the namespace
     throw std::runtime_error("Unknown attribute.");
     }
@@ -403,6 +421,9 @@ public:
         break;
       case EQUIVALENT_PERIMETER:
         return "EquivalentPerimeter";
+        break;
+      case EQUIVALENT_ELLIPSOID_RADIUS:
+        return "EquivalentEllipsoidRadius";
         break;
       }
       // can't recognize the namespace
@@ -609,6 +630,18 @@ public:
     m_EquivalentPerimeter = v;
     }
 
+//   itkGetConstMacro( EquivalentEllipsoidRadius, VectorType );
+//   itkSetMacro( EquivalentEllipsoidRadius, VectorType );
+  const VectorType & GetEquivalentEllipsoidRadius() const
+    {
+    return m_EquivalentEllipsoidRadius;
+    }
+
+  void SetEquivalentEllipsoidRadius( const VectorType & v )
+    {
+    m_EquivalentEllipsoidRadius = v;
+    }
+
 
 // some helper methods - not really required, but really useful!
 
@@ -689,6 +722,7 @@ public:
     m_Roundness = src->m_Roundness;
     m_EquivalentRadius = src->m_EquivalentRadius;
     m_EquivalentPerimeter = src->m_EquivalentPerimeter;
+    m_EquivalentEllipsoidRadius = src->m_EquivalentEllipsoidRadius;
     }
 
 protected:
@@ -709,6 +743,7 @@ protected:
     m_Roundness = 0;
     m_EquivalentRadius = 0;
     m_EquivalentPerimeter = 0;
+    m_EquivalentEllipsoidRadius.Fill(0);
     }
   
 
@@ -733,6 +768,7 @@ protected:
     os << indent << "Roundness: " << m_Roundness << std::endl;
     os << indent << "EquivalentRadius: " << m_EquivalentRadius << std::endl;
     os << indent << "EquivalentPerimeter: " << m_EquivalentPerimeter << std::endl;
+    os << indent << "EquivalentEllipsoidRadius: " << std::endl << m_EquivalentEllipsoidRadius;
     }
 
 private:
@@ -755,7 +791,7 @@ private:
   double m_Roundness;
   double m_EquivalentRadius;
   double m_EquivalentPerimeter;
-  
+  VectorType m_EquivalentEllipsoidRadius;
 
 };
 
