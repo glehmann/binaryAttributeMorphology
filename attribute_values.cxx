@@ -27,10 +27,10 @@ int main(int argc, char * argv[])
   // the StatisticsLabelObejct).
   typedef unsigned long LabelType;
   typedef itk::ShapeLabelObject< LabelType, dim > LabelObjectType;
-  typedef itk::LabelMap< LabelObjectType > LabelCollectionType;
+  typedef itk::LabelMap< LabelObjectType > LabelMapType;
 
   // convert the image in a collection of objects
-  typedef itk::BinaryImageToShapeLabelMapFilter< ImageType, LabelCollectionType > ConverterType;
+  typedef itk::BinaryImageToShapeLabelMapFilter< ImageType, LabelMapType > ConverterType;
   ConverterType::Pointer converter = ConverterType::New();
   converter->SetInput( reader->GetOutput() );
   converter->SetForegroundValue( atoi(argv[2]) );
@@ -42,7 +42,7 @@ int main(int argc, char * argv[])
   // produce consecutive labels, so we can use a for loop and GetLabelObject() method to retrieve
   // the label objects. If the labels are not consecutive, the GetNthLabelObject() method must be
   // use instead of GetLabelObject(), or an iterator on the label object container of the label map.
-  LabelCollectionType::Pointer labelMap = converter->GetOutput();
+  LabelMapType::Pointer labelMap = converter->GetOutput();
   for( unsigned int label=1; label<=labelMap->GetNumberOfLabelObjects(); label++ )
     {
     // we don't need a SmartPointer of the label object here, because the reference is kept in

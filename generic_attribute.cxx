@@ -35,8 +35,8 @@ int main(int argc, char * argv[])
   // from the LabelObject class, and the type of the attribute associated
   // with each node. Here we have chosen a double. We then declares the
   // type of the LabelMap with the type of the label object.
-  typedef itk::AttributeLabelObject< unsigned long, dim, double > LOType;
-  typedef itk::LabelMap< LOType > LCIType;
+  typedef itk::AttributeLabelObject< unsigned long, dim, double > LabelObjectType;
+  typedef itk::LabelMap< LabelObjectType > LabelMapType;
 
   // We read the input image.
   typedef itk::ImageFileReader< IType > ReaderType;
@@ -47,7 +47,7 @@ int main(int argc, char * argv[])
   reader2->SetFileName( argv[2] );
   
   // And convert it to a LabelMap
-  typedef itk::LabelImageToLabelMapFilter< IType, LCIType > I2LType;
+  typedef itk::LabelImageToLabelMapFilter< IType, LabelMapType > I2LType;
   I2LType::Pointer i2l = I2LType::New();
   i2l->SetInput( reader->GetOutput() );
   i2l->SetBackgroundValue( atoi(argv[7]) );
@@ -59,38 +59,38 @@ int main(int argc, char * argv[])
   // values in the 2nd image. The StatisticsLabelObject can give us that value, without
   // having to code that by hand - that's an example.
   
-  LCIType::Pointer labelCollection = i2l->GetOutput();
+  LabelMapType::Pointer labelMap = i2l->GetOutput();
   
   // Lets begin by declaring the iterator for the objects in the image.
-  LCIType::LabelObjectContainerType::const_iterator it;
+  LabelMapType::LabelObjectContainerType::const_iterator it;
   // And get the object container to reuse it later
-  const LCIType::LabelObjectContainerType & labelObjectContainer = labelCollection->GetLabelObjectContainer();
+  const LabelMapType::LabelObjectContainerType & labelObjectContainer = labelMap->GetLabelObjectContainer();
   for( it = labelObjectContainer.begin(); it != labelObjectContainer.end(); it++ )
     {
     // the label is there if we need it, but it can also be found at labelObject->GetLabel().
     // const PType & label = it->first;
     
     // the label object
-    LOType * labelObject = it->second;
+    LabelObjectType * labelObject = it->second;
   
     // init the vars
     double mean = 0;
     unsigned long size = 0;
     
     // the iterator for the lines
-    LOType::LineContainerType::const_iterator lit;
-    LOType::LineContainerType & lineContainer = labelObject->GetLineContainer();
+    LabelObjectType::LineContainerType::const_iterator lit;
+    LabelObjectType::LineContainerType & lineContainer = labelObject->GetLineContainer();
   
     // iterate over all the lines
     for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
       {
-      const LCIType::IndexType & firstIdx = lit->GetIndex();
+      const LabelMapType::IndexType & firstIdx = lit->GetIndex();
       const unsigned long & length = lit->GetLength();
       
       size += length;
   
       long endIdx0 = firstIdx[0] + length;
-      for( LCIType::IndexType idx = firstIdx; idx[0]<endIdx0; idx[0]++)
+      for( LabelMapType::IndexType idx = firstIdx; idx[0]<endIdx0; idx[0]++)
         {
         mean += reader2->GetOutput()->GetPixel( idx );
         }
@@ -108,35 +108,35 @@ int main(int argc, char * argv[])
   // The default accessor (AttributeLabelObject) is the right one when using AttributeLabelObject
   // so we don't have to specify it. A different one can be used if needed though.
   
-  typedef itk::AttributeKeepNObjectsLabelMapFilter< LCIType > KeepType;
+  typedef itk::AttributeKeepNObjectsLabelMapFilter< LabelMapType > KeepType;
   KeepType::Pointer keep = KeepType::New();
-  keep->SetInput( labelCollection );
+  keep->SetInput( labelMap );
   keep->SetReverseOrdering( true );
   keep->SetNumberOfObjects( atoi(argv[9]) );
   // prevent the filter to run in place, and modify the input image
   keep->SetInPlace( false );
 
-  typedef itk::AttributeOpeningLabelMapFilter< LCIType > OpeningType;
+  typedef itk::AttributeOpeningLabelMapFilter< LabelMapType > OpeningType;
   OpeningType::Pointer opening = OpeningType::New();
-  opening->SetInput( labelCollection );
+  opening->SetInput( labelMap );
   opening->SetLambda( atof(argv[8]) );
   opening->SetInPlace( false );
 
-  typedef itk::AttributeRelabelLabelMapFilter< LCIType > RelabelType;
+  typedef itk::AttributeRelabelLabelMapFilter< LabelMapType > RelabelType;
   RelabelType::Pointer relabel = RelabelType::New();
-  relabel->SetInput( labelCollection );
+  relabel->SetInput( labelMap );
   relabel->SetInPlace( false );
   
   // The attribute values can be put directly in a classic image
   
-  typedef itk::LabelMapToAttributeImageFilter< LCIType, IType > A2IType;
+  typedef itk::LabelMapToAttributeImageFilter< LabelMapType, IType > A2IType;
   A2IType::Pointer a2i = A2IType::New();
-  a2i->SetInput( labelCollection );
+  a2i->SetInput( labelMap );
   
   // or the label collection can be converted back to an label image, or to a binary image
   // (not shown here)
   
-  typedef itk::LabelMapToLabelImageFilter< LCIType, IType > L2IType;
+  typedef itk::LabelMapToLabelImageFilter< LabelMapType, IType > L2IType;
   L2IType::Pointer l2i = L2IType::New();
   
   // finally, we write the results

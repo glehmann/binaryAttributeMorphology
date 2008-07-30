@@ -956,8 +956,8 @@ from the LabelObject class, and the type of the attribute associated
 with each node. Here we have chosen a double. We then declares the
 type of the LabelMap with the type of the label object.
 \small \begin{verbatim}
-  typedef itk::AttributeLabelObject< unsigned long, dim, double > LOType;
-  typedef itk::LabelMap< LOType > LCIType;
+  typedef itk::AttributeLabelObject< unsigned long, dim, double > LabelObjectType;
+  typedef itk::LabelMap< LabelObjectType > LabelMapType;
 \end{verbatim} \normalsize
 We read the input images.
 \small \begin{verbatim}
@@ -970,7 +970,7 @@ We read the input images.
 \end{verbatim} \normalsize
 And convert the label image to a LabelMap.
 \small \begin{verbatim}
-  typedef itk::LabelImageToLabelMapFilter< IType, LCIType > I2LType;
+  typedef itk::LabelImageToLabelMapFilter< IType, LabelMapType > I2LType;
   I2LType::Pointer i2l = I2LType::New();
   i2l->SetInput( reader->GetOutput() );
   i2l->SetBackgroundValue( atoi(argv[7]) );
@@ -986,9 +986,9 @@ having to code that by hand - that's an example.
 
 Lets begin by declaring the iterator for the objects in the image, and get the object container, to reuse it later.
 \small \begin{verbatim}
-  LCIType::LabelObjectContainerType::const_iterator it;
-  LCIType::Pointer labelCollection = i2l->GetOutput();
-  const LCIType::LabelObjectContainerType & labelObjectContainer = labelCollection->GetLabelObjectContainer();
+  LabelMapType::LabelObjectContainerType::const_iterator it;
+  LabelMapType::Pointer labelMap = i2l->GetOutput();
+  const LabelMapType::LabelObjectContainerType & labelObjectContainer = labelMap->GetLabelObjectContainer();
 \end{verbatim} \normalsize
 Now iterate over all the objects in the image.
 \small \begin{verbatim}
@@ -998,7 +998,7 @@ Now iterate over all the objects in the image.
 The label is there if we need it, but it can also be found at labelObject->GetLabel().
 \small \begin{verbatim}
     const PType & label = it->first;
-    LOType * labelObject = it->second;
+    LabelObjectType * labelObject = it->second;
 \end{verbatim} \normalsize
 Init the variables used for the computation.
 \small \begin{verbatim}
@@ -1007,12 +1007,12 @@ Init the variables used for the computation.
 \end{verbatim} \normalsize
 Create the iterator for the lines, and iterate over them
 \small \begin{verbatim}
-    LOType::LineContainerType::const_iterator lit;
-    LOType::LineContainerType lineContainer = labelObject->GetLineContainer();
+    LabelObjectType::LineContainerType::const_iterator lit;
+    LabelObjectType::LineContainerType lineContainer = labelObject->GetLineContainer();
 
     for( lit = lineContainer.begin(); lit != lineContainer.end(); lit++ )
       {
-      const LCIType::IndexType & firstIdx = lit->GetIndex();
+      const LabelMapType::IndexType & firstIdx = lit->GetIndex();
       const unsigned long & length = lit->GetLength();
 
       size += length;
@@ -1020,7 +1020,7 @@ Create the iterator for the lines, and iterate over them
 Then iterate over all the pixels in the line, and get the pixel values in the feature image to compute their mean.
 \small \begin{verbatim}
       long endIdx0 = firstIdx[0] + length;
-      for( LCIType::IndexType idx = firstIdx; idx[0]<endIdx0; idx[0]++)
+      for( LabelMapType::IndexType idx = firstIdx; idx[0]<endIdx0; idx[0]++)
         {
         mean += reader2->GetOutput()->GetPixel( idx );
         }
@@ -1042,9 +1042,9 @@ the common filters, or by hand. The default accessor (AttributeLabelObject)
 is the wright one when using AttributeLabelObject so we don't have to specify it.
 A different one can be used if needed though.
 \small \begin{verbatim}
-  typedef itk::AttributeKeepNObjectsLabelMapFilter< LCIType > KeepType;
+  typedef itk::AttributeKeepNObjectsLabelMapFilter< LabelMapType > KeepType;
   KeepType::Pointer keep = KeepType::New();
-  keep->SetInput( labelCollection );
+  keep->SetInput( labelMap );
   keep->SetReverseOrdering( true );
   keep->SetNumberOfObjects( atoi(argv[9]) );
 \end{verbatim} \normalsize
@@ -1052,27 +1052,27 @@ Prevent the filter to run in place, so the input image is not modified.
 \small \begin{verbatim}
   keep->SetInPlace( false );
 
-  typedef itk::AttributeOpeningLabelMapFilter< LCIType > OpeningType;
+  typedef itk::AttributeOpeningLabelMapFilter< LabelMapType > OpeningType;
   OpeningType::Pointer opening = OpeningType::New();
-  opening->SetInput( labelCollection );
+  opening->SetInput( labelMap );
   opening->SetLambda( atof(argv[8]) );
   opening->SetInPlace( false );
 
-  typedef itk::AttributeRelabelLabelMapFilter< LCIType > RelabelType;
+  typedef itk::AttributeRelabelLabelMapFilter< LabelMapType > RelabelType;
   RelabelType::Pointer relabel = RelabelType::New();
-  relabel->SetInput( labelCollection );
+  relabel->SetInput( labelMap );
   relabel->SetInPlace( false );
 \end{verbatim} \normalsize
 The attribute values can be put directly in a classic image.
 \small \begin{verbatim}
-  typedef itk::LabelMapToAttributeImageFilter< LCIType, IType > A2IType;
+  typedef itk::LabelMapToAttributeImageFilter< LabelMapType, IType > A2IType;
   A2IType::Pointer a2i = A2IType::New();
-  a2i->SetInput( labelCollection );
+  a2i->SetInput( labelMap );
 \end{verbatim} \normalsize
 Or the label collection can be converted back to an label image, or to a binary image
 (not shown here)
 \small \begin{verbatim}
-  typedef itk::LabelMapToLabelImageFilter< LCIType, IType > L2IType;
+  typedef itk::LabelMapToLabelImageFilter< LabelMapType, IType > L2IType;
   L2IType::Pointer l2i = L2IType::New();
 \end{verbatim} \normalsize
 Finally, write the results
@@ -1101,6 +1101,126 @@ Finally, write the results
   return 0;
 }
 \end{verbatim} \normalsize
+
+\subsubsection{Custom attribute accessor}
+
+This example shows how to use the LabelMap classes to remove all the
+object with a bounding size smaller (or greater) than a given value
+on the z axis.
+The attribute we are interested is already computed by {\em ShapeLabelMapFilter}
+and stored in {\em ShapeLabelObject}. It is not usable as is however, because it
+is part of a multicomponent attribute: {\em Region}.
+
+To be able to use it with the standard classes, we have to provide an accessor
+which can be used by the opening filter.
+
+The source code is available in the file {\em simple\_generic\_attribute.cxx}.
+
+First include the classes we'll use
+\small \begin{verbatim}
+#include "itkImageFileReader.h"
+#include "itkImageFileWriter.h"
+#include "itkSimpleFilterWatcher.h"
+
+#include "itkLabelImageToShapeLabelMapFilter.h"
+#include "itkAttributeOpeningLabelMapFilter.h"
+#include "itkLabelMapToLabelImageFilter.h"
+\end{verbatim} \normalsize
+Now we can declare the custom accessor type, which will be used by the opening
+filter.
+\small \begin{verbatim}
+template< class TLabelObject >
+class ITK_EXPORT LastDimesionRegionSizeObjectAccessor
+{
+public:
+\end{verbatim} \normalsize
+The declaration of {\em AttributeValueType} is mandatory. It is used internally
+in the opening filter to define the type of the lambda value.
+{\em AttributeValueType} should be the same as the type returned by the operator()
+method.
+\small \begin{verbatim}
+  typedef unsigned long AttributeValueType;
+\end{verbatim} \normalsize
+{\em operator()} is the core of the accessor. It takes a label object as parameter,
+and return the attribute of interest. Some computations can be done inside the accessor
+method, but they should be as fast as possible, because {\em operator()} may be called
+many time by some filters. If an attribute value takes time to compute, it should rather be computed once
+for all and stored in a new attribute. In that case, there is no computation at all, only
+an access to a value hidden in a multicomponent attribute, so things are very fast.
+\small \begin{verbatim}
+  inline const AttributeValueType operator()( const TLabelObject * labelObject )
+    {
+    return labelObject->GetRegion().GetSize()[TLabelObject::ImageDimension-1];
+    }
+};
+\end{verbatim} \normalsize
+Now the main program. First the usual validation of the number of arguments.
+\small \begin{verbatim}
+int main(int argc, char * argv[])
+{
+
+  if( argc != 6 )
+    {
+    std::cerr << "usage: " << argv[0] << " input output bg lambda reverse" << std::endl;
+    // std::cerr << "  : " << std::endl;
+    exit(1);
+    }
+\end{verbatim} \normalsize
+Let's declare the dimension used, and the type of the input image
+\small \begin{verbatim}
+  const int dim = 3;
+  typedef unsigned char PType;
+  typedef itk::Image< PType, dim > IType;
+\end{verbatim} \normalsize
+We read the input image.
+\small \begin{verbatim}
+  typedef itk::ImageFileReader< IType > ReaderType;
+  ReaderType::Pointer reader = ReaderType::New();
+  reader->SetFileName( argv[1] );
+\end{verbatim} \normalsize
+And convert it to a {\em LabelMap}, with the shape attributes computed.
+We use the default label object type provided by {\em LabelImageToShapeLabelMapFilter}.
+\small \begin{verbatim}
+  typedef itk::LabelImageToShapeLabelMapFilter< IType > I2LType;
+  I2LType::Pointer i2l = I2LType::New();
+  i2l->SetInput( reader->GetOutput() );
+  i2l->SetBackgroundValue( atoi(argv[3]) );
+\end{verbatim} \normalsize
+The opening filter is declared with our custom accessor type as second
+template argument, so it will be able to user our custom attribute to make
+the opening.
+\small \begin{verbatim}
+  typedef LastDimesionRegionSizeObjectAccessor< I2LType::LabelObjectType > AccessorType;
+  typedef itk::AttributeOpeningLabelMapFilter< I2LType::OutputImageType, AccessorType > OpeningType;
+  OpeningType::Pointer opening = OpeningType::New();
+  opening->SetInput( i2l->GetOutput() );
+  opening->SetLambda( atof(argv[4]) );
+  opening->SetReverseOrdering( atof(argv[5]) );
+  itk::SimpleFilterWatcher watcher(opening, "filter");
+\end{verbatim} \normalsize
+The label map is then converted back to an label image.
+\small \begin{verbatim}
+  typedef itk::LabelMapToLabelImageFilter< I2LType::OutputImageType, IType > L2IType;
+  L2IType::Pointer l2i = L2IType::New();
+  l2i->SetInput( opening->GetOutput() );
+\end{verbatim} \normalsize
+Write the result to the disk.
+\small \begin{verbatim}
+  typedef itk::ImageFileWriter< IType > WriterType;
+  WriterType::Pointer writer = WriterType::New();
+  writer->SetInput( l2i->GetOutput() );
+  writer->SetFileName( argv[2] );
+  writer->Update();
+\end{verbatim} \normalsize
+Finally, print all the label objects after the opening, to check everything has been done right.
+\small \begin{verbatim}
+  opening->GetOutput()->PrintLabelObjects();
+  std::cout << "Number of objects after the opening: " << opening->GetOutput()->GetNumberOfLabelObjects() << std::endl;
+  
+  return 0;
+}
+\end{verbatim} \normalsize
+
 
 \subsection{Reading attribute values}
 
@@ -1140,12 +1260,12 @@ the StatisticsLabelObejct).
 \small \begin{verbatim}
   typedef unsigned long LabelType;
   typedef itk::ShapeLabelObject< LabelType, dim > LabelObjectType;
-  typedef itk::LabelMap< LabelObjectType > LabelCollectionType;
+  typedef itk::LabelMap< LabelObjectType > LabelMapType;
 
 \end{verbatim} \normalsize
 convert the image in a collection of objects
 \small \begin{verbatim}
-  typedef itk::BinaryImageToLabelMapFilter< ImageType, LabelCollectionType > ConverterType;
+  typedef itk::BinaryImageToLabelMapFilter< ImageType, LabelMapType > ConverterType;
   ConverterType::Pointer converter = ConverterType::New();
   converter->SetInput( reader->GetOutput() );
   converter->SetForegroundValue( 200 );
@@ -1153,7 +1273,7 @@ convert the image in a collection of objects
 \end{verbatim} \normalsize
 and valuate the attributes with the dedicated filter: ShapeLabelMapFilter
 \small \begin{verbatim}
-  typedef itk::ShapeLabelMapFilter< LabelCollectionType > ShapeFilterType;
+  typedef itk::ShapeLabelMapFilter< LabelMapType > ShapeFilterType;
   ShapeFilterType::Pointer shape = ShapeFilterType::New();
   shape->SetInput( converter->GetOutput() );
 
@@ -1166,10 +1286,12 @@ update the shape filter, so its output will be up to date
 then we can read the attribute values we're interested in. {\em itk::BinaryImageToLabelMapFilter}
 produces consecutives labels, so a simple {for} loop will do the job.
 \small \begin{verbatim}
-  LabelCollectionType::Pointer collection = shape->GetOutput();
-  for( int label=1; label<collection->GetNumberOfLabelObjects(); label++ )
+  LabelMapType::Pointer labelMap = converter->GetOutput();
+  for( unsigned int label=1; label<=labelMap->GetNumberOfLabelObjects(); label++ )
     {
-    LabelObjectType::Pointer labelObject = collection->GetLabelObject( label );
+    // we don't need a SmartPointer of the label object here, because the reference is kept in
+    // in the label map.
+    const LabelObjectType * labelObject = labelMap->GetLabelObject( label );
     std::cout << label << "\t" << labelObject->GetPhysicalSize() << "\t" << labelObject->GetCentroid() << std::endl;
     }
   
@@ -1447,12 +1569,12 @@ nucleus	& x	& y	& mean	\\
 
 When possible, the filters provided with that contribution have been multithreaded.
 Some of them however, are not (easily) threadable (the {\em KeepNObjects} and {\em Relabel}
-filters), are shouldn't get any performance improvement in a threaded version
+filters), or shouldn't get any performance improvement in a threaded version
 (the {\em Opening} filters).
 
 The {\em itk::BinaryImageToLabelMapFilter} class is a slight modification of the
-Richard Beare's {\em itk::ConnectedComponentImageFilter}, and thus, has not been threaded.
-It should however be possible to increase its performance that way.
+Richard Beare's {\em itk::ConnectedComponentImageFilter}, and have also been threaded
+to get the best of the performances on a multicore system.
 
 The classical thread architecture is used when the input image is an {\em itk::Image}: the image
 is splitted in several regions (one per thread), and each thread work on its own region.
@@ -1486,7 +1608,7 @@ the only image to manipulate is the one get with the {\em GetOutput()} method, w
 \section{Wrappers support}
 
 All the classes provided with that article, excepted the most generic ones made
-to help the developer to implement some new features, can be used with WrapITK,
+to help the developer to implement some new features, can be used with both stable and unstable WrapITK,
 and have been fully tested with python.
 
 % \section{Performance}
