@@ -226,7 +226,7 @@ StatisticsLabelMapFilter<TImage, TFeatureImage>
     if( principalMoments[0] != 0 )
       {
   //    elongation = principalMoments[ImageDimension-1] / principalMoments[0];
-      elongation = vcl_sqrt(principalMoments[ImageDimension-1]) / vcl_sqrt(principalMoments[0]);
+      elongation = vcl_sqrt(principalMoments[ImageDimension-1] / principalMoments[0]);
       }
     }
   else
