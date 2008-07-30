@@ -336,6 +336,11 @@ ShapeLabelMapFilter<TImage, TLabelImage>
     elongation = vcl_sqrt(principalMoments[ImageDimension-1] / principalMoments[0]);
     }
 
+  double equivalentRadius = hyperSphereRadiusFromVolume( labelObject->GetPhysicalSize() );
+//     std::cout << "expectedRadius: " << expectedRadius << std::endl;
+  double equivalentPerimeter = hyperSpherePerimeter( equivalentRadius );
+//     std::cout << "expectedArea: " << expectedArea << std::endl;
+
   // set the values in the object
   labelObject->SetSize( size );
   labelObject->SetPhysicalSize( size * sizePerPixel );
@@ -348,6 +353,8 @@ ShapeLabelMapFilter<TImage, TLabelImage>
   labelObject->SetBinaryPrincipalMoments( principalMoments );
   labelObject->SetBinaryPrincipalAxes( principalAxes );
   labelObject->SetBinaryElongation( elongation );
+  labelObject->SetEquivalentRadius( equivalentRadius );
+  labelObject->SetEquivalentPerimeter( equivalentPerimeter );
 
   if( m_ComputeFeretDiameter )
     {
@@ -434,12 +441,8 @@ ShapeLabelMapFilter<TImage, TLabelImage>
   if( m_ComputePerimeter && m_PerimeterCalculator->HasLabel( label ) )
     {
     double perimeter = m_PerimeterCalculator->GetPerimeter( label );
-    double expectedRadius = hyperSphereRadiusFromVolume( labelObject->GetPhysicalSize() );
-//     std::cout << "expectedRadius: " << expectedRadius << std::endl;
-    double expectedArea = hyperSphereArea( expectedRadius );
-//     std::cout << "expectedArea: " << expectedArea << std::endl;
     labelObject->SetPerimeter( perimeter );
-    labelObject->SetRoundness( expectedArea / perimeter );
+    labelObject->SetRoundness( equivalentPerimeter / perimeter );
     }
 
 //   std::cout << std::endl;
@@ -530,7 +533,7 @@ ShapeLabelMapFilter<TImage, TLabelImage>
 template<class TImage, class TLabelImage>
 double
 ShapeLabelMapFilter<TImage, TLabelImage>
-::hyperSphereArea( double radius )
+::hyperSpherePerimeter( double radius )
 {
   return ImageDimension * hyperSphereVolume( radius ) / radius;
 }

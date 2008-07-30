@@ -69,6 +69,12 @@ ShapeRelabelLabelMapFilter<TImage>
     case LabelObjectType::ROUNDNESS:
       TemplatedGenerateData< typename Functor::RoundnessLabelObjectAccessor< LabelObjectType > >();
       break;
+    case LabelObjectType::EQUIVALENT_RADIUS:
+      TemplatedGenerateData< typename Functor::EquivalentRadiusLabelObjectAccessor< LabelObjectType > >();
+      break;
+    case LabelObjectType::EQUIVALENT_PERIMETER:
+      TemplatedGenerateData< typename Functor::EquivalentPerimeterLabelObjectAccessor< LabelObjectType > >();
+      break;
     default:
       itkExceptionMacro(<< "Unknown attribute type");
       break;

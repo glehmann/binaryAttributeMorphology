@@ -196,6 +196,32 @@ public:
     }
 };
 
+template< class TLabelObject >
+class ITK_EXPORT EquivalentRadiusLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef double AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetEquivalentRadius();
+    }
+};
+
+template< class TLabelObject >
+class ITK_EXPORT EquivalentPerimeterLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef double AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetEquivalentPerimeter();
+    }
+};
+
 }
 
 
@@ -254,6 +280,8 @@ public:
   static const AttributeType BINARY_ELONGATION=11;
   static const AttributeType PERIMETER=12;
   static const AttributeType ROUNDNESS=13;
+  static const AttributeType EQUIVALENT_RADIUS=14;
+  static const AttributeType EQUIVALENT_PERIMETER=15;
 
   static AttributeType GetAttributeFromName( const std::string & s )
     {
@@ -313,6 +341,14 @@ public:
       {
       return ROUNDNESS;
       }
+    else if( s == "EquivalentRadius" )
+      {
+      return EQUIVALENT_RADIUS;
+      }
+    else if( s == "EquivalentPerimeter" )
+      {
+      return EQUIVALENT_PERIMETER;
+      }
     // can't recognize the namespace
     throw std::runtime_error("Unknown attribute.");
     }
@@ -361,6 +397,12 @@ public:
         break;
       case ROUNDNESS:
         return "Roundness";
+        break;
+      case EQUIVALENT_RADIUS:
+        return "EquivalentRadius";
+        break;
+      case EQUIVALENT_PERIMETER:
+        return "EquivalentPerimeter";
         break;
       }
       // can't recognize the namespace
@@ -543,6 +585,30 @@ public:
     m_Roundness = v;
     }
 
+//   itkGetConstMacro( EquivalentRadius, double );
+//   itkSetMacro( EquivalentRadius, double );
+  const double & GetEquivalentRadius() const
+    {
+    return m_EquivalentRadius;
+    }
+
+  void SetEquivalentRadius( const double & v )
+    {
+    m_EquivalentRadius = v;
+    }
+
+//   itkGetConstMacro( EquivalentPerimeter, double );
+//   itkSetMacro( EquivalentPerimeter, double );
+  const double & GetEquivalentPerimeter() const
+    {
+    return m_EquivalentPerimeter;
+    }
+
+  void SetEquivalentPerimeter( const double & v )
+    {
+    m_EquivalentPerimeter = v;
+    }
+
 
 // some helper methods - not really required, but really useful!
 
@@ -621,6 +687,8 @@ public:
     m_BinaryElongation = src->m_BinaryElongation;
     m_Perimeter = src->m_Perimeter;
     m_Roundness = src->m_Roundness;
+    m_EquivalentRadius = src->m_EquivalentRadius;
+    m_EquivalentPerimeter = src->m_EquivalentPerimeter;
     }
 
 protected:
@@ -639,6 +707,8 @@ protected:
     m_BinaryElongation = 0;
     m_Perimeter = 0;
     m_Roundness = 0;
+    m_EquivalentRadius = 0;
+    m_EquivalentPerimeter = 0;
     }
   
 
@@ -661,6 +731,8 @@ protected:
     os << indent << "BinaryElongation: " << m_BinaryElongation << std::endl;
     os << indent << "Perimeter: " << m_Perimeter << std::endl;
     os << indent << "Roundness: " << m_Roundness << std::endl;
+    os << indent << "EquivalentRadius: " << m_EquivalentRadius << std::endl;
+    os << indent << "EquivalentPerimeter: " << m_EquivalentPerimeter << std::endl;
     }
 
 private:
@@ -681,6 +753,8 @@ private:
   double m_BinaryElongation;
   double m_Perimeter;
   double m_Roundness;
+  double m_EquivalentRadius;
+  double m_EquivalentPerimeter;
   
 
 };

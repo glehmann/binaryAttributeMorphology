@@ -129,10 +129,10 @@ public:
   static double hyperSphereVolume( double radius );
 
   /** */
-  static double hyperSphereArea( double radius );
+  static double hyperSpherePerimeter( double radius );
 
   /** */
-  static double hyperSphereRadiusFromVolume( double radius );
+  static double hyperSphereRadiusFromVolume( double volume );
 
 
 protected:
