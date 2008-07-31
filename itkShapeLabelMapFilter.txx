@@ -349,12 +349,13 @@ ShapeLabelMapFilter<TImage, TLabelImage>
     ellipsoidSize[i] = 2 * vcl_sqrt( principalMoments[i] / edet );
     }
 
-  double equivalentRadius = hyperSphereRadiusFromVolume( labelObject->GetPhysicalSize() );
+  double physicalSize = size * sizePerPixel;
+  double equivalentRadius = hyperSphereRadiusFromVolume( physicalSize );
   double equivalentPerimeter = hyperSpherePerimeter( equivalentRadius );
 
   // set the values in the object
   labelObject->SetSize( size );
-  labelObject->SetPhysicalSize( size * sizePerPixel );
+  labelObject->SetPhysicalSize( physicalSize );
   labelObject->SetRegion( region );
   labelObject->SetCentroid( physicalCentroid );
   labelObject->SetRegionElongation( maxSize / minSize );
