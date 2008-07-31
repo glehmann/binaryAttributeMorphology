@@ -18,6 +18,7 @@
 #define __itkStatisticsLabelObject_h
 
 #include "itkShapeLabelObject.h"
+#include "itkHistogram.h"
 
 namespace itk
 {
@@ -234,6 +235,19 @@ public:
     }
 };
 
+template< class TLabelObject >
+class ITK_EXPORT HistogramLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef typename LabelObjectType::HistogramType * AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetHistogram();
+    }
+};
+
 }
 
 
@@ -283,6 +297,8 @@ public:
 
   typedef Vector< double, ImageDimension > VectorType;
 
+  typedef typename itk::Statistics::Histogram< double > HistogramType;
+
   typedef typename Superclass::AttributeType AttributeType;
   static const AttributeType MINIMUM=100;
   static const AttributeType MAXIMUM=101;
@@ -300,6 +316,7 @@ public:
   static const AttributeType KURTOSIS=113;
   static const AttributeType SKEWNESS=114;
   static const AttributeType ELONGATION=115;
+  static const AttributeType HISTOGRAM=116;
 
   static AttributeType GetAttributeFromName( const std::string & s )
     {
@@ -367,6 +384,10 @@ public:
       {
       return ELONGATION;
       }
+    else if( s == "Histogram" )
+      {
+      return HISTOGRAM;
+      }
     // can't recognize the namespace
     return Superclass::GetAttributeFromName( s );
     }
@@ -423,6 +444,9 @@ public:
       case ELONGATION:
         return "Elongation";
         break;
+      case HISTOGRAM:
+        return "Histogram";
+        break;
       }
       // can't recognize the namespace
       return Superclass::GetNameFromAttribute( a );
@@ -453,6 +477,7 @@ public:
     m_Kurtosis = src->m_Kurtosis;
     m_Skewness = src->m_Skewness;
     m_Elongation = src->m_Elongation;
+    m_Histogram = src->m_Histogram;
     }
 
 //   itkGetConstMacro( Minimum, double );
@@ -647,6 +672,18 @@ public:
     m_Elongation = v;
     }
 
+//   itkGetConstMacro( Histogram, double );
+//   itkSetMacro( Histogram, double );
+  const HistogramType * GetHistogram() const
+    {
+    return m_Histogram;
+    }
+
+  void SetHistogram( const HistogramType * v )
+    {
+    m_Histogram = v;
+    }
+
 
 // some helper methods - not really required, but really useful!
 
@@ -726,6 +763,7 @@ protected:
     m_Kurtosis = 0;
     m_Skewness = 0;
     m_Elongation = 0;
+    m_Histogram = NULL;
     }
   
 
@@ -749,6 +787,7 @@ protected:
     os << indent << "Skewness: " << m_Skewness << std::endl;
     os << indent << "Kurtosis: " << m_Kurtosis << std::endl;
     os << indent << "Elongation: " << m_Elongation << std::endl;
+    os << indent << "Histogram: " << m_Histogram << std::endl;
     }
 
 private:
@@ -771,6 +810,7 @@ private:
   double m_Skewness;
   double m_Kurtosis;
   double m_Elongation;
+  typename HistogramType::ConstPointer m_Histogram;
 
 };
 

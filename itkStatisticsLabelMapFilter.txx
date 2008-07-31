@@ -20,7 +20,6 @@
 #include "itkStatisticsLabelMapFilter.h"
 #include "itkMinimumMaximumImageCalculator.h"
 #include "itkProgressReporter.h"
-#include "itkHistogram.h"
 #include "vnl/algo/vnl_real_eigensystem.h"
 #include "vnl/algo/vnl_symmetric_eigensystem.h"
 
@@ -65,7 +64,7 @@ StatisticsLabelMapFilter<TImage, TFeatureImage>
   ImageType * output = this->GetOutput();
   const FeatureImageType * featureImage = this->GetFeatureImage();
 
-  typedef Statistics::Histogram< double > HistogramType;
+  typedef typename LabelObjectType::HistogramType HistogramType;
 
   typename HistogramType::SizeType histogramSize;
   histogramSize.Fill( 256 );
@@ -261,6 +260,7 @@ StatisticsLabelMapFilter<TImage, TFeatureImage>
   labelObject->SetSkewness( skewness );
   labelObject->SetKurtosis( kurtosis );
   labelObject->SetElongation( elongation );
+  labelObject->SetHistogram( histogram );
 
 //     std::cout << std::endl;
 //     labelObject->Print( std::cout );
