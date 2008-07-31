@@ -337,7 +337,7 @@ ShapeLabelMapFilter<TImage, TLabelImage>
     }
 
   // compute equilalent ellipsoid radius
-  VectorType ellipsoidRadius;
+  VectorType ellipsoidSize;
   double edet = 1.0;
   for(unsigned int i=0; i<ImageDimension; i++)
     {
@@ -346,7 +346,7 @@ ShapeLabelMapFilter<TImage, TLabelImage>
   edet = vcl_pow( edet, 1.0/ImageDimension );
   for(unsigned int i=0; i<ImageDimension; i++)
     {
-    ellipsoidRadius[i] = vcl_sqrt( principalMoments[i] / edet );
+    ellipsoidSize[i] = 2 * vcl_sqrt( principalMoments[i] / edet );
     }
 
   double equivalentRadius = hyperSphereRadiusFromVolume( labelObject->GetPhysicalSize() );
@@ -366,7 +366,7 @@ ShapeLabelMapFilter<TImage, TLabelImage>
   labelObject->SetBinaryElongation( elongation );
   labelObject->SetEquivalentRadius( equivalentRadius );
   labelObject->SetEquivalentPerimeter( equivalentPerimeter );
-  labelObject->SetEquivalentEllipsoidRadius( ellipsoidRadius );
+  labelObject->SetEquivalentEllipsoidSize( ellipsoidSize );
 
   if( m_ComputeFeretDiameter )
     {
