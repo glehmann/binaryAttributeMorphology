@@ -787,7 +787,15 @@ protected:
     os << indent << "Skewness: " << m_Skewness << std::endl;
     os << indent << "Kurtosis: " << m_Kurtosis << std::endl;
     os << indent << "Elongation: " << m_Elongation << std::endl;
-    os << indent << "Histogram: " << m_Histogram << std::endl;
+    os << indent << "Histogram: ";
+    if( m_Histogram )
+      {
+      os << "NULL" << std::endl;
+      }
+    else
+      {
+      m_Histogram->Print( os, indent );
+      }
     }
 
 private:

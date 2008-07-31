@@ -768,7 +768,7 @@ protected:
     os << indent << "Roundness: " << m_Roundness << std::endl;
     os << indent << "EquivalentRadius: " << m_EquivalentRadius << std::endl;
     os << indent << "EquivalentPerimeter: " << m_EquivalentPerimeter << std::endl;
-    os << indent << "EquivalentEllipsoidSize: " << std::endl << m_EquivalentEllipsoidSize;
+    os << indent << "EquivalentEllipsoidSize: " << m_EquivalentEllipsoidSize << std::endl;
     }
 
 private:
