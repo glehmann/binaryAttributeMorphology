@@ -291,7 +291,14 @@ Its type is {\em double}.
 {\em itk::Matrix< double, ImageDimension, ImageDimension >}.
   \item {\em BinaryElongation} is the elongation of the shape, computed as the ratio
 of the largest principal moment by the smallest principal moment. Its value is greater
-or equal to $1$. Its type si {\em double}.
+or equal to $1$. Its type is {\em double}.
+  \item {\em EquivalentRadius} is the equivalent radius of the hypersphere of the same size
+than the label object. The value depends on the image spacing. Its type is {\em double}.
+  \item {\em EquivalentPerimeter} is the equivalent perimeter of the hypersphere of the same size
+than the label object. The value depends on the image spacing. Its type is {\em double}.
+  \item {\em EquivalentEllipsoidPerimeter} is the size of the ellipsoid of the same size
+and the same ratio on all the axes than the label object. The value depends on the image
+spacing. Its type is {\em itk::Vector< double, ImageDimension >}.
 %   \item {\em Perimeter}
 \end{itemize}
 
@@ -328,6 +335,8 @@ is {\em double}.
   \item {\em Elongation} is the elongation of the shape, computed as the ratio
 of the largest principal moment by the smallest principal moment. Its value is greater
 or equal to $1$· Its type si {\em double}.
+  \item {\em Histogram} is the histogram of the pixels covered by the label object
+in the feature image. Its type is {\em itk::Histogram< double > *}.
 \end{itemize}
 
 
