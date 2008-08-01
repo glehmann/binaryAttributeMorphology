@@ -244,7 +244,7 @@ ShapeLabelMapFilter<TImage, TLabelImage>
     output->TransformIndexToPhysicalPoint( idx, physicalPosition );
     const typename ImageType::SpacingType & spacing = output->GetSpacing();
     // the sum of x positions, also reused several times
-    double sumX = physicalPosition[0] * length + spacing[0] * ( ( length * ( length - 1 ) ) / 2.0 );
+    double sumX = length * ( physicalPosition[0] + ( spacing[0] * ( length - 1 ) ) / 2.0 );
     // the real job - the sum of square of x positions
     // that's the central moments for dims 0, 0
     centralMoments[0][0] += length * ( physicalPosition[0] * physicalPosition[0]

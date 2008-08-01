@@ -592,8 +592,8 @@ can be written:
 \begin{eqnarray}
 S_{i,j} = \begin{cases}
   \underset{L \in O}\sum \left( l_L.p_i.p_j \right)                & \text{if $i > 0$ and $j > 0$}, \\
-  \underset{L \in O}\sum \left( l_L.p_i.\underset{p \in L}\sum p_0 \right)  & \text{if $i > 0$ and $j = 0$}, \\
-  \underset{L \in O}\sum \left( l_L.p_j.\underset{p \in L}\sum p_0 \right)  & \text{if $i = 0$ and $j > 0$}, \\
+  \underset{L \in O}\sum \left( p_i.\underset{p \in L}\sum p_0 \right)  & \text{if $i > 0$ and $j = 0$}, \\
+  \underset{L \in O}\sum \left( p_j.\underset{p \in L}\sum p_0 \right)  & \text{if $i = 0$ and $j > 0$}, \\
   \underset{L \in O}\sum \underset{p \in L}\sum p_0^2            & \text{if $i = j = 0$}.
            \end{cases}
 \end{eqnarray}
@@ -637,8 +637,8 @@ Finally, $S_{i,j}$, used in the computation of the central moments, is computed 
 \begin{eqnarray}
 S_{i,j} = \begin{cases}
   \underset{L \in O}\sum \left( l_L.p_i.p_j \right)                & \text{if $i > 0$ and $j > 0$}, \\
-  \underset{L \in O}\sum \left( p_i.l_L^2 \left( o_0 + \frac{s_0(l_L-1)}{2} \right) \right) & \text{if $i > 0$ and $j = 0$}, \\
-  \underset{L \in O}\sum \left( p_j.l_L^2 \left( o_0 + \frac{s_0(l_L-1)}{2} \right) \right) & \text{if $i = 0$ and $j > 0$}, \\
+  \underset{L \in O}\sum \left( p_i.l_L \left( o_0 + \frac{s_0(l_L-1)}{2} \right) \right) & \text{if $i > 0$ and $j = 0$}, \\
+  \underset{L \in O}\sum \left( p_j.l_L \left( o_0 + \frac{s_0(l_L-1)}{2} \right) \right) & \text{if $i = 0$ and $j > 0$}, \\
   \underset{L \in O}\sum \left( l_L\left( o_0^2 + s_0 (l_L-1)\left(\frac{s_0(2l_L-1)}{6}  + o_0 \right) \right) \right)            & \text{if $i = j = 0$}.
            \end{cases}
 \end{eqnarray}
