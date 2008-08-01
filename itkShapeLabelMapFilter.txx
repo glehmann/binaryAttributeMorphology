@@ -336,6 +336,10 @@ ShapeLabelMapFilter<TImage, TLabelImage>
     elongation = vcl_sqrt(principalMoments[ImageDimension-1] / principalMoments[0]);
     }
 
+  double physicalSize = size * sizePerPixel;
+  double equivalentRadius = hyperSphereRadiusFromVolume( physicalSize );
+  double equivalentPerimeter = hyperSpherePerimeter( equivalentRadius );
+
   // compute equilalent ellipsoid radius
   VectorType ellipsoidSize;
   double edet = 1.0;
@@ -346,12 +350,8 @@ ShapeLabelMapFilter<TImage, TLabelImage>
   edet = vcl_pow( edet, 1.0/ImageDimension );
   for(unsigned int i=0; i<ImageDimension; i++)
     {
-    ellipsoidSize[i] = 2 * vcl_sqrt( principalMoments[i] / edet );
+    ellipsoidSize[i] = 2.0 * equivalentRadius * vcl_sqrt( principalMoments[i] / edet );
     }
-
-  double physicalSize = size * sizePerPixel;
-  double equivalentRadius = hyperSphereRadiusFromVolume( physicalSize );
-  double equivalentPerimeter = hyperSpherePerimeter( equivalentRadius );
 
   // set the values in the object
   labelObject->SetSize( size );

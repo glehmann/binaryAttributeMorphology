@@ -66,9 +66,9 @@ int main(int argc, char * argv[])
   assert( eq(3.06789, ball->GetEquivalentRadius()) );
   assert( eq(118.274, ball->GetEquivalentPerimeter()) );
 
-  assert( eq(1.98804, ball->GetEquivalentEllipsoidSize()[0]) );
-  assert( eq(1.98804, ball->GetEquivalentEllipsoidSize()[1]) );
-  assert( eq(2.02413, ball->GetEquivalentEllipsoidSize()[2]) );
+  assert( eq(6.09908, ball->GetEquivalentEllipsoidSize()[0]) );
+  assert( eq(6.09908, ball->GetEquivalentEllipsoidSize()[1]) );
+  assert( eq(6.20981, ball->GetEquivalentEllipsoidSize()[2]) );
 
   assert( 0 == ball->GetRegion().GetIndex()[0] );
   assert( 0 == ball->GetRegion().GetIndex()[1] );
@@ -115,9 +115,9 @@ int main(int argc, char * argv[])
   assert( eq(3.8445, ellipsoid->GetEquivalentRadius()) );
   assert( eq(185.734, ellipsoid->GetEquivalentPerimeter()) );
 
-  assert( eq(1.5874, ellipsoid->GetEquivalentEllipsoidSize()[0]) );
-  assert( eq(1.5874, ellipsoid->GetEquivalentEllipsoidSize()[1]) );
-  assert( eq(3.1748, ellipsoid->GetEquivalentEllipsoidSize()[2]) );
+  assert( eq(6.10277, ellipsoid->GetEquivalentEllipsoidSize()[0]) );
+  assert( eq(6.10277, ellipsoid->GetEquivalentEllipsoidSize()[1]) );
+  assert( eq(12.2055, ellipsoid->GetEquivalentEllipsoidSize()[2]) );
 
   assert( 0 == ellipsoid->GetRegion().GetIndex()[0] );
   assert( 0 == ellipsoid->GetRegion().GetIndex()[1] );
