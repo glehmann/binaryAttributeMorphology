@@ -202,6 +202,10 @@ SET(CurrentExe "simple_generic_attribute")
 ADD_EXECUTABLE(${CurrentExe} ${CurrentExe}.cxx)
 TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
 
+SET(CurrentExe "attribute_values_test")
+ADD_EXECUTABLE(${CurrentExe} ${CurrentExe}.cxx)
+TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
+
 
 ENDIF(BUILD_TESTING)
 
@@ -347,4 +351,12 @@ ADD_TEST(GenericAttribute ${TEST_COMMAND}
   --compare generic_attribute-open.png ${CMAKE_SOURCE_DIR}/images/generic_attribute-open.png
   --compare generic_attribute-relabel.png ${CMAKE_SOURCE_DIR}/images/generic_attribute-relabel.png
 )
+
+
+ADD_TEST(AttributeValues2 ${TEST_COMMAND}
+  attribute_values_test
+  ${CMAKE_SOURCE_DIR}/images/balls.nrrd
+  ${CMAKE_SOURCE_DIR}/images/balls.nrrd
+)
+
 
