@@ -627,10 +627,10 @@ where $l_L$ is the length of the line (in pixels), and in the sum of the square 
 
 \begin{eqnarray}
 \sum_{p \in L} p_0^2  & = & \sum_{i_0=0}^{l_L-1} ( o_0 + s_0 i_0 )^2 \\ \nonumber
-                      & = & \sum_{i_0=0}^{l_L-1} ( o_0^2 + s_0^2 i_0^2 + 2 o_0 i_0) \\ \nonumber
-                      & = & l_L.o_0^2 + s_0^2\sum_{i_0=0}^{l_L-1} i_0^2 + 2 o_0 \sum_{i_0=0}^{l_L-1} i_0 \\ \nonumber
-                      & = & l_L.o_0^2 + s_0^2 \left( \frac{(l_L-1)l_L(2l_L-1)}{6} \right) + 2 o_0 \left( \frac{(l_L-1)l_L}{2} \right) \\ \nonumber
-                      & = & l_L\left( o_0^2 + (l_L-1)\left(\frac{s_0^2(2l_L-1)}{6}  + o_0 \right) \right)
+                      & = & \sum_{i_0=0}^{l_L-1} ( o_0^2 + s_0^2 i_0^2 + 2 o_0 s_0 i_0) \\ \nonumber
+                      & = & l_L.o_0^2 + s_0^2\sum_{i_0=0}^{l_L-1} i_0^2 + 2 o_0 s_0 \sum_{i_0=0}^{l_L-1} i_0 \\ \nonumber
+                      & = & l_L.o_0^2 + s_0^2 \left( \frac{(l_L-1)l_L(2l_L-1)}{6} \right) + 2 o_0 s_0 \left( \frac{(l_L-1)l_L}{2} \right) \\ \nonumber
+                      & = & l_L\left( o_0^2 + s_0 (l_L-1)\left(\frac{s_0(2l_L-1)}{6}  + o_0 \right) \right)
 \end{eqnarray}
 
 Finally, $S_{i,j}$, used in the computation of the central moments, is computed as:
@@ -639,7 +639,7 @@ S_{i,j} = \begin{cases}
   \underset{L \in O}\sum \left( l_L.p_i.p_j \right)                & \text{if $i > 0$ and $j > 0$}, \\
   \underset{L \in O}\sum \left( p_i.l_L^2 \left( o_0 + \frac{s_0(l_L-1)}{2} \right) \right) & \text{if $i > 0$ and $j = 0$}, \\
   \underset{L \in O}\sum \left( p_j.l_L^2 \left( o_0 + \frac{s_0(l_L-1)}{2} \right) \right) & \text{if $i = 0$ and $j > 0$}, \\
-  \underset{L \in O}\sum \left( l_L\left( o_0^2 + (l_L-1)\left(\frac{s_0^2(2l_L-1)}{6}  + o_0 \right) \right) \right)            & \text{if $i = j = 0$}.
+  \underset{L \in O}\sum \left( l_L\left( o_0^2 + s_0 (l_L-1)\left(\frac{s_0(2l_L-1)}{6}  + o_0 \right) \right) \right)            & \text{if $i = j = 0$}.
            \end{cases}
 \end{eqnarray}
 
