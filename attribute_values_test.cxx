@@ -33,8 +33,8 @@ int main(int argc, char * argv[])
   ConverterType::Pointer converter = ConverterType::New();
   converter->SetInput( reader1->GetOutput() );
   converter->SetFeatureImage( reader2->GetOutput() );
-//  converter->SetComputeFeretDiameter( true );
-//  converter->SetComputePerimeter( true );
+  converter->SetComputeFeretDiameter( true );
+  converter->SetComputePerimeter( true );
 
   converter->Update();
 
@@ -54,9 +54,9 @@ int main(int argc, char * argv[])
   assert( eq(0.52426940382, ball->GetSizeRegionRatio()) );
   assert( 141 == ball->GetSizeOnBorder() );
   assert( eq(2.82, ball->GetPhysicalSizeOnBorder()) );
-//  assert( eq(118.62666666666669, ball->GetPerimeter()) );
-//  assert( eq(6.1903150162168652, ball->GetFeretDiameter()) );
-//  assert( eq(118.62666666666669/118.274, ball->GetRoundness()) );
+  assert( eq(118.62666666666669, ball->GetPerimeter()) );
+  assert( eq(6.1903150162168652, ball->GetFeretDiameter()) );
+  assert( eq(118.62666666666669/118.274, ball->GetRoundness()) );
 
   assert( eq(1.85995, ball->GetBinaryPrincipalMoments()[0]) );
   assert( eq(1.85995, ball->GetBinaryPrincipalMoments()[1]) );
