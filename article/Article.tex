@@ -159,8 +159,8 @@ All those definitions should be uniformized to enhance user experience with ITK.
 In that article (and all the others from the same author), the first one is the
 only one used.
 
-The filter which are mainpulating binary images are often prefixed with the word
-"Binary", to differenciate the grayscale version which don't have a prefix. It
+The filters which are manipulating binary images are often prefixed with the word
+"Binary", to differenciate the grayscale versions which don't have a prefix. It
 seem to be a quite good practice which have been kept in that article.
 
 The filter dedicated to the manipulation of label images have the word "Label"
@@ -170,14 +170,15 @@ kept in that article.
 
 \section{Data representation}
 
-The label images are often used the represent the connected components of an
+The label images are often used to represent the connected components of an
 image. In this contribution, another representation has been chosen.
 
 The objects contained in the image, as connected component, can be efficiently stored in memory as a set
 of lines, using the run-length encoding: a starting point for each line, and the
 length of the line on a given dimension (by convention, the dimension 0).
 
-The image is a collection of those objects, which also store some values of the image, like its size, its spacing, etc.
+The image is a collection of those objects, and it also store some values of the image,
+like its size, its spacing, etc.
 
 \subsection{itk::LabelMap}
 
@@ -215,13 +216,13 @@ using the run-length encoding.
   \item It has a label.
 \end{itemize}
 
-No attribute are stored in this class, which can thus be seen as the base class
+No attribute -- excepted the label -- are stored in this class, which can thus be seen as the base class
 for the objects with attributes, or which can be used when no attributes
 are required.
 
-The {\em itk::LabelObject} class is templated and takes to required template parameters:
+The {\em itk::LabelObject} class is templated and takes two required template parameters:
 \begin{itemize}
-  \item the type of the label,
+  \item the type of the label;
   \item the dimension of the image.
 \end{itemize}
 
@@ -232,7 +233,7 @@ usages of the label objects manipulation:
 is generic in the sense that its type is given in template parameter.
   \item {\em itk::ShapeLabelObject} contains numerous attribute related to the
 shape of the label object. Computing the values of those attributes does not
-require a feaure image.
+require a feature image.
   \item {\em itk::StatisticsLabelObject} contains numerous statistics about the
 grey values of a feature image in the same place than the label object.
 Computing the values of those attributes {\em does} require a feature image.
@@ -240,19 +241,26 @@ Computing the values of those attributes {\em does} require a feature image.
 
 The classes {\em itk::ShapeLabelObject} and {\em itk::StatisticsLabelObject} have been
 created to reduce the number of filters made to manipulate the attributes, and to make
-the computation of all the set of attributes much efficient. In the early stage of
+the computation of all the set of attributes much efficient\footnote{In the early stage of
 development, all the attributes were managed as in {\em itk::AttributeLabelObject}, and
 a set of 8 classes made to manipulate a single attribute were provided, leading to a huge
-number of classes.
+number of classes.}.
 
 The scalar values of the attributes of the {\em itk::ShapeLabelObject} and the
 {\em itk::StatisticsLabelObject} classes are often given both in pixel and in physical units,
 in order to be able to give some parameter independant of the image spacing.
 
+The position in the images are given in index position when the position is the exact position
+of a pixel (for example, the position of the maximum value in the feature image) or in physical
+position when the position is given at a subpixel resolution (for example, the centroid). In
+both case, the position can easily be converted to the other representation with the 
+{\em itk::LabelMap::TransformPhysicalPointToIndex()} and {\em itk::LabelMap::TransformIndexToPhysicalPoint()}
+methods.
+
 Both {\em itk::ShapeLabelObject} and {\em itk::StatisticsLabelObject} are templated classes.
 They take the same template parameters than the {\em itk::LabelObject} class.
-The 2 first template parameters of the {\em itk::AttributeLabelObject} class or the same
-than the {\em itk::LabelObject} class. The third one is the attribute type.
+The two first template parameters of the {\em itk::AttributeLabelObject} class or the same
+than the ones of the{\em itk::LabelObject} class. The third one is the attribute type.
 
 \subsubsection{itk::ShapeLabelObject attributes}
 
@@ -322,7 +330,7 @@ is {\em double}.
 {\em double}.
   \item {\em Median} is the median of the pixels values in the obejct. Its type is
 {\em double}
-  \item {\em CenterOfGravity} is the center of gravity of the object. It type is
+  \item {\em CenterOfGravity} is the center of gravity of the object. Its type is
 {\em itk::Point< double >}.
   \item {\em Kurtosis} is the kurtosis of the pixel values in the objects. Its type is
 {\em double}.
@@ -364,7 +372,7 @@ common used ones:
 \begin{itemize}
   \item {\em itk::ShapeLabelMapFilter} to fill the
 attributes of the {\em itk::ShapeLabelObject}s, 
-  \item and {\em itk::ShapeLabelMapFilter} to fill the attributes of the {\em
+  \item and {\em itk::StatisticsLabelMapFilter} to fill the attributes of the {\em
 itk::StatisticsLabelObject}s.
 \end{itemize}
 
@@ -384,7 +392,7 @@ objects with an attribute value lower or greater than a given value.
 Because we often can use some criteria  which have not been used during the segmentation
 procedure, like the size of the object, the mean value of its pixels, etc., the attribute
 opening is often a very efficient way to enhance a segmentation. For example, after
-a thresholding of a grayscale image, the objects too small or too beg to be of interest
+a thresholding of a grayscale image, the objects too small or too big to be of interest
 can be removed that way. The class {\em AttributeSelectionLabelMapFilter} and its subclass
 {\em LabelSelectionLabelMapFilter} can be used to remove some objects based on their attribute
 value, even if the attribute type has no ordering property.
@@ -394,7 +402,7 @@ KeepNObjectsLabelMapFilter} classes. They are chosen according to
 the value of their attribute. The user can choose to keep the ones with the
 highest, or with the lowest attribute values.
 
-  \item The objects can be relabel, with the {\em
+  \item The objects can be relabeled, with the {\em
 RelabelLabelMapFilter} classes. The order of the label is dependant
 of the value of the attribute. Again, the user can choose to have the objects
 with the highest attribute value in the first labels, or to have the objects
@@ -1293,7 +1301,7 @@ update the shape filter, so its output will be up to date
 
 \end{verbatim} \normalsize
 then we can read the attribute values we're interested in. {\em itk::BinaryImageToLabelMapFilter}
-produces consecutives labels, so a simple {for} loop will do the job.
+produces consecutives labels, so a simple {\em for} loop will do the job.
 \small \begin{verbatim}
   LabelMapType::Pointer labelMap = converter->GetOutput();
   for( unsigned int label=1; label<=labelMap->GetNumberOfLabelObjects(); label++ )
@@ -1434,7 +1442,7 @@ Lets begin with the usual {\em import}s.
 import itk, sys
 itk.auto_progress()
 \end{verbatim} \normalsize
-Then declare the type we will use, as is {\em c++}.
+Then declare the type we will use, as in {\em C++}.
 \small \begin{verbatim}
 Dimension = 2
 PixelType = itk.UC
@@ -1465,13 +1473,10 @@ watershed = itk.MorphologicalWatershedImageFilter[DistanceImageType, ImageType].
     Level=60, MarkWatershedLine=False)
 mask = itk.MaskImageFilter[ImageType, ImageType, ImageType].New(watershed, otsu)
 \end{verbatim} \normalsize
-And now switch to the label collection representation
+And now switch to the label map representation, and compute the attribute values
 \small \begin{verbatim}
-label = itk.LabelImageToLabelMapFilter[ImageType, LabelMapType].New(mask)
-\end{verbatim} \normalsize
-compute the attribute values
-\small \begin{verbatim}
-stats = itk.StatisticsLabelMapFilter[LabelMapType, ImageType].New(label, nuclei)
+stats = itk.LabelImageToStatisticsLabelMapFilter[ImageType, ImageType, LabelMapType].New(mask,
+    nuclei)
 \end{verbatim} \normalsize
 drop the objects too small to be a nucleus, and the ones on the border
 \small \begin{verbatim}
@@ -1486,9 +1491,8 @@ relabel = itk.StatisticsRelabelLabelMapFilter[LabelMapType].New(border, Attribut
 \end{verbatim} \normalsize
 for visual validation:
 \small \begin{verbatim}
-labelNuclei = itk.LabelMapToLabelImageFilter[LabelMapType, ImageType].New(relabel)
-overlay = itk.LabelOverlayImageFilter[ImageType, ImageType, RGBImageType].New(nuclei,
-    labelNuclei, UseBackground=True)
+overlay = itk.LabelMapOverlayImageFilter[LabelMapType, ImageType, RGBImageType].New(relabel,
+    nuclei)
 itk.write(overlay, "nuclei-overlay.png")
 \end{verbatim} \normalsize
 
@@ -1513,12 +1517,12 @@ A simple thresholding:
 \small \begin{verbatim}
 th = itk.BinaryThresholdImageFilter[ImageType, ImageType].New(maskSpots, LowerThreshold=110)
 \end{verbatim} \normalsize
-Now swith to the label collection representation, and compute the attribute values. This time, the input image is not a label image, but a binary one.
+Now swith to the label map representation, and compute the attribute values. This time, the input image is not a label image, but a binary one.
 \small \begin{verbatim}
-slabel = itk.BinaryImageToLabelMapFilter[ImageType, LabelMapType].New(th)
-sstats = itk.StatisticsLabelMapFilter[LabelMapType, ImageType].New(slabel, nuclei)
+sstats = itk.BinaryImageToStatisticsLabelMapFilter[ImageType, ImageType, LabelMapType].New(th,
+    nuclei)
 \end{verbatim} \normalsize
-we know there are for spots in the nubleus, so keep the 4 biggest spots. The other attribute are also usable - we may have chosen to keep the 4 brightest spots for example.
+we know there are 4 spots in the nubleus, so keep the 4 biggest spots. The other attributes are also usable - we may have chosen to keep the 4 brightest spots for example.
 \small \begin{verbatim}
 skeep = itk.ShapeKeepNObjectsLabelMapFilter[LabelMapType].New(sstats, Attribute='Size',
     NumberOfObjects=4)
@@ -1645,8 +1649,6 @@ Doing that require a good knowledge of the iterator design. Any help on that poi
 welcome.
 
 It may be useful to implement the most commonly used opening, keep N objects and relabel transforms in a more efficient way, by using an {\em itk::AttributeLabelObject} instead of a {\em itk::ShapeLabelObject} or a {\em itk::StatisticsLabelObject}.
-
-The {\em itk::BinaryImageToLabelMapFilter} class should be threaded to get the best of that filter on multiprocessors systems.
 
 The converters from/to image are provided, but it may be useful to  have the converters from/to other objects representations:
 \begin{itemize}
