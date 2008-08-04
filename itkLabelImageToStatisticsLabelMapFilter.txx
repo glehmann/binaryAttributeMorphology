@@ -30,6 +30,8 @@ LabelImageToStatisticsLabelMapFilter<TInputImage, TFeatureImage, TOutputImage>
   m_BackgroundValue = NumericTraits<OutputImagePixelType>::NonpositiveMin();
   m_ComputeFeretDiameter = false;
   m_ComputePerimeter = false;
+  m_NumberOfBins = 128;
+  m_ComputeHistogram = true;
   this->SetNumberOfRequiredInputs(2);
 }
 
@@ -84,6 +86,8 @@ LabelImageToStatisticsLabelMapFilter<TInputImage, TFeatureImage, TOutputImage>
   valuator->SetNumberOfThreads( this->GetNumberOfThreads() );
   valuator->SetComputePerimeter( m_ComputePerimeter );
   valuator->SetComputeFeretDiameter( m_ComputeFeretDiameter );
+  valuator->SetComputeHistogram( m_ComputeHistogram );
+  valuator->SetNumberOfBins( m_NumberOfBins );
   progress->RegisterInternalFilter(valuator, .5f);
 
   valuator->GraftOutput( this->GetOutput() );
@@ -102,6 +106,8 @@ LabelImageToStatisticsLabelMapFilter<TInputImage, TFeatureImage, TOutputImage>
   os << indent << "BackgroundValue: "  << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
   os << indent << "ComputeFeretDiameter: " << m_ComputeFeretDiameter << std::endl;
   os << indent << "ComputePerimeter: " << m_ComputePerimeter << std::endl;
+  os << indent << "ComputeHistogram: " << m_ComputeHistogram << std::endl;
+  os << indent << "NumberOfBins: " << m_NumberOfBins << std::endl;
 }
   
 }// end namespace itk

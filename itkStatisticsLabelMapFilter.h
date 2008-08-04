@@ -105,6 +105,25 @@ public:
      this->SetFeatureImage( input );
      }
 
+  /**
+   * Set/Get whether the histogram should be attached to the label object or not.
+   * This option defaults to `true`, but because the histogram may take a lot of memory
+   * compared to the other attributes, this option is useful to reduce the memory usage
+   * when the histogram is not required.
+   */
+  itkSetMacro(ComputeHistogram, bool);
+  itkGetConstReferenceMacro(ComputeHistogram, bool);
+  itkBooleanMacro(ComputeHistogram);
+
+  /**
+   * Set/Get the number of bins in the histogram. Note that the histogram is used
+   * to compute the median value, and that this option may have an effect on the
+   * value of the median.
+   */
+  itkSetMacro(NumberOfBins, unsigned int);
+  itkGetConstReferenceMacro(NumberOfBins, unsigned int);
+
+
 protected:
   StatisticsLabelMapFilter();
   ~StatisticsLabelMapFilter() {};
@@ -113,12 +132,16 @@ protected:
   
   virtual void BeforeThreadedGenerateData();
   
+  void PrintSelf(std::ostream& os, Indent indent) const;
+
 private:
   StatisticsLabelMapFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
   FeatureImagePixelType m_Minimum;
   FeatureImagePixelType m_Maximum;
+  unsigned int          m_NumberOfBins;
+  bool                  m_ComputeHistogram;
 
 } ; // end of class
 

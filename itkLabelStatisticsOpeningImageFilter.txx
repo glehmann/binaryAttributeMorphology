@@ -84,6 +84,7 @@ LabelStatisticsOpeningImageFilter<TInputImage, TFeatureImage>
   valuator->SetFeatureImage( this->GetFeatureImage() );
   valuator->SetLabelImage( this->GetInput() );
   valuator->SetNumberOfThreads( this->GetNumberOfThreads() );
+  valuator->SetComputeHistogram( false );
   if( m_Attribute == LabelObjectType::PERIMETER || m_Attribute == LabelObjectType::ROUNDNESS )
     {
     valuator->SetComputePerimeter( true );

@@ -30,6 +30,8 @@ template <class TImage, class TFeatureImage>
 StatisticsLabelMapFilter<TImage, TFeatureImage>
 ::StatisticsLabelMapFilter()
 {
+  m_NumberOfBins = 128;
+  m_ComputeHistogram = true;
   this->SetNumberOfRequiredInputs(2);
 }
 
@@ -67,7 +69,7 @@ StatisticsLabelMapFilter<TImage, TFeatureImage>
   typedef typename LabelObjectType::HistogramType HistogramType;
 
   typename HistogramType::SizeType histogramSize;
-  histogramSize.Fill( 256 );
+  histogramSize.Fill( m_NumberOfBins );
   typename HistogramType::MeasurementVectorType featureImageMin;
   featureImageMin.Fill( m_Minimum );
   typename HistogramType::MeasurementVectorType featureImageMax;
@@ -260,12 +262,27 @@ StatisticsLabelMapFilter<TImage, TFeatureImage>
   labelObject->SetSkewness( skewness );
   labelObject->SetKurtosis( kurtosis );
   labelObject->SetElongation( elongation );
-  labelObject->SetHistogram( histogram );
+  if( m_ComputeHistogram )
+    {
+    labelObject->SetHistogram( histogram );
+    }
 
 //     std::cout << std::endl;
 //     labelObject->Print( std::cout );
 //     std::cout << std::endl;
 
+}
+
+
+template <class TImage, class TFeatureImage>
+void
+StatisticsLabelMapFilter<TImage, TFeatureImage>
+::PrintSelf(std::ostream& os, Indent indent) const
+{
+  Superclass::PrintSelf(os,indent);
+  
+  os << indent << "ComputeHistogram: " << m_ComputeHistogram << std::endl;
+  os << indent << "NumberOfBins: " << m_NumberOfBins << std::endl;
 }
 
 
