@@ -120,17 +120,18 @@ BinaryImageToLabelMapFilter< TInputImage, TOutputImage >
   // find the split axis
   IndexType outputRegionIdx = output->GetRequestedRegion().GetIndex();
   IndexType outputRegionForThreadIdx = outputRegionForThread.GetIndex();
+  SizeType outputRegionSize = output->GetRequestedRegion().GetSize();
+  SizeType outputRegionForThreadSize = outputRegionForThread.GetSize();
   int splitAxis = 0;
   for( int i=0; i<ImageDimension; i++ )
     {
-    if( outputRegionIdx[i] != outputRegionForThreadIdx[i] )
+    if( outputRegionSize[i] != outputRegionForThreadSize[i] )
       {
       splitAxis = i;
       }
     }
 
   // compute the number of pixels before that threads
-  SizeType outputRegionSize = output->GetRequestedRegion().GetSize();
   outputRegionSize[splitAxis] = outputRegionForThreadIdx[splitAxis] - outputRegionIdx[splitAxis];
   long firstLineIdForThread = RegionType( outputRegionIdx, outputRegionSize ).GetNumberOfPixels() / xsizeForThread;
   long lineId = firstLineIdForThread;
@@ -327,7 +328,6 @@ BinaryImageToLabelMapFilter< TInputImage, TOutputImage >
   long xsize = output->GetRequestedRegion().GetSize()[0];
   long linecount = pixelcount/xsize;
   unsigned long int totalLabs = CreateConsecutive();
-  m_ObjectCount = totalLabs;
   ProgressReporter progress(this, 0, linecount);
   // check for overflow exception here
   if( totalLabs > static_cast<unsigned long int>(
@@ -549,6 +549,7 @@ BinaryImageToLabelMapFilter< TInputImage, TOutputImage >
   m_Consecutive = UnionFindType(m_UnionFind.size());
   m_Consecutive[m_BackgroundValue] = m_BackgroundValue;
   unsigned long int CLab = 0;
+  unsigned long int count = 0;
   for (unsigned long int I = 1; I < m_UnionFind.size(); I++)
     {
     unsigned long int L = m_UnionFind[I];
@@ -560,9 +561,10 @@ BinaryImageToLabelMapFilter< TInputImage, TOutputImage >
         }
       m_Consecutive[L] = CLab;
       ++CLab;
+      ++count;
       }
     }
-  return(CLab);
+  return count;
 }
 
 template< class TInputImage, class TOutputImage >
@@ -605,7 +607,6 @@ BinaryImageToLabelMapFilter< TInputImage, TOutputImage >
   Superclass::PrintSelf(os,indent);
 
   os << indent << "FullyConnected: "  << m_FullyConnected << std::endl;
-  os << indent << "ObjectCount: "  << m_ObjectCount << std::endl;
   os << indent << "ForegroundValue: "  << static_cast<typename NumericTraits<InputPixelType>::PrintType>(m_ForegroundValue) << std::endl;
   os << indent << "BackgroundValue: "  << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
 }
