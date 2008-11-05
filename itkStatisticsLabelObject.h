@@ -788,7 +788,7 @@ protected:
     os << indent << "Kurtosis: " << m_Kurtosis << std::endl;
     os << indent << "Elongation: " << m_Elongation << std::endl;
     os << indent << "Histogram: ";
-    if( m_Histogram )
+    if( m_Histogram.IsNull() )
       {
       os << "NULL" << std::endl;
       }
