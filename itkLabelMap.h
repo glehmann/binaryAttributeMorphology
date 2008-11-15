@@ -301,6 +301,7 @@ public:
    * Return the label object container
    */
   const LabelObjectContainerType & GetLabelObjectContainer() const;
+  LabelObjectContainerType & GetLabelObjectContainer();
 
   /**
    * Return the numbner of label objects in the image

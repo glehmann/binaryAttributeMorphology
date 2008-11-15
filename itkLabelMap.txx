@@ -436,6 +436,15 @@ LabelMap<TLabelObject>
 
 
 template<class TLabelObject >
+typename LabelMap<TLabelObject>::LabelObjectContainerType &
+LabelMap<TLabelObject>
+::GetLabelObjectContainer()
+{
+  return m_LabelObjectContainer;
+}
+
+
+template<class TLabelObject >
 unsigned long
 LabelMap<TLabelObject>
 ::GetNumberOfLabelObjects() const
