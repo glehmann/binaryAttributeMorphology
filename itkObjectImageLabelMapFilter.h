@@ -34,7 +34,6 @@ namespace itk {
  *
  * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
- * \sa WatershedImageFilter, MorphologicalWatershedFromMarkersImageFilter, RelabelComponentImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template<class TInputImage, class TOutputImage=TInputImage,
@@ -124,20 +123,44 @@ public:
   itkGetObjectMacro( OutputFilter, OutputFilterType );
 
 
-  itkSetMacro(ConstrainPaddingToImage, bool);
-  itkGetMacro(ConstrainPaddingToImage, bool);
-  itkBooleanMacro(ConstrainPaddingToImage);
-
-  itkSetMacro(BinaryInternalOutput, bool);
-  itkGetMacro(BinaryInternalOutput, bool);
-  itkBooleanMacro(BinaryInternalOutput);
-
+  /** If KeepLabels is set to true, the filter will do its best to reuse the labels
+   * of the input objects in the output ones. However, this is possible only if the
+   * internal pipeline produce a single object - the other labels will be taken as
+   * they come.
+   * If KeepLabels is false, no care is made of the input labels, and a new label is produced
+   * for all the objects using LabelMap::PushLabelObject().
+   */
   itkSetMacro(KeepLabels, bool);
   itkGetMacro(KeepLabels, bool);
   itkBooleanMacro(KeepLabels);
 
+  /** If PadSize is not zero, the image produce for each object will be padded */
   itkSetMacro(PadSize, SizeType);
   itkGetMacro(PadSize, SizeType);
+
+  /** Padding by PadSize will be constrained to the input image region if
+   * ConstrainPaddingToImage is true, and won't be constrained if it is set to false.
+   * Default value is true.
+   */
+  itkSetMacro(ConstrainPaddingToImage, bool);
+  itkGetMacro(ConstrainPaddingToImage, bool);
+  itkBooleanMacro(ConstrainPaddingToImage);
+
+  /** Set/Get whether the internal image produced by OutputFilter should be interpreted
+   * as a binary image in which the filter have to search for connected components. If
+   * set to false, the filter consider the image as a label image.
+   * Default is false.
+   */
+  itkSetMacro(BinaryInternalOutput, bool);
+  itkGetMacro(BinaryInternalOutput, bool);
+  itkBooleanMacro(BinaryInternalOutput);
+
+  /** The foreground value used internally to represent the object in the image passed to
+   * InputFilter, and to read the data produced by OutputFilter, if BinaryInternalOutput
+   * is true
+   */
+  itkSetMacro(InternalForegroundValue, InternalOutputPixelType);
+  itkGetMacro(InternalForegroundValue, InternalOutputPixelType);
 
 protected:
   ObjectImageLabelMapFilter();
@@ -155,8 +178,6 @@ private:
   SizeType m_PadSize;
   bool     m_BinaryInternalOutput;
 
-  // we'll do our best to reuse the label of the input object in the output one. However, this is
-  // possible only if the internal pipeline produce a single 
   bool     m_KeepLabels;
   
   InternalOutputPixelType m_InternalForegroundValue;

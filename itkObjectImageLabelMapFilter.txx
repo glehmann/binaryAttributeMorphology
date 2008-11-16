@@ -42,7 +42,7 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
 {
   m_ConstrainPaddingToImage = true;
   m_PadSize.Fill(0);
-  m_BinaryInternalOutput = true;
+  m_BinaryInternalOutput = false;
   m_KeepLabels = true;
   m_InternalForegroundValue = itk::NumericTraits< InternalOutputPixelType >::max();
 
@@ -51,7 +51,7 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
   
   
   m_Select = SelectType::New();
-  // be sure to not use the label objects internally
+  // be sure to *not* use the label objects internally
   m_Select->SetInPlace( false );
   m_Select->SetNumberOfThreads( 1 );
 
@@ -100,8 +100,6 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
     {
     this->Modified();
     m_InputFilter = filter;
-    // adapt the number of inputs and outputs
-    this->SetNumberOfRequiredInputs( filter->GetNumberOfValidRequiredInputs() );
     }
 }
 
@@ -115,8 +113,6 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
     {
     this->Modified();
     m_OutputFilter = filter;
-    // adapt the number of inputs and outputs
-    this->SetNumberOfRequiredOutputs( filter->GetNumberOfOutputs() );
     }
 }
 
@@ -129,6 +125,7 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
 
   this->AllocateOutputs();
   LabelMapType * output = this->GetOutput();
+  // preserve the background value
   output->SetBackgroundValue( this->GetInput()->GetBackgroundValue() );
   output->ClearLabels();
     
@@ -138,7 +135,9 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
   // set the input image of the first filter of our internal pipeline
   m_Select->SetInput( this->GetInput() );
   
-  // configure the pipeline to produce a constrained border or not
+  // configure the pipeline to produce a constrained border or not.
+  // auto crop filter "CropBorder" feature constrain the padding to the input image,
+  // and the pad filter don't constrain it, so use one or the other
   if( m_ConstrainPaddingToImage )
     {
     m_Crop->SetCropBorder( m_PadSize );
@@ -156,11 +155,13 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
     
   // plug the pipeline provided by the user and our internal one
   m_InputFilter->SetInput( m_LM2BI->GetOutput() );
+  // set the input to both kind of filters in charge of creating the label object
+  // so we don't have to implement a condition
   m_LI2LM->SetInput( m_OutputFilter->GetOutput() );
   m_BI2LM->SetInput( m_OutputFilter->GetOutput() );
 
-  m_BI2LM->SetForegroundValue( m_InternalForegroundValue );
   m_LM2BI->SetForegroundValue( m_InternalForegroundValue );
+  m_BI2LM->SetForegroundValue( m_InternalForegroundValue );
 
   // initialize the progress reporter
   // TODO: really report the progress!
@@ -173,7 +174,8 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
     {
     // select our object
     m_Select->SetLabel( loIterator->first );
-    // TODO: remove the next line - it shouldn't be required
+    // TODO: remove the next line - it shouldn't be required. 
+    // It seems to be a bug in the autocrop filter :-(
     m_Crop->Modified();
 
     // to store the label objects
@@ -190,11 +192,16 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
       m_LI2LM->UpdateLargestPossibleRegion();
       labelMap = m_LI2LM->GetOutput();
       }
-    std::cout << "label: " << loIterator->first + 0.0 << "  " << loIterator->second->GetLabel() + 0.0 << std::endl;
+    // std::cout << "label: " << loIterator->first + 0.0 << "  " << loIterator->second->GetLabel() + 0.0 << std::endl;
     
-    // stole the label objects from the last filter of the pipeline
+    // stole the label objects from the last filter of the pipeline, to put them in the output
+    // label map of the current filter
     if( m_KeepLabels )
       {
+      // try to keep the current label. That's easy if a single object is produced.
+      // If more than one is produced, it is pushed in the label map without trying
+      // to get a specific label. If a label is already there, it means that a previous
+      // object has stolen the label, so the label of the thief must be changed.
       typename LabelMapType::LabelObjectContainerType & labelObjectContainer2 = labelMap->GetLabelObjectContainer();
       typename LabelMapType::LabelObjectContainerType::iterator it2 = labelObjectContainer2.begin();
       if( it2 != labelObjectContainer2.end() )
@@ -226,11 +233,12 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
         }
       else
         {
-        std::cout << "no result!" << std::endl;
+        // std::cout << "no result!" << std::endl;
         }
       }
     else
       {
+      // don't try to preserve the label - simply push the label objects as they come
       typename LabelMapType::LabelObjectContainerType & labelObjectContainer2 = labelMap->GetLabelObjectContainer();
       typename LabelMapType::LabelObjectContainerType::iterator it2 = labelObjectContainer2.begin();
       while( it2 != labelObjectContainer2.end() )
@@ -244,9 +252,6 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
     loIterator++;
     
     }
-output->PrintLabelObjects();
-std::cout << "nb: " << output->GetNumberOfLabelObjects() << std::endl;
-
 }
 
 
@@ -256,6 +261,16 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
 ::PrintSelf(std::ostream &os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
+  os << indent << "ConstrainPaddingToImage: " << m_ConstrainPaddingToImage << std::endl;
+  os << indent << "PadSize: " << m_PadSize << std::endl;
+  os << indent << "BinaryInternalOutput: " << m_BinaryInternalOutput << std::endl;
+  os << indent << "KeepLabels: " << m_KeepLabels << std::endl;
+  os << indent << "InternalForegroundValue: " << m_InternalForegroundValue << std::endl;
+  os << indent << "InputFilter: " << this->m_InputFilter->GetNameOfClass() 
+     << " " << this->m_InputFilter.GetPointer() << std::endl;
+  os << indent << "OutputFilter: " << this->m_OutputFilter->GetNameOfClass() 
+     << " " << this->m_OutputFilter.GetPointer() << std::endl;
 
 }
   
