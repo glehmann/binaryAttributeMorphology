@@ -32,7 +32,7 @@ template< class TLabelObject >
 class ITK_EXPORT LabelLabelObjectAccessor
 {
 public:
-  typedef TLabelObject LabelObjectType;
+  typedef TLabelObject                        LabelObjectType;
   typedef typename LabelObjectType::LabelType AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
@@ -45,8 +45,8 @@ template< class TLabelObject >
 class ITK_EXPORT NumberOfLinesLabelObjectAccessor
 {
 public:
-  typedef TLabelObject LabelObjectType;
-  typedef int AttributeValueType;
+  typedef TLabelObject     LabelObjectType;
+  typedef int              AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
@@ -58,28 +58,28 @@ template< class TLabelObject, class TAttributeAccessor >
 class LabelObjectComparator
 {
 public:
-  typedef TLabelObject LabelObjectType;
+  typedef TLabelObject       LabelObjectType;
   typedef TAttributeAccessor AttributeAccessorType;
   bool operator()( const LabelObjectType * a, const LabelObjectType * b )
     {
-    return accessor( a ) > accessor( b );
+    return m_Accessor( a ) > m_Accessor( b );
     }
 private:
-  AttributeAccessorType accessor;
+  AttributeAccessorType m_Accessor;
 };
 
 template< class TLabelObject, class TAttributeAccessor >
 class LabelObjectReverseComparator
 {
 public:
-  typedef TLabelObject LabelObjectType;
+  typedef TLabelObject       LabelObjectType;
   typedef TAttributeAccessor AttributeAccessorType;
   bool operator()( const LabelObjectType * a, const LabelObjectType * b )
     {
-    return accessor( a ) < accessor( b );
+    return m_Accessor( a ) < m_Accessor( b );
     }
 private:
-  AttributeAccessorType accessor;
+  AttributeAccessorType m_Accessor;
 };
 
 }
@@ -100,7 +100,7 @@ private:
  *
  * All the subclasses of LabelObject have to reinplement the CopyDataFrom() method.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa LabelMapFilter, AttributeLabelObject
  * \ingroup DataRepresentation 
@@ -110,11 +110,11 @@ class ITK_EXPORT LabelObject : public LightObject
 {
 public:
   /** Standard class typedefs */
-  typedef LabelObject         Self;
-  typedef LightObject         Superclass;
-  typedef SmartPointer<Self>  Pointer;
+  typedef LabelObject               Self;
+  typedef LightObject               Superclass;
+  typedef SmartPointer<Self>        Pointer;
   typedef SmartPointer<const Self>  ConstPointer;
-  typedef WeakPointer<const Self>  ConstWeakPointer;
+  typedef WeakPointer<const Self>   ConstWeakPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -293,7 +293,7 @@ private:
   void operator=(const Self&); //purposely not implemented
 
   LineContainerType m_LineContainer;
-  LabelType m_Label;
+  LabelType         m_Label;
 };
 
 } // end namespace itk

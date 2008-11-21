@@ -17,8 +17,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef _itkRegionFromReferenceLabelMapFilter_txx
-#define _itkRegionFromReferenceLabelMapFilter_txx
+#ifndef __itkRegionFromReferenceLabelMapFilter_txx
+#define __itkRegionFromReferenceLabelMapFilter_txx
 #include "itkRegionFromReferenceLabelMapFilter.h"
 
 

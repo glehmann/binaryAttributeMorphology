@@ -38,7 +38,6 @@ LabelPerimeterEstimationCalculator<TInputImage>
 }
 
 
-
 template<class TInputImage>
 void
 LabelPerimeterEstimationCalculator<TInputImage>
@@ -123,8 +122,8 @@ LabelPerimeterEstimationCalculator<TInputImage>
       labelSet.insert( nIt.Get() );
       }
 
-    for( typename LabelSetType::const_iterator it=labelSet.begin();
-      it!=labelSet.end();
+    for( typename LabelSetType::const_iterator it = labelSet.begin();
+      it != labelSet.end();
       it++ )
       {
 
@@ -203,13 +202,13 @@ LabelPerimeterEstimationCalculator<TInputImage>
 
   // and use those contributions to found the perimeter
   m_Perimeters.clear();
-  for( typename LabelMapType::const_iterator it=confCount.begin();
-    it!=confCount.end();
+  for( typename LabelMapType::const_iterator it = confCount.begin();
+    it != confCount.end();
     it++ )
     {
     m_Perimeters[ it->first ] = 0;
-    for( typename MapType::const_iterator it2=it->second.begin();
-      it2!=it->second.end();
+    for( typename MapType::const_iterator it2 = it->second.begin();
+      it2 != it->second.end();
       it2++ )
       {
       m_Perimeters[ it->first ] += contributions[ it2->first ] * it2->second;
@@ -219,7 +218,6 @@ LabelPerimeterEstimationCalculator<TInputImage>
     }
 
 }
-
 
 
 template<class TInputImage>

@@ -34,7 +34,7 @@ namespace itk {
  * ShapeRelabelImageFilter relabel a labeled image according to the shape attributes of
  * the objects. The label produced are always consecutives.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa ShapeLabelObject, RelabelComponentImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
@@ -45,15 +45,14 @@ class ITK_EXPORT ShapeRelabelImageFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef ShapeRelabelImageFilter Self;
-  typedef ImageToImageFilter<TInputImage, TInputImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef ShapeRelabelImageFilter                      Self;
+  typedef ImageToImageFilter<TInputImage, TInputImage> Superclass;
+  typedef SmartPointer<Self>                           Pointer;
+  typedef SmartPointer<const Self>                     ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
-  typedef TInputImage OutputImageType;
+  typedef TInputImage                              InputImageType;
+  typedef TInputImage                              OutputImageType;
   typedef typename InputImageType::Pointer         InputImagePointer;
   typedef typename InputImageType::ConstPointer    InputImageConstPointer;
   typedef typename InputImageType::RegionType      InputImageRegionType;
@@ -71,12 +70,12 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int,
                       TInputImage::ImageDimension);
 
-  typedef ShapeLabelObject<InputImagePixelType, ImageDimension> LabelObjectType;
-  typedef typename itk::LabelMap< LabelObjectType > LabelMapType;
-  typedef typename itk::LabelImageToLabelMapFilter< InputImageType, LabelMapType > LabelizerType;
-  typedef typename itk::ShapeLabelMapFilter< LabelMapType > LabelObjectValuatorType;
-  typedef typename LabelObjectType::AttributeType AttributeType;
-  typedef typename itk::ShapeRelabelLabelMapFilter< LabelMapType > RelabelType;
+  typedef ShapeLabelObject<InputImagePixelType, ImageDimension>                     LabelObjectType;
+  typedef typename itk::LabelMap< LabelObjectType >                                 LabelMapType;
+  typedef typename itk::LabelImageToLabelMapFilter< InputImageType, LabelMapType >  LabelizerType;
+  typedef typename itk::ShapeLabelMapFilter< LabelMapType >                         LabelObjectValuatorType;
+  typedef typename LabelObjectType::AttributeType                                   AttributeType;
+  typedef typename itk::ShapeRelabelLabelMapFilter< LabelMapType >                  RelabelType;
   typedef typename itk::LabelMapToLabelImageFilter< LabelMapType, OutputImageType > BinarizerType;
 
   /** Standard New method. */
@@ -132,7 +131,7 @@ protected:
   /** ShapeRelabelImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion() ;
+  void GenerateInputRequestedRegion();
 
   /** ShapeRelabelImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
@@ -146,9 +145,9 @@ private:
   void operator=(const Self&); //purposely not implemented
 
   OutputImagePixelType m_BackgroundValue;
-  bool m_ReverseOrdering;
-  AttributeType m_Attribute;
-} ; // end of class
+  bool                 m_ReverseOrdering;
+  AttributeType        m_Attribute;
+}; // end of class
 
 } // end namespace itk
   
@@ -157,5 +156,3 @@ private:
 #endif
 
 #endif
-
-

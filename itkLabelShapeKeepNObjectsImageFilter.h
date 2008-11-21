@@ -35,7 +35,7 @@ namespace itk {
  * with the highest (or lowest) attribute value. The attributes are the ones
  * of the ShapeLabelObject.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa ShapeLabelObject, BinaryShapeKeepNObjectsImageFilter, LabelStatisticsKeepNObjectsImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
@@ -46,15 +46,14 @@ class ITK_EXPORT LabelShapeKeepNObjectsImageFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef LabelShapeKeepNObjectsImageFilter Self;
-  typedef ImageToImageFilter<TInputImage, TInputImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef LabelShapeKeepNObjectsImageFilter            Self;
+  typedef ImageToImageFilter<TInputImage, TInputImage> Superclass;
+  typedef SmartPointer<Self>                           Pointer;
+  typedef SmartPointer<const Self>                     ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
-  typedef TInputImage OutputImageType;
+  typedef TInputImage                              InputImageType;
+  typedef TInputImage                              OutputImageType;
   typedef typename InputImageType::Pointer         InputImagePointer;
   typedef typename InputImageType::ConstPointer    InputImageConstPointer;
   typedef typename InputImageType::RegionType      InputImageRegionType;
@@ -72,12 +71,12 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int,
                       TInputImage::ImageDimension);
 
-  typedef ShapeLabelObject<InputImagePixelType, ImageDimension> LabelObjectType;
-  typedef typename itk::LabelMap< LabelObjectType > LabelMapType;
-  typedef typename itk::LabelImageToLabelMapFilter< InputImageType, LabelMapType > LabelizerType;
-  typedef typename itk::ShapeLabelMapFilter< LabelMapType > LabelObjectValuatorType;
-  typedef typename LabelObjectType::AttributeType AttributeType;
-  typedef typename itk::ShapeKeepNObjectsLabelMapFilter< LabelMapType > KeepNObjectsType;
+  typedef ShapeLabelObject<InputImagePixelType, ImageDimension>                     LabelObjectType;
+  typedef typename itk::LabelMap< LabelObjectType >                                 LabelMapType;
+  typedef typename itk::LabelImageToLabelMapFilter< InputImageType, LabelMapType >  LabelizerType;
+  typedef typename itk::ShapeLabelMapFilter< LabelMapType >                         LabelObjectValuatorType;
+  typedef typename LabelObjectType::AttributeType                                   AttributeType;
+  typedef typename itk::ShapeKeepNObjectsLabelMapFilter< LabelMapType >             KeepNObjectsType;
   typedef typename itk::LabelMapToLabelImageFilter< LabelMapType, OutputImageType > BinarizerType;
 
   /** Standard New method. */
@@ -140,7 +139,7 @@ protected:
   /** LabelShapeKeepNObjectsImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion() ;
+  void GenerateInputRequestedRegion();
 
   /** LabelShapeKeepNObjectsImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
@@ -154,10 +153,10 @@ private:
   void operator=(const Self&); //purposely not implemented
 
   OutputImagePixelType m_BackgroundValue;
-  unsigned long m_NumberOfObjects;
-  bool m_ReverseOrdering;
-  AttributeType m_Attribute;
-} ; // end of class
+  unsigned long        m_NumberOfObjects;
+  bool                 m_ReverseOrdering;
+  AttributeType        m_Attribute;
+}; // end of class
 
 } // end namespace itk
   
@@ -166,5 +165,3 @@ private:
 #endif
 
 #endif
-
-

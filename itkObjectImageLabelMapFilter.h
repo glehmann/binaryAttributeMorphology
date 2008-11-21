@@ -32,7 +32,7 @@ namespace itk {
  * \brief TODO
  *
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
@@ -48,15 +48,14 @@ class ITK_EXPORT ObjectImageLabelMapFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef ObjectImageLabelMapFilter Self;
-  typedef LabelMapFilter<TInputImage, TOutputImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef ObjectImageLabelMapFilter                 Self;
+  typedef LabelMapFilter<TInputImage, TOutputImage> Superclass;
+  typedef SmartPointer<Self>                        Pointer;
+  typedef SmartPointer<const Self>                  ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
-  typedef TOutputImage OutputImageType;
+  typedef TInputImage                              InputImageType;
+  typedef TOutputImage                             OutputImageType;
   typedef typename InputImageType::Pointer         InputImagePointer;
   typedef typename InputImageType::ConstPointer    InputImageConstPointer;
   typedef typename InputImageType::RegionType      InputImageRegionType;
@@ -91,11 +90,11 @@ public:
                       TOutputImage::ImageDimension);
 
   // filter types used internally
-  typedef itk::LabelSelectionLabelMapFilter< LabelMapType > SelectType;
-  typedef itk::AutoCropLabelMapFilter< LabelMapType > CropType;
-  typedef itk::PadLabelMapFilter< LabelMapType > PadType;
-  typedef itk::LabelMapToBinaryImageFilter< LabelMapType, InternalInputImageType> LM2BIType;
-  typedef itk::LabelImageToLabelMapFilter< InternalOutputImageType, LabelMapType> LI2LMType;
+  typedef itk::LabelSelectionLabelMapFilter< LabelMapType >                        SelectType;
+  typedef itk::AutoCropLabelMapFilter< LabelMapType >                              CropType;
+  typedef itk::PadLabelMapFilter< LabelMapType >                                   PadType;
+  typedef itk::LabelMapToBinaryImageFilter< LabelMapType, InternalInputImageType>  LM2BIType;
+  typedef itk::LabelImageToLabelMapFilter< InternalOutputImageType, LabelMapType>  LI2LMType;
   typedef itk::BinaryImageToLabelMapFilter< InternalOutputImageType, LabelMapType> BI2LMType;
 
   /** Standard New method. */
@@ -187,13 +186,13 @@ private:
   typename OutputFilterType::Pointer      m_OutputFilter;
 
   typename SelectType::Pointer m_Select;
-  typename CropType::Pointer m_Crop;
-  typename PadType::Pointer m_Pad;
-  typename LM2BIType::Pointer m_LM2BI;
-  typename LI2LMType::Pointer m_LI2LM;
-  typename BI2LMType::Pointer m_BI2LM;
+  typename CropType::Pointer   m_Crop;
+  typename PadType::Pointer    m_Pad;
+  typename LM2BIType::Pointer  m_LM2BI;
+  typename LI2LMType::Pointer  m_LI2LM;
+  typename BI2LMType::Pointer  m_BI2LM;
 
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -202,5 +201,3 @@ private:
 #endif
 
 #endif
-
-

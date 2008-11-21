@@ -34,7 +34,7 @@ namespace itk
  * the upper boundaries in a single call.
  * By default, the filter doesn't pad anything.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa CropLabelMapFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
@@ -44,10 +44,10 @@ class ITK_EXPORT PadLabelMapFilter : public ChangeRegionLabelMapFilter<TInputIma
 {
 public:
   /** Standard class typedefs. */
-  typedef PadLabelMapFilter  Self;
+  typedef PadLabelMapFilter                        Self;
   typedef ChangeRegionLabelMapFilter<TInputImage>  Superclass;
-  typedef SmartPointer<Self>  Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef SmartPointer<Self>                       Pointer;
+  typedef SmartPointer<const Self>                 ConstPointer;
   
   
   /** Run-time type information (and related methods). */
@@ -57,17 +57,17 @@ public:
   itkNewMacro(Self);  
 
   /** Superclass typedefs. */
-  typedef typename Superclass::OutputImageType OutputImageType;
-  typedef typename Superclass::OutputImagePointer OutputImagePointer;
+  typedef typename Superclass::OutputImageType       OutputImageType;
+  typedef typename Superclass::OutputImagePointer    OutputImagePointer;
   typedef typename Superclass::OutputImageRegionType OutputImageRegionType;
-  typedef typename Superclass::OutputImagePixelType OutputImagePixelType;
+  typedef typename Superclass::OutputImagePixelType  OutputImagePixelType;
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
-  typedef typename InputImageType::Pointer        InputImagePointer;
-  typedef typename InputImageType::ConstPointer   InputImageConstPointer;
-  typedef typename InputImageType::RegionType     InputImageRegionType; 
-  typedef typename InputImageType::PixelType      InputImagePixelType;
+  typedef TInputImage                              InputImageType;
+  typedef typename InputImageType::Pointer         InputImagePointer;
+  typedef typename InputImageType::ConstPointer    InputImageConstPointer;
+  typedef typename InputImageType::RegionType      InputImageRegionType; 
+  typedef typename InputImageType::PixelType       InputImagePixelType;
   typedef typename InputImageType::LabelObjectType LabelObjectType;
 
   typedef typename InputImageType::PixelType       PixelType;
@@ -97,13 +97,12 @@ public:
     this->SetLowerBoundaryPadSize( size );
     }
 
-
- protected:
+protected:
   PadLabelMapFilter()
-   {
+    {
     m_UpperBoundaryPadSize.Fill(0);
     m_LowerBoundaryPadSize.Fill(0);
-   };
+    }
   ~PadLabelMapFilter() {};
 
   virtual void GenerateOutputInformation();

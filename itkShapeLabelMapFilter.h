@@ -37,7 +37,7 @@ namespace itk {
  * design, to let the subclasses of ShapeLabelMapFilter use the
  * pipeline desing to specify a really required input.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
@@ -47,24 +47,23 @@ class ITK_EXPORT ShapeLabelMapFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef ShapeLabelMapFilter Self;
-  typedef InPlaceLabelMapFilter<TImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef ShapeLabelMapFilter           Self;
+  typedef InPlaceLabelMapFilter<TImage> Superclass;
+  typedef SmartPointer<Self>            Pointer;
+  typedef SmartPointer<const Self>      ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TImage ImageType;
-  typedef typename ImageType::Pointer         ImagePointer;
-  typedef typename ImageType::ConstPointer    ImageConstPointer;
-  typedef typename ImageType::PixelType       PixelType;
-  typedef typename ImageType::IndexType       IndexType;
-  typedef typename ImageType::SizeType        SizeType;
-  typedef typename ImageType::LabelObjectType LabelObjectType;
+  typedef TImage                               ImageType;
+  typedef typename ImageType::Pointer          ImagePointer;
+  typedef typename ImageType::ConstPointer     ImageConstPointer;
+  typedef typename ImageType::PixelType        PixelType;
+  typedef typename ImageType::IndexType        IndexType;
+  typedef typename ImageType::SizeType         SizeType;
+  typedef typename ImageType::LabelObjectType  LabelObjectType;
   typedef typename LabelObjectType::MatrixType MatrixType;
   typedef typename LabelObjectType::VectorType VectorType;
   
-  typedef TLabelImage LabelImageType;
+  typedef TLabelImage                              LabelImageType;
   typedef typename LabelImageType::Pointer         LabelImagePointer;
   typedef typename LabelImageType::ConstPointer    LabelImageConstPointer;
   typedef typename LabelImageType::PixelType       LabelPixelType;
@@ -112,9 +111,9 @@ public:
 
   /** Set the label image */
   void SetLabelImage( const TLabelImage *input )
-     {
-     m_LabelImage = input;
-     }
+    {
+    m_LabelImage = input;
+    }
 
   /** */
   static long factorial( long n );
@@ -151,15 +150,15 @@ private:
   ShapeLabelMapFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-  bool m_ComputeFeretDiameter;
+  bool                                      m_ComputeFeretDiameter;
 
-  bool m_ComputePerimeter;
+  bool                                      m_ComputePerimeter;
 
-  LabelImageConstPointer m_LabelImage;
+  LabelImageConstPointer                    m_LabelImage;
 
   typename PerimeterCalculatorType::Pointer m_PerimeterCalculator;
 
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -168,5 +167,3 @@ private:
 #endif
 
 #endif
-
-

@@ -31,7 +31,7 @@ template< class TLabelObject >
 class ITK_EXPORT SizeLabelObjectAccessor
 {
 public:
-  typedef TLabelObject LabelObjectType;
+  typedef TLabelObject  LabelObjectType;
   typedef unsigned long AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
@@ -45,7 +45,7 @@ class ITK_EXPORT PhysicalSizeLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeValueType;
+  typedef double       AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
@@ -58,7 +58,7 @@ class ITK_EXPORT RegionElongationLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeValueType;
+  typedef double       AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
@@ -71,7 +71,7 @@ class ITK_EXPORT SizeRegionRatioLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeValueType;
+  typedef double       AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
@@ -83,7 +83,7 @@ template< class TLabelObject >
 class ITK_EXPORT SizeOnBorderLabelObjectAccessor
 {
 public:
-  typedef TLabelObject LabelObjectType;
+  typedef TLabelObject  LabelObjectType;
   typedef unsigned long AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
@@ -97,7 +97,7 @@ class ITK_EXPORT PhysicalSizeOnBorderLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeValueType;
+  typedef double       AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
@@ -109,7 +109,7 @@ template< class TLabelObject >
 class ITK_EXPORT CentroidLabelObjectAccessor
 {
 public:
-  typedef TLabelObject LabelObjectType;
+  typedef TLabelObject                           LabelObjectType;
   typedef typename LabelObjectType::CentroidType AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
@@ -123,7 +123,7 @@ class ITK_EXPORT FeretDiameterLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeValueType;
+  typedef double       AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
@@ -135,7 +135,7 @@ template< class TLabelObject >
 class ITK_EXPORT BinaryPrincipalMomentsLabelObjectAccessor
 {
 public:
-  typedef TLabelObject LabelObjectType;
+  typedef TLabelObject                         LabelObjectType;
   typedef typename LabelObjectType::VectorType AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
@@ -148,7 +148,7 @@ template< class TLabelObject >
 class ITK_EXPORT BinaryPrincipalAxesLabelObjectAccessor
 {
 public:
-  typedef TLabelObject LabelObjectType;
+  typedef TLabelObject                         LabelObjectType;
   typedef typename LabelObjectType::MatrixType AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
@@ -162,7 +162,7 @@ class ITK_EXPORT BinaryElongationLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeValueType;
+  typedef double       AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
@@ -175,7 +175,7 @@ class ITK_EXPORT PerimeterLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeValueType;
+  typedef double       AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
@@ -188,7 +188,7 @@ class ITK_EXPORT RoundnessLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeValueType;
+  typedef double       AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
@@ -201,7 +201,7 @@ class ITK_EXPORT EquivalentRadiusLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeValueType;
+  typedef double       AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
@@ -214,7 +214,7 @@ class ITK_EXPORT EquivalentPerimeterLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeValueType;
+  typedef double       AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
@@ -226,7 +226,7 @@ template< class TLabelObject >
 class ITK_EXPORT EquivalentEllipsoidSizeLabelObjectAccessor
 {
 public:
-  typedef TLabelObject LabelObjectType;
+  typedef TLabelObject                         LabelObjectType;
   typedef typename LabelObjectType::VectorType AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
@@ -243,7 +243,7 @@ public:
  *
  * ShapeLabelObject stores  the common attributes related to the shape of the object
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \ingroup DataRepresentation 
  */
@@ -252,11 +252,11 @@ class ITK_EXPORT ShapeLabelObject : public LabelObject< TLabel, VImageDimension 
 {
 public:
   /** Standard class typedefs */
-  typedef ShapeLabelObject         Self;
+  typedef ShapeLabelObject                       Self;
   typedef LabelObject< TLabel, VImageDimension > Superclass;
-  typedef SmartPointer<Self>  Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
-  typedef WeakPointer<const Self>  ConstWeakPointer;
+  typedef SmartPointer<Self>                     Pointer;
+  typedef SmartPointer<const Self>               ConstPointer;
+  typedef WeakPointer<const Self>                ConstWeakPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -701,7 +701,6 @@ public:
     }
 
 
-
   virtual void CopyDataFrom( const Self * src )
     {
     Superclass::CopyDataFrom( src );
@@ -775,23 +774,23 @@ private:
   ShapeLabelObject(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-  RegionType m_Region;
+  RegionType    m_Region;
   unsigned long m_Size;
-  double m_PhysicalSize;
-  CentroidType m_Centroid;
-  double m_RegionElongation;
-  double m_SizeRegionRatio;
+  double        m_PhysicalSize;
+  CentroidType  m_Centroid;
+  double        m_RegionElongation;
+  double        m_SizeRegionRatio;
   unsigned long m_SizeOnBorder;
-  double m_PhysicalSizeOnBorder;
-  double m_FeretDiameter;
-  VectorType m_BinaryPrincipalMoments;
-  MatrixType m_BinaryPrincipalAxes;
-  double m_BinaryElongation;
-  double m_Perimeter;
-  double m_Roundness;
-  double m_EquivalentRadius;
-  double m_EquivalentPerimeter;
-  VectorType m_EquivalentEllipsoidSize;
+  double        m_PhysicalSizeOnBorder;
+  double        m_FeretDiameter;
+  VectorType    m_BinaryPrincipalMoments;
+  MatrixType    m_BinaryPrincipalAxes;
+  double        m_BinaryElongation;
+  double        m_Perimeter;
+  double        m_Roundness;
+  double        m_EquivalentRadius;
+  double        m_EquivalentPerimeter;
+  VectorType    m_EquivalentEllipsoidSize;
 
 };
 

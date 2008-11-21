@@ -27,7 +27,7 @@ namespace itk {
  * StatisticsRelabelLabelMapFilter relabel a label collection image according to the statistics attributes of
  * the objects. The label produced are always consecutives.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa StatisticsLabelObject, RelabelComponentImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
@@ -38,14 +38,13 @@ class ITK_EXPORT StatisticsRelabelLabelMapFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef StatisticsRelabelLabelMapFilter Self;
-  typedef ShapeRelabelLabelMapFilter<TImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef StatisticsRelabelLabelMapFilter    Self;
+  typedef ShapeRelabelLabelMapFilter<TImage> Superclass;
+  typedef SmartPointer<Self>                 Pointer;
+  typedef SmartPointer<const Self>           ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TImage ImageType;
+  typedef TImage                              ImageType;
   typedef typename ImageType::Pointer         ImagePointer;
   typedef typename ImageType::ConstPointer    ImageConstPointer;
   typedef typename ImageType::PixelType       PixelType;
@@ -89,7 +88,7 @@ private:
   StatisticsRelabelLabelMapFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -98,5 +97,3 @@ private:
 #endif
 
 #endif
-
-

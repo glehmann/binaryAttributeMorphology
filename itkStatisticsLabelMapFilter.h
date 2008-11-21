@@ -26,7 +26,7 @@ namespace itk {
  * StatisticsCollectionImageFilter can be used to set the attributes values
  * of the StatisticsLabelObject in a LabelMap.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
@@ -36,14 +36,13 @@ class ITK_EXPORT StatisticsLabelMapFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef StatisticsLabelMapFilter Self;
-  typedef ShapeLabelMapFilter<TImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef StatisticsLabelMapFilter    Self;
+  typedef ShapeLabelMapFilter<TImage> Superclass;
+  typedef SmartPointer<Self>          Pointer;
+  typedef SmartPointer<const Self>    ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TImage ImageType;
+  typedef TImage                               ImageType;
   typedef typename ImageType::Pointer          ImagePointer;
   typedef typename ImageType::ConstPointer     ImageConstPointer;
   typedef typename ImageType::PixelType        PixelType;
@@ -53,7 +52,7 @@ public:
   typedef typename LabelObjectType::MatrixType MatrixType;
   typedef typename LabelObjectType::VectorType VectorType;
   
-  typedef TFeatureImage FeatureImageType;
+  typedef TFeatureImage                              FeatureImageType;
   typedef typename FeatureImageType::Pointer         FeatureImagePointer;
   typedef typename FeatureImageType::ConstPointer    FeatureImageConstPointer;
   typedef typename FeatureImageType::PixelType       FeatureImagePixelType;
@@ -82,10 +81,10 @@ public:
 
    /** Set the feature image */
   void SetFeatureImage(TFeatureImage *input)
-     {
-     // Process object is not const-correct so the const casting is required.
-     this->SetNthInput( 1, const_cast<TFeatureImage *>(input) );
-     }
+    {
+    // Process object is not const-correct so the const casting is required.
+    this->SetNthInput( 1, const_cast<TFeatureImage *>(input) );
+    }
 
   /** Get the feature image */
   FeatureImageType * GetFeatureImage()
@@ -95,15 +94,15 @@ public:
 
    /** Set the input image */
   void SetInput1(TImage *input)
-     {
-     this->SetInput( input );
-     }
+    {
+    this->SetInput( input );
+    }
 
-   /** Set the feature image */
+  /** Set the feature image */
   void SetInput2(TFeatureImage *input)
-     {
-     this->SetFeatureImage( input );
-     }
+    {
+    this->SetFeatureImage( input );
+    }
 
   /**
    * Set/Get whether the histogram should be attached to the label object or not.
@@ -143,7 +142,7 @@ private:
   unsigned int          m_NumberOfBins;
   bool                  m_ComputeHistogram;
 
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -152,5 +151,3 @@ private:
 #endif
 
 #endif
-
-

@@ -27,7 +27,7 @@ namespace itk {
  * with the highest (or lowest) attribute value. The attributes are the ones
  * of the ShapeLabelObject.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa ShapeLabelObject, BinaryShapeKeepNObjectsImageFilter, LabelStatisticsKeepNObjectsImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
@@ -39,13 +39,12 @@ class ITK_EXPORT ShapeKeepNObjectsLabelMapFilter :
 public:
   /** Standard class typedefs. */
   typedef ShapeKeepNObjectsLabelMapFilter Self;
-  typedef InPlaceLabelMapFilter<TImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef InPlaceLabelMapFilter<TImage>   Superclass;
+  typedef SmartPointer<Self>              Pointer;
+  typedef SmartPointer<const Self>        ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TImage ImageType;
+  typedef TImage                              ImageType;
   typedef typename ImageType::Pointer         ImagePointer;
   typedef typename ImageType::ConstPointer    ImageConstPointer;
   typedef typename ImageType::PixelType       PixelType;
@@ -113,7 +112,7 @@ protected:
   
   void PrintSelf(std::ostream& os, Indent indent) const;
 
-  bool m_ReverseOrdering;
+  bool          m_ReverseOrdering;
   unsigned long m_NumberOfObjects;
   AttributeType m_Attribute;
 
@@ -121,7 +120,7 @@ private:
   ShapeKeepNObjectsLabelMapFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -130,5 +129,3 @@ private:
 #endif
 
 #endif
-
-

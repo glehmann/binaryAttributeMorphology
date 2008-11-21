@@ -28,7 +28,7 @@ namespace itk {
 /** \class LabelMapToRGBImageFilter
  * \brief Convert a LabelMap to a colored image
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa LabelMapToBinaryImageFilter, LabelMapMaskImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
@@ -39,15 +39,14 @@ class ITK_EXPORT LabelMapToRGBImageFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef LabelMapToRGBImageFilter Self;
-  typedef LabelMapFilter<TInputImage, TOutputImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef LabelMapToRGBImageFilter                   Self;
+  typedef LabelMapFilter<TInputImage, TOutputImage>  Superclass;
+  typedef SmartPointer<Self>                         Pointer;
+  typedef SmartPointer<const Self>                   ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
-  typedef TOutputImage OutputImageType;
+  typedef TInputImage                              InputImageType;
+  typedef TOutputImage                             OutputImageType;
   typedef typename InputImageType::Pointer         InputImagePointer;
   typedef typename InputImageType::ConstPointer    InputImageConstPointer;
   typedef typename InputImageType::RegionType      InputImageRegionType;
@@ -87,7 +86,7 @@ private:
   LabelMapToRGBImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -96,5 +95,3 @@ private:
 #endif
 
 #endif
-
-

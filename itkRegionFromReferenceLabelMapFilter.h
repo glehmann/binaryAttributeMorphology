@@ -34,7 +34,7 @@ namespace itk
  * If the output can't contain some lines of the objects, they are truncated, or remove.
  * All the objects fully outside the output region are removed.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
@@ -43,10 +43,10 @@ class ITK_EXPORT RegionFromReferenceLabelMapFilter : public ChangeRegionLabelMap
 {
 public:
   /** Standard class typedefs. */
-  typedef RegionFromReferenceLabelMapFilter  Self;
+  typedef RegionFromReferenceLabelMapFilter        Self;
   typedef ChangeRegionLabelMapFilter<TInputImage>  Superclass;
-  typedef SmartPointer<Self>  Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef SmartPointer<Self>                       Pointer;
+  typedef SmartPointer<const Self>                 ConstPointer;
   
   
   /** Run-time type information (and related methods). */
@@ -56,17 +56,17 @@ public:
   itkNewMacro(Self);  
 
   /** Superclass typedefs. */
-  typedef typename Superclass::OutputImageType OutputImageType;
-  typedef typename Superclass::OutputImagePointer OutputImagePointer;
+  typedef typename Superclass::OutputImageType       OutputImageType;
+  typedef typename Superclass::OutputImagePointer    OutputImagePointer;
   typedef typename Superclass::OutputImageRegionType OutputImageRegionType;
-  typedef typename Superclass::OutputImagePixelType OutputImagePixelType;
+  typedef typename Superclass::OutputImagePixelType  OutputImagePixelType;
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
-  typedef typename InputImageType::Pointer        InputImagePointer;
-  typedef typename InputImageType::ConstPointer   InputImageConstPointer;
-  typedef typename InputImageType::RegionType     InputImageRegionType; 
-  typedef typename InputImageType::PixelType      InputImagePixelType;
+  typedef TInputImage                              InputImageType;
+  typedef typename InputImageType::Pointer         InputImagePointer;
+  typedef typename InputImageType::ConstPointer    InputImageConstPointer;
+  typedef typename InputImageType::RegionType      InputImageRegionType; 
+  typedef typename InputImageType::PixelType       InputImagePixelType;
   typedef typename InputImageType::LabelObjectType LabelObjectType;
 
   typedef typename InputImageType::PixelType       PixelType;
@@ -98,25 +98,24 @@ public:
     }
   const ReferenceImageType * GetReferenceImage() const;
 
-   /** Set the input image */
+  /** Set the input image */
   void SetInput1(const TInputImage *input)
-     {
-     this->SetInput( input );
-     }
+    {
+    this->SetInput( input );
+    }
 
-   /** Set the reference image */
+  /** Set the reference image */
   void SetInput2(const ReferenceImageType *input)
-     {
-     this->SetReferenceImage( input );
-     }
+    {
+    this->SetReferenceImage( input );
+    }
 
 
-
- protected:
+protected:
   RegionFromReferenceLabelMapFilter()
-   {
-   this->SetNumberOfRequiredInputs(2);
-   };
+    {
+    this->SetNumberOfRequiredInputs(2);
+    }
   ~RegionFromReferenceLabelMapFilter() {};
 
   virtual void GenerateOutputInformation();

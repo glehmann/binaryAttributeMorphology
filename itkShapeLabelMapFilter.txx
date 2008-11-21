@@ -447,7 +447,7 @@ ShapeLabelMapFilter<TImage, TLabelImage>
     }
 
 
-  // be sure tha the calculator has the perimeter estimation for that label.
+  // be sure that the calculator has the perimeter estimation for that label.
   // The calculator may not have the label if the object is only on a border.
   // It will occurre for sure when processing a 2D image with a 3D filter.
   if( m_ComputePerimeter && m_PerimeterCalculator->HasLabel( label ) )
@@ -456,10 +456,6 @@ ShapeLabelMapFilter<TImage, TLabelImage>
     labelObject->SetPerimeter( perimeter );
     labelObject->SetRoundness( equivalentPerimeter / perimeter );
     }
-
-//   std::cout << std::endl;
-//   labelObject->Print( std::cout );
-//   std::cout << std::endl;
 
 }
 
@@ -558,9 +554,6 @@ ShapeLabelMapFilter<TImage, TLabelImage>
 {
   return vcl_pow( volume * gammaN2p1( ImageDimension ) / vcl_pow( PI, ImageDimension / 2.0 ), 1.0 / ImageDimension );
 }
-
-
-
 
 }// end namespace itk
 #endif

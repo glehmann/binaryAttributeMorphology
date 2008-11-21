@@ -28,7 +28,7 @@ namespace itk {
  * LabelMapToAttributeImageFilter converts a LabelMap to an
  * Image where all the pixels get the attribute value of the label object they belong.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa LabelMapToBinaryImageFilter, LabelMapMaskImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
@@ -40,15 +40,14 @@ class ITK_EXPORT LabelMapToAttributeImageFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef LabelMapToAttributeImageFilter Self;
-  typedef ImageToImageFilter<TInputImage, TOutputImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef LabelMapToAttributeImageFilter                Self;
+  typedef ImageToImageFilter<TInputImage, TOutputImage> Superclass;
+  typedef SmartPointer<Self>                            Pointer;
+  typedef SmartPointer<const Self>                      ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
-  typedef TOutputImage OutputImageType;
+  typedef TInputImage                              InputImageType;
+  typedef TOutputImage                             OutputImageType;
   typedef typename InputImageType::Pointer         InputImagePointer;
   typedef typename InputImageType::ConstPointer    InputImageConstPointer;
   typedef typename InputImageType::RegionType      InputImageRegionType;
@@ -59,8 +58,8 @@ public:
   typedef typename OutputImageType::PixelType      OutputImagePixelType;
   typedef typename OutputImageType::IndexType      IndexType;
   
-  typedef TAttributeAccessor AttributeAccessorType;
-  typedef typename AttributeAccessorType::AttributeValueType AttributeValueType;
+  typedef TAttributeAccessor                                  AttributeAccessorType;
+  typedef typename AttributeAccessorType::AttributeValueType  AttributeValueType;
   
   /** ImageDimension constants */
   itkStaticConstMacro(InputImageDimension, unsigned int,
@@ -91,7 +90,7 @@ protected:
   /** LabelMapToAttributeImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion() ;
+  void GenerateInputRequestedRegion();
 
   /** LabelMapToAttributeImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
@@ -107,7 +106,7 @@ private:
 
   OutputImagePixelType m_BackgroundValue;
 
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -116,5 +115,3 @@ private:
 #endif
 
 #endif
-
-

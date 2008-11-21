@@ -267,10 +267,6 @@ StatisticsLabelMapFilter<TImage, TFeatureImage>
     labelObject->SetHistogram( histogram );
     }
 
-//     std::cout << std::endl;
-//     labelObject->Print( std::cout );
-//     std::cout << std::endl;
-
 }
 
 

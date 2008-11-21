@@ -28,7 +28,7 @@ namespace itk {
  * with the highest (or lowest) attribute value. The attributes are the ones
  * of the StatisticsLabelObject.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa StatisticsLabelObject, BinaryStatisticsKeepNObjectsImageFilter, LabelShapeKeepNObjectsImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
@@ -39,14 +39,13 @@ class ITK_EXPORT StatisticsKeepNObjectsLabelMapFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef StatisticsKeepNObjectsLabelMapFilter Self;
-  typedef ShapeKeepNObjectsLabelMapFilter<TImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef StatisticsKeepNObjectsLabelMapFilter    Self;
+  typedef ShapeKeepNObjectsLabelMapFilter<TImage> Superclass;
+  typedef SmartPointer<Self>                      Pointer;
+  typedef SmartPointer<const Self>                ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TImage ImageType;
+  typedef TImage                              ImageType;
   typedef typename ImageType::Pointer         ImagePointer;
   typedef typename ImageType::ConstPointer    ImageConstPointer;
   typedef typename ImageType::PixelType       PixelType;
@@ -88,7 +87,7 @@ private:
   StatisticsKeepNObjectsLabelMapFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -97,5 +96,3 @@ private:
 #endif
 
 #endif
-
-

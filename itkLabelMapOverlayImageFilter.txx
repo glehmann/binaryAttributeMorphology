@@ -127,8 +127,8 @@ LabelMapOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
     unsigned long length = lit->GetLength();
     for( unsigned int i=0; i<length; i++)
       {
-        output->SetPixel( idx, function( input2->GetPixel(idx), label ) );
-        idx[0]++;
+      output->SetPixel( idx, function( input2->GetPixel(idx), label ) );
+      idx[0]++;
       }
     }
 

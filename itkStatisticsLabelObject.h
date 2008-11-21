@@ -31,7 +31,7 @@ class ITK_EXPORT MinimumLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeValueType;
+  typedef double       AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
@@ -44,7 +44,7 @@ class ITK_EXPORT MaximumLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeValueType;
+  typedef double       AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
@@ -57,7 +57,7 @@ class ITK_EXPORT MeanLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeValueType;
+  typedef double       AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
@@ -70,7 +70,7 @@ class ITK_EXPORT SumLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeValueType;
+  typedef double       AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
@@ -83,7 +83,7 @@ class ITK_EXPORT SigmaLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeValueType;
+  typedef double       AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
@@ -96,7 +96,7 @@ class ITK_EXPORT VarianceLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeValueType;
+  typedef double       AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
@@ -109,7 +109,7 @@ class ITK_EXPORT MedianLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeValueType;
+  typedef double       AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
@@ -121,7 +121,7 @@ template< class TLabelObject >
 class ITK_EXPORT MaximumIndexLabelObjectAccessor
 {
 public:
-  typedef TLabelObject LabelObjectType;
+  typedef TLabelObject                        LabelObjectType;
   typedef typename LabelObjectType::IndexType AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
@@ -134,7 +134,7 @@ template< class TLabelObject >
 class ITK_EXPORT MinimumIndexLabelObjectAccessor
 {
 public:
-  typedef TLabelObject LabelObjectType;
+  typedef TLabelObject                        LabelObjectType;
   typedef typename LabelObjectType::IndexType AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
@@ -147,7 +147,7 @@ template< class TLabelObject >
 class ITK_EXPORT CenterOfGravityLabelObjectAccessor
 {
 public:
-  typedef TLabelObject LabelObjectType;
+  typedef TLabelObject                        LabelObjectType;
   typedef typename LabelObjectType::PointType AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
@@ -174,7 +174,7 @@ template< class TLabelObject >
 class ITK_EXPORT PrincipalMomentsLabelObjectAccessor
 {
 public:
-  typedef TLabelObject LabelObjectType;
+  typedef TLabelObject                         LabelObjectType;
   typedef typename LabelObjectType::VectorType AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
@@ -187,7 +187,7 @@ template< class TLabelObject >
 class ITK_EXPORT PrincipalAxesLabelObjectAccessor
 {
 public:
-  typedef TLabelObject LabelObjectType;
+  typedef TLabelObject                         LabelObjectType;
   typedef typename LabelObjectType::MatrixType AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
@@ -201,7 +201,7 @@ class ITK_EXPORT KurtosisLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeValueType;
+  typedef double       AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
@@ -214,7 +214,7 @@ class ITK_EXPORT SkewnessLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeValueType;
+  typedef double       AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
@@ -227,7 +227,7 @@ class ITK_EXPORT ElongationLabelObjectAccessor
 {
 public:
   typedef TLabelObject LabelObjectType;
-  typedef double AttributeValueType;
+  typedef double       AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
     {
@@ -239,7 +239,7 @@ template< class TLabelObject >
 class ITK_EXPORT HistogramLabelObjectAccessor
 {
 public:
-  typedef TLabelObject LabelObjectType;
+  typedef TLabelObject                              LabelObjectType;
   typedef typename LabelObjectType::HistogramType * AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
@@ -256,7 +256,7 @@ public:
  *
  * StatisticsLabelObject stores  the common attributes related to the statistics of the object
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \ingroup DataRepresentation 
  */
@@ -265,11 +265,11 @@ class ITK_EXPORT StatisticsLabelObject : public ShapeLabelObject< TLabel, VImage
 {
 public:
   /** Standard class typedefs */
-  typedef StatisticsLabelObject         Self;
+  typedef StatisticsLabelObject                       Self;
   typedef ShapeLabelObject< TLabel, VImageDimension > Superclass;
-  typedef SmartPointer<Self>  Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
-  typedef WeakPointer<const Self>  ConstWeakPointer;
+  typedef SmartPointer<Self>                          Pointer;
+  typedef SmartPointer<const Self>                    ConstPointer;
+  typedef WeakPointer<const Self>                     ConstWeakPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -743,7 +743,6 @@ public:
     }
 
 
-
 protected:
   StatisticsLabelObject()
     {
@@ -802,22 +801,22 @@ private:
   StatisticsLabelObject(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-  double m_Minimum;
-  double m_Maximum;
-  double m_Mean;
-  double m_Sum;
-  double m_Sigma;
-  double m_Variance;
-  double m_Median;
-  IndexType m_MaximumIndex;
-  IndexType m_MinimumIndex;
-  PointType m_CenterOfGravity;
+  double                               m_Minimum;
+  double                               m_Maximum;
+  double                               m_Mean;
+  double                               m_Sum;
+  double                               m_Sigma;
+  double                               m_Variance;
+  double                               m_Median;
+  IndexType                            m_MaximumIndex;
+  IndexType                            m_MinimumIndex;
+  PointType                            m_CenterOfGravity;
 //  MatrixType m_CentralMoments;
-  VectorType m_PrincipalMoments;
-  MatrixType m_PrincipalAxes;
-  double m_Skewness;
-  double m_Kurtosis;
-  double m_Elongation;
+  VectorType                           m_PrincipalMoments;
+  MatrixType                           m_PrincipalAxes;
+  double                               m_Skewness;
+  double                               m_Kurtosis;
+  double                               m_Elongation;
   typename HistogramType::ConstPointer m_Histogram;
 
 };

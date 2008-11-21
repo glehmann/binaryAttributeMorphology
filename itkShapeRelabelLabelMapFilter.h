@@ -26,7 +26,7 @@ namespace itk {
  * ShapeRelabelImageFilter relabel a label collection image according to the shape attributes of
  * the objects. The label produced are always consecutives.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa ShapeLabelObject, RelabelComponentImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
@@ -37,14 +37,13 @@ class ITK_EXPORT ShapeRelabelLabelMapFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef ShapeRelabelLabelMapFilter Self;
-  typedef InPlaceLabelMapFilter<TImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef ShapeRelabelLabelMapFilter    Self;
+  typedef InPlaceLabelMapFilter<TImage> Superclass;
+  typedef SmartPointer<Self>            Pointer;
+  typedef SmartPointer<const Self>      ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TImage ImageType;
+  typedef TImage                              ImageType;
   typedef typename ImageType::Pointer         ImagePointer;
   typedef typename ImageType::ConstPointer    ImageConstPointer;
   typedef typename ImageType::PixelType       PixelType;
@@ -105,14 +104,14 @@ protected:
   
   void PrintSelf(std::ostream& os, Indent indent) const;
 
-  bool m_ReverseOrdering;
+  bool          m_ReverseOrdering;
   AttributeType m_Attribute;
 
 private:
   ShapeRelabelLabelMapFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -121,5 +120,3 @@ private:
 #endif
 
 #endif
-
-

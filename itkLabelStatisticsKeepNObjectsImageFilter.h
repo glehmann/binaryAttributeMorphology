@@ -35,7 +35,7 @@ namespace itk {
  * with the highest (or lowest) attribute value. The attributes are the ones
  * of the StatisticsLabelObject.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa StatisticsLabelObject, BinaryStatisticsKeepNObjectsImageFilter, LabelShapeKeepNObjectsImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
@@ -46,15 +46,14 @@ class ITK_EXPORT LabelStatisticsKeepNObjectsImageFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef LabelStatisticsKeepNObjectsImageFilter Self;
-  typedef ImageToImageFilter<TInputImage, TInputImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef LabelStatisticsKeepNObjectsImageFilter       Self;
+  typedef ImageToImageFilter<TInputImage, TInputImage> Superclass;
+  typedef SmartPointer<Self>                           Pointer;
+  typedef SmartPointer<const Self>                     ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
-  typedef TInputImage OutputImageType;
+  typedef TInputImage                              InputImageType;
+  typedef TInputImage                              OutputImageType;
   typedef typename InputImageType::Pointer         InputImagePointer;
   typedef typename InputImageType::ConstPointer    InputImageConstPointer;
   typedef typename InputImageType::RegionType      InputImageRegionType;
@@ -64,7 +63,7 @@ public:
   typedef typename OutputImageType::RegionType     OutputImageRegionType;
   typedef typename OutputImageType::PixelType      OutputImagePixelType;
   
-  typedef TFeatureImage FeatureImageType;
+  typedef TFeatureImage                              FeatureImageType;
   typedef typename FeatureImageType::Pointer         FeatureImagePointer;
   typedef typename FeatureImageType::ConstPointer    FeatureImageConstPointer;
   typedef typename FeatureImageType::PixelType       FeatureImagePixelType;
@@ -77,12 +76,12 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int,
                       TInputImage::ImageDimension);
 
-  typedef StatisticsLabelObject<InputImagePixelType, ImageDimension> LabelObjectType;
-  typedef typename itk::LabelMap< LabelObjectType > LabelMapType;
-  typedef typename itk::LabelImageToLabelMapFilter< InputImageType, LabelMapType > LabelizerType;
-  typedef typename itk::StatisticsLabelMapFilter< LabelMapType, TFeatureImage > LabelObjectValuatorType;
-  typedef typename LabelObjectType::AttributeType AttributeType;
-  typedef typename itk::StatisticsKeepNObjectsLabelMapFilter< LabelMapType > KeepNObjectsType;
+  typedef StatisticsLabelObject<InputImagePixelType, ImageDimension>                LabelObjectType;
+  typedef typename itk::LabelMap< LabelObjectType >                                 LabelMapType;
+  typedef typename itk::LabelImageToLabelMapFilter< InputImageType, LabelMapType >  LabelizerType;
+  typedef typename itk::StatisticsLabelMapFilter< LabelMapType, TFeatureImage >     LabelObjectValuatorType;
+  typedef typename LabelObjectType::AttributeType                                   AttributeType;
+  typedef typename itk::StatisticsKeepNObjectsLabelMapFilter< LabelMapType >        KeepNObjectsType;
   typedef typename itk::LabelMapToLabelImageFilter< LabelMapType, OutputImageType > BinarizerType;
 
   /** Standard New method. */
@@ -139,10 +138,10 @@ public:
 
    /** Set the feature image */
   void SetFeatureImage(TFeatureImage *input)
-     {
-     // Process object is not const-correct so the const casting is required.
-     this->SetNthInput( 1, const_cast<TFeatureImage *>(input) );
-     }
+    {
+    // Process object is not const-correct so the const casting is required.
+    this->SetNthInput( 1, const_cast<TFeatureImage *>(input) );
+    }
 
   /** Get the feature image */
   FeatureImageType * GetFeatureImage()
@@ -150,17 +149,17 @@ public:
     return static_cast<FeatureImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(1)));
     }
 
-   /** Set the input image */
+  /** Set the input image */
   void SetInput1(InputImageType *input)
-     {
-     this->SetInput( input );
-     }
+    {
+    this->SetInput( input );
+    }
 
-   /** Set the feature image */
+  /** Set the feature image */
   void SetInput2(FeatureImageType *input)
-     {
-     this->SetFeatureImage( input );
-     }
+    {
+    this->SetFeatureImage( input );
+    }
 
 protected:
   LabelStatisticsKeepNObjectsImageFilter();
@@ -170,7 +169,7 @@ protected:
   /** LabelStatisticsKeepNObjectsImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion() ;
+  void GenerateInputRequestedRegion();
 
   /** LabelStatisticsKeepNObjectsImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
@@ -184,10 +183,10 @@ private:
   void operator=(const Self&); //purposely not implemented
 
   OutputImagePixelType m_BackgroundValue;
-  unsigned long m_NumberOfObjects;
-  bool m_ReverseOrdering;
-  AttributeType m_Attribute;
-} ; // end of class
+  unsigned long        m_NumberOfObjects;
+  bool                 m_ReverseOrdering;
+  AttributeType        m_Attribute;
+}; // end of class
 
 } // end namespace itk
   
@@ -196,5 +195,3 @@ private:
 #endif
 
 #endif
-
-

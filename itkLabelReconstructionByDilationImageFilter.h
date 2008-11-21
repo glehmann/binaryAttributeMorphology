@@ -41,7 +41,7 @@ namespace itk {
  * book "Morphological Image Analysis: Principles and Applications",
  * Second Edition, Springer, 2003.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa MorphologyImageFilter, ReconstructionByDilationImageFilter, LabelReconstructionByErosionImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
@@ -52,15 +52,14 @@ class ITK_EXPORT LabelReconstructionByDilationImageFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef LabelReconstructionByDilationImageFilter Self;
-  typedef ImageToImageFilter<TInputImage, TInputImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef LabelReconstructionByDilationImageFilter     Self;
+  typedef ImageToImageFilter<TInputImage, TInputImage> Superclass;
+  typedef SmartPointer<Self>                           Pointer;
+  typedef SmartPointer<const Self>                     ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
-  typedef TInputImage OutputImageType;
+  typedef TInputImage                              InputImageType;
+  typedef TInputImage                              OutputImageType;
   typedef typename InputImageType::Pointer         InputImagePointer;
   typedef typename InputImageType::ConstPointer    InputImageConstPointer;
   typedef typename InputImageType::RegionType      InputImageRegionType;
@@ -112,10 +111,10 @@ public:
 
    /** Set the marker image */
   void SetMarkerImage(InputImageType *input)
-     {
-     // Process object is not const-correct so the const casting is required.
-     this->SetNthInput( 0, const_cast<InputImageType *>(input) );
-     }
+    {
+    // Process object is not const-correct so the const casting is required.
+    this->SetNthInput( 0, const_cast<InputImageType *>(input) );
+    }
 
   /** Get the marker image */
   InputImageType * GetMarkerImage()
@@ -125,10 +124,10 @@ public:
 
    /** Set the mask image */
   void SetMaskImage( const InputImageType *input)
-     {
-     // Process object is not const-correct so the const casting is required.
-     this->SetNthInput( 1, const_cast<InputImageType *>(input) );
-     }
+    {
+    // Process object is not const-correct so the const casting is required.
+    this->SetNthInput( 1, const_cast<InputImageType *>(input) );
+    }
 
   /** Get the mask image */
   InputImageType * GetMaskImage()
@@ -145,7 +144,7 @@ protected:
   /** LabelReconstructionByDilationImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion() ;
+  void GenerateInputRequestedRegion();
 
   /** LabelReconstructionByDilationImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
@@ -161,7 +160,7 @@ private:
 
   OutputImagePixelType m_BackgroundValue;
   
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -170,5 +169,3 @@ private:
 #endif
 
 #endif
-
-

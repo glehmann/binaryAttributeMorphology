@@ -33,7 +33,7 @@ namespace itk {
  * Contrary to the other filters made to remove some object of a LabelMap, no
  * ordering relation for the attribute is needed in that filter.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa AttributeLabelObject
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
@@ -45,19 +45,20 @@ class ITK_EXPORT LabelSelectionLabelMapFilter :
 public:
   /** Standard class typedefs. */
   typedef LabelSelectionLabelMapFilter Self;
-  typedef AttributeSelectionLabelMapFilter<TImage, typename Functor::LabelLabelObjectAccessor< typename TImage::LabelObjectType > > Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef AttributeSelectionLabelMapFilter<TImage, typename Functor::LabelLabelObjectAccessor< typename TImage::LabelObjectType > > 
+                                       Superclass;
+  typedef SmartPointer<Self>           Pointer;
+  typedef SmartPointer<const Self>     ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TImage ImageType;
+  typedef TImage                              ImageType;
   typedef typename ImageType::Pointer         ImagePointer;
   typedef typename ImageType::ConstPointer    ImageConstPointer;
   typedef typename ImageType::PixelType       PixelType;
   typedef typename ImageType::IndexType       IndexType;
   
   typedef typename Superclass::AttributeAccessorType AttributeAccessorType;
-  typedef typename Superclass::AttributeValueType AttributeValueType;
+  typedef typename Superclass::AttributeValueType    AttributeValueType;
   
   typedef typename Superclass::AttributeSetType AttributeSetType;
   
@@ -117,10 +118,8 @@ private:
   LabelSelectionLabelMapFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
 #endif
-
-

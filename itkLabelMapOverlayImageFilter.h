@@ -33,7 +33,7 @@ namespace itk {
  * Negated = false (the default) or it can mask the input image for a single label, when
  * Negated equals true. In Both cases, the label is set with SetLabel(). 
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa LabelMapToBinaryImageFilter, LabelMapToLabelImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
@@ -44,14 +44,13 @@ class ITK_EXPORT LabelMapOverlayImageFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef LabelMapOverlayImageFilter Self;
-  typedef LabelMapFilter<TInputImage, TOutputImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef LabelMapOverlayImageFilter                Self;
+  typedef LabelMapFilter<TInputImage, TOutputImage> Superclass;
+  typedef SmartPointer<Self>                        Pointer;
+  typedef SmartPointer<const Self>                  ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
+  typedef TInputImage                              InputImageType;
   typedef typename InputImageType::Pointer         InputImagePointer;
   typedef typename InputImageType::ConstPointer    InputImageConstPointer;
   typedef typename InputImageType::RegionType      InputImageRegionType;
@@ -59,13 +58,13 @@ public:
   typedef typename InputImageType::LabelObjectType LabelObjectType;
   typedef typename LabelObjectType::LabelType      LabelType;
 
-  typedef TFeatureImage FeatureImageType;
+  typedef TFeatureImage                             FeatureImageType;
   typedef typename FeatureImageType::Pointer        FeatureImagePointer;
   typedef typename FeatureImageType::ConstPointer   FeatureImageConstPointer;
   typedef typename FeatureImageType::RegionType     FeatureImageRegionType;
   typedef typename FeatureImageType::PixelType      FeatureImagePixelType;
 
-  typedef TOutputImage OutputImageType;
+  typedef TOutputImage                             OutputImageType;
   typedef typename OutputImageType::Pointer        OutputImagePointer;
   typedef typename OutputImageType::ConstPointer   OutputImageConstPointer;
   typedef typename OutputImageType::RegionType     OutputImageRegionType;
@@ -93,10 +92,10 @@ public:
 
    /** Set the feature image */
   void SetFeatureImage(TFeatureImage *input)
-     {
-     // Process object is not const-correct so the const casting is required.
-     this->SetNthInput( 1, const_cast<TFeatureImage *>(input) );
-     }
+    {
+    // Process object is not const-correct so the const casting is required.
+    this->SetNthInput( 1, const_cast<TFeatureImage *>(input) );
+    }
 
   /** Get the feature image */
   FeatureImageType * GetFeatureImage()
@@ -106,15 +105,15 @@ public:
 
    /** Set the input image */
   void SetInput1(TInputImage *input)
-     {
-     this->SetInput( input );
-     }
+    {
+    this->SetInput( input );
+    }
 
-   /** Set the feature image */
+  /** Set the feature image */
   void SetInput2(TFeatureImage *input)
-     {
-     this->SetFeatureImage( input );
-     }
+    {
+    this->SetFeatureImage( input );
+    }
 
   /** Set/Get the opacity of the colored label image. The value must be
    * between 0 and 1
@@ -129,7 +128,7 @@ protected:
   /** LabelMapOverlayImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion() ;
+  void GenerateInputRequestedRegion();
 
   /** LabelMapOverlayImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
@@ -147,10 +146,10 @@ private:
   LabelMapOverlayImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-  double                        m_Opacity;
+  double                    m_Opacity;
   typename Barrier::Pointer m_Barrier;
 
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -159,5 +158,3 @@ private:
 #endif
 
 #endif
-
-
