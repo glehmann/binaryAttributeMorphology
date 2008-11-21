@@ -38,7 +38,7 @@ namespace itk {
  * Used in combination with AttributeLabelObject, and a specilized attribute valuator,
  * this class is the most efficient way to keep N objects in a labeled image.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa AttributeLabelObject, InPlaceLabelMapFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
@@ -50,15 +50,14 @@ class ITK_EXPORT LabelAttributeKeepNObjectsImageFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef LabelAttributeKeepNObjectsImageFilter Self;
-  typedef ImageToImageFilter<TInputImage, TInputImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef LabelAttributeKeepNObjectsImageFilter        Self;
+  typedef ImageToImageFilter<TInputImage, TInputImage> Superclass;
+  typedef SmartPointer<Self>                           Pointer;
+  typedef SmartPointer<const Self>                     ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
-  typedef TInputImage OutputImageType;
+  typedef TInputImage                              InputImageType;
+  typedef TInputImage                              OutputImageType;
   typedef typename InputImageType::Pointer         InputImagePointer;
   typedef typename InputImageType::ConstPointer    InputImageConstPointer;
   typedef typename InputImageType::RegionType      InputImageRegionType;
@@ -76,14 +75,14 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int,
                       TInputImage::ImageDimension);
 
-  typedef TLabelObject LabelObjectType;
-  typedef typename itk::LabelMap< LabelObjectType > LabelMapType;
-  typedef typename itk::LabelImageToLabelMapFilter< InputImageType, LabelMapType > LabelizerType;
-  typedef TLabelObjectValuator LabelObjectValuatorType;
-  typedef TAttributeAccessor AttributeAccessorType;
-  typedef typename AttributeAccessorType::AttributeValueType AttributeValueType;
+  typedef TLabelObject                                                                             LabelObjectType;
+  typedef typename itk::LabelMap< LabelObjectType >                                                LabelMapType;
+  typedef typename itk::LabelImageToLabelMapFilter< InputImageType, LabelMapType >                 LabelizerType;
+  typedef TLabelObjectValuator                                                                     LabelObjectValuatorType;
+  typedef TAttributeAccessor                                                                       AttributeAccessorType;
+  typedef typename AttributeAccessorType::AttributeValueType                                       AttributeValueType;
   typedef typename itk::AttributeKeepNObjectsLabelMapFilter< LabelMapType, AttributeAccessorType > KeepNObjectsType;
-  typedef typename itk::LabelMapToLabelImageFilter< LabelMapType, OutputImageType > BinarizerType;
+  typedef typename itk::LabelMapToLabelImageFilter< LabelMapType, OutputImageType >                BinarizerType;
 
   /** Standard New method. */
   itkNewMacro(Self);  
@@ -133,7 +132,7 @@ protected:
   /** LabelAttributeKeepNObjectsImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion() ;
+  void GenerateInputRequestedRegion();
 
   /** LabelAttributeKeepNObjectsImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
@@ -149,9 +148,9 @@ private:
   void operator=(const Self&); //purposely not implemented
 
   OutputImagePixelType m_BackgroundValue;
-  unsigned long m_NumberOfObjects;
-  bool m_ReverseOrdering;
-} ; // end of class
+  unsigned long        m_NumberOfObjects;
+  bool                 m_ReverseOrdering;
+}; // end of class
 
 } // end namespace itk
   
@@ -160,5 +159,3 @@ private:
 #endif
 
 #endif
-
-

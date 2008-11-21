@@ -34,7 +34,7 @@ namespace itk
  * With that class, the developer don't need to take care of iterating over all the objects in
  * the image, or to manage by hand the threads.
  * 
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa LabelMapToBinaryImageFilter, LabelMapToLabelImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
@@ -44,10 +44,10 @@ class ITK_EXPORT LabelMapFilter : public ImageToImageFilter<TInputImage, TOutput
 {
 public:
   /** Standard class typedefs. */
-  typedef LabelMapFilter  Self;
+  typedef LabelMapFilter                                 Self;
   typedef ImageToImageFilter<TInputImage, TOutputImage>  Superclass;
-  typedef SmartPointer<Self>  Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef SmartPointer<Self>                             Pointer;
+  typedef SmartPointer<const Self>                       ConstPointer;
   
   
   /** Run-time type information (and related methods). */
@@ -57,14 +57,14 @@ public:
   itkNewMacro(Self);  
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
+  typedef TInputImage                              InputImageType;
   typedef typename InputImageType::Pointer         InputImagePointer;
   typedef typename InputImageType::ConstPointer    InputImageConstPointer;
   typedef typename InputImageType::RegionType      InputImageRegionType; 
   typedef typename InputImageType::PixelType       InputImagePixelType;
   typedef typename InputImageType::LabelObjectType LabelObjectType;
 
-  typedef TOutputImage OutputImageType;
+  typedef TOutputImage                             OutputImageType;
   typedef typename OutputImageType::Pointer        OutputImagePointer;
   typedef typename OutputImageType::ConstPointer   OutputImageConstPointer;
   typedef typename OutputImageType::RegionType     OutputImageRegionType; 
@@ -79,12 +79,12 @@ public:
   /** LabelMapFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion() ;
+  void GenerateInputRequestedRegion();
 
   /** LabelMapFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
   
- protected:
+protected:
   LabelMapFilter();
   ~LabelMapFilter();
 

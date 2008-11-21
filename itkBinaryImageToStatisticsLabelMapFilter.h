@@ -29,7 +29,7 @@ namespace itk {
 /** \class BinaryImageToStatisticsLabelMapFilter
  * \brief a convenient class to convert a binary image to a label map and valuate the statistics attributes at once
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa StatisticsLabelObject, LabelStatisticsOpeningImageFilter, BinaryStatisticsOpeningImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
@@ -40,27 +40,26 @@ class ITK_EXPORT BinaryImageToStatisticsLabelMapFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef BinaryImageToStatisticsLabelMapFilter Self;
-  typedef ImageToImageFilter<TInputImage, TOutputImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef BinaryImageToStatisticsLabelMapFilter         Self;
+  typedef ImageToImageFilter<TInputImage, TOutputImage> Superclass;
+  typedef SmartPointer<Self>                            Pointer;
+  typedef SmartPointer<const Self>                      ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
+  typedef TInputImage                              InputImageType;
   typedef typename InputImageType::Pointer         InputImagePointer;
   typedef typename InputImageType::ConstPointer    InputImageConstPointer;
   typedef typename InputImageType::RegionType      InputImageRegionType;
   typedef typename InputImageType::PixelType       InputImagePixelType;
 
-  typedef TOutputImage OutputImageType;
-  typedef typename OutputImageType::Pointer        OutputImagePointer;
-  typedef typename OutputImageType::ConstPointer   OutputImageConstPointer;
-  typedef typename OutputImageType::RegionType     OutputImageRegionType;
-  typedef typename OutputImageType::PixelType      OutputImagePixelType;
+  typedef TOutputImage                              OutputImageType;
+  typedef typename OutputImageType::Pointer         OutputImagePointer;
+  typedef typename OutputImageType::ConstPointer    OutputImageConstPointer;
+  typedef typename OutputImageType::RegionType      OutputImageRegionType;
+  typedef typename OutputImageType::PixelType       OutputImagePixelType;
   typedef typename OutputImageType::LabelObjectType LabelObjectType;
   
-  typedef TFeatureImage FeatureImageType;
+  typedef TFeatureImage                              FeatureImageType;
   typedef typename FeatureImageType::Pointer         FeatureImagePointer;
   typedef typename FeatureImageType::ConstPointer    FeatureImageConstPointer;
   typedef typename FeatureImageType::PixelType       FeatureImagePixelType;
@@ -74,7 +73,7 @@ public:
                       TInputImage::ImageDimension);
 
   typedef typename itk::BinaryImageToLabelMapFilter< InputImageType, OutputImageType > LabelizerType;
-  typedef typename itk::StatisticsLabelMapFilter< OutputImageType, FeatureImageType > LabelObjectValuatorType;
+  typedef typename itk::StatisticsLabelMapFilter< OutputImageType, FeatureImageType >  LabelObjectValuatorType;
 
   /** Standard New method. */
   itkNewMacro(Self);  
@@ -136,10 +135,10 @@ public:
 
    /** Set the feature image */
   void SetFeatureImage(TFeatureImage *input)
-     {
-     // Process object is not const-correct so the const casting is required.
-     this->SetNthInput( 1, const_cast<TFeatureImage *>(input) );
-     }
+    {
+    // Process object is not const-correct so the const casting is required.
+    this->SetNthInput( 1, const_cast<TFeatureImage *>(input) );
+    }
 
   /** Get the feature image */
   FeatureImageType * GetFeatureImage()
@@ -149,15 +148,15 @@ public:
 
    /** Set the input image */
   void SetInput1(InputImageType *input)
-     {
-     this->SetInput( input );
-     }
+    {
+    this->SetInput( input );
+    }
 
-   /** Set the feature image */
+  /** Set the feature image */
   void SetInput2(FeatureImageType *input)
-     {
-     this->SetFeatureImage( input );
-     }
+    {
+    this->SetFeatureImage( input );
+    }
 
   /**
    * Set/Get whether the histogram should be attached to the label object or not.
@@ -178,7 +177,6 @@ public:
   itkGetConstReferenceMacro(NumberOfBins, unsigned int);
 
 
-
 protected:
   BinaryImageToStatisticsLabelMapFilter();
   ~BinaryImageToStatisticsLabelMapFilter() {};
@@ -187,7 +185,7 @@ protected:
   /** BinaryImageToStatisticsLabelMapFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion() ;
+  void GenerateInputRequestedRegion();
 
   /** BinaryImageToStatisticsLabelMapFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
@@ -201,15 +199,15 @@ private:
   BinaryImageToStatisticsLabelMapFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-  bool                m_FullyConnected;
+  bool                 m_FullyConnected;
   OutputImagePixelType m_BackgroundValue;
-  InputImagePixelType m_ForegroundValue;
-  bool m_ComputeFeretDiameter;
-  bool m_ComputePerimeter;
-  unsigned int          m_NumberOfBins;
-  bool                  m_ComputeHistogram;
+  InputImagePixelType  m_ForegroundValue;
+  bool                 m_ComputeFeretDiameter;
+  bool                 m_ComputePerimeter;
+  unsigned int         m_NumberOfBins;
+  bool                 m_ComputeHistogram;
 
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -218,5 +216,3 @@ private:
 #endif
 
 #endif
-
-

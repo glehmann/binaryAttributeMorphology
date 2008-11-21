@@ -39,7 +39,7 @@ namespace itk {
  * this class is the most efficient way to perform an attribute opening in a labeled
  * image.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa AttributeLabelObject, InPlaceLabelMapFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
@@ -51,15 +51,14 @@ class ITK_EXPORT LabelAttributeOpeningImageFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef LabelAttributeOpeningImageFilter Self;
-  typedef ImageToImageFilter<TInputImage, TInputImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef LabelAttributeOpeningImageFilter             Self;
+  typedef ImageToImageFilter<TInputImage, TInputImage> Superclass;
+  typedef SmartPointer<Self>                           Pointer;
+  typedef SmartPointer<const Self>                     ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
-  typedef TInputImage OutputImageType;
+  typedef TInputImage                              InputImageType;
+  typedef TInputImage                              OutputImageType;
   typedef typename InputImageType::Pointer         InputImagePointer;
   typedef typename InputImageType::ConstPointer    InputImageConstPointer;
   typedef typename InputImageType::RegionType      InputImageRegionType;
@@ -77,14 +76,14 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int,
                       TInputImage::ImageDimension);
 
-  typedef TLabelObject LabelObjectType;
-  typedef typename itk::LabelMap< LabelObjectType > LabelMapType;
-  typedef typename itk::LabelImageToLabelMapFilter< InputImageType, LabelMapType > LabelizerType;
-  typedef TLabelObjectValuator LabelObjectValuatorType;
-  typedef TAttributeAccessor AttributeAccessorType;
-  typedef typename AttributeAccessorType::AttributeValueType AttributeValueType;
+  typedef TLabelObject                                                                        LabelObjectType;
+  typedef typename itk::LabelMap< LabelObjectType >                                           LabelMapType;
+  typedef typename itk::LabelImageToLabelMapFilter< InputImageType, LabelMapType >            LabelizerType;
+  typedef TLabelObjectValuator                                                                LabelObjectValuatorType;
+  typedef TAttributeAccessor                                                                  AttributeAccessorType;
+  typedef typename AttributeAccessorType::AttributeValueType                                  AttributeValueType;
   typedef typename itk::AttributeOpeningLabelMapFilter< LabelMapType, AttributeAccessorType > OpeningType;
-  typedef typename itk::LabelMapToLabelImageFilter< LabelMapType, OutputImageType > BinarizerType;
+  typedef typename itk::LabelMapToLabelImageFilter< LabelMapType, OutputImageType >           BinarizerType;
 
   /** Standard New method. */
   itkNewMacro(Self);  
@@ -135,7 +134,7 @@ protected:
   /** LabelAttributeOpeningImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion() ;
+  void GenerateInputRequestedRegion();
 
   /** LabelAttributeOpeningImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
@@ -152,9 +151,9 @@ private:
   void operator=(const Self&); //purposely not implemented
 
   OutputImagePixelType m_BackgroundValue;
-  AttributeValueType m_Lambda;
-  bool m_ReverseOrdering;
-} ; // end of class
+  AttributeValueType   m_Lambda;
+  bool                 m_ReverseOrdering;
+}; // end of class
 
 } // end namespace itk
   
@@ -163,5 +162,3 @@ private:
 #endif
 
 #endif
-
-

@@ -17,8 +17,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef _itkInPlaceLabelMapFilter_txx
-#define _itkInPlaceLabelMapFilter_txx
+#ifndef __itkInPlaceLabelMapFilter_txx
+#define __itkInPlaceLabelMapFilter_txx
 #include "itkInPlaceLabelMapFilter.h"
 
 

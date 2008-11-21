@@ -56,7 +56,7 @@ namespace itk
  * manage memory using (and perhaps overriding) the implementations of
  * ReleaseInputs() and AllocateOutputs() provided here.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa LabelMapToBinaryImageFilter, LabelMapToLabelImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
@@ -66,30 +66,30 @@ class ITK_EXPORT InPlaceLabelMapFilter : public LabelMapFilter<TInputImage, TInp
 {
 public:
   /** Standard class typedefs. */
-  typedef InPlaceLabelMapFilter  Self;
+  typedef InPlaceLabelMapFilter                     Self;
   typedef LabelMapFilter<TInputImage, TInputImage>  Superclass;
-  typedef SmartPointer<Self>  Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef SmartPointer<Self>                        Pointer;
+  typedef SmartPointer<const Self>                  ConstPointer;
   
   
   /** Run-time type information (and related methods). */
   itkTypeMacro(InPlaceLabelMapFilter, LabelMapFilter);
 
   /** Standard New method. */
-  itkNewMacro(Self);  
+  itkNewMacro(Self);
 
   /** Superclass typedefs. */
-  typedef typename Superclass::OutputImageType OutputImageType;
-  typedef typename Superclass::OutputImagePointer OutputImagePointer;
+  typedef typename Superclass::OutputImageType       OutputImageType;
+  typedef typename Superclass::OutputImagePointer    OutputImagePointer;
   typedef typename Superclass::OutputImageRegionType OutputImageRegionType;
-  typedef typename Superclass::OutputImagePixelType OutputImagePixelType;
+  typedef typename Superclass::OutputImagePixelType  OutputImagePixelType;
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
-  typedef typename InputImageType::Pointer        InputImagePointer;
-  typedef typename InputImageType::ConstPointer   InputImageConstPointer;
-  typedef typename InputImageType::RegionType     InputImageRegionType; 
-  typedef typename InputImageType::PixelType      InputImagePixelType;
+  typedef TInputImage                              InputImageType;
+  typedef typename InputImageType::Pointer         InputImagePointer;
+  typedef typename InputImageType::ConstPointer    InputImageConstPointer;
+  typedef typename InputImageType::RegionType      InputImageRegionType; 
+  typedef typename InputImageType::PixelType       InputImagePixelType;
   typedef typename InputImageType::LabelObjectType LabelObjectType;
 
   typedef typename InputImageType::PixelType       PixelType;
@@ -116,12 +116,12 @@ public:
    * determine whether a particular use of the filter is really
    * running in place. Some filters may be able to optimize their
    * operation if the InPlace is true and CanRunInPlace is true. */
-   bool CanRunInPlace() const
-     {
-       return (typeid(TInputImage) == typeid(TOutputImage));
-     };
+  bool CanRunInPlace() const
+    {
+    return (typeid(TInputImage) == typeid(TOutputImage));
+    };
 
- protected:
+protected:
   InPlaceLabelMapFilter();
   ~InPlaceLabelMapFilter();
 

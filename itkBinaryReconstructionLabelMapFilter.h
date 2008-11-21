@@ -34,20 +34,19 @@ class ITK_EXPORT BinaryReconstructionLabelMapFilter :
 public:
   /** Standard class typedefs. */
   typedef BinaryReconstructionLabelMapFilter Self;
-  typedef InPlaceLabelMapFilter<TImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef InPlaceLabelMapFilter<TImage>      Superclass;
+  typedef SmartPointer<Self>                 Pointer;
+  typedef SmartPointer<const Self>           ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TImage ImageType;
+  typedef TImage                              ImageType;
   typedef typename ImageType::Pointer         ImagePointer;
   typedef typename ImageType::ConstPointer    ImageConstPointer;
   typedef typename ImageType::PixelType       PixelType;
   typedef typename ImageType::IndexType       IndexType;
   typedef typename ImageType::LabelObjectType LabelObjectType;
   
-  typedef TMarkerImage MarkerImageType;
+  typedef TMarkerImage                              MarkerImageType;
   typedef typename MarkerImageType::Pointer         MarkerImagePointer;
   typedef typename MarkerImageType::ConstPointer    MarkerImageConstPointer;
   typedef typename MarkerImageType::PixelType       MarkerImagePixelType;
@@ -59,7 +58,7 @@ public:
                       TImage::ImageDimension);
 
   /** Standard New method. */
-  itkNewMacro(Self);  
+  itkNewMacro(Self);
 
   /** Runtime information support. */
   itkTypeMacro(BinaryReconstructionLabelMapFilter, 
@@ -78,10 +77,10 @@ public:
 
    /** Set the marker image */
   void SetMarkerImage(TMarkerImage *input)
-     {
-     // Process object is not const-correct so the const casting is required.
-     this->SetNthInput( 1, const_cast<TMarkerImage *>(input) );
-     }
+    {
+    // Process object is not const-correct so the const casting is required.
+    this->SetNthInput( 1, const_cast<TMarkerImage *>(input) );
+    }
 
   /** Get the marker image */
   MarkerImageType * GetMarkerImage()
@@ -91,15 +90,15 @@ public:
 
    /** Set the input image */
   void SetInput1(TImage *input)
-     {
-     this->SetInput( input );
-     }
+    {
+    this->SetInput( input );
+    }
 
-   /** Set the marker image */
+  /** Set the marker image */
   void SetInput2(TMarkerImage *input)
-     {
-     this->SetMarkerImage( input );
-     }
+    {
+    this->SetMarkerImage( input );
+    }
 
   /**
    * Set/Get the value used as "foreground" in the output image.
@@ -122,7 +121,7 @@ private:
   
   MarkerImagePixelType m_ForegroundValue;
 
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -131,5 +130,3 @@ private:
 #endif
 
 #endif
-
-

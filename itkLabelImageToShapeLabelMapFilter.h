@@ -29,7 +29,7 @@ namespace itk {
 /** \class LabelImageToShapeLabelMapFilter
  * \brief a convenient class to convert a label image to a label map and valuate the shape attributes at once
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa ShapeLabelObject, LabelShapeOpeningImageFilter, LabelStatisticsOpeningImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
@@ -40,24 +40,23 @@ class ITK_EXPORT LabelImageToShapeLabelMapFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef LabelImageToShapeLabelMapFilter Self;
-  typedef ImageToImageFilter<TInputImage, TOutputImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef LabelImageToShapeLabelMapFilter               Self;
+  typedef ImageToImageFilter<TInputImage, TOutputImage> Superclass;
+  typedef SmartPointer<Self>                            Pointer;
+  typedef SmartPointer<const Self>                      ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
+  typedef TInputImage                              InputImageType;
   typedef typename InputImageType::Pointer         InputImagePointer;
   typedef typename InputImageType::ConstPointer    InputImageConstPointer;
   typedef typename InputImageType::RegionType      InputImageRegionType;
   typedef typename InputImageType::PixelType       InputImagePixelType;
 
-  typedef TOutputImage OutputImageType;
-  typedef typename OutputImageType::Pointer        OutputImagePointer;
-  typedef typename OutputImageType::ConstPointer   OutputImageConstPointer;
-  typedef typename OutputImageType::RegionType     OutputImageRegionType;
-  typedef typename OutputImageType::PixelType      OutputImagePixelType;
+  typedef TOutputImage                              OutputImageType;
+  typedef typename OutputImageType::Pointer         OutputImagePointer;
+  typedef typename OutputImageType::ConstPointer    OutputImageConstPointer;
+  typedef typename OutputImageType::RegionType      OutputImageRegionType;
+  typedef typename OutputImageType::PixelType       OutputImagePixelType;
   typedef typename OutputImageType::LabelObjectType LabelObjectType;
   
   /** ImageDimension constants */
@@ -120,7 +119,7 @@ protected:
   /** LabelImageToShapeLabelMapFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion() ;
+  void GenerateInputRequestedRegion();
 
   /** LabelImageToShapeLabelMapFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
@@ -135,10 +134,10 @@ private:
   void operator=(const Self&); //purposely not implemented
 
   OutputImagePixelType m_BackgroundValue;
-  bool m_ComputeFeretDiameter;
-  bool m_ComputePerimeter;
+  bool                 m_ComputeFeretDiameter;
+  bool                 m_ComputePerimeter;
 
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -147,5 +146,3 @@ private:
 #endif
 
 #endif
-
-

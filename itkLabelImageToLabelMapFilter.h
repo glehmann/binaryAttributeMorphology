@@ -29,7 +29,7 @@ namespace itk {
  * LabelImageToLabelMapFilter converts a label image to a label collection image.
  * The labels are the same in the input and the output image.
  * 
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa BinaryImageToLabelMapFilter, LabelMapToLabelImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
@@ -40,15 +40,14 @@ class ITK_EXPORT LabelImageToLabelMapFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef LabelImageToLabelMapFilter Self;
-  typedef ImageToImageFilter<TInputImage, TOutputImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef LabelImageToLabelMapFilter                    Self;
+  typedef ImageToImageFilter<TInputImage, TOutputImage> Superclass;
+  typedef SmartPointer<Self>                            Pointer;
+  typedef SmartPointer<const Self>                      ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
-  typedef TOutputImage OutputImageType;
+  typedef TInputImage                              InputImageType;
+  typedef TOutputImage                             OutputImageType;
   typedef typename InputImageType::Pointer         InputImagePointer;
   typedef typename InputImageType::ConstPointer    InputImageConstPointer;
   typedef typename InputImageType::RegionType      InputImageRegionType;
@@ -89,7 +88,7 @@ protected:
   /** LabelImageToLabelMapFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion() ;
+  void GenerateInputRequestedRegion();
 
   /** LabelImageToLabelMapFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
@@ -109,7 +108,7 @@ private:
   
   typename std::vector< OutputImagePointer > m_TemporaryImages;
 
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -118,5 +117,3 @@ private:
 #endif
 
 #endif
-
-

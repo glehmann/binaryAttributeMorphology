@@ -41,7 +41,7 @@ namespace itk {
  * book "Morphological Image Analysis: Principles and Applications",
  * Second Edition, Springer, 2003.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa MorphologyImageFilter, ReconstructionByDilationImageFilter, BinaryReconstructionByErosionImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
@@ -52,15 +52,14 @@ class ITK_EXPORT BinaryReconstructionByDilationImageFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef BinaryReconstructionByDilationImageFilter Self;
-  typedef ImageToImageFilter<TInputImage, TInputImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef BinaryReconstructionByDilationImageFilter    Self;
+  typedef ImageToImageFilter<TInputImage, TInputImage> Superclass;
+  typedef SmartPointer<Self>                           Pointer;
+  typedef SmartPointer<const Self>                     ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
-  typedef TInputImage OutputImageType;
+  typedef TInputImage                              InputImageType;
+  typedef TInputImage                              OutputImageType;
   typedef typename InputImageType::Pointer         InputImagePointer;
   typedef typename InputImageType::ConstPointer    InputImageConstPointer;
   typedef typename InputImageType::RegionType      InputImageRegionType;
@@ -78,15 +77,15 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int,
                       TInputImage::ImageDimension);
 
-  typedef AttributeLabelObject<unsigned long, ImageDimension, bool> LabelObjectType;
-  typedef typename itk::LabelMap< LabelObjectType > LabelMapType;
-  typedef typename itk::BinaryImageToLabelMapFilter< InputImageType, LabelMapType > LabelizerType;
+  typedef AttributeLabelObject<unsigned long, ImageDimension, bool>                        LabelObjectType;
+  typedef typename itk::LabelMap< LabelObjectType >                                        LabelMapType;
+  typedef typename itk::BinaryImageToLabelMapFilter< InputImageType, LabelMapType >        LabelizerType;
   typedef typename itk::BinaryReconstructionLabelMapFilter< LabelMapType, InputImageType > ReconstructionType;
-  typedef typename itk::AttributeOpeningLabelMapFilter< LabelMapType > OpeningType;
-  typedef typename itk::LabelMapToBinaryImageFilter< LabelMapType, OutputImageType > BinarizerType;
+  typedef typename itk::AttributeOpeningLabelMapFilter< LabelMapType >                     OpeningType;
+  typedef typename itk::LabelMapToBinaryImageFilter< LabelMapType, OutputImageType >       BinarizerType;
 
   /** Standard New method. */
-  itkNewMacro(Self);  
+  itkNewMacro(Self);
 
   /** Runtime information support. */
   itkTypeMacro(BinaryReconstructionByDilationImageFilter, 
@@ -129,10 +128,10 @@ public:
 
    /** Set the marker image */
   void SetMarkerImage(InputImageType *input)
-     {
-     // Process object is not const-correct so the const casting is required.
-     this->SetNthInput( 0, const_cast<InputImageType *>(input) );
-     }
+    {
+    // Process object is not const-correct so the const casting is required.
+    this->SetNthInput( 0, const_cast<InputImageType *>(input) );
+    }
 
   /** Get the marker image */
   InputImageType * GetMarkerImage()
@@ -142,10 +141,10 @@ public:
 
    /** Set the mask image */
   void SetMaskImage( const InputImageType *input)
-     {
-     // Process object is not const-correct so the const casting is required.
-     this->SetNthInput( 1, const_cast<InputImageType *>(input) );
-     }
+    {
+    // Process object is not const-correct so the const casting is required.
+    this->SetNthInput( 1, const_cast<InputImageType *>(input) );
+    }
 
   /** Get the mask image */
   InputImageType * GetMaskImage()
@@ -162,7 +161,7 @@ protected:
   /** BinaryReconstructionByDilationImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion() ;
+  void GenerateInputRequestedRegion();
 
   /** BinaryReconstructionByDilationImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
@@ -176,10 +175,10 @@ private:
   BinaryReconstructionByDilationImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-  bool                m_FullyConnected;
+  bool                 m_FullyConnected;
   OutputImagePixelType m_BackgroundValue;
   OutputImagePixelType m_ForegroundValue;
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -188,5 +187,3 @@ private:
 #endif
 
 #endif
-
-

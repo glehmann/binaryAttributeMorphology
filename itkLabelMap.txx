@@ -17,8 +17,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef _itkLabelMap_txx
-#define _itkLabelMap_txx
+#ifndef __itkLabelMap_txx
+#define __itkLabelMap_txx
 
 #include "itkLabelMap.h"
 #include "itkProcessObject.h"
@@ -312,7 +312,7 @@ LabelMap<TLabelObject>
       return it->second.GetPointer();
       }
     }
-    itkExceptionMacro( << "No label object at index " << idx << "." );
+  itkExceptionMacro( << "No label object at index " << idx << "." );
 //   return NULL;
 }
 
@@ -467,9 +467,6 @@ LabelMap<TLabelObject>
     os << std::endl;
     }
 }
-
-
-
 
 } // end namespace itk
 

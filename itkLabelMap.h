@@ -50,11 +50,11 @@ class ITK_EXPORT LabelMap : public ImageBase<TLabelObject::ImageDimension>
 {
 public:
   /** Standard class typedefs */
-  typedef LabelMap               Self;
+  typedef LabelMap                                 Self;
   typedef ImageBase<TLabelObject::ImageDimension>  Superclass;
-  typedef SmartPointer<Self>  Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
-  typedef WeakPointer<const Self>  ConstWeakPointer;
+  typedef SmartPointer<Self>                       Pointer;
+  typedef SmartPointer<const Self>                 ConstPointer;
+  typedef WeakPointer<const Self>                  ConstWeakPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -74,7 +74,7 @@ public:
 
   /** Label typedef support. */
   typedef typename LabelObjectType::LabelType  LabelType;
-  typedef LabelType PixelType;
+  typedef LabelType                            PixelType;
 
   /** the LabelObject container type */
   typedef std::map< LabelType, LabelObjectPointerType > LabelObjectContainerType;
@@ -142,7 +142,7 @@ public:
               ContinuousIndex<TCoordRep, ImageDimension>& index   ) const
     {
     // Update the output index
-    for (unsigned int i = 0 ; i < ImageDimension ; i++)
+    for( unsigned int i = 0; i < ImageDimension; i++)
       {
       index[i] = static_cast<TCoordRep>( (point[i]- this->m_Origin[i]) / this->m_Spacing[i] );
       }
@@ -166,7 +166,7 @@ public:
     typedef typename IndexType::IndexValueType IndexValueType;
 
     // Update the output index
-    for (unsigned int i = 0 ; i < ImageDimension ; i++)
+    for( unsigned int i = 0; i < ImageDimension; i++ )
       {
       index[i] = static_cast<IndexValueType>( (point[i]- this->m_Origin[i]) / this->m_Spacing[i] );
       }
@@ -187,7 +187,7 @@ public:
             const ContinuousIndex<TCoordRep, ImageDimension>& index,
             Point<TCoordRep, ImageDimension>& point        ) const
     {
-    for (unsigned int i = 0 ; i < ImageDimension ; i++)
+    for( unsigned int i = 0; i < ImageDimension; i++ )
       {
       point[i] = static_cast<TCoordRep>( this->m_Spacing[i] * index[i] + this->m_Origin[i] );
       }
@@ -203,7 +203,7 @@ public:
                       const IndexType & index,
                       Point<TCoordRep, ImageDimension>& point ) const
     {
-    for (unsigned int i = 0 ; i < ImageDimension ; i++)
+    for( unsigned int i = 0; i < ImageDimension; i++ )
       {
       point[i] = static_cast<TCoordRep>( this->m_Spacing[i] *
         static_cast<double>( index[i] ) + this->m_Origin[i] );
@@ -334,7 +334,7 @@ private:
   void operator=(const Self&); //purposely not implemented
 
   LabelObjectContainerType m_LabelObjectContainer;
-  LabelType m_BackgroundValue;
+  LabelType                m_BackgroundValue;
 };
 
 } // end namespace itk

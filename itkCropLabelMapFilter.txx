@@ -17,8 +17,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef _itkCropLabelMapFilter_txx
-#define _itkCropLabelMapFilter_txx
+#ifndef __itkCropLabelMapFilter_txx
+#define __itkCropLabelMapFilter_txx
 #include "itkCropLabelMapFilter.h"
 
 

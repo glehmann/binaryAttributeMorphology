@@ -17,8 +17,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef _itkChangeRegionLabelMapFilter_txx
-#define _itkChangeRegionLabelMapFilter_txx
+#ifndef __itkChangeRegionLabelMapFilter_txx
+#define __itkChangeRegionLabelMapFilter_txx
 #include "itkChangeRegionLabelMapFilter.h"
 
 
@@ -73,7 +73,6 @@ ChangeRegionLabelMapFilter<TInputImage>
     // oh, we have to pretend we have a progress !
     ProgressReporter progress( this, 0, 1 );
     this->AllocateOutputs();
-//     std::cout << "do nothing" << std::endl;
     }
   else
     {
@@ -122,7 +121,6 @@ ChangeRegionLabelMapFilter<TInputImage>
       if( !( ( idx[0] < idxMin[0] && lastIdx0 < idxMin[0] )
                || ( idx[0] > idxMax[0] && lastIdx0 > idxMax[0] ) ) )
         {
-//         std::cout << "!outside" << std::endl;
         IndexType newIdx = idx;
         long newLength = length;
         if( idx[0] < idxMin[0] )
@@ -144,7 +142,6 @@ ChangeRegionLabelMapFilter<TInputImage>
   // remove the object if it is empty
   if( labelObject->GetLineContainer().empty() )
     {
-//     std::cout << "remove: " << labelObject << std::endl;
     this->m_LabelObjectContainerLock->Lock();
     this->GetOutput()->RemoveLabelObject( labelObject );
     this->m_LabelObjectContainerLock->Unlock();

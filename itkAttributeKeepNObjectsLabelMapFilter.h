@@ -28,7 +28,7 @@ namespace itk {
  * with the highest (or lowest) attribute value. The attribute is provide by an
  * attribute accessor given in template parameter.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
@@ -112,7 +112,7 @@ protected:
 
   class Comparator
     {
-    public:
+  public:
     bool operator()( const typename LabelObjectType::Pointer & a, const typename LabelObjectType::Pointer & b )
       {
       return accessor( a ) > accessor( b );

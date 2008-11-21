@@ -32,7 +32,7 @@ namespace itk {
  * Negated = false (the default) or it can mask the input image for a single label, when
  * Negated equals true. In Both cases, the label is set with SetLabel(). 
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaï¿½tan Lehmann. Biologie du Dï¿½veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa LabelMapToBinaryImageFilter, LabelMapToLabelImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
@@ -43,15 +43,14 @@ class ITK_EXPORT LabelMapMaskImageFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef LabelMapMaskImageFilter Self;
-  typedef LabelMapFilter<TInputImage, TOutputImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef LabelMapMaskImageFilter                   Self;
+  typedef LabelMapFilter<TInputImage, TOutputImage> Superclass;
+  typedef SmartPointer<Self>                        Pointer;
+  typedef SmartPointer<const Self>                  ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
-  typedef TOutputImage OutputImageType;
+  typedef TInputImage                              InputImageType;
+  typedef TOutputImage                             OutputImageType;
   typedef typename InputImageType::Pointer         InputImagePointer;
   typedef typename InputImageType::ConstPointer    InputImageConstPointer;
   typedef typename InputImageType::RegionType      InputImageRegionType;
@@ -84,10 +83,10 @@ public:
 
    /** Set the feature image */
   void SetFeatureImage(const TOutputImage *input)
-     {
-     // Process object is not const-correct so the const casting is required.
-     this->SetNthInput( 1, const_cast<TOutputImage *>(input) );
-     }
+    {
+    // Process object is not const-correct so the const casting is required.
+    this->SetNthInput( 1, const_cast<TOutputImage *>(input) );
+    }
 
   /** Get the feature image */
   OutputImageType * GetFeatureImage()
@@ -95,17 +94,17 @@ public:
     return static_cast<OutputImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(1)));
     }
 
-   /** Set the input image */
+  /** Set the input image */
   void SetInput1(TInputImage *input)
-     {
-     this->SetInput( input );
-     }
+    {
+    this->SetInput( input );
+    }
 
-   /** Set the feature image */
+  /** Set the feature image */
   void SetInput2(TOutputImage *input)
-     {
-     this->SetFeatureImage( input );
-     }
+    {
+    this->SetFeatureImage( input );
+    }
 
   /**
    * Set/Get the value used as "background" in the output image.
@@ -148,7 +147,7 @@ protected:
   /** LabelMapMaskImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion() ;
+  void GenerateInputRequestedRegion();
 
   /** LabelMapMaskImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
@@ -167,17 +166,17 @@ private:
   LabelMapMaskImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-  InputImagePixelType m_Label;
-  OutputImagePixelType m_BackgroundValue;
-  bool m_Negated;
-  bool m_Crop;
-  SizeType m_CropBorder;
+  InputImagePixelType       m_Label;
+  OutputImagePixelType      m_BackgroundValue;
+  bool                      m_Negated;
+  bool                      m_Crop;
+  SizeType                  m_CropBorder;
 
-  TimeStamp m_CropTimeStamp;
+  TimeStamp                 m_CropTimeStamp;
 
   typename Barrier::Pointer m_Barrier;
 
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -186,5 +185,3 @@ private:
 #endif
 
 #endif
-
-

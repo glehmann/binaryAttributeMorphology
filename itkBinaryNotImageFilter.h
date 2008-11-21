@@ -1,3 +1,19 @@
+/*=========================================================================
+
+  Program:   Insight Segmentation & Registration Toolkit
+  Module:    $RCSfile: itkBinaryImageToStatisticsLabelMapFilter.h,v $
+  Language:  C++
+  Date:      $Date: 2006/03/28 19:59:05 $
+  Version:   $Revision: 1.6 $
+
+  Copyright (c) Insight Software Consortium. All rights reserved.
+  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
+
+     This software is distributed WITHOUT ANY WARRANTY; without even 
+     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+     PURPOSE.  See the above copyright notices for more information.
+
+=========================================================================*/
 #ifndef __itkBinaryNotImageFilter_h
 #define __itkBinaryNotImageFilter_h
 
@@ -65,11 +81,11 @@ UnaryFunctorImageFilter<TImage, TImage,
 {
 public:
   /** Standard class typedefs. */
-  typedef BinaryNotImageFilter  Self;
+  typedef BinaryNotImageFilter                         Self;
   typedef UnaryFunctorImageFilter<TImage, TImage,
     Functor::BinaryNot<  typename TImage::PixelType> > Superclass;
-  typedef SmartPointer<Self>   Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef SmartPointer<Self>                           Pointer;
+  typedef SmartPointer<const Self>                     ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -80,12 +96,9 @@ public:
 
   typedef typename TImage::PixelType     PixelType;
 
-  /** Set the value in the image to consider as "foreground". Defaults to
-   * maximum value of PixelType.*/
-  itkSetMacro(ForegroundValue, PixelType);
-
-  /** Get the value in the image considered as "foreground". Defaults to
+  /** Set/Get the value in the image considered as "foreground". Defaults to
    * maximum value of PixelType. */
+  itkSetMacro(ForegroundValue, PixelType);
   itkGetConstMacro(ForegroundValue, PixelType);
 
   /** Set the value used as "background". Defaults to

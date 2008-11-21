@@ -1,8 +1,10 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkBinaryOpeningByReconstructionImageFilter.txx,v $
+  Module:    $RCSfile: itkBinaryImageToStatisticsLabelMapFilter.h,v $
   Language:  C++
+  Date:      $Date: 2006/03/28 19:59:05 $
+  Version:   $Revision: 1.6 $
 
   Copyright (c) Insight Software Consortium. All rights reserved.
   See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
