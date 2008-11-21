@@ -42,10 +42,10 @@ class ITK_EXPORT AutoCropLabelMapFilter : public ChangeRegionLabelMapFilter<TInp
 {
 public:
   /** Standard class typedefs. */
-  typedef AutoCropLabelMapFilter  Self;
+  typedef AutoCropLabelMapFilter                   Self;
   typedef ChangeRegionLabelMapFilter<TInputImage>  Superclass;
-  typedef SmartPointer<Self>  Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef SmartPointer<Self>                       Pointer;
+  typedef SmartPointer<const Self>                 ConstPointer;
   
   
   /** Run-time type information (and related methods). */
@@ -55,17 +55,17 @@ public:
   itkNewMacro(Self);  
 
   /** Superclass typedefs. */
-  typedef typename Superclass::OutputImageType OutputImageType;
-  typedef typename Superclass::OutputImagePointer OutputImagePointer;
+  typedef typename Superclass::OutputImageType       OutputImageType;
+  typedef typename Superclass::OutputImagePointer    OutputImagePointer;
   typedef typename Superclass::OutputImageRegionType OutputImageRegionType;
-  typedef typename Superclass::OutputImagePixelType OutputImagePixelType;
+  typedef typename Superclass::OutputImagePixelType  OutputImagePixelType;
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
-  typedef typename InputImageType::Pointer        InputImagePointer;
-  typedef typename InputImageType::ConstPointer   InputImageConstPointer;
-  typedef typename InputImageType::RegionType     InputImageRegionType; 
-  typedef typename InputImageType::PixelType      InputImagePixelType;
+  typedef TInputImage                              InputImageType;
+  typedef typename InputImageType::Pointer         InputImagePointer;
+  typedef typename InputImageType::ConstPointer    InputImageConstPointer;
+  typedef typename InputImageType::RegionType      InputImageRegionType; 
+  typedef typename InputImageType::PixelType       InputImagePixelType;
   typedef typename InputImageType::LabelObjectType LabelObjectType;
 
   typedef typename InputImageType::PixelType       PixelType;
@@ -91,7 +91,7 @@ public:
   itkSetMacro(CropBorder, SizeType);
   itkGetConstReferenceMacro(CropBorder, SizeType);
 
- protected:
+protected:
   AutoCropLabelMapFilter();
   ~AutoCropLabelMapFilter() {};
 
@@ -100,7 +100,7 @@ public:
 private:
   AutoCropLabelMapFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
-  SizeType m_CropBorder;
+  SizeType  m_CropBorder;
   TimeStamp m_CropTimeStamp;
 
 };

@@ -41,15 +41,14 @@ class ITK_EXPORT BinaryGrindPeakImageFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef BinaryGrindPeakImageFilter Self;
-  typedef ImageToImageFilter<TInputImage, TInputImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef BinaryGrindPeakImageFilter                   Self;
+  typedef ImageToImageFilter<TInputImage, TInputImage> Superclass;
+  typedef SmartPointer<Self>                           Pointer;
+  typedef SmartPointer<const Self>                     ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
-  typedef TInputImage OutputImageType;
+  typedef TInputImage                              InputImageType;
+  typedef TInputImage                              OutputImageType;
   typedef typename InputImageType::Pointer         InputImagePointer;
   typedef typename InputImageType::ConstPointer    InputImageConstPointer;
   typedef typename InputImageType::RegionType      InputImageRegionType;
@@ -112,7 +111,7 @@ protected:
   /** BinaryGrindPeakImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion() ;
+  void GenerateInputRequestedRegion();
 
   /** BinaryGrindPeakImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
@@ -132,7 +131,7 @@ private:
 
   bool                m_FullyConnected;
 
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -141,5 +140,3 @@ private:
 #endif
 
 #endif
-
-

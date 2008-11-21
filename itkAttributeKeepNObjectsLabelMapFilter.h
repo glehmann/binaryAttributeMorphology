@@ -40,13 +40,12 @@ class ITK_EXPORT AttributeKeepNObjectsLabelMapFilter :
 public:
   /** Standard class typedefs. */
   typedef AttributeKeepNObjectsLabelMapFilter Self;
-  typedef InPlaceLabelMapFilter<TImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef InPlaceLabelMapFilter<TImage>       Superclass;
+  typedef SmartPointer<Self>                  Pointer;
+  typedef SmartPointer<const Self>            ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TImage ImageType;
+  typedef TImage                              ImageType;
   typedef typename ImageType::Pointer         ImagePointer;
   typedef typename ImageType::ConstPointer    ImageConstPointer;
   typedef typename ImageType::PixelType       PixelType;
@@ -118,17 +117,17 @@ protected:
       {
       return accessor( a ) > accessor( b );
       }
-     AttributeAccessorType accessor;
+    AttributeAccessorType accessor;
     };
 
 private:
   AttributeKeepNObjectsLabelMapFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-  bool m_ReverseOrdering;
+  bool          m_ReverseOrdering;
   unsigned long m_NumberOfObjects;
 
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -137,5 +136,3 @@ private:
 #endif
 
 #endif
-
-

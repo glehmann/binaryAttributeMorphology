@@ -50,15 +50,14 @@ class ITK_EXPORT BinaryAttributeKeepNObjectsImageFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef BinaryAttributeKeepNObjectsImageFilter Self;
-  typedef ImageToImageFilter<TInputImage, TInputImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef BinaryAttributeKeepNObjectsImageFilter       Self;
+  typedef ImageToImageFilter<TInputImage, TInputImage> Superclass;
+  typedef SmartPointer<Self>                           Pointer;
+  typedef SmartPointer<const Self>                     ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
-  typedef TInputImage OutputImageType;
+  typedef TInputImage                              InputImageType;
+  typedef TInputImage                              OutputImageType;
   typedef typename InputImageType::Pointer         InputImagePointer;
   typedef typename InputImageType::ConstPointer    InputImageConstPointer;
   typedef typename InputImageType::RegionType      InputImageRegionType;
@@ -76,14 +75,14 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int,
                       TInputImage::ImageDimension);
 
-  typedef TLabelObject LabelObjectType;
-  typedef typename itk::LabelMap< LabelObjectType > LabelMapType;
-  typedef typename itk::BinaryImageToLabelMapFilter< InputImageType, LabelMapType > LabelizerType;
-  typedef TLabelObjectValuator LabelObjectValuatorType;
-  typedef TAttributeAccessor AttributeAccessorType;
-  typedef typename AttributeAccessorType::AttributeValueType AttributeValueType;
+  typedef TLabelObject                                                                             LabelObjectType;
+  typedef typename itk::LabelMap< LabelObjectType >                                                LabelMapType;
+  typedef typename itk::BinaryImageToLabelMapFilter< InputImageType, LabelMapType >                LabelizerType;
+  typedef TLabelObjectValuator                                                                     LabelObjectValuatorType;
+  typedef TAttributeAccessor                                                                       AttributeAccessorType;
+  typedef typename AttributeAccessorType::AttributeValueType                                       AttributeValueType;
   typedef typename itk::AttributeKeepNObjectsLabelMapFilter< LabelMapType, AttributeAccessorType > KeepNObjectsType;
-  typedef typename itk::LabelMapToBinaryImageFilter< LabelMapType, OutputImageType > BinarizerType;
+  typedef typename itk::LabelMapToBinaryImageFilter< LabelMapType, OutputImageType >               BinarizerType;
 
   /** Standard New method. */
   itkNewMacro(Self);  
@@ -150,7 +149,7 @@ protected:
   /** BinaryAttributeKeepNObjectsImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion() ;
+  void GenerateInputRequestedRegion();
 
   /** BinaryAttributeKeepNObjectsImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
@@ -165,12 +164,12 @@ private:
   BinaryAttributeKeepNObjectsImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-  bool                m_FullyConnected;
+  bool                 m_FullyConnected;
   OutputImagePixelType m_BackgroundValue;
   OutputImagePixelType m_ForegroundValue;
-  unsigned long m_NumberOfObjects;
-  bool m_ReverseOrdering;
-} ; // end of class
+  unsigned long        m_NumberOfObjects;
+  bool                 m_ReverseOrdering;
+}; // end of class
 
 } // end namespace itk
   
@@ -179,5 +178,3 @@ private:
 #endif
 
 #endif
-
-

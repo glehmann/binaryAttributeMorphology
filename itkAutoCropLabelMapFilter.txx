@@ -17,8 +17,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef _itkAutoCropLabelMapFilter_txx
-#define _itkAutoCropLabelMapFilter_txx
+#ifndef __itkAutoCropLabelMapFilter_txx
+#define __itkAutoCropLabelMapFilter_txx
 #include "itkAutoCropLabelMapFilter.h"
 
 
@@ -128,7 +128,7 @@ AutoCropLabelMapFilter<TInputImage>
   // std::cout << "LargestPossibleRegion: " << this->GetOutput()->GetLargestPossibleRegion() << std::endl;
   // std::cout << "BufferedRegion: " << this->GetOutput()->GetBufferedRegion() << std::endl;
   // std::cout << "RequestedRegion: " << this->GetOutput()->GetRequestedRegion() << std::endl;
-}    
+}
 
 
 } // end namespace itk

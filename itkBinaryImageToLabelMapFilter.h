@@ -52,7 +52,7 @@ public:
   /**
    * Standard "Self" & Superclass typedef.
    */
-  typedef BinaryImageToLabelMapFilter                   Self;
+  typedef BinaryImageToLabelMapFilter                     Self;
   typedef ImageToImageFilter< TInputImage, TOutputImage > Superclass;
 
   /**
@@ -155,7 +155,7 @@ protected:
    */
   void BeforeThreadedGenerateData ();
   void AfterThreadedGenerateData ();
-  void ThreadedGenerateData (const RegionType& outputRegionForThread, int threadId) ;
+  void ThreadedGenerateData (const RegionType& outputRegionForThread, int threadId);
 
   /** BinaryImageToLabelMapFilter needs the entire input. Therefore
    * it must provide an implementation GenerateInputRequestedRegion().
@@ -174,10 +174,10 @@ private:
   BinaryImageToLabelMapFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-  OutputPixelType m_BackgroundValue;
-  InputPixelType m_ForegroundValue;
+  OutputPixelType  m_BackgroundValue;
+  InputPixelType   m_ForegroundValue;
 
-  unsigned long m_ObjectCount;
+  unsigned long    m_ObjectCount;
   // some additional types
   typedef typename TOutputImage::RegionType::SizeType OutSizeType;
 
@@ -237,9 +237,9 @@ private:
 
   typename std::vector< long > m_NumberOfLabels;
   typename std::vector< long > m_FirstLineIdToJoin;
-  typename Barrier::Pointer m_Barrier;
+  typename Barrier::Pointer    m_Barrier;
 #if !defined(CABLE_CONFIGURATION)
-  LineMapType m_LineMap;
+  LineMapType                  m_LineMap;
 #endif
 };
   

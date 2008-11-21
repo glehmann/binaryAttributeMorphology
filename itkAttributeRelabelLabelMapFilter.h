@@ -41,20 +41,19 @@ class ITK_EXPORT AttributeRelabelLabelMapFilter :
 public:
   /** Standard class typedefs. */
   typedef AttributeRelabelLabelMapFilter Self;
-  typedef InPlaceLabelMapFilter<TImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef InPlaceLabelMapFilter<TImage>  Superclass;
+  typedef SmartPointer<Self>             Pointer;
+  typedef SmartPointer<const Self>       ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TImage ImageType;
+  typedef TImage                              ImageType;
   typedef typename ImageType::Pointer         ImagePointer;
   typedef typename ImageType::ConstPointer    ImageConstPointer;
   typedef typename ImageType::PixelType       PixelType;
   typedef typename ImageType::IndexType       IndexType;
   typedef typename ImageType::LabelObjectType LabelObjectType;
   
-  typedef TAttributeAccessor AttributeAccessorType;
+  typedef TAttributeAccessor                                 AttributeAccessorType;
   typedef typename AttributeAccessorType::AttributeValueType AttributeValueType;
   
   /** ImageDimension constants */
@@ -108,12 +107,12 @@ protected:
 
   class Comparator
     {
-    public:
+  public:
     bool operator()( const typename LabelObjectType::Pointer & a, const typename LabelObjectType::Pointer & b )
       {
       return accessor( a ) > accessor( b );
       }
-     AttributeAccessorType accessor;
+    AttributeAccessorType accessor;
     };
 
 private:
@@ -122,7 +121,7 @@ private:
 
   bool m_ReverseOrdering;
 
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -131,5 +130,3 @@ private:
 #endif
 
 #endif
-
-

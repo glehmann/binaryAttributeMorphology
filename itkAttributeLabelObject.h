@@ -29,7 +29,7 @@ template< class TLabelObject >
 class ITK_EXPORT AttributeLabelObjectAccessor
 {
 public:
-  typedef TLabelObject LabelObjectType;
+  typedef TLabelObject                                 LabelObjectType;
   typedef typename LabelObjectType::AttributeValueType AttributeValueType;
 
   inline const AttributeValueType operator()( const LabelObjectType * labelObject )
@@ -60,11 +60,11 @@ class ITK_EXPORT AttributeLabelObject : public LabelObject< TLabel, VImageDimens
 {
 public:
   /** Standard class typedefs */
-  typedef AttributeLabelObject         Self;
+  typedef AttributeLabelObject                   Self;
   typedef LabelObject< TLabel, VImageDimension > Superclass;
-  typedef SmartPointer<Self>  Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
-  typedef WeakPointer<const Self>  ConstWeakPointer;
+  typedef SmartPointer<Self>                     Pointer;
+  typedef SmartPointer<const Self>               ConstPointer;
+  typedef WeakPointer<const Self>                ConstWeakPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);

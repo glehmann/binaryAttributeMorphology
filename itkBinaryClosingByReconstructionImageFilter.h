@@ -1,8 +1,10 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkBinaryClosingByReconstructionImageFilter.h,v $
+  Module:    $RCSfile: itkBinaryAttributeOpeningImageFilter.h,v $
   Language:  C++
+  Date:      $Date: 2006/03/28 19:59:05 $
+  Version:   $Revision: 1.6 $
 
   Copyright (c) Insight Software Consortium. All rights reserved.
   See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
@@ -44,10 +46,10 @@ class ITK_EXPORT BinaryClosingByReconstructionImageFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef BinaryClosingByReconstructionImageFilter Self;
+  typedef BinaryClosingByReconstructionImageFilter     Self;
   typedef ImageToImageFilter<TInputImage, TInputImage> Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef SmartPointer<Self>                           Pointer;
+  typedef SmartPointer<const Self>                     ConstPointer;
   
   /** Standard New method. */
   itkNewMacro(Self);  
@@ -56,14 +58,14 @@ public:
   itkTypeMacro(BinaryClosingByReconstructionImageFilter, 
                ImageToImageFilter);
 
-  typedef TInputImage InputImageType;
-  typedef TInputImage OutputImageType;
+  typedef TInputImage                              InputImageType;
+  typedef TInputImage                              OutputImageType;
   typedef typename InputImageType::Pointer         InputImagePointer;
   typedef typename OutputImageType::RegionType     OutputImageRegionType;
 
   /** Declaration of pixel type. */
-  typedef typename TInputImage::PixelType InputPixelType ;
-  typedef typename TInputImage::PixelType OutputPixelType ;
+  typedef typename TInputImage::PixelType          InputPixelType;
+  typedef typename TInputImage::PixelType          OutputPixelType;
 
   /** Kernel typedef. */
   typedef TKernel KernelType;
@@ -102,7 +104,7 @@ protected:
    * requested region is expanded by the radius of the structuring element.
    * If the request extends past the LargestPossibleRegion for the input,
    * the request is cropped by the LargestPossibleRegion. */
-  void GenerateInputRequestedRegion() ;
+  void GenerateInputRequestedRegion();
 
   /** Single-threaded version of GenerateData.  This filter delegates
    * to GrayscaleDilateImageFilter GrayscaleErodeImageFilter. */
@@ -113,13 +115,13 @@ private:
   void operator=(const Self&); //purposely not implemented
 
   /** kernel or structuring element to use. */
-  KernelType m_Kernel ;
+  KernelType m_Kernel;
    
   InputPixelType m_ForegroundValue;
   
   bool                m_FullyConnected;
 
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -128,5 +130,3 @@ private:
 #endif
 
 #endif
-
-

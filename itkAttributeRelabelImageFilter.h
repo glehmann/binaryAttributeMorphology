@@ -45,15 +45,14 @@ class ITK_EXPORT AttributeRelabelImageFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef AttributeRelabelImageFilter Self;
-  typedef ImageToImageFilter<TInputImage, TInputImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef AttributeRelabelImageFilter                  Self;
+  typedef ImageToImageFilter<TInputImage, TInputImage> Superclass;
+  typedef SmartPointer<Self>                           Pointer;
+  typedef SmartPointer<const Self>                     ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TInputImage InputImageType;
-  typedef TInputImage OutputImageType;
+  typedef TInputImage                              InputImageType;
+  typedef TInputImage                              OutputImageType;
   typedef typename InputImageType::Pointer         InputImagePointer;
   typedef typename InputImageType::ConstPointer    InputImageConstPointer;
   typedef typename InputImageType::RegionType      InputImageRegionType;
@@ -71,14 +70,14 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int,
                       TInputImage::ImageDimension);
 
-  typedef TLabelObject LabelObjectType;
-  typedef typename itk::LabelMap< LabelObjectType > LabelMapType;
-  typedef typename itk::LabelImageToLabelMapFilter< InputImageType, LabelMapType > LabelizerType;
-  typedef TLabelObjectValuator LabelObjectValuatorType;
-  typedef TAttributeAccessor AttributeAccessorType;
-  typedef typename AttributeAccessorType::AttributeValueType AttributeValueType;
+  typedef TLabelObject                                                                        LabelObjectType;
+  typedef typename itk::LabelMap< LabelObjectType >                                           LabelMapType;
+  typedef typename itk::LabelImageToLabelMapFilter< InputImageType, LabelMapType >            LabelizerType;
+  typedef TLabelObjectValuator                                                                LabelObjectValuatorType;
+  typedef TAttributeAccessor                                                                  AttributeAccessorType;
+  typedef typename AttributeAccessorType::AttributeValueType                                  AttributeValueType;
   typedef typename itk::AttributeRelabelLabelMapFilter< LabelMapType, AttributeAccessorType > RelabelType;
-  typedef typename itk::LabelMapToLabelImageFilter< LabelMapType, OutputImageType > BinarizerType;
+  typedef typename itk::LabelMapToLabelImageFilter< LabelMapType, OutputImageType >           BinarizerType;
 
   /** Standard New method. */
   itkNewMacro(Self);  
@@ -122,7 +121,7 @@ protected:
   /** AttributeRelabelImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion() ;
+  void GenerateInputRequestedRegion();
 
   /** AttributeRelabelImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
@@ -138,8 +137,8 @@ private:
   void operator=(const Self&); //purposely not implemented
 
   OutputImagePixelType m_BackgroundValue;
-  bool m_ReverseOrdering;
-} ; // end of class
+  bool                 m_ReverseOrdering;
+}; // end of class
 
 } // end namespace itk
   
@@ -148,5 +147,3 @@ private:
 #endif
 
 #endif
-
-

@@ -41,19 +41,18 @@ class ITK_EXPORT AttributeOpeningLabelMapFilter :
 public:
   /** Standard class typedefs. */
   typedef AttributeOpeningLabelMapFilter Self;
-  typedef InPlaceLabelMapFilter<TImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef InPlaceLabelMapFilter<TImage>  Superclass;
+  typedef SmartPointer<Self>             Pointer;
+  typedef SmartPointer<const Self>       ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TImage ImageType;
+  typedef TImage                              ImageType;
   typedef typename ImageType::Pointer         ImagePointer;
   typedef typename ImageType::ConstPointer    ImageConstPointer;
   typedef typename ImageType::PixelType       PixelType;
   typedef typename ImageType::IndexType       IndexType;
   
-  typedef TAttributeAccessor AttributeAccessorType;
+  typedef TAttributeAccessor                                 AttributeAccessorType;
   typedef typename AttributeAccessorType::AttributeValueType AttributeValueType;
   
   /** ImageDimension constants */
@@ -107,9 +106,9 @@ private:
   void operator=(const Self&); //purposely not implemented
 
   AttributeValueType m_Lambda;
-  bool m_ReverseOrdering;
+  bool               m_ReverseOrdering;
 
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -118,5 +117,3 @@ private:
 #endif
 
 #endif
-
-

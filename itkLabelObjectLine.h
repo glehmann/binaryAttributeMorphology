@@ -20,7 +20,7 @@
 namespace itk
 {
 
-/**
+/** \class LabelObjectLine
  * LabelObjectLine is the line object used in the LabelObject class
  * to store the line which are part of the object.
  * A line is formed of and index and a length in the dimension 0.
@@ -33,7 +33,7 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int, VImageDimension);
 
   typedef Index< ImageDimension > IndexType;
-  typedef unsigned long LengthType;
+  typedef unsigned long           LengthType;
 
   LabelObjectLine() {};
 
@@ -100,7 +100,7 @@ public:
     }
 
 private:
-  IndexType m_Index;
+  IndexType  m_Index;
   LengthType m_Length;
 };
 

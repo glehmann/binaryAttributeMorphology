@@ -237,7 +237,8 @@ BinaryImageToLabelMapFilter< TInputImage, TOutputImage >
     lastLineIdForThread = firstLineIdForThread + RegionType( outputRegionIdx, outputRegionForThreadSize ).GetNumberOfPixels() / xsizeForThread;
     m_FirstLineIdToJoin[threadId] = lastLineIdForThread;
     // found the number of line ids to join
-    nbOfLineIdToJoin = RegionType( outputRegionIdx, outputRegionForThread.GetSize() ).GetNumberOfPixels() / xsizeForThread - RegionType( outputRegionIdx, outputRegionForThreadSize ).GetNumberOfPixels() / xsizeForThread;
+    nbOfLineIdToJoin = RegionType( outputRegionIdx, outputRegionForThread.GetSize() ).GetNumberOfPixels() / xsizeForThread
+                         - RegionType( outputRegionIdx, outputRegionForThreadSize ).GetNumberOfPixels() / xsizeForThread;
     }
 
   for(long ThisIdx = firstLineIdForThread; ThisIdx < lastLineIdForThread; ++ThisIdx)
@@ -304,7 +305,7 @@ BinaryImageToLabelMapFilter< TInputImage, TOutputImage >
       {
       // remove the region already joined
       typename std::vector< long > newFirstLineIdToJoin;
-      for( int i = 1; i<(long)m_FirstLineIdToJoin.size(); i+=2 )
+      for( int i = 1; i < (long)m_FirstLineIdToJoin.size(); i += 2 )
         {
         newFirstLineIdToJoin.push_back( m_FirstLineIdToJoin[i] );
         }
@@ -347,7 +348,6 @@ BinaryImageToLabelMapFilter< TInputImage, TOutputImage >
       unsigned long Ilab = LookupSet( cIt->label);
       OutputPixelType lab = m_Consecutive[Ilab];
       output->SetLine( cIt->where, cIt->length, lab );
-//       std::cout << cIt->where << " " << cIt->length << " " << lab+0.0 << std::endl;
       }
     progress.CompletedPixel();
     }
@@ -369,11 +369,10 @@ BinaryImageToLabelMapFilter< TInputImage, TOutputImage >
   // offset for us. All this messing around produces an array of
   // offsets that will be used to index the map
   typename TOutputImage::Pointer output = this->GetOutput();
-  typedef Image<long, TOutputImage::ImageDimension - 1>   PretendImageType;
-  typedef typename PretendImageType::RegionType::SizeType PretendSizeType;
-  typedef typename PretendImageType::RegionType::IndexType PretendIndexType;
-  typedef ConstShapedNeighborhoodIterator<PretendImageType>
-    LineNeighborhoodType;
+  typedef Image<long, TOutputImage::ImageDimension - 1>     PretendImageType;
+  typedef typename PretendImageType::RegionType::SizeType   PretendSizeType;
+  typedef typename PretendImageType::RegionType::IndexType  PretendIndexType;
+  typedef ConstShapedNeighborhoodIterator<PretendImageType> LineNeighborhoodType;
 
   typename PretendImageType::Pointer fakeImage;
   fakeImage = PretendImageType::New();

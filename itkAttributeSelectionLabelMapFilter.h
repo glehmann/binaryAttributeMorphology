@@ -46,19 +46,18 @@ class ITK_EXPORT AttributeSelectionLabelMapFilter :
 public:
   /** Standard class typedefs. */
   typedef AttributeSelectionLabelMapFilter Self;
-  typedef InPlaceLabelMapFilter<TImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef InPlaceLabelMapFilter<TImage>    Superclass;
+  typedef SmartPointer<Self>               Pointer;
+  typedef SmartPointer<const Self>         ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TImage ImageType;
+  typedef TImage                              ImageType;
   typedef typename ImageType::Pointer         ImagePointer;
   typedef typename ImageType::ConstPointer    ImageConstPointer;
   typedef typename ImageType::PixelType       PixelType;
   typedef typename ImageType::IndexType       IndexType;
   
-  typedef TAttributeAccessor AttributeAccessorType;
+  typedef TAttributeAccessor                                 AttributeAccessorType;
   typedef typename AttributeAccessorType::AttributeValueType AttributeValueType;
   
   typedef typename std::set<AttributeValueType> AttributeSetType;
@@ -147,9 +146,9 @@ private:
   void operator=(const Self&); //purposely not implemented
 
   AttributeSetType m_AttributeSet;
-  bool m_Exclude;
+  bool             m_Exclude;
 
-} ; // end of class
+}; // end of class
 
 } // end namespace itk
   
@@ -158,5 +157,3 @@ private:
 #endif
 
 #endif
-
-

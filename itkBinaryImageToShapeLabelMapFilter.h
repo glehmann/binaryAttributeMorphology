@@ -40,11 +40,10 @@ class ITK_EXPORT BinaryImageToShapeLabelMapFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef BinaryImageToShapeLabelMapFilter Self;
-  typedef ImageToImageFilter<TInputImage, TOutputImage>
-  Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef BinaryImageToShapeLabelMapFilter              Self;
+  typedef ImageToImageFilter<TInputImage, TOutputImage> Superclass;
+  typedef SmartPointer<Self>                            Pointer;
+  typedef SmartPointer<const Self>                      ConstPointer;
 
   /** Some convenient typedefs. */
   typedef TInputImage InputImageType;
