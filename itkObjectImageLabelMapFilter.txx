@@ -266,7 +266,7 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
   os << indent << "PadSize: " << m_PadSize << std::endl;
   os << indent << "BinaryInternalOutput: " << m_BinaryInternalOutput << std::endl;
   os << indent << "KeepLabels: " << m_KeepLabels << std::endl;
-  os << indent << "InternalForegroundValue: " << m_InternalForegroundValue << std::endl;
+  os << indent << "InternalForegroundValue: " << static_cast<typename NumericTraits<InternalOutputPixelType>::PrintType>(m_InternalForegroundValue) << std::endl;
   os << indent << "InputFilter: " << this->m_InputFilter->GetNameOfClass() 
      << " " << this->m_InputFilter.GetPointer() << std::endl;
   os << indent << "OutputFilter: " << this->m_OutputFilter->GetNameOfClass() 
