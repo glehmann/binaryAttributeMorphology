@@ -164,7 +164,6 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
   m_BI2LM->SetForegroundValue( m_InternalForegroundValue );
 
   // initialize the progress reporter
-  // TODO: really report the progress!
   ProgressReporter progress( this, 0, this->GetLabelMap()->GetNumberOfLabelObjects() );
 
   // initialize the iterator
@@ -250,7 +249,8 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
     
     // and proceed the next object
     loIterator++;
-    
+    progress.CompletedPixel();
+
     }
 }
 
