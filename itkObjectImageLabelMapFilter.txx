@@ -213,12 +213,14 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
           typename LabelObjectType::Pointer lotmp = output->GetLabelObject( loIterator->first );
           output->RemoveLabelObject( lotmp );
           lo->SetLabel( loIterator->first );
+	  lo->CopyAttributesFrom( loIterator->second );
           output->AddLabelObject( lo );
           output->PushLabelObject( lotmp );
           }
         else
           {
           lo->SetLabel( loIterator->first );
+	  lo->CopyAttributesFrom( loIterator->second );
           output->AddLabelObject( lo );
           }
           
@@ -226,6 +228,7 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
         it2++;
         while( it2 != labelObjectContainer2.end() )
           {
+	  it2->second->CopyAttributesFrom( loIterator->second );
           output->PushLabelObject( it2->second );
           it2++;
           }
@@ -242,6 +245,7 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
       typename LabelMapType::LabelObjectContainerType::iterator it2 = labelObjectContainer2.begin();
       while( it2 != labelObjectContainer2.end() )
         {
+	it2->second->CopyAttributesFrom( loIterator->second );
         output->PushLabelObject( it2->second );
         it2++;
         }
