@@ -98,7 +98,7 @@ private:
  * reconstruction filters for an example. If a simple attribute is needed,
  * AttributeLabelObject can be used directly.
  *
- * All the subclasses of LabelObject have to reinplement the CopyDataFrom() method.
+ * All the subclasses of LabelObject have to reinplement the CopyAttributesFrom() method.
  *
  * \author Ga�tan Lehmann. Biologie du D�veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
@@ -112,6 +112,7 @@ public:
   /** Standard class typedefs */
   typedef LabelObject               Self;
   typedef LightObject               Superclass;
+  typedef Self                      LabelObjectType;
   typedef SmartPointer<Self>        Pointer;
   typedef SmartPointer<const Self>  ConstPointer;
   typedef WeakPointer<const Self>   ConstWeakPointer;
@@ -265,12 +266,21 @@ public:
     itkGenericExceptionMacro(<< "Invalid offset: " << offset);
     }
   
-  /** Copy the data of another node to this one */
-  virtual void CopyDataFrom( const Self * src )
+  /** Copy the attributes of another node to this one */
+  virtual void CopyAttributesFrom( const Self * src )
+    {
+    assert( src != NULL );
+    // nothing to do here - this class has no attribute
+    }
+   
+  /** Copy the lines, the label and the attributes from another node. */
+  void CopyAllFrom( const Self * src )
     {
     assert( src != NULL );
     m_LineContainer = src->m_LineContainer;
     m_Label = src->m_Label;
+    // also copy the attributes
+    this->CopyAttributesFrom( src );
     }
 
 protected:

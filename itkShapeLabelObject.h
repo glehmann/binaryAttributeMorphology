@@ -254,6 +254,7 @@ public:
   /** Standard class typedefs */
   typedef ShapeLabelObject                       Self;
   typedef LabelObject< TLabel, VImageDimension > Superclass;
+  typedef typename Superclass::LabelObjectType   LabelObjectType;
   typedef SmartPointer<Self>                     Pointer;
   typedef SmartPointer<const Self>               ConstPointer;
   typedef WeakPointer<const Self>                ConstWeakPointer;
@@ -701,10 +702,16 @@ public:
     }
 
 
-  virtual void CopyDataFrom( const Self * src )
+  virtual void CopyAttributesFrom( const LabelObjectType * lo )
     {
-    Superclass::CopyDataFrom( src );
+    Superclass::CopyAttributesFrom( lo );
 
+    // copy the data of the current type if possible
+    const Self * src = dynamic_cast<const Self *>( lo );
+    if( src == NULL )
+      {
+      return;
+      }
     m_Region = src->m_Region;
     m_Size = src->m_Size;
     m_PhysicalSize = src->m_PhysicalSize;

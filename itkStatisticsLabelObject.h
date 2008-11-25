@@ -267,6 +267,7 @@ public:
   /** Standard class typedefs */
   typedef StatisticsLabelObject                       Self;
   typedef ShapeLabelObject< TLabel, VImageDimension > Superclass;
+  typedef typename Superclass::LabelObjectType        LabelObjectType;
   typedef SmartPointer<Self>                          Pointer;
   typedef SmartPointer<const Self>                    ConstPointer;
   typedef WeakPointer<const Self>                     ConstWeakPointer;
@@ -457,10 +458,16 @@ public:
   typedef typename Superclass::CentroidType CentroidType;
 
 
-  virtual void CopyDataFrom( const Self * src )
+  virtual void CopyAttributesFrom( const LabelObjectType * lo )
     {
-    Superclass::CopyDataFrom( src );
+    Superclass::CopyAttributesFrom( lo );
 
+    // copy the data of the current type if possible
+    const Self * src = dynamic_cast<const Self *>( lo );
+    if( src == NULL )
+      {
+      return;
+      }
     m_Minimum = src->m_Minimum;
     m_Maximum = src->m_Maximum;
     m_Mean = src->m_Mean;
