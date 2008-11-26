@@ -21,6 +21,7 @@
 #define __itkLabelMapFilter_h
 
 #include "itkImageToImageFilter.h"
+#include "itkProgressReporter.h"
 
 namespace itk
 {
@@ -90,6 +91,8 @@ protected:
 
   virtual void BeforeThreadedGenerateData();
 
+  virtual void AfterThreadedGenerateData();
+
   virtual void ThreadedGenerateData(const OutputImageRegionType& outputRegionForThread, int threadId );
 
   virtual void ThreadedGenerateData( LabelObjectType * labelObject );
@@ -110,6 +113,8 @@ private:
   void operator=(const Self&); //purposely not implemented
 
   typename InputImageType::LabelObjectContainerType::const_iterator m_LabelObjectIterator;
+
+  ProgressReporter * m_Progress;
 
 };
 

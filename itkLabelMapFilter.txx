@@ -33,6 +33,7 @@ template <class TInputImage, class TOutputImage>
 LabelMapFilter<TInputImage, TOutputImage>
 ::LabelMapFilter()
 {
+  m_Progress = NULL;
 }
 
 /**
@@ -42,6 +43,11 @@ template <class TInputImage, class TOutputImage>
 LabelMapFilter<TInputImage, TOutputImage>
 ::~LabelMapFilter()
 {
+  // be sure that the progress reporter has been destroyed
+  if( m_Progress != NULL )
+    {
+    delete m_Progress;
+    }
 }
 
 
@@ -84,9 +90,24 @@ LabelMapFilter<TInputImage, TOutputImage>
   // and the mutex
   m_LabelObjectContainerLock = FastMutexLock::New();
 
+  // be sure that the previous progress reporter has been destroyed
+  if( m_Progress != NULL )
+    {
+    delete m_Progress;
+    }
   // initialize the progress reporter
-  // TODO: really report the progress!
-  ProgressReporter progress( this, 0, this->GetLabelMap()->GetNumberOfLabelObjects() );
+  m_Progress = new ProgressReporter(this, 0, this->GetLabelMap()->GetNumberOfLabelObjects());
+}
+
+
+template <class TInputImage, class TOutputImage>
+void
+LabelMapFilter<TInputImage, TOutputImage>
+::AfterThreadedGenerateData()
+{
+  // destroy progress reporter
+  delete m_Progress;
+  m_Progress = NULL;
 }
 
 
@@ -112,7 +133,7 @@ LabelMapFilter<TInputImage, TOutputImage>
     // increment the iterator now, so it will not be invalidated if the object is destroyed
     m_LabelObjectIterator++;
     // pretend one more object is processed, even if it will be done later, to simplify the lock management
-    // TODO: progress++
+    m_Progress->CompletedPixel();
     // unlock the mutex, so the other threads can get an object
     m_LabelObjectContainerLock->Unlock();
     // and run the user defined method for that object
