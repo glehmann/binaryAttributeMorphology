@@ -29,8 +29,7 @@
 namespace itk {
 
 /** \class ObjectImageLabelMapFilter
- * \brief TODO
- *
+ * \brief ObjectImageLabelMapFilter applies an image pipeline to all the objects of a label map and produce a new label map
  *
  * \author Ga�tan Lehmann. Biologie du D�veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
