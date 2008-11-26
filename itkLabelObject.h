@@ -217,6 +217,11 @@ public:
     return m_LineContainer;
     }
 
+  void SetLineContainer( LineContainerType & lineContainer )
+    {
+    m_LineContainer = lineContainer;
+    }
+
   int GetNumberOfLines() const
     {
     return m_LineContainer.size();
