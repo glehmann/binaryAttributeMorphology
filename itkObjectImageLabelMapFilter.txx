@@ -253,6 +253,7 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
     
     // and proceed the next object
     loIterator++;
+    this->InvokeEvent( IterationEvent() );
     progress.CompletedPixel();
 
     }
