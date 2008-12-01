@@ -170,12 +170,12 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
   ProgressReporter progress( this, 0, this->GetLabelMap()->GetNumberOfLabelObjects() );
 
   // initialize the iterator
-  typename InputImageType::LabelObjectContainerType::const_iterator loIterator = this->GetLabelMap()->GetLabelObjectContainer().begin();
+  typename InputImageType::LabelObjectContainerType::const_iterator inIt = this->GetLabelMap()->GetLabelObjectContainer().begin();
 
-  while( loIterator != this->GetLabelMap()->GetLabelObjectContainer().end() )
+  while( inIt != this->GetLabelMap()->GetLabelObjectContainer().end() )
     {
     // inform the user that we are begining a new object
-    m_Label = loIterator->first;
+    m_Label = inIt->first;
     this->InvokeEvent( IterationEvent() );
     // select our object
     m_Select->SetLabel( m_Label );
@@ -185,6 +185,9 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
 
     // to store the label objects
     LabelMapType * labelMap;
+    
+    // to be reused later
+    LabelObjectType * inLo = inLo;
 
     // update the pipeline
     if( m_BinaryInternalOutput )
@@ -197,7 +200,7 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
       m_LI2LM->UpdateLargestPossibleRegion();
       labelMap = m_LI2LM->GetOutput();
       }
-    // std::cout << "label: " << m_Label + 0.0 << "  " << loIterator->second->GetLabel() + 0.0 << std::endl;
+    // std::cout << "label: " << m_Label + 0.0 << "  " << inLo->GetLabel() + 0.0 << std::endl;
     
     // stole the label objects from the last filter of the pipeline, to put them in the output
     // label map of the current filter
@@ -207,36 +210,37 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
       // If more than one is produced, it is pushed in the label map without trying
       // to get a specific label. If a label is already there, it means that a previous
       // object has stolen the label, so the label of the thief must be changed.
-      typename LabelMapType::LabelObjectContainerType & labelObjectContainer2 = labelMap->GetLabelObjectContainer();
-      typename LabelMapType::LabelObjectContainerType::iterator it2 = labelObjectContainer2.begin();
-      if( it2 != labelObjectContainer2.end() )
+      typename LabelMapType::LabelObjectContainerType & outLabelObjectContainer = labelMap->GetLabelObjectContainer();
+      typename LabelMapType::LabelObjectContainerType::iterator outIt = outLabelObjectContainer.begin();
+      if( outIt != outLabelObjectContainer.end() )
         {
-        LabelObjectType * lo = it2->second;
+        LabelObjectType * outLo = outIt->second;
         if( output->HasLabel( m_Label ) )
           {
-          // the label has been stolen by a previously splitted object. Just move than object elsewhere
+          // the label has been stolen by a previously splitted object. Just move that object elsewhere
           // to free the label
           typename LabelObjectType::Pointer lotmp = output->GetLabelObject( m_Label );
           output->RemoveLabelObject( lotmp );
-          lo->SetLabel( m_Label );
-          lo->CopyAttributesFrom( loIterator->second );
-          output->AddLabelObject( lo );
+          outLo->SetLabel( m_Label );
+          outLo->CopyAttributesFrom( inLo );
+          output->AddLabelObject( outLo );
           output->PushLabelObject( lotmp );
           }
         else
           {
-          lo->SetLabel( m_Label );
-          lo->CopyAttributesFrom( loIterator->second );
-          output->AddLabelObject( lo );
+          outLo->SetLabel( m_Label );
+          outLo->CopyAttributesFrom( inLo );
+          output->AddLabelObject( outLo );
           }
           
         // then push the other objects
-        it2++;
-        while( it2 != labelObjectContainer2.end() )
+        outIt++;
+        while( outIt != outLabelObjectContainer.end() )
           {
-          it2->second->CopyAttributesFrom( loIterator->second );
-          output->PushLabelObject( it2->second );
-          it2++;
+          outLo = outIt->second;
+          outLo->CopyAttributesFrom( inLo );
+          output->PushLabelObject( outLo );
+          outIt++;
           }
         }
       else
@@ -247,18 +251,19 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
     else
       {
       // don't try to preserve the label - simply push the label objects as they come
-      typename LabelMapType::LabelObjectContainerType & labelObjectContainer2 = labelMap->GetLabelObjectContainer();
-      typename LabelMapType::LabelObjectContainerType::iterator it2 = labelObjectContainer2.begin();
-      while( it2 != labelObjectContainer2.end() )
+      typename LabelMapType::LabelObjectContainerType & outLabelObjectContainer = labelMap->GetLabelObjectContainer();
+      typename LabelMapType::LabelObjectContainerType::iterator outIt = outLabelObjectContainer.begin();
+      while( outIt != outLabelObjectContainer.end() )
         {
-        it2->second->CopyAttributesFrom( loIterator->second );
-        output->PushLabelObject( it2->second );
-        it2++;
+        LabelObjectType * outLo = outIt->second;
+        outLo->CopyAttributesFrom( inLo );
+        output->PushLabelObject( outLo );
+        outIt++;
         }
       }
     
     // and proceed the next object
-    loIterator++;
+    inIt++;
     progress.CompletedPixel();
 
     }
