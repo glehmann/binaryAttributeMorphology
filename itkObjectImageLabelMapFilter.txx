@@ -71,7 +71,10 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
 
   m_BI2LM = BI2LMType::New();
   m_BI2LM->SetNumberOfThreads( 1 );
-
+  
+  // to be sure that no one will use an uninitialized value
+  m_Label = itk::NumericTraits< InputImagePixelType >::Zero;
+  
 }
 
 
@@ -171,8 +174,11 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
 
   while( loIterator != this->GetLabelMap()->GetLabelObjectContainer().end() )
     {
+    // inform the user that we are begining a new object
+    m_Label = loIterator->first;
+    this->InvokeEvent( IterationEvent() );
     // select our object
-    m_Select->SetLabel( loIterator->first );
+    m_Select->SetLabel( m_Label );
     // TODO: remove the next line - it shouldn't be required. 
     // It seems to be a bug in the autocrop filter :-(
     m_Crop->Modified();
@@ -191,7 +197,7 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
       m_LI2LM->UpdateLargestPossibleRegion();
       labelMap = m_LI2LM->GetOutput();
       }
-    // std::cout << "label: " << loIterator->first + 0.0 << "  " << loIterator->second->GetLabel() + 0.0 << std::endl;
+    // std::cout << "label: " << m_Label + 0.0 << "  " << loIterator->second->GetLabel() + 0.0 << std::endl;
     
     // stole the label objects from the last filter of the pipeline, to put them in the output
     // label map of the current filter
@@ -206,20 +212,20 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
       if( it2 != labelObjectContainer2.end() )
         {
         LabelObjectType * lo = it2->second;
-        if( output->HasLabel( loIterator->first ) )
+        if( output->HasLabel( m_Label ) )
           {
           // the label has been stolen by a previously splitted object. Just move than object elsewhere
           // to free the label
-          typename LabelObjectType::Pointer lotmp = output->GetLabelObject( loIterator->first );
+          typename LabelObjectType::Pointer lotmp = output->GetLabelObject( m_Label );
           output->RemoveLabelObject( lotmp );
-          lo->SetLabel( loIterator->first );
+          lo->SetLabel( m_Label );
           lo->CopyAttributesFrom( loIterator->second );
           output->AddLabelObject( lo );
           output->PushLabelObject( lotmp );
           }
         else
           {
-          lo->SetLabel( loIterator->first );
+          lo->SetLabel( m_Label );
           lo->CopyAttributesFrom( loIterator->second );
           output->AddLabelObject( lo );
           }
@@ -253,7 +259,6 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
     
     // and proceed the next object
     loIterator++;
-    this->InvokeEvent( IterationEvent() );
     progress.CompletedPixel();
 
     }
@@ -276,6 +281,7 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
      << " " << this->m_InputFilter.GetPointer() << std::endl;
   os << indent << "OutputFilter: " << this->m_OutputFilter->GetNameOfClass() 
      << " " << this->m_OutputFilter.GetPointer() << std::endl;
+  os << indent << "Label: " << static_cast<typename NumericTraits<InputImagePixelType>::PrintType>(m_Label) << std::endl;
 
 }
   

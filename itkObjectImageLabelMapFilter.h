@@ -160,6 +160,12 @@ public:
   itkSetMacro(InternalForegroundValue, InternalOutputPixelType);
   itkGetMacro(InternalForegroundValue, InternalOutputPixelType);
 
+  /** The label of the object currently processed by the filter. This is intended to be
+   * used with the IterationEvent sent before the processing of each object. It contains
+   * a relevant value only during the filter update.
+   */
+  itkGetMacro(Label, InputImagePixelType);
+
 protected:
   ObjectImageLabelMapFilter();
   ~ObjectImageLabelMapFilter() {};
@@ -190,6 +196,8 @@ private:
   typename LM2BIType::Pointer  m_LM2BI;
   typename LI2LMType::Pointer  m_LI2LM;
   typename BI2LMType::Pointer  m_BI2LM;
+  
+  InputImagePixelType          m_Label;
 
 }; // end of class
 
