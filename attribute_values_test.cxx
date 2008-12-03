@@ -65,6 +65,7 @@ int main(int argc, char * argv[])
   assert( eq(1.92809, ball->GetBinaryPrincipalMoments()[2]) );
 
   assert( eq(1.01815, ball->GetBinaryElongation()) );
+  assert( eq(1.0, ball->GetBinaryFlatness()) );
   assert( eq(3.06789, ball->GetEquivalentRadius()) );
   assert( eq(118.274, ball->GetEquivalentPerimeter()) );
 
@@ -114,6 +115,7 @@ int main(int argc, char * argv[])
   assert( eq(7.4488, ellipsoid->GetBinaryPrincipalMoments()[2]) );
 
   assert( eq(2.0, ellipsoid->GetBinaryElongation()) );
+  assert( eq(1.0, ellipsoid->GetBinaryFlatness()) );
   assert( eq(3.8445, ellipsoid->GetEquivalentRadius()) );
   assert( eq(185.734, ellipsoid->GetEquivalentPerimeter()) );
 

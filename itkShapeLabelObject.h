@@ -235,6 +235,19 @@ public:
     }
 };
 
+template< class TLabelObject >
+class ITK_EXPORT BinaryFlatnessLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef double       AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetBinaryFlatness();
+    }
+};
+
 }
 
 
@@ -297,6 +310,7 @@ public:
   static const AttributeType EQUIVALENT_RADIUS=14;
   static const AttributeType EQUIVALENT_PERIMETER=15;
   static const AttributeType EQUIVALENT_ELLIPSOID_RADIUS=16;
+  static const AttributeType BINARY_FLATNESS=17;
 
   static AttributeType GetAttributeFromName( const std::string & s )
     {
@@ -368,6 +382,10 @@ public:
       {
       return EQUIVALENT_ELLIPSOID_RADIUS;
       }
+    else if( s == "BinaryFlatness" )
+      {
+      return BINARY_FLATNESS;
+      }
     // can't recognize the namespace
     throw std::runtime_error("Unknown attribute.");
     }
@@ -425,6 +443,9 @@ public:
         break;
       case EQUIVALENT_ELLIPSOID_RADIUS:
         return "EquivalentEllipsoidSize";
+        break;
+      case BINARY_FLATNESS:
+        return "BinaryFlatness";
         break;
       }
       // can't recognize the namespace
@@ -643,6 +664,18 @@ public:
     m_EquivalentEllipsoidSize = v;
     }
 
+//   itkGetConstMacro( BinaryFlatness, double );
+//   itkSetMacro( BinaryFlatness, double );
+  const double & GetBinaryFlatness() const
+    {
+    return m_BinaryFlatness;
+    }
+
+  void SetBinaryFlatness( const double & v )
+    {
+    m_BinaryFlatness = v;
+    }
+
 
 // some helper methods - not really required, but really useful!
 
@@ -729,6 +762,7 @@ public:
     m_EquivalentRadius = src->m_EquivalentRadius;
     m_EquivalentPerimeter = src->m_EquivalentPerimeter;
     m_EquivalentEllipsoidSize = src->m_EquivalentEllipsoidSize;
+    m_BinaryFlatness = src->m_BinaryFlatness;
     }
 
 protected:
@@ -750,6 +784,7 @@ protected:
     m_EquivalentRadius = 0;
     m_EquivalentPerimeter = 0;
     m_EquivalentEllipsoidSize.Fill(0);
+    m_BinaryFlatness = 0;
     }
   
 
@@ -775,6 +810,7 @@ protected:
     os << indent << "EquivalentRadius: " << m_EquivalentRadius << std::endl;
     os << indent << "EquivalentPerimeter: " << m_EquivalentPerimeter << std::endl;
     os << indent << "EquivalentEllipsoidSize: " << m_EquivalentEllipsoidSize << std::endl;
+    os << indent << "BinaryFlatness: " << m_BinaryElongation << std::endl;
     }
 
 private:
@@ -798,6 +834,7 @@ private:
   double        m_EquivalentRadius;
   double        m_EquivalentPerimeter;
   VectorType    m_EquivalentEllipsoidSize;
+  double        m_BinaryFlatness;
 
 };
 

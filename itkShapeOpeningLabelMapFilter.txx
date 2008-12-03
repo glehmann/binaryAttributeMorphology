@@ -76,6 +76,9 @@ ShapeOpeningLabelMapFilter<TImage>
     case LabelObjectType::EQUIVALENT_PERIMETER:
       TemplatedGenerateData< typename Functor::EquivalentPerimeterLabelObjectAccessor< LabelObjectType > >();
       break;
+    case LabelObjectType::BINARY_FLATNESS:
+      TemplatedGenerateData< typename Functor::BinaryFlatnessLabelObjectAccessor< LabelObjectType > >();
+      break;
     default:
       itkExceptionMacro(<< "Unknown attribute type");
       break;

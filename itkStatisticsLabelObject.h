@@ -248,6 +248,19 @@ public:
     }
 };
 
+template< class TLabelObject >
+class ITK_EXPORT FlatnessLabelObjectAccessor
+{
+public:
+  typedef TLabelObject LabelObjectType;
+  typedef double       AttributeValueType;
+
+  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
+    {
+    return labelObject->GetFlatness();
+    }
+};
+
 }
 
 
@@ -318,6 +331,7 @@ public:
   static const AttributeType SKEWNESS=114;
   static const AttributeType ELONGATION=115;
   static const AttributeType HISTOGRAM=116;
+  static const AttributeType FLATNESS=117;
 
   static AttributeType GetAttributeFromName( const std::string & s )
     {
@@ -389,6 +403,10 @@ public:
       {
       return HISTOGRAM;
       }
+    else if( s == "Flatness" )
+      {
+      return FLATNESS;
+      }
     // can't recognize the namespace
     return Superclass::GetAttributeFromName( s );
     }
@@ -448,6 +466,9 @@ public:
       case HISTOGRAM:
         return "Histogram";
         break;
+      case FLATNESS:
+        return "Flatness";
+        break;
       }
       // can't recognize the namespace
       return Superclass::GetNameFromAttribute( a );
@@ -485,6 +506,7 @@ public:
     m_Skewness = src->m_Skewness;
     m_Elongation = src->m_Elongation;
     m_Histogram = src->m_Histogram;
+    m_Flatness = src->m_Flatness;
     }
 
 //   itkGetConstMacro( Minimum, double );
@@ -691,6 +713,18 @@ public:
     m_Histogram = v;
     }
 
+//   itkGetConstMacro( Flatness, double );
+//   itkSetMacro( Flatness, double );
+  const double & GetFlatness() const
+    {
+    return m_Flatness;
+    }
+
+  void SetFlatness( const double & v )
+    {
+    m_Flatness = v;
+    }
+
 
 // some helper methods - not really required, but really useful!
 
@@ -770,6 +804,7 @@ protected:
     m_Skewness = 0;
     m_Elongation = 0;
     m_Histogram = NULL;
+    m_Flatness = 0;
     }
   
 
@@ -802,6 +837,7 @@ protected:
       {
       m_Histogram->Print( os, indent );
       }
+    os << indent << "Flatness: " << m_Flatness << std::endl;
     }
 
 private:
@@ -825,6 +861,7 @@ private:
   double                               m_Kurtosis;
   double                               m_Elongation;
   typename HistogramType::ConstPointer m_Histogram;
+  double                               m_Flatness;
 
 };
 

@@ -329,10 +329,17 @@ ShapeLabelMapFilter<TImage, TLabelImage>
     }
 
   double elongation = 0;
-  if( principalMoments[0] != 0 )
+  double flatness = 0;
+  if( ImageDimension < 2 )
+    {
+    elongation = 1;
+    flatness = 1;
+    }
+  else if( principalMoments[0] != 0 )
     {
 //    elongation = principalMoments[ImageDimension-1] / principalMoments[0];
-    elongation = vcl_sqrt(principalMoments[ImageDimension-1] / principalMoments[0]);
+    elongation = vcl_sqrt(principalMoments[ImageDimension-1] / principalMoments[ImageDimension-2]);
+    flatness = vcl_sqrt(principalMoments[1] / principalMoments[0]);
     }
 
   double physicalSize = size * sizePerPixel;
@@ -367,6 +374,7 @@ ShapeLabelMapFilter<TImage, TLabelImage>
   labelObject->SetEquivalentRadius( equivalentRadius );
   labelObject->SetEquivalentPerimeter( equivalentPerimeter );
   labelObject->SetEquivalentEllipsoidSize( ellipsoidSize );
+  labelObject->SetBinaryFlatness( flatness );
 
   if( m_ComputeFeretDiameter )
     {

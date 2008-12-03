@@ -177,6 +177,7 @@ StatisticsLabelMapFilter<TImage, TFeatureImage>
     }
 
   double elongation = 0;
+  double flatness = 0;
   if( sum != 0 )
     {
     // Normalize using the total mass
@@ -224,10 +225,16 @@ StatisticsLabelMapFilter<TImage, TFeatureImage>
       principalAxes[ ImageDimension-1 ][i] *= std::real( det );
       }
   
-    if( principalMoments[0] != 0 )
+    if( ImageDimension < 2 )
+      {
+      elongation = 1;
+      flatness = 1;
+      }
+    else if( principalMoments[0] != 0 )
       {
   //    elongation = principalMoments[ImageDimension-1] / principalMoments[0];
-      elongation = vcl_sqrt(principalMoments[ImageDimension-1] / principalMoments[0]);
+      elongation = vcl_sqrt(principalMoments[ImageDimension-1] / principalMoments[ImageDimension-2]);
+      flatness = vcl_sqrt(principalMoments[1] / principalMoments[0]);
       }
     }
   else

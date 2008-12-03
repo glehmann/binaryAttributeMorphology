@@ -68,6 +68,9 @@ StatisticsRelabelLabelMapFilter<TImage>
     case LabelObjectType::ELONGATION:
       TemplatedGenerateData< typename Functor::ElongationLabelObjectAccessor< LabelObjectType > >();
       break;
+    case LabelObjectType::FLATNESS:
+      TemplatedGenerateData< typename Functor::FlatnessLabelObjectAccessor< LabelObjectType > >();
+      break;
     default:
       Superclass::GenerateData();
       break;
