@@ -85,6 +85,16 @@ InPlaceLabelMapFilter<TInputImage>
       this->GraftOutput( inputAsOutput );
       this->GetOutput()->SetRegions( region );
       }
+
+    // If there are more than one outputs, allocate the remaining outputs
+    for (unsigned int i=1; i < this->GetNumberOfOutputs(); i++)
+      {
+      OutputImagePointer outputPtr;
+      
+      outputPtr = this->GetOutput(i);
+      outputPtr->SetBufferedRegion(outputPtr->GetRequestedRegion());
+      outputPtr->Allocate();
+      }
     }
   else
     {
