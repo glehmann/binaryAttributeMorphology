@@ -29,6 +29,9 @@ AttributeOpeningLabelMapFilter<TImage, TAttributeAccessor>
 {
   m_Lambda = NumericTraits< AttributeValueType >::Zero;
   m_ReverseOrdering = false;
+  // create the output image for the removed objects
+  this->SetNumberOfRequiredOutputs(2);
+  this->SetNthOutput(1, static_cast<TImage*>(this->MakeOutput(1).GetPointer()));
 }
 
 
@@ -41,6 +44,10 @@ AttributeOpeningLabelMapFilter<TImage, TAttributeAccessor>
   this->AllocateOutputs();
 
   ImageType * output = this->GetOutput();
+  ImageType * output2 = this->GetOutput( 1 );
+
+  // set the background value for the second output - this is not done in the superclasses
+  output2->SetBackgroundValue( output->GetBackgroundValue() );
 
   AttributeAccessorType accessor;
 
@@ -60,6 +67,7 @@ AttributeOpeningLabelMapFilter<TImage, TAttributeAccessor>
       {
       // must increment the iterator before removing the object to avoid invalidating the iterator
       it++;
+      output2->AddLabelObject( labelObject );
       output->RemoveLabel( label );
       }
     else

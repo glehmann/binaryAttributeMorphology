@@ -28,6 +28,9 @@ StatisticsOpeningLabelMapFilter<TImage>
 ::StatisticsOpeningLabelMapFilter()
 {
   this->m_Attribute = LabelObjectType::MEAN;
+  // create the output image for the removed objects
+  this->SetNumberOfRequiredOutputs(2);
+  this->SetNthOutput(1, static_cast<TImage*>(this->MakeOutput(1).GetPointer()));
 }
 
 
@@ -87,6 +90,10 @@ StatisticsOpeningLabelMapFilter<TImage>
   this->AllocateOutputs();
 
   ImageType * output = this->GetOutput();
+  ImageType * output2 = this->GetOutput( 1 );
+
+  // set the background value for the second output - this is not done in the superclasses
+  output2->SetBackgroundValue( output->GetBackgroundValue() );
 
   TAttributeAccessor accessor;
 
@@ -106,6 +113,7 @@ StatisticsOpeningLabelMapFilter<TImage>
       {
       // must increment the iterator before removing the object to avoid invalidating the iterator
       it++;
+      output2->AddLabelObject( labelObject );
       output->RemoveLabel( label );
       }
     else

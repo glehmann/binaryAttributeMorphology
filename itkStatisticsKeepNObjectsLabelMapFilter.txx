@@ -28,6 +28,9 @@ StatisticsKeepNObjectsLabelMapFilter<TImage>
 ::StatisticsKeepNObjectsLabelMapFilter()
 {
   this->m_Attribute = LabelObjectType::MEAN;
+  // create the output image for the removed objects
+  this->SetNumberOfRequiredOutputs(2);
+  this->SetNthOutput(1, static_cast<TImage*>(this->MakeOutput(1).GetPointer()));
 }
 
 
@@ -88,6 +91,10 @@ StatisticsKeepNObjectsLabelMapFilter<TImage>
   this->AllocateOutputs();
 
   ImageType * output = this->GetOutput();
+  ImageType * output2 = this->GetOutput( 1 );
+
+  // set the background value for the second output - this is not done in the superclasses
+  output2->SetBackgroundValue( output->GetBackgroundValue() );
 
   typedef typename ImageType::LabelObjectContainerType LabelObjectContainerType;
   const LabelObjectContainerType & labelObjectContainer = output->GetLabelObjectContainer();
@@ -127,6 +134,7 @@ StatisticsKeepNObjectsLabelMapFilter<TImage>
       it != labelObjects.end();
       it++ )
       {
+      output2->AddLabelObject( *it );
       output->RemoveLabelObject( *it );
       progress.CompletedPixel();
       }

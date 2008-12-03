@@ -29,6 +29,9 @@ AttributeKeepNObjectsLabelMapFilter<TImage, TAttributeAccessor>
 {
   m_ReverseOrdering = false;
   m_NumberOfObjects = 1;
+  // create the output image for the removed objects
+  this->SetNumberOfRequiredOutputs(2);
+  this->SetNthOutput(1, static_cast<TImage*>(this->MakeOutput(1).GetPointer()));
 }
 
 
@@ -41,6 +44,10 @@ AttributeKeepNObjectsLabelMapFilter<TImage, TAttributeAccessor>
   this->AllocateOutputs();
 
   ImageType * output = this->GetOutput();
+  ImageType * output2 = this->GetOutput( 1 );
+
+  // set the background value for the second output - this is not done in the superclasses
+  output2->SetBackgroundValue( output->GetBackgroundValue() );
 
   typedef typename ImageType::LabelObjectContainerType LabelObjectContainerType;
   const LabelObjectContainerType & labelObjectContainer = output->GetLabelObjectContainer();
@@ -75,12 +82,13 @@ AttributeKeepNObjectsLabelMapFilter<TImage, TAttributeAccessor>
       }
 //   progress.CompletedPixel();
   
-    // and remove the last objects of the map
+    // and move the last objects to the second output
     for( typename VectorType::const_iterator it = end;
       it != labelObjects.end();
       it++ )
       {
       output->RemoveLabelObject( *it );
+      output2->AddLabelObject( *it );
       progress.CompletedPixel();
       }
     }
