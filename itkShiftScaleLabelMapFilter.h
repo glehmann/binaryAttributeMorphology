@@ -21,10 +21,7 @@
 
 namespace itk {
 /** \class ShiftScaleLabelMapFilter
- * \brief relabel objects according to their shape attributes
- *
- * ShapeRelabelImageFilter relabel a label collection image according to the shape attributes of
- * the objects. The label produced are always consecutives.
+ * \brief 
  *
  * \author Ga�tan Lehmann. Biologie du D�veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
