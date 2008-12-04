@@ -187,7 +187,7 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
     LabelMapType * labelMap;
     
     // to be reused later
-    LabelObjectType * inLo = inLo;
+    LabelObjectType * inLo = inIt->second;
 
     // update the pipeline
     if( m_BinaryInternalOutput )
