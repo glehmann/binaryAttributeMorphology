@@ -30,6 +30,7 @@ AttributeSelectionLabelMapFilter<TImage, TAttributeAccessor>
   m_AttributeSet.clear();
   m_Exclude = false;
   this->SetNumberOfRequiredOutputs(2);
+  this->SetNthOutput(1, static_cast<TImage*>(this->MakeOutput(1).GetPointer()));
 }
 
 
