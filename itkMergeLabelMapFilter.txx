@@ -108,6 +108,7 @@ MergeLabelMapFilter<TImage>
           {
           itkExceptionMacro(<< "Label " 
             << static_cast< typename itk::NumericTraits< PixelType >::PrintType >( newLo->GetLabel() )
+            << " from input " << i
             << " is already in use.");
           }
         
