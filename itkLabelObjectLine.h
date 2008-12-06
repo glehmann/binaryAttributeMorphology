@@ -20,6 +20,36 @@
 namespace itk
 {
 
+namespace Functor {
+
+template< class TLabelObjectLine >
+class LabelObjectLineComparator
+{
+public:
+  bool operator()(TLabelObjectLine const& l1, TLabelObjectLine const& l2) const
+    {
+    const typename TLabelObjectLine::IndexType & idx1 = l1.GetIndex();
+    const typename TLabelObjectLine::IndexType & idx2 = l2.GetIndex();
+    
+    for(int i=TLabelObjectLine::ImageDimension - 1; i>=0; i--)
+      {
+      if(idx1[i] < idx2[i])
+        {
+        return true;
+        }
+      else if(idx1[i] > idx2[i])
+        {
+        return false;
+        }
+      }
+    return l1.GetLength() < l2.GetLength();
+    }
+};
+
+}
+
+
+
 /** \class LabelObjectLine
  * LabelObjectLine is the line object used in the LabelObject class
  * to store the line which are part of the object.

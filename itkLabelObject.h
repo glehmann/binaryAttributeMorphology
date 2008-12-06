@@ -287,6 +287,67 @@ public:
     // also copy the attributes
     this->CopyAttributesFrom( src );
     }
+    
+  /** Reorder the lines, merge the touching lines and ensure that no
+   * pixel is covered by two lines
+   */
+  void Optimize()
+    {
+    if( ! m_LineContainer.empty() )
+      {
+      // first copy the lines in another container and clear the current one
+      LineContainerType lineContainer = m_LineContainer;
+      m_LineContainer.clear();
+      
+      // reorder the lines
+      typename Functor::LabelObjectLineComparator< LineType > comparator;
+      std::sort( lineContainer.begin(), lineContainer.end(), comparator );
+      
+      // then check the lines consistancy
+      // we'll proceed line index by line index
+      IndexType currentIdx = lineContainer.begin()->GetIndex();
+      long int currentLength = lineContainer.begin()->GetLength();
+      
+      for( typename LineContainerType::const_iterator it=lineContainer.begin(); 
+           it != lineContainer.end();
+           it++ )
+        {
+        const LineType & line = *it;
+        IndexType idx = line.GetIndex();
+        unsigned long length = line.GetLength();
+        
+        // check the index to be sure that we are still in the same line idx
+        bool sameIdx = true;
+        for( int i=1; i<ImageDimension; i++ )
+          {
+          if( currentIdx[i] != idx[i] )
+            {
+            sameIdx = false;
+            }
+          }
+        
+        // try to extend the current line idx, or create a new line
+        if( sameIdx && currentIdx[0] + currentLength >= idx[0] )
+          {
+          // we may expand the line
+          long int newLength = idx[0] + length - currentIdx[0];
+          currentLength = std::max( newLength, currentLength );
+          }
+        else
+          {
+          // add the previous line to the new line container and use the new line index and size
+          // std::cout << currentIdx << "  " << currentLength << std::endl;
+          this->AddLine( currentIdx, currentLength );
+          currentIdx = idx;
+          currentLength = length;
+          }
+        // std::cout << line.GetIndex() << "  " << line.GetLength() << std::endl;
+        }
+      // complete the last line
+      // std::cout << currentIdx << "  " << currentLength << std::endl;
+      this->AddLine( currentIdx, currentLength );
+      }
+    }
 
 protected:
   LabelObject()
