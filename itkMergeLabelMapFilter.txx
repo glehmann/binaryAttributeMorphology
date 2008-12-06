@@ -150,6 +150,8 @@ MergeLabelMapFilter<TImage>
             {
             mainLo->AddLine( *lit );
             }
+          // be sure to have the lines well organized
+          mainLo->Optimize();
           }
         
         // go to the next label
