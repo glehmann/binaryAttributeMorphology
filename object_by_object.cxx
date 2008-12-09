@@ -5,7 +5,7 @@
 #include "itkLabelObject.h"
 #include "itkLabelMap.h"
 #include "itkLabelImageToLabelMapFilter.h"
-#include "itkObjectImageLabelMapFilter.h"
+#include "itkObjectByObjectLabelMapFilter.h"
 #include "itkLabelMapToLabelImageFilter.h"
 
 #include "itkBinaryDilateImageFilter.h"
@@ -44,7 +44,7 @@ int main(int argc, char * argv[])
   rad.Fill( 10 );
   cast->SetKernel( KernelType::Ball( rad ) );
   
-  typedef itk::ObjectImageLabelMapFilter< LabelMapType, LabelMapType, CastType > OIType;
+  typedef itk::ObjectByObjectLabelMapFilter< LabelMapType, LabelMapType, CastType > OIType;
   OIType::Pointer oi = OIType::New();
   oi->SetInput( i2l->GetOutput() );
   oi->SetFilter( cast );

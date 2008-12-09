@@ -206,7 +206,7 @@ SET(CurrentExe "attribute_values_test")
 ADD_EXECUTABLE(${CurrentExe} ${CurrentExe}.cxx)
 TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
 
-SET(CurrentExe "object_image")
+SET(CurrentExe "object_by_object")
 ADD_EXECUTABLE(${CurrentExe} ${CurrentExe}.cxx)
 TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
 

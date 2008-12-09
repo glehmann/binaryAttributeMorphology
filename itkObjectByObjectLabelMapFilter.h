@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkObjectImageLabelMapFilter.h,v $
+  Module:    $RCSfile: itkObjectByObjectLabelMapFilter.h,v $
   Language:  C++
   Date:      $Date: 2005/08/23 15:09:03 $
   Version:   $Revision: 1.4 $
@@ -14,8 +14,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkObjectImageLabelMapFilter_h
-#define __itkObjectImageLabelMapFilter_h
+#ifndef __itkObjectByObjectLabelMapFilter_h
+#define __itkObjectByObjectLabelMapFilter_h
 
 #include "itkLabelMapFilter.h"
 #include "itkLabelImageToLabelMapFilter.h"
@@ -28,8 +28,8 @@
 
 namespace itk {
 
-/** \class ObjectImageLabelMapFilter
- * \brief ObjectImageLabelMapFilter applies an image pipeline to all the objects of a label map and produce a new label map
+/** \class ObjectByObjectLabelMapFilter
+ * \brief ObjectByObjectLabelMapFilter applies an image pipeline to all the objects of a label map and produce a new label map
  *
  * \author Ga�tan Lehmann. Biologie du D�veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
@@ -42,12 +42,12 @@ template<class TInputImage, class TOutputImage=TInputImage,
   class TOutputFilter=TInputFilter,
   class TInternalInputImage=ITK_TYPENAME TInputFilter::InputImageType,
   class TInternalOutputImage=ITK_TYPENAME TOutputFilter::OutputImageType >
-class ITK_EXPORT ObjectImageLabelMapFilter : 
+class ITK_EXPORT ObjectByObjectLabelMapFilter : 
     public LabelMapFilter<TInputImage, TOutputImage>
 {
 public:
   /** Standard class typedefs. */
-  typedef ObjectImageLabelMapFilter                 Self;
+  typedef ObjectByObjectLabelMapFilter                 Self;
   typedef LabelMapFilter<TInputImage, TOutputImage> Superclass;
   typedef SmartPointer<Self>                        Pointer;
   typedef SmartPointer<const Self>                  ConstPointer;
@@ -100,7 +100,7 @@ public:
   itkNewMacro(Self);  
 
   /** Runtime information support. */
-  itkTypeMacro(ObjectImageLabelMapFilter, 
+  itkTypeMacro(ObjectByObjectLabelMapFilter, 
                LabelMapFilter);
 
   void SetFilter(InputFilterType * filter);
@@ -167,15 +167,15 @@ public:
   itkGetMacro(Label, InputImagePixelType);
 
 protected:
-  ObjectImageLabelMapFilter();
-  ~ObjectImageLabelMapFilter() {};
+  ObjectByObjectLabelMapFilter();
+  ~ObjectByObjectLabelMapFilter() {};
   void PrintSelf(std::ostream& os, Indent indent) const;
 
   virtual void GenerateData();
   
 
 private:
-  ObjectImageLabelMapFilter(const Self&); //purposely not implemented
+  ObjectByObjectLabelMapFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
   bool     m_ConstrainPaddingToImage;
@@ -204,7 +204,7 @@ private:
 } // end namespace itk
   
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkObjectImageLabelMapFilter.txx"
+#include "itkObjectByObjectLabelMapFilter.txx"
 #endif
 
 #endif

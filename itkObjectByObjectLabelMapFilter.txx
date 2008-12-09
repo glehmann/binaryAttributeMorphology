@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkObjectImageLabelMapFilter.txx,v $
+  Module:    $RCSfile: itkObjectByObjectLabelMapFilter.txx,v $
   Language:  C++
   Date:      $Date: 2005/08/23 15:09:03 $
   Version:   $Revision: 1.6 $
@@ -14,10 +14,10 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkObjectImageLabelMapFilter_txx
-#define __itkObjectImageLabelMapFilter_txx
+#ifndef __itkObjectByObjectLabelMapFilter_txx
+#define __itkObjectByObjectLabelMapFilter_txx
 
-#include "itkObjectImageLabelMapFilter.h"
+#include "itkObjectByObjectLabelMapFilter.h"
 #include "itkBinaryThresholdImageFilter.h"
 #include "itkSignedMaurerDistanceMapImageFilter.h"
 #include "itkMorphologicalWatershedImageFilter.h"
@@ -37,8 +37,8 @@
 namespace itk {
 
 template <class TInputImage, class TOutputImage, class TInputFilter, class TOutputFilter, class TInternalInputImageType, class TInternalOutputImageType>
-ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType, TInternalOutputImageType>
-::ObjectImageLabelMapFilter()
+ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType, TInternalOutputImageType>
+::ObjectByObjectLabelMapFilter()
 {
   m_ConstrainPaddingToImage = true;
   m_PadSize.Fill(0);
@@ -80,7 +80,7 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
 
 template <class TInputImage, class TOutputImage, class TInputFilter, class TOutputFilter, class TInternalInputImageType, class TInternalOutputImageType>
 void
-ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType, TInternalOutputImageType>
+ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType, TInternalOutputImageType>
 ::SetFilter( InputFilterType * filter )
 {
   OutputFilterType * outputFilter = dynamic_cast< OutputFilterType * >( filter );
@@ -96,7 +96,7 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
 
 template <class TInputImage, class TOutputImage, class TInputFilter, class TOutputFilter, class TInternalInputImageType, class TInternalOutputImageType>
 void
-ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType, TInternalOutputImageType>
+ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType, TInternalOutputImageType>
 ::SetInputFilter( InputFilterType * filter )
 {
   if( m_InputFilter.GetPointer() != filter )
@@ -109,7 +109,7 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
 
 template <class TInputImage, class TOutputImage, class TInputFilter, class TOutputFilter, class TInternalInputImageType, class TInternalOutputImageType>
 void
-ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType, TInternalOutputImageType>
+ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType, TInternalOutputImageType>
 ::SetOutputFilter( OutputFilterType * filter )
 {
   if( m_OutputFilter.GetPointer() != filter )
@@ -122,7 +122,7 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
 
 template <class TInputImage, class TOutputImage, class TInputFilter, class TOutputFilter, class TInternalInputImageType, class TInternalOutputImageType>
 void
-ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType, TInternalOutputImageType>
+ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType, TInternalOutputImageType>
 ::GenerateData()
 {
 
@@ -272,7 +272,7 @@ ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter
 
 template <class TInputImage, class TOutputImage, class TInputFilter, class TOutputFilter, class TInternalInputImageType, class TInternalOutputImageType>
 void
-ObjectImageLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType, TInternalOutputImageType>
+ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType, TInternalOutputImageType>
 ::PrintSelf(std::ostream &os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
