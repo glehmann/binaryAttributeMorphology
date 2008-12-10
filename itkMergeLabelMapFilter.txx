@@ -28,7 +28,7 @@ template <class TImage>
 MergeLabelMapFilter<TImage>
 ::MergeLabelMapFilter()
 {
-  m_Method = STRICT;
+  m_Method = KEEP;
 }
 
 
