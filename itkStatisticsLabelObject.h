@@ -264,7 +264,7 @@ public:
 }
 
 
-/** \class ShapeLabelObject
+/** \class StatisticsLabelObject
  *  \brief A Label object to store the common attributes related to the statistics of the object
  *
  * StatisticsLabelObject stores  the common attributes related to the statistics of the object
