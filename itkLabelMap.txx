@@ -454,6 +454,40 @@ LabelMap<TLabelObject>
 
 
 template<class TLabelObject >
+typename LabelMap<TLabelObject>::LabelVectorType
+LabelMap<TLabelObject>
+::GetLabels() const
+{
+  LabelVectorType res;
+  res.reserve( this->GetNumberOfLabelObjects() );
+  for( typename LabelObjectContainerType::const_iterator it = m_LabelObjectContainer.begin();
+    it != m_LabelObjectContainer.end();
+    it++ )
+    {
+    res.push_back( it->first );
+    }
+  return res;
+}
+
+
+template<class TLabelObject >
+typename LabelMap<TLabelObject>::LabelObjectVectorType
+LabelMap<TLabelObject>
+::GetLabelObjects() const
+{
+  LabelObjectVectorType res;
+  res.reserve( this->GetNumberOfLabelObjects() );
+  for( typename LabelObjectContainerType::const_iterator it = m_LabelObjectContainer.begin();
+    it != m_LabelObjectContainer.end();
+    it++ )
+    {
+    res.push_back( it->second );
+    }
+  return res;
+}
+
+
+template<class TLabelObject >
 void 
 LabelMap<TLabelObject>
 ::PrintLabelObjects(std::ostream& os) const

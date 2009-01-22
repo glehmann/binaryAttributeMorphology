@@ -79,6 +79,10 @@ public:
   /** the LabelObject container type */
   typedef std::map< LabelType, LabelObjectPointerType > LabelObjectContainerType;
 
+  /** types used to expose labels only and label objects only */
+  typedef std::vector< LabelType > LabelVectorType;
+  typedef std::vector< LabelObjectPointerType > LabelObjectVectorType;
+
   /** Index typedef support. An index is used to access pixel values. */
   typedef typename Superclass::IndexType  IndexType;
 
@@ -307,6 +311,16 @@ public:
    * Return the numbner of label objects in the image
    */
   unsigned long GetNumberOfLabelObjects() const;
+  
+  /**
+   * Return the labels of the label objects available in the label map
+   */
+  LabelVectorType GetLabels() const;
+
+  /**
+   * Return the the label objects available in the label map
+   */
+  LabelObjectVectorType GetLabelObjects() const;
   
   /**
    * Set/Get the background label
