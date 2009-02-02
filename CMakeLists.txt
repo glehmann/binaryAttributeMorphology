@@ -1,6 +1,9 @@
 #Change PROJECT_NAME to the name of your project
 PROJECT(binaryAttributeMorphology)
 
+# cpack stuff
+INCLUDE(CPack)
+
 # set the name of the input image used to run the test
 SET(BINARY_IMAGE ${CMAKE_SOURCE_DIR}/images/2th_cthead1.png)
 SET(LABEL_IMAGE ${CMAKE_SOURCE_DIR}/images/cthead1-label.png)
