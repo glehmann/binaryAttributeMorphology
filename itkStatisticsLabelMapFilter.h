@@ -26,7 +26,7 @@ namespace itk {
  * StatisticsCollectionImageFilter can be used to set the attributes values
  * of the StatisticsLabelObject in a LabelMap.
  *
- * \author Ga�tan Lehmann. Biologie du D�veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaetan Lehmann. Biologie du Developpement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */

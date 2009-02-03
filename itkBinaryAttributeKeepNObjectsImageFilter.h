@@ -38,7 +38,7 @@ namespace itk {
  * Used in combination with AttributeLabelObject, and a specilized attribute valuator,
  * this class is the most efficient way to keep N objects in a binary image.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaetan Lehmann. Biologie du Developpement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa AttributeLabelObject, InPlaceLabelMapFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters

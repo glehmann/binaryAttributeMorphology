@@ -33,7 +33,7 @@ namespace itk {
  * Contrary to the other filters made to remove some object of a LabelMap, no
  * ordering relation for the attribute is needed in that filter.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaetan Lehmann. Biologie du Developpement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa AttributeLabelObject
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters

@@ -44,6 +44,8 @@ namespace itk
  * L is the number of lines in the image (imageSize[1] * imageSize[2] for a 3D
  * image).
  *
+ * \author Gaetan Lehmann. Biologie du Developpement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ *
  * \ingroup ImageObjects */
 template <class TLabelObject >
 class ITK_EXPORT LabelMap : public ImageBase<TLabelObject::ImageDimension>

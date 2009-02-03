@@ -34,7 +34,7 @@ namespace itk {
  * having values > 0 are candidates for affecting the center pixel.
  * 
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaetan Lehmann. Biologie du Developpement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa MorphologyImageFilter, ClosingByReconstructionImageFilter, BinaryOpeningByReconstructionImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters

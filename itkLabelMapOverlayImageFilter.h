@@ -33,7 +33,7 @@ namespace itk {
  * Negated = false (the default) or it can mask the input image for a single label, when
  * Negated equals true. In Both cases, the label is set with SetLabel(). 
  *
- * \author Ga�tan Lehmann. Biologie du D�veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaetan Lehmann. Biologie du Developpement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa LabelMapToBinaryImageFilter, LabelMapToLabelImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters

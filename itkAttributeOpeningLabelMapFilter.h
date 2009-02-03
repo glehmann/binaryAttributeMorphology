@@ -28,7 +28,7 @@ namespace itk {
  * with an attribute value smaller or greater than a threshold called Lambda.
  * The attribute is provide by an attribute accessor given in template parameter.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaetan Lehmann. Biologie du Developpement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa AttributeLabelObject
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters

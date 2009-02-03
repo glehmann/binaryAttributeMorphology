@@ -24,7 +24,7 @@ namespace itk {
 /** \class LabelPerimeterEstimationCalculator
  * \brief TODO
  *
- * \author Ga�tan Lehmann. Biologie du D�veloppement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaetan Lehmann. Biologie du Developpement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa 
  */

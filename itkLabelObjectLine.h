@@ -55,6 +55,9 @@ public:
  * to store the line which are part of the object.
  * A line is formed of and index and a length in the dimension 0.
  * It is used in a run-length encoding
+ *
+ * \author Gaetan Lehmann. Biologie du Developpement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ *
  */
 template < unsigned int VImageDimension >
 class LabelObjectLine
