@@ -314,24 +314,24 @@ public:
   typedef typename itk::Statistics::Histogram< double > HistogramType;
 
   typedef typename Superclass::AttributeType AttributeType;
-  static const AttributeType MINIMUM=100;
-  static const AttributeType MAXIMUM=101;
-  static const AttributeType MEAN=102;
-  static const AttributeType SUM=103;
-  static const AttributeType SIGMA=104;
-  static const AttributeType VARIANCE=105;
-  static const AttributeType MEDIAN=106;
-  static const AttributeType MAXIMUM_INDEX=107;
-  static const AttributeType MINIMUM_INDEX=108;
-  static const AttributeType CENTER_OF_GRAVITY=109;
-//  static const AttributeType CENTRAL_MOMENTS=110;
-  static const AttributeType PRINCIPAL_MOMENTS=111;
-  static const AttributeType PRINCIPAL_AXES=112;
-  static const AttributeType KURTOSIS=113;
-  static const AttributeType SKEWNESS=114;
-  static const AttributeType ELONGATION=115;
-  static const AttributeType HISTOGRAM=116;
-  static const AttributeType FLATNESS=117;
+  static const AttributeType MINIMUM=200;
+  static const AttributeType MAXIMUM=201;
+  static const AttributeType MEAN=202;
+  static const AttributeType SUM=203;
+  static const AttributeType SIGMA=204;
+  static const AttributeType VARIANCE=205;
+  static const AttributeType MEDIAN=206;
+  static const AttributeType MAXIMUM_INDEX=207;
+  static const AttributeType MINIMUM_INDEX=208;
+  static const AttributeType CENTER_OF_GRAVITY=209;
+//  static const AttributeType CENTRAL_MOMENTS=210;
+  static const AttributeType PRINCIPAL_MOMENTS=211;
+  static const AttributeType PRINCIPAL_AXES=212;
+  static const AttributeType KURTOSIS=213;
+  static const AttributeType SKEWNESS=214;
+  static const AttributeType ELONGATION=215;
+  static const AttributeType HISTOGRAM=216;
+  static const AttributeType FLATNESS=217;
 
   static AttributeType GetAttributeFromName( const std::string & s )
     {
@@ -407,7 +407,7 @@ public:
       {
       return FLATNESS;
       }
-    // can't recognize the namespace
+    // can't recognize the name
     return Superclass::GetAttributeFromName( s );
     }
 
@@ -470,8 +470,8 @@ public:
         return "Flatness";
         break;
       }
-      // can't recognize the namespace
-      return Superclass::GetNameFromAttribute( a );
+    // can't recognize the name
+    return Superclass::GetNameFromAttribute( a );
     }
 
   typedef ImageRegion< ImageDimension > RegionType;

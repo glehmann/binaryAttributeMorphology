@@ -43,6 +43,9 @@ ShapeKeepNObjectsLabelMapFilter<TImage>
 {
   switch( m_Attribute )
     {
+    case LabelObjectType::LABEL:
+      TemplatedGenerateData< typename Functor::LabelLabelObjectAccessor< LabelObjectType > >();
+      break;
     case LabelObjectType::SIZE:
       TemplatedGenerateData< typename Functor::SizeLabelObjectAccessor< LabelObjectType > >();
       break;

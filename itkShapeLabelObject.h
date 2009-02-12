@@ -292,25 +292,25 @@ public:
 
   typedef typename Superclass::LineContainerType LineContainerType;
 
-  typedef unsigned int AttributeType;
-  static const AttributeType SIZE=0;
-  static const AttributeType PHYSICAL_SIZE=1;
-  static const AttributeType REGION_ELONGATION=2;
-  static const AttributeType SIZE_REGION_RATIO=3;
-  static const AttributeType CENTROID=4;
-  static const AttributeType REGION=5;
-  static const AttributeType SIZE_ON_BORDER=6;
-  static const AttributeType PHYSICAL_SIZE_ON_BORDER=7;
-  static const AttributeType FERET_DIAMETER=8;
-  static const AttributeType BINARY_PRINCIPAL_MOMENTS=9;
-  static const AttributeType BINARY_PRINCIPAL_AXES=10;
-  static const AttributeType BINARY_ELONGATION=11;
-  static const AttributeType PERIMETER=12;
-  static const AttributeType ROUNDNESS=13;
-  static const AttributeType EQUIVALENT_RADIUS=14;
-  static const AttributeType EQUIVALENT_PERIMETER=15;
-  static const AttributeType EQUIVALENT_ELLIPSOID_RADIUS=16;
-  static const AttributeType BINARY_FLATNESS=17;
+  typedef typename Superclass::AttributeType AttributeType;
+  static const AttributeType SIZE=100;
+  static const AttributeType PHYSICAL_SIZE=101;
+  static const AttributeType REGION_ELONGATION=102;
+  static const AttributeType SIZE_REGION_RATIO=103;
+  static const AttributeType CENTROID=104;
+  static const AttributeType REGION=105;
+  static const AttributeType SIZE_ON_BORDER=106;
+  static const AttributeType PHYSICAL_SIZE_ON_BORDER=107;
+  static const AttributeType FERET_DIAMETER=108;
+  static const AttributeType BINARY_PRINCIPAL_MOMENTS=109;
+  static const AttributeType BINARY_PRINCIPAL_AXES=110;
+  static const AttributeType BINARY_ELONGATION=111;
+  static const AttributeType PERIMETER=112;
+  static const AttributeType ROUNDNESS=113;
+  static const AttributeType EQUIVALENT_RADIUS=114;
+  static const AttributeType EQUIVALENT_PERIMETER=115;
+  static const AttributeType EQUIVALENT_ELLIPSOID_RADIUS=116;
+  static const AttributeType BINARY_FLATNESS=117;
 
   static AttributeType GetAttributeFromName( const std::string & s )
     {
@@ -386,8 +386,8 @@ public:
       {
       return BINARY_FLATNESS;
       }
-    // can't recognize the namespace
-    throw std::runtime_error("Unknown attribute.");
+    // can't recognize the name
+    return Superclass::GetAttributeFromName( s );
     }
 
   static std::string GetNameFromAttribute( const AttributeType & a )
@@ -448,8 +448,8 @@ public:
         return "BinaryFlatness";
         break;
       }
-      // can't recognize the namespace
-      throw std::runtime_error("Unknown attribute.");
+    // can't recognize the name
+    return Superclass::GetNameFromAttribute( a );
     }
 
   typedef ImageRegion< ImageDimension > RegionType;

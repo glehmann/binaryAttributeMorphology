@@ -135,6 +135,31 @@ public:
 
   typedef typename std::deque< LineType > LineContainerType;
 
+  typedef unsigned int AttributeType;
+  static const AttributeType LABEL=0;
+
+  static AttributeType GetAttributeFromName( const std::string & s )
+    {
+    if( s == "Label" )
+      {
+      return LABEL;
+      }
+    // can't recognize the name
+    throw std::runtime_error("Unknown attribute.");
+    }
+
+  static std::string GetNameFromAttribute( const AttributeType & a )
+    {
+    switch( a )
+      {
+      case LABEL:
+        return "Label";
+        break;
+      }
+    // can't recognize the namespace
+    throw std::runtime_error("Unknown attribute.");
+    }
+
   /**
    * Set/Get the label associated with that object.
    */
