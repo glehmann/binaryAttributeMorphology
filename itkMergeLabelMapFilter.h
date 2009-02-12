@@ -89,8 +89,6 @@ protected:
 
   void GenerateData();
 
-  template <class TAttributeAccessor> void TemplatedGenerateData();
-  
   void PrintSelf(std::ostream& os, Indent indent) const;
 
   int          m_Method;
