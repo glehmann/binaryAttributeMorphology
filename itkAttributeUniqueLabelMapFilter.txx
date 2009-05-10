@@ -56,6 +56,9 @@ AttributeUniqueLabelMapFilter<TImage, TAttributeAccessor>
     {
     LabelObjectType * lo = it2->second;
     
+    // may reduce the number of lines to proceed
+    lo->Optimize();
+    
     typename LabelObjectType::LineContainerType::const_iterator lit;
     typename LabelObjectType::LineContainerType & lineContainer = lo->GetLineContainer();
   
