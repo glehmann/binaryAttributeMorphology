@@ -16,9 +16,9 @@
 int main(int argc, char * argv[])
 {
 
-  if( argc != 3 )
+  if( argc != 4 )
     {
-    std::cerr << "usage: " << argv[0] << " input output" << std::endl;
+    std::cerr << "usage: " << argv[0] << " input output reverse" << std::endl;
     // std::cerr << "  : " << std::endl;
     exit(1);
     }
@@ -59,6 +59,7 @@ int main(int argc, char * argv[])
   typedef itk::AttributeUniqueLabelMapFilter< LabelMapType, itk::Functor::LabelLabelObjectAccessor< LabelObjectType > > UniqueType;
   UniqueType::Pointer unique = UniqueType::New();
   unique->SetInput( oi->GetOutput() );
+  unique->SetReverseOrdering( atoi(argv[3]) );
   
   typedef itk::LabelMapToLabelImageFilter< LabelMapType, ImageType> L2IType;
   L2IType::Pointer l2i = L2IType::New();

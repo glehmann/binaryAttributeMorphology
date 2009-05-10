@@ -41,7 +41,7 @@ AttributeUniqueLabelMapFilter<TImage, TAttributeAccessor>
   this->AllocateOutputs();
 
   // the priority queue to store all the lines of all the objects sorted
-  typedef typename std::priority_queue< Line, typename std::vector<Line>, Comparator > PriorityQueueType;
+  typedef typename std::priority_queue< Line, typename std::vector<Line>, LineComparator > PriorityQueueType;
   PriorityQueueType pq;
 
   ProgressReporter progress( this, 0, 1 );
@@ -125,7 +125,9 @@ AttributeUniqueLabelMapFilter<TImage, TAttributeAccessor>
         {
     std::cout << "overlap" << std::endl;
         // the lines are overlapping. We need to choose which line to keep.
-        if( accessor( l.labelObject ) > accessor( prev.labelObject ) )
+        // TODO: need to find a stable way to handle equal attributes
+        if( ( !m_ReverseOrdering && accessor( l.labelObject ) > accessor( prev.labelObject ) )
+            || ( m_ReverseOrdering && accessor( l.labelObject ) < accessor( prev.labelObject ) ) )
           {
           // keep the current one. We must truncate the previous one to remove the
           // overlap, and take care of the end of the previous line if it extends
@@ -140,7 +142,16 @@ AttributeUniqueLabelMapFilter<TImage, TAttributeAccessor>
             pq.push( Line( LineType( newIdx, newLength ), prev.labelObject ) );
             }
           // truncate the previous line to let some place for the current one
-          lines.back().line.SetLength( idx[0] - prevIdx[0] );
+          prevLength = idx[0] - prevIdx[0];
+          if( prevLength != 0 )
+            {
+            lines.back().line.SetLength( idx[0] - prevIdx[0] );
+            }
+          else
+            {
+            // length is 0 - no need to keep that line
+            lines.pop_back();
+            }
           // and push the current one
           lines.push_back( l );
           }

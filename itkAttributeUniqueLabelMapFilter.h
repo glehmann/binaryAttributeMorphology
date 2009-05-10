@@ -110,7 +110,7 @@ private:
     LabelObjectType * labelObject;
     };
   
-  class Comparator
+  class LineComparator
     {
     public:
       bool operator()( const Line & lla, const Line & llb )
@@ -126,9 +126,8 @@ private:
             return false;
             }
           }
-        return accessor( lla.labelObject ) < accessor( llb.labelObject );
+        return false;
         }
-      AttributeAccessorType accessor;
     };
 
 }; // end of class
