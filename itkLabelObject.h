@@ -274,6 +274,11 @@ public:
     return size;
     }
   
+  bool Empty() const
+    {
+    return m_LineContainer.empty();
+    }
+  
   IndexType GetIndex( int offset ) const
     {
     int o = offset;
