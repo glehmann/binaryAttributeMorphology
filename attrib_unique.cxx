@@ -54,12 +54,12 @@ int main(int argc, char * argv[])
   oi->SetPadSize( rad );
 //  oi->SetKeepLabels( false );
 //  oi->SetBinaryInternalOutput( false );  
-//  itk::SimpleFilterWatcher watcher(oi, "filter");
 
   typedef itk::AttributeUniqueLabelMapFilter< LabelMapType, itk::Functor::LabelLabelObjectAccessor< LabelObjectType > > UniqueType;
   UniqueType::Pointer unique = UniqueType::New();
   unique->SetInput( oi->GetOutput() );
   unique->SetReverseOrdering( atoi(argv[3]) );
+  itk::SimpleFilterWatcher watcher(unique, "filter");
   
   typedef itk::LabelMapToLabelImageFilter< LabelMapType, ImageType> L2IType;
   L2IType::Pointer l2i = L2IType::New();

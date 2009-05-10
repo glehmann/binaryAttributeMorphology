@@ -90,16 +90,12 @@ AttributeUniqueLabelMapFilter<TImage, TAttributeAccessor>
   IndexType prevIdx = prev.line.GetIndex();
   pq.pop();
   
-  std::cout << prev.labelObject->GetLabel()+0.0<< ": "  << prev.line.GetIndex() << "-" << prev.line.GetLength() << std::endl;
-
   while( !pq.empty() )
     {
     Line l = pq.top();
     IndexType idx = l.line.GetIndex();
     pq.pop();
     
-    std::cout << l.labelObject->GetLabel()+0.0<< ": "  << idx << "-" << l.line.GetLength() << std::endl;
-
     bool newMainLine = false;
     // don't check dim 0!
     for( int i=1; i<ImageDimension; i++ )
@@ -114,19 +110,14 @@ AttributeUniqueLabelMapFilter<TImage, TAttributeAccessor>
       {
       // just push the line
       lines.push_back( l );      
-    std::cout << "newMainLine" << std::endl;
       }
     else
       {
       unsigned long prevLength = prev.line.GetLength();
       unsigned long length = l.line.GetLength();
       
-    std::cout << "idx: " << idx << std::endl;
-    std::cout << "prevIdx: " << prevIdx << std::endl;
-    std::cout << "prevLength: " << prevLength << std::endl;
       if( prevIdx[0] + (long)prevLength >= idx[0] )
         {
-    std::cout << "overlap" << std::endl;
         // the lines are overlapping. We need to choose which line to keep.
         // TODO: need to find a stable way to handle equal attributes
         if( ( !m_ReverseOrdering && accessor( l.labelObject ) > accessor( prev.labelObject ) )
@@ -190,12 +181,10 @@ AttributeUniqueLabelMapFilter<TImage, TAttributeAccessor>
     prevIdx = prev.line.GetIndex();
     }
   
-  std::cout << "==================" << std::endl;
-
+  // put the lines in their object
   for( unsigned int i=0; i<lines.size(); i++ )
     {
     Line & l = lines[i];
-    std::cout << l.labelObject->GetLabel()+0.0<< ": "  << l.line.GetIndex() << "-" << l.line.GetLength() << std::endl;
     l.labelObject->AddLine( l.line );
     }
 
@@ -217,7 +206,6 @@ AttributeUniqueLabelMapFilter<TImage, TAttributeAccessor>
       it++;
       }
 
-    progress.CompletedPixel();
     }
 }
 
