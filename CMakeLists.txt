@@ -403,3 +403,19 @@ ADD_TEST(Optimize ${TEST_COMMAND}
 )
 
 
+ADD_TEST(AttributeUnique0 ${TEST_COMMAND}
+  attrib_unique
+  ${CMAKE_SOURCE_DIR}/images/simple_unique.png attribute_unique-0.png
+  0
+  --compare attribute_unique-0.png ${CMAKE_SOURCE_DIR}/images/attribute_unique-0.png
+)
+
+
+ADD_TEST(AttributeUnique1 ${TEST_COMMAND}
+  attrib_unique
+  ${CMAKE_SOURCE_DIR}/images/simple_unique.png attribute_unique-1.png
+  1
+  --compare attribute_unique-1.png ${CMAKE_SOURCE_DIR}/images/attribute_unique-1.png
+)
+
+
