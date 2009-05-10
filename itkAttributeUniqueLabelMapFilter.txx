@@ -198,7 +198,27 @@ AttributeUniqueLabelMapFilter<TImage, TAttributeAccessor>
     std::cout << l.labelObject->GetLabel()+0.0<< ": "  << l.line.GetIndex() << "-" << l.line.GetLength() << std::endl;
     l.labelObject->AddLine( l.line );
     }
-    
+
+  // remove objects without lines
+  typename LabelObjectContainerType::const_iterator it = labelObjects.begin();
+  while( it != labelObjects.end() )
+    {
+    typename LabelObjectType::LabelType label = it->first;
+    LabelObjectType * labelObject = it->second;
+
+    if( labelObject->Empty() )
+      {
+      // must increment the iterator before removing the object to avoid invalidating the iterator
+      it++;
+      this->GetLabelMap()->RemoveLabel( label );
+      }
+    else
+      {
+      it++;
+      }
+
+    progress.CompletedPixel();
+    }
 }
 
 
