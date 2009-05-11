@@ -119,9 +119,37 @@ AttributeUniqueLabelMapFilter<TImage, TAttributeAccessor>
       if( prevIdx[0] + (long)prevLength >= idx[0] )
         {
         // the lines are overlapping. We need to choose which line to keep.
-        // TODO: need to find a stable way to handle equal attributes
-        if( ( !m_ReverseOrdering && accessor( l.labelObject ) > accessor( prev.labelObject ) )
-            || ( m_ReverseOrdering && accessor( l.labelObject ) < accessor( prev.labelObject ) ) )
+        // the label, the only "attribute" to be guarenteed to be unique, is used to choose
+        // which line to keep. This is necessary to avoid the case where a part of a label is over
+        // a second label, and below in another part of the image.
+        bool keepCurrent = true;
+        AttributeValueType prevAttr = accessor( prev.labelObject );
+        AttributeValueType attr = accessor( l.labelObject );
+        // this may be changed to a single boolean expression, but may become quite difficult to read
+        if( attr == prevAttr  )
+          {
+          if( l.labelObject->GetLabel() > prev.labelObject->GetLabel() )
+            {
+            keepCurrent = !m_ReverseOrdering;
+            }
+          else
+            {
+            keepCurrent = m_ReverseOrdering;
+            }
+          }
+        else
+          {
+          if( attr > prevAttr )
+            {
+            keepCurrent = !m_ReverseOrdering;
+            }
+          else
+            {
+            keepCurrent = m_ReverseOrdering;
+            }
+          }
+        
+        if( keepCurrent )
           {
           // keep the current one. We must truncate the previous one to remove the
           // overlap, and take care of the end of the previous line if it extends
