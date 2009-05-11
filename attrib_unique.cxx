@@ -4,7 +4,7 @@
 
 #include "itkLabelObject.h"
 #include "itkLabelMap.h"
-#include "itkBinaryImageToLabelMapFilter.h"
+#include "itkBinaryImageToShapeLabelMapFilter.h"
 #include "itkObjectByObjectLabelMapFilter.h"
 #include "itkAttributeUniqueLabelMapFilter.h"
 #include "itkLabelMapToLabelImageFilter.h"
@@ -27,7 +27,7 @@ int main(int argc, char * argv[])
   
   typedef itk::Image< unsigned char, dim > ImageType;
 
-  typedef itk::LabelObject< unsigned char, dim > LabelObjectType;
+  typedef itk::ShapeLabelObject< unsigned char, dim > LabelObjectType;
   typedef itk::LabelMap< LabelObjectType > LabelMapType;
   
   typedef itk::ImageFileReader< ImageType > ReaderType;
@@ -55,7 +55,7 @@ int main(int argc, char * argv[])
 //  oi->SetKeepLabels( false );
 //  oi->SetBinaryInternalOutput( false );  
 
-  typedef itk::AttributeUniqueLabelMapFilter< LabelMapType, itk::Functor::LabelLabelObjectAccessor< LabelObjectType > > UniqueType;
+  typedef itk::AttributeUniqueLabelMapFilter< LabelMapType, itk::Functor::SizeLabelObjectAccessor< LabelObjectType > > UniqueType;
   UniqueType::Pointer unique = UniqueType::New();
   unique->SetInput( oi->GetOutput() );
   unique->SetReverseOrdering( atoi(argv[3]) );

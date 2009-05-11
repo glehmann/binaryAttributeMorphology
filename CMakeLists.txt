@@ -244,6 +244,10 @@ SET(CurrentExe "attrib_unique")
 ADD_EXECUTABLE(${CurrentExe} ${CurrentExe}.cxx)
 TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
 
+SET(CurrentExe "label_unique")
+ADD_EXECUTABLE(${CurrentExe} ${CurrentExe}.cxx)
+TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
+
 
 ENDIF(BUILD_TESTING)
 
@@ -403,19 +407,18 @@ ADD_TEST(Optimize ${TEST_COMMAND}
 )
 
 
-ADD_TEST(AttributeUnique0 ${TEST_COMMAND}
+ADD_TEST(LabelUnique0 ${TEST_COMMAND}
   attrib_unique
-  ${CMAKE_SOURCE_DIR}/images/simple_unique.png attribute_unique-0.png
+  ${CMAKE_SOURCE_DIR}/images/simple_unique.png label_unique-0.png
   0
-  --compare attribute_unique-0.png ${CMAKE_SOURCE_DIR}/images/attribute_unique-0.png
+  --compare label_unique-0.png ${CMAKE_SOURCE_DIR}/images/label_unique-0.png
 )
 
-
-ADD_TEST(AttributeUnique1 ${TEST_COMMAND}
+ADD_TEST(LabelUnique1 ${TEST_COMMAND}
   attrib_unique
-  ${CMAKE_SOURCE_DIR}/images/simple_unique.png attribute_unique-1.png
+  ${CMAKE_SOURCE_DIR}/images/simple_unique.png label_unique-1.png
   1
-  --compare attribute_unique-1.png ${CMAKE_SOURCE_DIR}/images/attribute_unique-1.png
+  --compare label_unique-1.png ${CMAKE_SOURCE_DIR}/images/label_unique-1.png
 )
 
 
