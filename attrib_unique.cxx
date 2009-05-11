@@ -34,7 +34,7 @@ int main(int argc, char * argv[])
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   
-  typedef itk::BinaryImageToLabelMapFilter< ImageType, LabelMapType> I2LType;
+  typedef itk::BinaryImageToShapeLabelMapFilter< ImageType, LabelMapType> I2LType;
   I2LType::Pointer i2l = I2LType::New();
   i2l->SetInput( reader->GetOutput() );
   i2l->SetFullyConnected( true );
@@ -54,6 +54,8 @@ int main(int argc, char * argv[])
   oi->SetPadSize( rad );
 //  oi->SetKeepLabels( false );
 //  oi->SetBinaryInternalOutput( false );  
+//  oi->Update();
+//  oi->GetOutput()->PrintLabelObjects();
 
   typedef itk::AttributeUniqueLabelMapFilter< LabelMapType, itk::Functor::SizeLabelObjectAccessor< LabelObjectType > > UniqueType;
   UniqueType::Pointer unique = UniqueType::New();

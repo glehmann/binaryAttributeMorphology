@@ -422,3 +422,18 @@ ADD_TEST(LabelUnique1 ${TEST_COMMAND}
 )
 
 
+ADD_TEST(AttributeUnique0 ${TEST_COMMAND}
+  attrib_unique
+  ${CMAKE_SOURCE_DIR}/images/simple_unique.png attrib_unique-0.png
+  0
+  --compare attrib_unique-0.png ${CMAKE_SOURCE_DIR}/images/attrib_unique-0.png
+)
+
+ADD_TEST(AttributeUnique1 ${TEST_COMMAND}
+  attrib_unique
+  ${CMAKE_SOURCE_DIR}/images/simple_unique.png attrib_unique-1.png
+  1
+  --compare attrib_unique-1.png ${CMAKE_SOURCE_DIR}/images/attrib_unique-1.png
+)
+
+
