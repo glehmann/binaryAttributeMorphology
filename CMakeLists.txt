@@ -244,6 +244,10 @@ SET(CurrentExe "attrib_unique")
 ADD_EXECUTABLE(${CurrentExe} ${CurrentExe}.cxx)
 TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
 
+SET(CurrentExe "eq_attrib_unique")
+ADD_EXECUTABLE(${CurrentExe} ${CurrentExe}.cxx)
+TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
+
 SET(CurrentExe "label_unique")
 ADD_EXECUTABLE(${CurrentExe} ${CurrentExe}.cxx)
 TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
@@ -434,6 +438,21 @@ ADD_TEST(AttributeUnique1 ${TEST_COMMAND}
   ${CMAKE_SOURCE_DIR}/images/simple_unique.png attrib_unique-1.png
   1
   --compare attrib_unique-1.png ${CMAKE_SOURCE_DIR}/images/attrib_unique-1.png
+)
+
+
+ADD_TEST(EqualAttributesUnique0 ${TEST_COMMAND}
+  eq_attrib_unique
+  ${CMAKE_SOURCE_DIR}/images/simple_unique.png label_unique-0.png
+  0
+  --compare label_unique-0.png ${CMAKE_SOURCE_DIR}/images/label_unique-0.png
+)
+
+ADD_TEST(EqualAttributesUnique1 ${TEST_COMMAND}
+  eq_attrib_unique
+  ${CMAKE_SOURCE_DIR}/images/simple_unique.png label_unique-1.png
+  1
+  --compare label_unique-1.png ${CMAKE_SOURCE_DIR}/images/label_unique-1.png
 )
 
 
