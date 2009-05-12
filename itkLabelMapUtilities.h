@@ -14,8 +14,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkLabelMapFilterUtilities_h
-#define __itkLabelMapFilterUtilities_h
+#ifndef __itkLabelMapUtilities_h
+#define __itkLabelMapUtilities_h
 
 namespace itk {
 namespace LabelMapUtilities {

@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkAttributeKeepNObjectsLabelMapFilter.txx,v $
+  Module:    $RCSfile: itkLabelMapUtilities.txx,v $
   Language:  C++
   Date:      $Date: 2005/08/23 15:09:03 $
   Version:   $Revision: 1.6 $
@@ -14,8 +14,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkAttributeKeepNObjectsLabelMapFilter_txx
-#define __itkAttributeKeepNObjectsLabelMapFilter_txx
+#ifndef __itkLabelMapUtilities_txx
+#define __itkLabelMapUtilities_txx
 
 
 namespace itk {
