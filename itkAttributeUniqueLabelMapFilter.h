@@ -99,37 +99,6 @@ private:
   AttributeUniqueLabelMapFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
   
-  struct Line
-    {
-    Line( const LineType line, LabelObjectType * lo )
-      {
-      this->line = line;
-      this->labelObject = lo;
-      }
-    LineType          line;
-    LabelObjectType * labelObject;
-    };
-  
-  class LineComparator
-    {
-    public:
-      bool operator()( const Line & lla, const Line & llb )
-        {
-        for( int i=ImageDimension-1; i>=0; i-- )
-          {
-          if( lla.line.GetIndex()[i] > llb.line.GetIndex()[i] )
-            {
-            return true;
-            }
-          else if( lla.line.GetIndex()[i] < llb.line.GetIndex()[i] )
-            {
-            return false;
-            }
-          }
-        return false;
-        }
-    };
-
 }; // end of class
 
 } // end namespace itk
