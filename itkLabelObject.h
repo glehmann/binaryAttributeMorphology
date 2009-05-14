@@ -18,6 +18,7 @@
 #define __itkLabelObject_h
 
 #include <deque>
+#include <algorithm>
 #include <itkLightObject.h>
 #include "itkLabelMap.h"
 #include "itkLabelObjectLine.h"
