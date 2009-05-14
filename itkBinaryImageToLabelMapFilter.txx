@@ -99,11 +99,7 @@ BinaryImageToLabelMapFilter< TInputImage, TOutputImage >
   typename TOutputImage::Pointer output = this->GetOutput();
   typename TInputImage::ConstPointer input = this->GetInput();
 
-  long nbOfThreads = this->GetNumberOfThreads();
-  if( itk::MultiThreader::GetGlobalMaximumNumberOfThreads() != 0 )
-    {
-    nbOfThreads = std::min( this->GetNumberOfThreads(), itk::MultiThreader::GetGlobalMaximumNumberOfThreads() );
-    }
+  long nbOfThreads = m_NumberOfLabels.size();
 
   // create a line iterator
   typedef itk::ImageLinearConstIteratorWithIndex<InputImageType>
