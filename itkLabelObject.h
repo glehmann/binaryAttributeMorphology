@@ -288,7 +288,7 @@ public:
       it++ )
       {
       int size = it->GetLength();
-      if( o > size)
+      if( o >= size)
         {
         o -= size;
         }
