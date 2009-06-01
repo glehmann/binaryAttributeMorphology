@@ -64,8 +64,19 @@ void
 LabelMapToBinaryImageFilter<TInputImage, TOutputImage>
 ::BeforeThreadedGenerateData()
 {
+  long nbOfThreads = this->GetNumberOfThreads();
+  if( itk::MultiThreader::GetGlobalMaximumNumberOfThreads() != 0 )
+    {
+    nbOfThreads = std::min( this->GetNumberOfThreads(), itk::MultiThreader::GetGlobalMaximumNumberOfThreads() );
+    }
+  // number of threads can be constrained by the region size, so call the SplitRequestedRegion
+  // to get the real number of threads which will be used
+  typename TOutputImage::RegionType splitRegion;  // dummy region - just to call the following method
+  nbOfThreads = this->SplitRequestedRegion(0, nbOfThreads, splitRegion);
+  // std::cout << "nbOfThreads: " << nbOfThreads << std::endl;
+
   m_Barrier = Barrier::New();
-  m_Barrier->Initialize( this->GetNumberOfThreads() );
+  m_Barrier->Initialize( nbOfThreads );
 
   Superclass::BeforeThreadedGenerateData();
 
