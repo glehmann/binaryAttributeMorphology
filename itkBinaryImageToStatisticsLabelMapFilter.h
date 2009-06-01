@@ -134,7 +134,7 @@ public:
   itkBooleanMacro(ComputePerimeter);
 
    /** Set the feature image */
-  void SetFeatureImage(TFeatureImage *input)
+  void SetFeatureImage(const TFeatureImage *input)
     {
     // Process object is not const-correct so the const casting is required.
     this->SetNthInput( 1, const_cast<TFeatureImage *>(input) );
@@ -147,13 +147,13 @@ public:
     }
 
    /** Set the input image */
-  void SetInput1(InputImageType *input)
+  void SetInput1(const InputImageType *input)
     {
     this->SetInput( input );
     }
 
   /** Set the feature image */
-  void SetInput2(FeatureImageType *input)
+  void SetInput2(const FeatureImageType *input)
     {
     this->SetFeatureImage( input );
     }
