@@ -199,6 +199,12 @@ StatisticsLabelMapFilter<TImage, TFeatureImage>
         }
       }
   
+    // the normalized second order central moment of a pixel
+    for(unsigned int i=0; i<ImageDimension; i++)
+      {
+      centralMoments[i][i] += output->GetSpacing()[i] * output->GetSpacing()[i] / 12.0;
+      }
+
     // Compute principal moments and axes
     vnl_symmetric_eigensystem<double> eigen( centralMoments.GetVnlMatrix() );
     vnl_diag_matrix<double> pm = eigen.D;

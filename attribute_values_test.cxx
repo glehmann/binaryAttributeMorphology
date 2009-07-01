@@ -60,18 +60,18 @@ int main(int argc, char * argv[])
   assert( eq(6.1903150162168652, ball->GetFeretDiameter()) );
   assert( eq(118.274/116.327, ball->GetRoundness()) );
 
-  assert( eq(1.85995, ball->GetBinaryPrincipalMoments()[0]) );
-  assert( eq(1.85995, ball->GetBinaryPrincipalMoments()[1]) );
-  assert( eq(1.92809, ball->GetBinaryPrincipalMoments()[2]) );
+  assert( eq(1.86078, ball->GetBinaryPrincipalMoments()[0]) );
+  assert( eq(1.86078, ball->GetBinaryPrincipalMoments()[1]) );
+  assert( eq(1.93142, ball->GetBinaryPrincipalMoments()[2]) );
 
-  assert( eq(1.01815, ball->GetBinaryElongation()) );
+  assert( eq(1.01881, ball->GetBinaryElongation()) );
   assert( eq(1.0, ball->GetBinaryFlatness()) );
   assert( eq(3.06789, ball->GetEquivalentRadius()) );
   assert( eq(118.274, ball->GetEquivalentPerimeter()) );
 
-  assert( eq(6.09908, ball->GetEquivalentEllipsoidSize()[0]) );
-  assert( eq(6.09908, ball->GetEquivalentEllipsoidSize()[1]) );
-  assert( eq(6.20981, ball->GetEquivalentEllipsoidSize()[2]) );
+  assert( eq(6.09778, ball->GetEquivalentEllipsoidSize()[0]) );
+  assert( eq(6.09778, ball->GetEquivalentEllipsoidSize()[1]) );
+  assert( eq(6.21245, ball->GetEquivalentEllipsoidSize()[2]) );
 
   assert( 0 == ball->GetRegion().GetIndex()[0] );
   assert( 0 == ball->GetRegion().GetIndex()[1] );
@@ -94,6 +94,11 @@ int main(int argc, char * argv[])
 //   assert( eq(1.0, ball->GetBinaryPrincipalAxes()[2][2]) );
 
 
+
+
+
+
+
   const LabelObjectType * ellipsoid = labelMap->GetLabelObject( 2 );
   
   assert( eq(3.0, ellipsoid->GetCentroid()[0]) );
@@ -110,9 +115,9 @@ int main(int argc, char * argv[])
 //  assert( eq(, ellipsoid->GetFeretDiameter()) );
 //  assert( eq(, ellipsoid->GetRoundness()) );
 
-  assert( eq(1.8622, ellipsoid->GetBinaryPrincipalMoments()[0]) );
-  assert( eq(1.8622, ellipsoid->GetBinaryPrincipalMoments()[1]) );
-  assert( eq(7.4488, ellipsoid->GetBinaryPrincipalMoments()[2]) );
+  assert( eq(1.86303, ellipsoid->GetBinaryPrincipalMoments()[0]) );
+  assert( eq(1.86303, ellipsoid->GetBinaryPrincipalMoments()[1]) );
+  assert( eq(7.45214, ellipsoid->GetBinaryPrincipalMoments()[2]) );
 
   assert( eq(2.0, ellipsoid->GetBinaryElongation()) );
   assert( eq(1.0, ellipsoid->GetBinaryFlatness()) );
@@ -145,8 +150,12 @@ int main(int argc, char * argv[])
 
 
 
+
+
+
+
   const LabelObjectType * disk = labelMap->GetLabelObject( 3 );
-  
+
   assert( eq(3.0, disk->GetCentroid()[0]) );
   assert( eq(11.0, disk->GetCentroid()[1]) );
   assert( eq(22.0, disk->GetCentroid()[2]) );
@@ -161,17 +170,18 @@ int main(int argc, char * argv[])
 //  assert( eq(, disk->GetFeretDiameter()) );
 //  assert( eq(, disk->GetRoundness()) );
 
-  assert( eq(-7.78731e-28, disk->GetBinaryPrincipalMoments()[0]) );
-  assert( eq(2.33397, disk->GetBinaryPrincipalMoments()[1]) );
-  assert( eq(9.33589, disk->GetBinaryPrincipalMoments()[2]) );
+  assert( eq(0.000833333, disk->GetBinaryPrincipalMoments()[0]) );
+  assert( eq(2.33481, disk->GetBinaryPrincipalMoments()[1]) );
+  assert( eq(9.33922, disk->GetBinaryPrincipalMoments()[2]) );
 
-//  assert( NaN == disk->GetBinaryElongation() );
+  assert( eq(2.0, disk->GetBinaryElongation() ) );
+  assert( eq(52.9317, disk->GetBinaryFlatness() ) );
   assert( eq(1.1188, disk->GetEquivalentRadius()) );
   assert( eq(15.7294, disk->GetEquivalentPerimeter()) );
 
-//   assert( eq(1.5874, disk->GetEquivalentEllipsoidSize()[0]) );
-//   assert( eq(1.5874, disk->GetEquivalentEllipsoidSize()[1]) );
-//   assert( eq(3.1748, disk->GetEquivalentEllipsoidSize()[2]) );
+  assert( eq(0.125978, disk->GetEquivalentEllipsoidSize()[0]) );
+  assert( eq(6.66822, disk->GetEquivalentEllipsoidSize()[1]) );
+  assert( eq(13.3364, disk->GetEquivalentEllipsoidSize()[2]) );
 
   assert( 30 == disk->GetRegion().GetIndex()[0] );
   assert( 80 == disk->GetRegion().GetIndex()[1] );
@@ -181,17 +191,17 @@ int main(int argc, char * argv[])
   assert( 61 == disk->GetRegion().GetSize()[1] );
   assert( 61 == disk->GetRegion().GetSize()[2] );
 
-  assert( eq(1.0, disk->GetBinaryPrincipalAxes()[0][0]) );
-  assert( eq(-2.01391e-17, disk->GetBinaryPrincipalAxes()[0][1]) );
-  assert( eq(-9.13305e-15, disk->GetBinaryPrincipalAxes()[0][2]) );
-
-  assert( eq(-2.01391e-17, disk->GetBinaryPrincipalAxes()[1][0]) );
-  assert( eq(-1.0, disk->GetBinaryPrincipalAxes()[1][1]) );
-  assert( eq(4.05913e-14, disk->GetBinaryPrincipalAxes()[1][2]) );
-
-  assert( eq(-9.13305e-15, disk->GetBinaryPrincipalAxes()[2][0]) );
-  assert( eq(-4.05913e-14, disk->GetBinaryPrincipalAxes()[2][1]) );
-  assert( eq(-1.0, disk->GetBinaryPrincipalAxes()[2][2]) );
+//   assert( eq(1.0, disk->GetBinaryPrincipalAxes()[0][0]) );
+//   assert( eq(-2.01391e-17, disk->GetBinaryPrincipalAxes()[0][1]) );
+//   assert( eq(-9.13305e-15, disk->GetBinaryPrincipalAxes()[0][2]) );
+// 
+//   assert( eq(-2.01391e-17, disk->GetBinaryPrincipalAxes()[1][0]) );
+//   assert( eq(-1.0, disk->GetBinaryPrincipalAxes()[1][1]) );
+//   assert( eq(4.05913e-14, disk->GetBinaryPrincipalAxes()[1][2]) );
+// 
+//   assert( eq(-9.13305e-15, disk->GetBinaryPrincipalAxes()[2][0]) );
+//   assert( eq(-4.05913e-14, disk->GetBinaryPrincipalAxes()[2][1]) );
+//   assert( eq(-1.0, disk->GetBinaryPrincipalAxes()[2][2]) );
 
 
 //  assert( eq(, ball->Get()) );
@@ -200,8 +210,19 @@ int main(int argc, char * argv[])
 //   assert( eq(, ball->Get()[1]) );
 //   assert( eq(, ball->Get()[2]) );
 
-//  std::cout << ball->GetBinaryPrincipalAxes() << std::endl;
-  
+//   std::cout << disk->GetBinaryPrincipalMoments()[0] << std::endl;
+//   std::cout << disk->GetBinaryPrincipalMoments()[1] << std::endl;
+//   std::cout << disk->GetBinaryPrincipalMoments()[2] << std::endl;
+//   
+//   std::cout << disk->GetBinaryElongation() << std::endl;
+//   std::cout << disk->GetBinaryFlatness() << std::endl;
+//   std::cout << disk->GetEquivalentRadius() << std::endl;
+//   std::cout << disk->GetEquivalentPerimeter() << std::endl;
+//   
+//   std::cout << disk->GetEquivalentEllipsoidSize()[0] << std::endl;
+//   std::cout << disk->GetEquivalentEllipsoidSize()[1] << std::endl;
+//   std::cout << disk->GetEquivalentEllipsoidSize()[2] << std::endl;
+
   return 0;
 }
 
