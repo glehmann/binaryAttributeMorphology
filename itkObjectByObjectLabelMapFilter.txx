@@ -125,6 +125,15 @@ void
 ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType, TInternalOutputImageType>
 ::GenerateData()
 {
+  if( !m_InputFilter)
+    {
+    itkExceptionMacro("InputFilter must be set.");
+    }
+
+  if( !m_OutputFilter )
+    {
+    itkExceptionMacro("OutputFilter must be set.");
+    }
 
   this->AllocateOutputs();
   LabelMapType * output = this->GetOutput();
