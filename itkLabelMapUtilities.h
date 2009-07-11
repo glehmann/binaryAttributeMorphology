@@ -62,6 +62,9 @@ class LineOfLabelObjectComparator
 template<class TFilter, class TAttributeAccessor>
 void UniqueGenerateData( TFilter * self, typename TFilter::ImageType * labelMap, bool reverseOrder );
 
+template<class TFilter, class TAttributeAccessor, bool VPhysicalPosition>
+void PositionThreadedGenerateData( TFilter * self, typename TAttributeAccessor::LabelObjectType * labelObject );
+
 }
 } // end namespace itk
 

@@ -17,6 +17,7 @@
 #ifndef __itkLabelMapUtilities_txx
 #define __itkLabelMapUtilities_txx
 
+#include <queue>
 
 namespace itk {
 
@@ -233,6 +234,40 @@ void UniqueGenerateData( TFilter * self, typename TFilter::ImageType * labelMap,
       }
 
     }
+}
+
+
+template <class TFilter, class TAttributeAccessor, bool VPhysicalPosition>
+void PositionThreadedGenerateData( TFilter * self, typename TAttributeAccessor::LabelObjectType * labelObject )
+{
+  // use the accessor to get the position to mark
+  TAttributeAccessor accessor;
+  typedef typename TAttributeAccessor::AttributeValueType AttributeValueType;
+  AttributeValueType position = accessor( labelObject );
+  // change it to an index position if it is physical
+  typename TFilter::IndexType idx;
+  if( VPhysicalPosition )
+    {
+    Point< double, TFilter::ImageDimension > point;
+    // copy the position to a point, required by TransformPhysicalPointToIndex
+    for( int i=0; i<TFilter::ImageDimension; i++ )
+      {
+      point[i] = (long)position[i];
+      }    
+    self->GetOutput()->TransformPhysicalPointToIndex( point, idx );
+    }
+  else
+    {
+    // copy the position to the index, to avoid warnings
+    for( int i=0; i<TFilter::ImageDimension; i++ )
+      {
+      idx[i] = (long)position[i];
+      }
+    }
+  // clear the label object
+  labelObject->GetLineContainer().clear();
+  // and mark only the pixel we are interested in
+  labelObject->AddIndex( idx );
 }
 
 }// end namespace LabelMapUtilities
