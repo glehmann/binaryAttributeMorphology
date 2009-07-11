@@ -17,7 +17,7 @@
 #ifndef __itkStatisticsUniqueLabelMapFilter_h
 #define __itkStatisticsUniqueLabelMapFilter_h
 
-#include "itkShapeOpeningLabelMapFilter.h"
+#include "itkShapeUniqueLabelMapFilter.h"
 #include "itkStatisticsLabelObject.h"
 
 namespace itk {
@@ -35,12 +35,12 @@ namespace itk {
  */
 template<class TImage>
 class ITK_EXPORT StatisticsUniqueLabelMapFilter : 
-    public ShapeOpeningLabelMapFilter<TImage>
+    public ShapeUniqueLabelMapFilter<TImage>
 {
 public:
   /** Standard class typedefs. */
   typedef StatisticsUniqueLabelMapFilter    Self;
-  typedef ShapeOpeningLabelMapFilter<TImage> Superclass;
+  typedef ShapeUniqueLabelMapFilter<TImage> Superclass;
   typedef SmartPointer<Self>                 Pointer;
   typedef SmartPointer<const Self>           ConstPointer;
 
@@ -63,7 +63,7 @@ public:
 
   /** Runtime information support. */
   itkTypeMacro(StatisticsUniqueLabelMapFilter, 
-               ShapeOpeningLabelMapFilter);
+               ShapeUniqueLabelMapFilter);
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
