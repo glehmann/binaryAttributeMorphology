@@ -1,4 +1,4 @@
-WRAP_CLASS("itk::ShapePositionLabelMapFilter" POINTER)
+WRAP_CLASS("itk::StatisticsPositionLabelMapFilter" POINTER)
   FOREACH(d ${WRAP_ITK_DIMS})
     WRAP_TEMPLATE("${ITKM_LM${d}}" "${ITKT_LM${d}}")
   ENDFOREACH(d)
