@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkLabelMapOverlayImageFilter.h,v $
+  Module:    $RCSfile: itkLabelMapContourOverlayImageFilter.h,v $
   Language:  C++
   Date:      $Date: 2005/08/23 15:09:03 $
   Version:   $Revision: 1.4 $
@@ -14,8 +14,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkLabelMapOverlayImageFilter_h
-#define __itkLabelMapOverlayImageFilter_h
+#ifndef __itkLabelMapContourOverlayImageFilter_h
+#define __itkLabelMapContourOverlayImageFilter_h
 
 #include "itkLabelMapFilter.h"
 #include "itkBarrier.h"
@@ -23,13 +23,13 @@
 
 namespace itk {
 
-/** \class LabelMapOverlayImageFilter
+/** \class LabelMapContourOverlayImageFilter
  * \brief Mask and image with a LabelMap
  *
- * LabelMapOverlayImageFilter mask the content of an input image according
+ * LabelMapContourOverlayImageFilter mask the content of an input image according
  * to the content of the input LabelMap. The masked pixel of the input image
  * are set to the BackgroundValue.
- * LabelMapOverlayImageFilter can keep the input image for one label only, with
+ * LabelMapContourOverlayImageFilter can keep the input image for one label only, with
  * Negated = false (the default) or it can mask the input image for a single label, when
  * Negated equals true. In Both cases, the label is set with SetLabel(). 
  *
@@ -39,12 +39,12 @@ namespace itk {
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  */
 template<class TInputImage, class TFeatureImage, class TOutputImage=Image< RGBPixel< typename TFeatureImage::PixelType >, TFeatureImage::ImageDimension > >
-class ITK_EXPORT LabelMapOverlayImageFilter : 
+class ITK_EXPORT LabelMapContourOverlayImageFilter : 
     public LabelMapFilter<TInputImage, TOutputImage>
 {
 public:
   /** Standard class typedefs. */
-  typedef LabelMapOverlayImageFilter                Self;
+  typedef LabelMapContourOverlayImageFilter                Self;
   typedef LabelMapFilter<TInputImage, TOutputImage> Superclass;
   typedef SmartPointer<Self>                        Pointer;
   typedef SmartPointer<const Self>                  ConstPointer;
@@ -100,7 +100,7 @@ public:
   itkNewMacro(Self);  
 
   /** Runtime information support. */
-  itkTypeMacro(LabelMapOverlayImageFilter, 
+  itkTypeMacro(LabelMapContourOverlayImageFilter, 
                ImageToImageFilter);
 
    /** Set the feature image */
@@ -160,15 +160,15 @@ public:
   itkGetConstReferenceMacro( SliceDimension, int );
 
 protected:
-  LabelMapOverlayImageFilter();
-  ~LabelMapOverlayImageFilter() {};
+  LabelMapContourOverlayImageFilter();
+  ~LabelMapContourOverlayImageFilter() {};
 
-  /** LabelMapOverlayImageFilter needs the entire input be
+  /** LabelMapContourOverlayImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
   void GenerateInputRequestedRegion();
 
-  /** LabelMapOverlayImageFilter will produce the entire output. */
+  /** LabelMapContourOverlayImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
 
   virtual void BeforeThreadedGenerateData();
@@ -185,7 +185,7 @@ protected:
     }
 
 private:
-  LabelMapOverlayImageFilter(const Self&); //purposely not implemented
+  LabelMapContourOverlayImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
   double                    m_Opacity;
@@ -203,7 +203,7 @@ private:
 } // end namespace itk
   
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkLabelMapOverlayImageFilter.txx"
+#include "itkLabelMapContourOverlayImageFilter.txx"
 #endif
 
 #endif

@@ -3,7 +3,7 @@
 #include "itkSimpleFilterWatcher.h"
 
 #include "itkLabelImageToLabelMapFilter.h"
-#include "itkLabelMapOverlayImageFilter.h"
+#include "itkLabelMapContourOverlayImageFilter.h"
 
 
 int main(int argc, char * argv[])
@@ -34,7 +34,7 @@ int main(int argc, char * argv[])
 //  typedef itk::RGBPixel< unsigned char > RGBPixelType;
 //  typedef itk::Image< RGBPixelType, dim > RGBImageType;
 
-  typedef itk::LabelMapOverlayImageFilter< ConverterType::OutputImageType, IType > ColorizerType;
+  typedef itk::LabelMapContourOverlayImageFilter< ConverterType::OutputImageType, IType > ColorizerType;
   ColorizerType::Pointer colorizer = ColorizerType::New();
   colorizer->SetInput( converter->GetOutput() );
   colorizer->SetFeatureImage( reader2->GetOutput() );

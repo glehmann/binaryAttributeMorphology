@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: itkLabelMapOverlayImageFilter.txx,v $
+  Module:    $RCSfile: itkLabelMapContourOverlayImageFilter.txx,v $
   Language:  C++
   Date:      $Date: 2005/08/23 15:09:03 $
   Version:   $Revision: 1.6 $
@@ -14,10 +14,10 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkLabelMapOverlayImageFilter_txx
-#define __itkLabelMapOverlayImageFilter_txx
+#ifndef __itkLabelMapContourOverlayImageFilter_txx
+#define __itkLabelMapContourOverlayImageFilter_txx
 
-#include "itkLabelMapOverlayImageFilter.h"
+#include "itkLabelMapContourOverlayImageFilter.h"
 #include "itkNumericTraits.h"
 #include "itkProgressReporter.h"
 #include "itkImageRegionConstIterator.h"
@@ -35,8 +35,8 @@
 namespace itk {
 
 template<class TInputImage, class TFeatureImage, class TOutputImage>
-LabelMapOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
-::LabelMapOverlayImageFilter()
+LabelMapContourOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
+::LabelMapContourOverlayImageFilter()
 {
   this->SetNumberOfRequiredInputs(2);
   m_Opacity = 0.5;
@@ -52,7 +52,7 @@ LabelMapOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
 
 template<class TInputImage, class TFeatureImage, class TOutputImage>
 void 
-LabelMapOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
+LabelMapContourOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
 ::GenerateInputRequestedRegion()
 {
   // call the superclass' implementation of this method
@@ -67,7 +67,7 @@ LabelMapOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
 
 template <class TInputImage, class TFeatureImage, class TOutputImage>
 void 
-LabelMapOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
+LabelMapContourOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
 ::EnlargeOutputRequestedRegion(DataObject *)
 {
   this->GetOutput()
@@ -77,7 +77,7 @@ LabelMapOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
 
 template<class TInputImage, class TFeatureImage, class TOutputImage>
 void 
-LabelMapOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
+LabelMapContourOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
 ::BeforeThreadedGenerateData()
 {
   typedef typename itk::ObjectByObjectLabelMapFilter< InputImageType, InputImageType > OBOType;
@@ -206,7 +206,7 @@ LabelMapOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
 
 template<class TInputImage, class TFeatureImage, class TOutputImage>
 void 
-LabelMapOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
+LabelMapContourOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
 ::ThreadedGenerateData( const OutputImageRegionType& outputRegionForThread, int threadId )
 {
   OutputImageType * output = this->GetOutput();
@@ -237,7 +237,7 @@ LabelMapOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
 
 template<class TInputImage, class TFeatureImage, class TOutputImage>
 void
-LabelMapOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
+LabelMapContourOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
 ::ThreadedGenerateData( LabelObjectType * labelObject )
 {
   OutputImageType * output = this->GetOutput();
@@ -270,7 +270,7 @@ LabelMapOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
 
 template<class TInputImage, class TFeatureImage, class TOutputImage>
 void
-LabelMapOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
+LabelMapContourOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os,indent);
