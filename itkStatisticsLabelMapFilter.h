@@ -80,7 +80,7 @@ public:
 #endif
 
    /** Set the feature image */
-  void SetFeatureImage(TFeatureImage *input)
+  void SetFeatureImage(const TFeatureImage *input)
     {
     // Process object is not const-correct so the const casting is required.
     this->SetNthInput( 1, const_cast<TFeatureImage *>(input) );
@@ -99,7 +99,7 @@ public:
     }
 
   /** Set the feature image */
-  void SetInput2(TFeatureImage *input)
+  void SetInput2(const TFeatureImage *input)
     {
     this->SetFeatureImage( input );
     }
