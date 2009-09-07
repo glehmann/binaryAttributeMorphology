@@ -43,7 +43,7 @@ int main(int argc, char * argv[])
   ChangeType::Pointer change = ChangeType::New();
   change->SetInput( i2l->GetOutput() );
   change->SetInput( 1, i2l2->GetOutput() );
-  change->SetMethod( atoi(argv[4]) );
+   change->SetMethod( (ChangeType::MethodChoice)atoi(argv[4]) );
   itk::SimpleFilterWatcher watcher6(change, "filter");
 
   typedef itk::LabelMapToLabelImageFilter< LabelMapType, ImageType> L2IType;
