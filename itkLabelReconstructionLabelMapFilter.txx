@@ -34,7 +34,7 @@ LabelReconstructionLabelMapFilter<TImage, TMarkerImage, TAttributeAccessor>
 template <class TImage, class TMarkerImage, class TAttributeAccessor>
 void
 LabelReconstructionLabelMapFilter<TImage, TMarkerImage, TAttributeAccessor>
-::ThreadedGenerateData( LabelObjectType * labelObject )
+::ThreadedProcessLabelObject( LabelObjectType * labelObject )
 {
   AttributeAccessorType accessor;
 

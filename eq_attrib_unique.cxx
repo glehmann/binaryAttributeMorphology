@@ -11,6 +11,7 @@
 
 #include "itkBinaryDilateImageFilter.h"
 #include "itkFlatStructuringElement.h"
+#include "itkShapeLabelObjectAccessors.h"
 
 
 int main(int argc, char * argv[])

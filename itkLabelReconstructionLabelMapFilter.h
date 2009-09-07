@@ -106,7 +106,7 @@ protected:
   LabelReconstructionLabelMapFilter();
   ~LabelReconstructionLabelMapFilter() {};
 
-  virtual void ThreadedGenerateData( LabelObjectType * labelObject );
+  virtual void ThreadedProcessLabelObject( LabelObjectType * labelObject );
 
 private:
   LabelReconstructionLabelMapFilter(const Self&); //purposely not implemented

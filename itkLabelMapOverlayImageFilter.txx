@@ -116,7 +116,7 @@ LabelMapOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
 template<class TInputImage, class TFeatureImage, class TOutputImage>
 void
 LabelMapOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
-::ThreadedGenerateData( LabelObjectType * labelObject )
+::ThreadedProcessLabelObject( LabelObjectType * labelObject )
 {
   OutputImageType * output = this->GetOutput();
   InputImageType * input = const_cast<InputImageType *>(this->GetInput());

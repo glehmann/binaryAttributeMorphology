@@ -33,7 +33,7 @@ AttributePositionLabelMapFilter<TImage, TAttributeAccessor, VPhysicalPosition>
 template <class TImage, class TAttributeAccessor, bool VPhysicalPosition>
 void
 AttributePositionLabelMapFilter<TImage, TAttributeAccessor, VPhysicalPosition>
-::ThreadedGenerateData( LabelObjectType * labelObject )
+::ThreadedProcessLabelObject( LabelObjectType * labelObject )
 {
   LabelMapUtilities::PositionThreadedGenerateData<Self, TAttributeAccessor, VPhysicalPosition>( this, labelObject );
 }

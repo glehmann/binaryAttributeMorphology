@@ -33,7 +33,7 @@ CopyAttributesLabelMapFilter<TImage>
 template <class TImage>
 void
 CopyAttributesLabelMapFilter<TImage>
-::ThreadedGenerateData( LabelObjectType * labelObject )
+::ThreadedProcessLabelObject( LabelObjectType * labelObject )
 {
   assert( this->GetInput(1) != NULL );
   

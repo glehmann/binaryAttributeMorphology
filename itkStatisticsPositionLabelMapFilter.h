@@ -75,7 +75,7 @@ protected:
   StatisticsPositionLabelMapFilter();
   ~StatisticsPositionLabelMapFilter() {};
 
-  virtual void ThreadedGenerateData( LabelObjectType * labelObject );
+  virtual void ThreadedProcessLabelObject( LabelObjectType * labelObject );
 
 private:
   StatisticsPositionLabelMapFilter(const Self&); //purposely not implemented

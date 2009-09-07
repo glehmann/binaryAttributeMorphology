@@ -19,7 +19,7 @@
 
 #include "itkShapePositionLabelMapFilter.h"
 #include "itkLabelMapUtilities.h"
-
+#include "itkShapeLabelObjectAccessors.h"
 
 namespace itk {
 
@@ -34,7 +34,7 @@ ShapePositionLabelMapFilter<TImage>
 template <class TImage>
 void
 ShapePositionLabelMapFilter<TImage>
-::ThreadedGenerateData( LabelObjectType * labelObject )
+::ThreadedProcessLabelObject( LabelObjectType * labelObject )
 {
   switch( m_Attribute )
     {

@@ -5,7 +5,7 @@
 #include "itkLabelImageToShapeLabelMapFilter.h"
 #include "itkAttributePositionLabelMapFilter.h"
 #include "itkLabelMapToLabelImageFilter.h"
-
+#include "itkShapeLabelObjectAccessors.h"
 
 int main(int argc, char * argv[])
 {

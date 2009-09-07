@@ -19,6 +19,7 @@
 
 #include "itkStatisticsPositionLabelMapFilter.h"
 #include "itkLabelMapUtilities.h"
+#include "itkStatisticsLabelObjectAccessors.h"
 
 
 namespace itk {
@@ -34,7 +35,7 @@ StatisticsPositionLabelMapFilter<TImage>
 template <class TImage>
 void
 StatisticsPositionLabelMapFilter<TImage>
-::ThreadedGenerateData( LabelObjectType * labelObject )
+::ThreadedProcessLabelObject( LabelObjectType * labelObject )
 {
   switch( this->m_Attribute )
     {
@@ -48,7 +49,7 @@ StatisticsPositionLabelMapFilter<TImage>
       LabelMapUtilities::PositionThreadedGenerateData< Self, typename Functor::CenterOfGravityLabelObjectAccessor< LabelObjectType >, true >( this, labelObject );
       break;
     default:
-      Superclass::ThreadedGenerateData( labelObject );
+      Superclass::ThreadedProcessLabelObject( labelObject );
       break;
     }
 }

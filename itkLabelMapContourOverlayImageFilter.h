@@ -175,7 +175,7 @@ protected:
 
   virtual void ThreadedGenerateData(const OutputImageRegionType& outputRegionForThread, int threadId );
 
-  virtual void ThreadedGenerateData( LabelObjectType * labelObject );
+  virtual void ThreadedProcessLabelObject( LabelObjectType * labelObject );
   
   void PrintSelf(std::ostream& os, Indent indent) const;
 

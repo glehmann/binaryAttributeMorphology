@@ -377,7 +377,7 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
 template<class TInputImage, class TOutputImage>
 void
 LabelMapMaskImageFilter<TInputImage, TOutputImage>
-::ThreadedGenerateData( LabelObjectType * labelObject )
+::ThreadedProcessLabelObject( LabelObjectType * labelObject )
 {
   OutputImageType * output = this->GetOutput();
   InputImageType * input = const_cast<InputImageType *>(this->GetInput());

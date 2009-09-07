@@ -85,7 +85,7 @@ protected:
   CopyAttributesLabelMapFilter();
   ~CopyAttributesLabelMapFilter() {};
 
-  virtual void ThreadedGenerateData( LabelObjectType * labelObject );
+  virtual void ThreadedProcessLabelObject( LabelObjectType * labelObject );
   
 private:
   CopyAttributesLabelMapFilter(const Self&); //purposely not implemented

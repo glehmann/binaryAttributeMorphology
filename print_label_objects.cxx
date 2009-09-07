@@ -28,7 +28,7 @@ int main(int argc, char * argv[])
   ConverterType::Pointer converter = ConverterType::New();
   converter->SetInput( reader->GetOutput() );
   converter->SetFeatureImage( reader2->GetOutput() );
-  converter->SetForegroundValue( atoi(argv[3]) );
+  converter->SetInputForegroundValue( atoi(argv[3]) );
   converter->SetFullyConnected( true );
   itk::SimpleFilterWatcher watcher(converter, "filter");
 

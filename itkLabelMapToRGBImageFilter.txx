@@ -51,7 +51,7 @@ LabelMapToRGBImageFilter<TInputImage, TOutputImage>
 template<class TInputImage, class TOutputImage>
 void
 LabelMapToRGBImageFilter<TInputImage, TOutputImage>
-::ThreadedGenerateData( LabelObjectType * labelObject )
+::ThreadedProcessLabelObject( LabelObjectType * labelObject )
 {
   const typename LabelObjectType::LabelType & label = labelObject->GetLabel();
 
