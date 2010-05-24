@@ -18,8 +18,9 @@
 #define __itkBinaryGrindPeakImageFilter_txx
 
 #include "itkBinaryGrindPeakImageFilter.h"
-#include "itkBinaryReconstructionByDilationImageFilter.h"
-#include "itkImageRegionExclusionIteratorWithIndex.h"
+#include "itkBinaryImageToShapeLabelMapFilter.h"
+#include "itkShapeOpeningLabelMapFilter.h"
+#include "itkLabelMapToBinaryImageFilter.h"
 #include "itkProgressAccumulator.h"
 
 namespace itk {
@@ -65,60 +66,44 @@ void
 BinaryGrindPeakImageFilter<TInputImage>
 ::GenerateData()
 {
-  // Allocate the output
-  this->AllocateOutputs();
-  
-  // construct a marker image to manipulate using reconstruction by
-  // erosion. the marker image will have the same pixel values as the
-  // input image on the boundary of the image and will have the
-  // maximum pixel value from the input image for all the pixels in
-  // the interior
-  //
-
-  // allocate a marker image
-  InputImagePointer markerPtr = InputImageType::New();
-  markerPtr->SetRegions( this->GetInput()->GetRequestedRegion() );
-  markerPtr->CopyInformation( this->GetInput() );
-  markerPtr->Allocate();
-
-  // fill the marker image with the maximum value from the input
-  markerPtr->FillBuffer( m_BackgroundValue );
-
-  // set the border of the marker to the background value
-  //
-  ImageRegionExclusionIteratorWithIndex<TInputImage>
-    markerBoundaryIt( markerPtr, this->GetInput()->GetRequestedRegion() );
-  markerBoundaryIt.SetExclusionRegionToInsetRegion();
-
-  // copy the boundary pixels
-  markerBoundaryIt.GoToBegin();
-  while ( !markerBoundaryIt.IsAtEnd() )
-    {
-    markerBoundaryIt.Set( m_ForegroundValue );
-    ++markerBoundaryIt;
-    }
-  
   // Create a process accumulator for tracking the progress of this minipipeline
   ProgressAccumulator::Pointer progress = ProgressAccumulator::New();
   progress->SetMiniPipelineFilter(this);
 
-  // Delegate to a geodesic erosion filter.
-  //
-  //
-  typename BinaryReconstructionByDilationImageFilter<TInputImage>::Pointer
-    dilate
-    = BinaryReconstructionByDilationImageFilter<TInputImage>::New();
-  dilate->SetMarkerImage( markerPtr );
-  dilate->SetForegroundValue( m_ForegroundValue );
-  dilate->SetBackgroundValue( m_BackgroundValue );
-  dilate->SetMaskImage( this->GetInput() );
-  dilate->SetFullyConnected( m_FullyConnected );
-  dilate->SetNumberOfThreads( this->GetNumberOfThreads() );
-  progress->RegisterInternalFilter(dilate,1.0f);
+  // Allocate the output
+  this->AllocateOutputs();
+  
+  typedef typename itk::BinaryImageToShapeLabelMapFilter< InputImageType > LabelizerType;
+  typename LabelizerType::Pointer labelizer = LabelizerType::New();
+  labelizer->SetInput( this->GetInput() );
+  labelizer->SetInputForegroundValue( m_ForegroundValue );
+  labelizer->SetOutputBackgroundValue( m_BackgroundValue );
+  labelizer->SetFullyConnected( m_FullyConnected );
+  labelizer->SetNumberOfThreads( this->GetNumberOfThreads() );
+  progress->RegisterInternalFilter(labelizer, .6f);
+  
+  typedef typename LabelizerType::OutputImageType LabelMapType;
+  typedef typename itk::ShapeOpeningLabelMapFilter< LabelMapType > OpeningType;
+  typename OpeningType::Pointer opening = OpeningType::New();
+  opening->SetInput( labelizer->GetOutput() );
+  opening->SetAttribute( "SizeOnBorder" );
+  opening->SetLambda( 0 );
+  opening->SetReverseOrdering(true);
+  opening->SetNumberOfThreads( this->GetNumberOfThreads() );
+  progress->RegisterInternalFilter(opening, .1f);
 
-  dilate->GraftOutput( this->GetOutput() );
-  dilate->Update();
-  this->GraftOutput( dilate->GetOutput() );
+  typedef typename itk::LabelMapToBinaryImageFilter< LabelMapType, OutputImageType > BinarizerType;
+  typename BinarizerType::Pointer binarizer = BinarizerType::New();
+  binarizer->SetInput( opening->GetOutput() );
+  binarizer->SetForegroundValue( m_ForegroundValue );
+  binarizer->SetBackgroundValue( m_BackgroundValue );
+  binarizer->SetBackgroundImage( this->GetInput() );
+  binarizer->SetNumberOfThreads( this->GetNumberOfThreads() );
+  progress->RegisterInternalFilter(binarizer, .2f);
+
+  binarizer->GraftOutput( this->GetOutput() );
+  binarizer->Update();
+  this->GraftOutput( binarizer->GetOutput() );
 }
 
 

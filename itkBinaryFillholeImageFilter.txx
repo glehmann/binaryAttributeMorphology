@@ -18,8 +18,10 @@
 #define __itkBinaryFillholeImageFilter_txx
 
 #include "itkBinaryFillholeImageFilter.h"
-#include "itkBinaryReconstructionByErosionImageFilter.h"
-#include "itkImageRegionExclusionIteratorWithIndex.h"
+#include "itkBinaryNotImageFilter.h"
+#include "itkBinaryImageToShapeLabelMapFilter.h"
+#include "itkShapeOpeningLabelMapFilter.h"
+#include "itkLabelMapMaskImageFilter.h"
 #include "itkProgressAccumulator.h"
 
 namespace itk {
@@ -64,16 +66,6 @@ void
 BinaryFillholeImageFilter<TInputImage>
 ::GenerateData()
 {
-  // Allocate the output
-  this->AllocateOutputs();
-  
-  // construct a marker image to manipulate using reconstruction by
-  // erosion. the marker image will have the same pixel values as the
-  // input image on the boundary of the image and will have the
-  // maximum pixel value from the input image for all the pixels in
-  // the interior
-  //
-
   // let choose a background value. Background value should not be given by user
   // because closing is extensive so no background pixels will be added
   // it is just needed for internal erosion filter and constant padder
@@ -85,50 +77,54 @@ BinaryFillholeImageFilter<TInputImage>
     backgroundValue = NumericTraits<InputImagePixelType>::max();
     }
 
-  // allocate a marker image
-  InputImagePointer markerPtr = InputImageType::New();
-  markerPtr->SetRegions( this->GetInput()->GetRequestedRegion() );
-  markerPtr->CopyInformation( this->GetInput() );
-  markerPtr->Allocate();
-
-  // fill the marker image with the maximum value from the input
-  markerPtr->FillBuffer( m_ForegroundValue );
-
-  // set the border of the marker to the background value
-  //
-  ImageRegionExclusionIteratorWithIndex<TInputImage>
-    markerBoundaryIt( markerPtr, this->GetInput()->GetRequestedRegion() );
-  markerBoundaryIt.SetExclusionRegionToInsetRegion();
-
-  // copy the boundary pixels
-  markerBoundaryIt.GoToBegin();
-  while ( !markerBoundaryIt.IsAtEnd() )
-    {
-    markerBoundaryIt.Set( backgroundValue );
-    ++markerBoundaryIt;
-    }
-  
   // Create a process accumulator for tracking the progress of this minipipeline
   ProgressAccumulator::Pointer progress = ProgressAccumulator::New();
   progress->SetMiniPipelineFilter(this);
 
-  // Delegate to a geodesic erosion filter.
-  //
-  //
-  typename BinaryReconstructionByErosionImageFilter<TInputImage>::Pointer
-    erode
-    = BinaryReconstructionByErosionImageFilter<TInputImage>::New();
-  erode->SetMarkerImage( markerPtr );
-  erode->SetForegroundValue( m_ForegroundValue );
-  erode->SetBackgroundValue( backgroundValue );
-  erode->SetMaskImage( this->GetInput() );
-  erode->SetFullyConnected( m_FullyConnected );
-  erode->SetNumberOfThreads( this->GetNumberOfThreads() );
-  progress->RegisterInternalFilter(erode,1.0f);
+  // Allocate the output
+  this->AllocateOutputs();
+  
+  typedef BinaryNotImageFilter< InputImageType > NotType;
+  typename NotType::Pointer notInput = NotType::New();
+  notInput->SetInput( this->GetInput() );
+  notInput->SetForegroundValue( m_ForegroundValue );
+  notInput->SetBackgroundValue( backgroundValue );
+  notInput->SetNumberOfThreads( this->GetNumberOfThreads() );
+  notInput->SetReleaseDataFlag( true );
+  progress->RegisterInternalFilter(notInput, .2f);
+  
+  typedef typename itk::BinaryImageToShapeLabelMapFilter< InputImageType > LabelizerType;
+  typename LabelizerType::Pointer labelizer = LabelizerType::New();
+  labelizer->SetInput( notInput->GetOutput() );
+  labelizer->SetInputForegroundValue( m_ForegroundValue );
+  labelizer->SetOutputBackgroundValue( backgroundValue );
+  labelizer->SetFullyConnected( m_FullyConnected );
+  labelizer->SetNumberOfThreads( this->GetNumberOfThreads() );
+  progress->RegisterInternalFilter(labelizer, .5f);
+  
+  typedef typename LabelizerType::OutputImageType LabelMapType;
+  typedef typename itk::ShapeOpeningLabelMapFilter< LabelMapType > OpeningType;
+  typename OpeningType::Pointer opening = OpeningType::New();
+  opening->SetInput( labelizer->GetOutput() );
+  opening->SetAttribute( "SizeOnBorder" );
+  opening->SetLambda( 1 );
+  opening->SetNumberOfThreads( this->GetNumberOfThreads() );
+  progress->RegisterInternalFilter(opening, .1f);
 
-  erode->GraftOutput( this->GetOutput() );
-  erode->Update();
-  this->GraftOutput( erode->GetOutput() );
+  // invert the image during the binarization
+  typedef typename itk::LabelMapMaskImageFilter< LabelMapType, OutputImageType > BinarizerType;
+  typename BinarizerType::Pointer binarizer = BinarizerType::New();
+  binarizer->SetInput( opening->GetOutput() );
+  binarizer->SetLabel( backgroundValue );
+  binarizer->SetNegated( true );
+  binarizer->SetBackgroundValue( m_ForegroundValue );
+  binarizer->SetFeatureImage( this->GetInput() );
+  binarizer->SetNumberOfThreads( this->GetNumberOfThreads() );
+  progress->RegisterInternalFilter(binarizer, .2f);
+
+  binarizer->GraftOutput( this->GetOutput() );
+  binarizer->Update();
+  this->GraftOutput( binarizer->GetOutput() );
 }
 
 
