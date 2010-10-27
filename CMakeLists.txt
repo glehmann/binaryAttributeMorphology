@@ -41,6 +41,7 @@ SET(Libraries
   ITKBasicFilters
   ITKIO
   ITKStatistics
+  ITKReview
 )
 
 
