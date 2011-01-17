@@ -111,7 +111,7 @@ WeightedHistogramLabelMapFilter<TImage, TFeatureImage, TWeightImage, THistogramA
       const FeatureImagePixelType & v = featureImage->GetPixel( idx );
       const WeightImagePixelType & w = weightImage->GetPixel( idx );
       mv[0] = v;
-      histogram->IncreaseFrequency( mv, w );
+      histogram->IncreaseFrequencyOfMeasurement( mv, w );
       }
     }
   labelObject->SetHistogram( histogram );
